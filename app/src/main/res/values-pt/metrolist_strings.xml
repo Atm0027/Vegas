@@ -462,4 +462,10 @@
     <string name="lyrics_animation_style_title">Estilo de animação palavra-por-palavra</string>
     <string name="system_equalizer_desc">Abrir equalizador embutido do Android</string>
     <string name="eq_wizard">Mago do AutoEQ</string>
+    <string name="playlist_unavailable">Lista de Reprodução indisponível</string>
+    <string name="kmp_upgrade_title">Metrolist KMP %s está disponível</string>
+    <string name="kmp_upgrade_warning">Metrolist KMP está em acesso antecipado. Funcionalidades poderão estar partidas, incompletas, ou mudadas sem aviso.</string>
+    <string name="kmp_upgrade_action">Atualizar para KMP</string>
+    <string name="kmp_upgrade_later">Agora não</string>
+    <string name="audio_track_playback_params">Usar processamento de áudio via hardware</string>
 </resources>
