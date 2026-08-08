@@ -795,7 +795,7 @@
     <string name="hide_status_bar_fullscreen_desc">Скрывать строку состояния, когда включён полноэкранный режим текста</string>
     <string name="show_interval_indicator">Показывать индикатор проигрыша</string>
     <string name="show_interval_indicator_desc">Показывает индикатор прогресса во время длинных инструментальных проигрышей</string>
-    <string name="respect_agent_positioning">Учитывать позиционирование исполнителя</string>
+    <string name="respect_agent_positioning">Разделение по ролям</string>
     <string name="respect_agent_positioning_desc">Выравнивать текст в зависимости от роли исполнителя (например, бэк-вокал)</string>
     <string name="lyrics_animation_none">Нет</string>
     <string name="lyrics_animation_fade">Затухание</string>
@@ -916,4 +916,5 @@
     <string name="android_auto_search_options">Настройки поиска</string>
     <string name="android_auto_search_local_songs_limit">Лимит поиска треков</string>
     <string name="android_auto_search_local_songs_limit_desc">Ограничение количества локальных треков, отображаемых в результатах поиска. Не рекомендуется устанавливать значение \"Неограниченно\" во избежание сбоев из-за нехватки памяти</string>
+    <string name="playlist_unavailable">Плейлист недоступен</string>
 </resources>
