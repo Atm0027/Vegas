@@ -909,4 +909,5 @@
     <string name="android_auto_search_options">Options de recherche</string>
     <string name="android_auto_search_local_songs_limit">Limite de recherche de titres</string>
     <string name="android_auto_search_local_songs_limit_desc">Limitez le nombre de morceaux locaux affichés dans les résultats de recherche. Il est recommandé de ne pas choisir l\'option « illimité » afin d\'éviter les plantages liés à la mémoire.</string>
+    <string name="playlist_unavailable">Playlist indisponible</string>
 </resources>
