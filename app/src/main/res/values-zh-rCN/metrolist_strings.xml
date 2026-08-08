@@ -895,4 +895,5 @@
     <string name="android_auto_search_options">搜索选项</string>
     <string name="android_auto_search_local_songs_limit">歌曲搜索限制</string>
     <string name="android_auto_search_local_songs_limit_desc">限制搜索结果中显示的本地歌曲数量。建议不要设置为无限制，以防止内存崩溃</string>
+    <string name="playlist_unavailable">播放列表不可用</string>
 </resources>
