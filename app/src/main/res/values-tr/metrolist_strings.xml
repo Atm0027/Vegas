@@ -902,4 +902,5 @@
     <string name="android_auto_search_options">Arama seçenekleri</string>
     <string name="android_auto_search_local_songs_limit">Şarkı arama sınırı</string>
     <string name="android_auto_search_local_songs_limit_desc">Arama sonuçlarında gösterilen yerel şarkıların sayısını sınırlandırın. Bellek çökmelerini önlemek için sınırsız olarak ayarlamamanız önerilir</string>
+    <string name="playlist_unavailable">Oynatma listesi kullanılamıyor</string>
 </resources>
