@@ -895,4 +895,5 @@
     <string name="android_auto_search_options">Opsi Pencarian</string>
     <string name="android_auto_search_local_songs_limit">Batas Pencarian Musik</string>
     <string name="android_auto_search_local_songs_limit_desc">Batasi jumlah lagu lokal yang ditampilkan dalam hasil pencarian. Disarankan untuk tidak mengaturnya menjadi tanpa batas agar aplikasi tidak mengalami crash karena kehabisan memori.</string>
+    <string name="playlist_unavailable">Playlist tidak tersedia</string>
 </resources>
