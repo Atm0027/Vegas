@@ -895,4 +895,12 @@
     <string name="dynamic_theme">Tema dinámico</string>
     <string name="enable_dynamic_icon">Cores dinámicas das iconas</string>
     <string name="enable_dynamic_icon_desc">Empregar cores dinámicas do tema para a icona da aplicación. Cando está desactivado, a icona utiliza cores sólidas.</string>
+    <string name="playlist_unavailable">Lista de reprodución non dispoñible</string>
+    <string name="kmp_upgrade_title">Metrolist KMP %s está dispoñible</string>
+    <string name="kmp_upgrade_warning">Metrolist KMP está en acceso anticipado. As funcións poden estar defectuosas, incompletas ou cambiar sen previo aviso.</string>
+    <string name="kmp_upgrade_later">Non agora</string>
+    <string name="android_auto_search_options">Opcións de busca</string>
+    <string name="android_auto_search_local_songs_limit">Límite de procura de cancións</string>
+    <string name="kmp_upgrade_action">Actualiza a KMP</string>
+    <string name="android_auto_search_local_songs_limit_desc">Limita o número de cancións locais que se amosan nos resultados da busca. Recoméndase non establecelo como ilimitado para evitar fallos de memoria</string>
 </resources>
