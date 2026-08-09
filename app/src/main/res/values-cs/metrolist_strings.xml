@@ -915,4 +915,6 @@
     <string name="kmp_upgrade_later">Nezobrazovat</string>
     <string name="android_auto_search_options">Vyhledat možnosti</string>
     <string name="android_auto_search_local_songs_limit">Limit vyhledání skladeb</string>
+    <string name="playlist_unavailable">Playlist není dostupný</string>
+    <string name="android_auto_search_local_songs_limit_desc">Omezit počet lokálních skladeb zobrazených ve výsledcích vyhledávání. Nedoporučujeme nastavit na neomezený počet pro zabránění pádům z důvodu nedostatku paměti</string>
 </resources>
