@@ -902,4 +902,5 @@
     <string name="android_auto_search_options">Suchoptionen</string>
     <string name="android_auto_search_local_songs_limit">Suchlimit für Songs</string>
     <string name="android_auto_search_local_songs_limit_desc">Begrenzen Sie die Anzahl der lokalen Titel, die in den Suchergebnissen angezeigt werden. Es wird empfohlen, nicht „unbegrenzt“ einzustellen, um Speicherabstürze zu vermeiden.</string>
+    <string name="playlist_unavailable">Playlist nicht verfügbar</string>
 </resources>
