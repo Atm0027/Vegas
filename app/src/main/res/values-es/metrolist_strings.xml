@@ -717,7 +717,7 @@
     <string name="sort_ascending">Orden ascendente</string>
     <string name="sort_descending">Orden descendente</string>
     <string name="time_transfer_title">Transferencia de tiempo</string>
-    <string name="time_transfer_warning">ADVERTENCIA: No es posible revertir esta acción una vez completada. Se recomienda crear una copia de seguridad antes de continuar. Solo se pueden seleccionar canciones que tengan al menos un evento o reproducción registrada</string>
+    <string name="time_transfer_warning">ADVERTENCIA: No es posible revertir esta acción una vez completada. Se recomienda crear una copia de seguridad antes de continuar. Solo se pueden seleccionar canciones que tengan al menos una reproducción registrada</string>
     <string name="time_transfer_source_song">Canción de origen</string>
     <string name="time_transfer_target_song">Canción de destino</string>
     <string name="time_transfer_listen_time_label">Tiempo de reproducción:</string>
@@ -823,7 +823,7 @@
     <string name="added_to_playlist">Añadido a la lista de reproducción</string>
     <string name="android_auto_target_playlist_not_set">Ninguna lista de reproducción seleccionada. Elige una en los ajustes de Android Auto</string>
     <string name="autoplay">Reproducción automatica</string>
-    <string name="autoplay_desc">Reproducir la siguiente canción de forma automática cuando la actual termine</string>
+    <string name="autoplay_desc">Reproduce la siguiente canción automáticamente cuando la actual termine</string>
     <string name="back">Atrás</string>
     <string name="clear_search">Limpiar búsqueda</string>
     <string name="close_chip">Cerrar</string>
@@ -905,4 +905,7 @@
     <string name="kmp_upgrade_title">Metrolist KMP %s está disponible!</string>
     <string name="kmp_upgrade_warning">Metrolist KMP está en etapa temprana. Puede que funciones estén dañadas, incompletas, o cambiadas sin previo aviso.</string>
     <string name="kmp_upgrade_action">Mejora a KMP</string>
+    <string name="android_auto_search_options">Opciones de búsqueda</string>
+    <string name="android_auto_search_local_songs_limit">Límite de búsqueda de canciones</string>
+    <string name="android_auto_search_local_songs_limit_desc">Limita el número de canciones locales mostradas en los resultados de búsqueda. Se recomienda limitarlo para prevenir cierres de la aplicación inesperados</string>
 </resources>
