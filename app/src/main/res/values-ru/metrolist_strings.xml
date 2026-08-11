@@ -307,7 +307,7 @@
     <string name="turntable_widget_description">Круглый музыкальный виджет с кнопками воспроизведения и лайка</string>
     <string name="system_equalizer">Системный эквалайзер</string>
     <string name="remember_shuffle_and_repeat">Запоминать перемешивание и повтор</string>
-    <string name="remember_shuffle_and_repeat_desc">Запоминать режимы перемешивания и повтора после перезапуска</string>
+    <string name="remember_shuffle_and_repeat_desc">Запоминать настройки перемешивания и повтора при перезапуске приложения</string>
     <string name="lyrics_offset">Смещение текста песни</string>
     <string name="skip_silence_desc">Ускорять воспроизведение тихих участков треков</string>
     <string name="skip_silence_instant">Мгновенно пропускать тишину</string>
@@ -795,7 +795,7 @@
     <string name="hide_status_bar_fullscreen_desc">Скрывать строку состояния, когда включён полноэкранный режим текста</string>
     <string name="show_interval_indicator">Показывать индикатор проигрыша</string>
     <string name="show_interval_indicator_desc">Показывает индикатор прогресса во время длинных инструментальных проигрышей</string>
-    <string name="respect_agent_positioning">Разделение по ролям</string>
+    <string name="respect_agent_positioning">Разделять по ролям</string>
     <string name="respect_agent_positioning_desc">Выравнивать текст в зависимости от роли исполнителя (например, бэк-вокал)</string>
     <string name="lyrics_animation_none">Нет</string>
     <string name="lyrics_animation_fade">Затухание</string>
