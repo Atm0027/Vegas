@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="liked">Favoriten</string>
+    <string name="liked">Liked</string>
     <string name="offline">Heruntergeladen</string>
     <string name="my_top">Meine Top</string>
     <string name="select">Alles auswählen</string>
@@ -62,7 +62,7 @@
     <string name="charts">Charts</string>
     <string name="years">Jahre</string>
     <string name="weeks">Wochen</string>
-    <string name="remote_history">Online</string>
+    <string name="remote_history">Remote</string>
     <string name="sync_playlist">Playlist synchronisieren</string>
     <string name="back_button_desc">Zurück</string>
     <string name="continuous">Fortlaufend</string>
@@ -212,7 +212,7 @@
     <string name="mini_player">Mini-Player</string>
     <string name="pure_black_mini_player">Rein schwarzer Mini-Player</string>
     <string name="cache_size_warning_title">Warte mal!</string>
-    <string name="cache_size_warning_message">Der von Ihnen gewählte Grenzwert (%1$s) liegt unter dem Wert, den die App derzeit nutzt. Wenn Sie fortfahren, werden möglicherweise einige zwischengespeicherte %2$s gelöscht. Trotzdem fortfahren.</string>
+    <string name="cache_size_warning_message">Der von Ihnen gewählte Grenzwert (%1$s) liegt unter dem Wert, den die App derzeit nutzt. Wenn Sie fortfahren, werden möglicherweise einige zwischengespeicherte %2$s gelöscht. Trotzdem fortfahren?</string>
     <string name="cache_size_warning_confirm">Weiter</string>
     <string name="lyrics_animation_style">Stil der Liedtext-Animation</string>
     <string name="none">Keine</string>
@@ -492,7 +492,7 @@
     <string name="crossfade_duration">Überblenddauer</string>
     <string name="crossfade_gapless">Deaktivieren für lückenlose Alben</string>
     <string name="crossfade_gapless_desc">Nicht Überblenden, wenn das Album lückenlos abgespielt werden soll</string>
-    <string name="crossfade_beta_title">Beta-Funktion</string>
+    <string name="crossfade_beta_title">Beta-Funktion!</string>
     <string name="crossfade_beta_message">Song-Überblendung (Crossfade) ist eine neue Funktion und kann Fehler enthalten. Sollten Sie Probleme feststellen, melden Sie diese bitte.\n\nACHTUNG: Diese Funktion deaktiviert die Audioauslagerung aus technischen Gründen.</string>
     <string name="audio_offload_disabled_by_crossfade">Deaktiviert, da Song-Überblendung (Crossfade) aktiv ist</string>
     <string name="hide_youtube_shorts">YouTube Shorts ausblenden</string>
@@ -761,7 +761,7 @@
     <string name="listen_on_metrolist">Auf Metrolist hören</string>
     <string name="android_auto">Android Auto</string>
     <string name="android_auto_visible_sections">Sichtbare Sektionen</string>
-    <string name="android_auto_reorder_hint">Tippen Sie auf einen Abschnitt, um ihn zu aktivieren oder zu deaktivieren.\n\nHalten Sie den Ziehgriff gedrückt, um die Reihenfolge zu ändern. Der erste Abschnitt wird standardmäßig angezeigt.</string>
+    <string name="android_auto_reorder_hint">Tippen Sie auf einen Abschnitt, um ihn zu aktivieren oder zu deaktivieren.\nHalten Sie den Ziehgriff gedrückt, um die Reihenfolge zu ändern. Der erste Abschnitt wird standardmäßig angezeigt.</string>
     <string name="android_auto_youtube_playlists">Von YouTube vorgeschlagene Playlists anzeigen</string>
     <string name="android_auto_youtube_playlists_desc">Zeige die von YouTube Music empfohlenen Playlisten im Bereich „Playlists“ an, wenn du mit Android Auto navigierst</string>
     <string name="alarm_battery_optimization_desc">Deaktivieren Sie die Akkuoptimierung, um die Zuverlässigkeit des Alarms im Hintergrund zu verbessern</string>
