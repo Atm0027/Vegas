@@ -232,4 +232,22 @@
     <string name="enter_room_code">Fut një kod dhome</string>
     <string name="metrolist">METROLIST</string>
     <string name="android_auto">Android Auto</string>
+    <string name="sort_ascending">Rendit në rend rritës</string>
+    <string name="sort_descending">Rendit në rend zbritës</string>
+    <string name="remove_custom_image">Hiq imazhin e personalizuar</string>
+    <string name="general">Të përgjithshme</string>
+    <string name="proxy">Proxy</string>
+    <string name="default_lib_chips">Ndrysho çipin e paracaktuar të bibliotekës</string>
+    <string name="set_quick_picks">Vendos zgjedhjet e shpejta</string>
+    <string name="last_song_listened">Bazuar në këngën e fundit që dëgjove</string>
+    <string name="experimental_lyrics_beta_title">Veçori eksperimentale</string>
+    <string name="experimental_lyrics_beta_message">Komponenti i ri i teksteve është ende në zhvillim dhe mund të ketë gabime. Jeni i sigurt që doni ta aktivizoni?</string>
+    <string name="config_proxy">Cilëso proxy-n</string>
+    <string name="proxy_username">Emri i përdoruesit për proxy</string>
+    <string name="proxy_password">Fjalëkalimi i proxy-t</string>
+    <string name="enable_authentication">Aktivizo vërtetimin</string>
+    <string name="auto_radio_queue">Radha automatike e radios</string>
+    <string name="auto_radio_queue_desc">Krijo automatikisht një radhë radioje kur luani një këngë nga kërkimi ose nga fillimi</string>
+    <string name="enable_similar_content">Aktivizo përmbajtje të ngjashme</string>
+    <string name="similar_content_desc">Shton automatikisht këngë të tjera të ngjashme kur të arrihet fundi i radhës</string>
 </resources>
