@@ -309,9 +309,9 @@
     <string name="remember_shuffle_and_repeat">Запоминать перемешивание и повтор</string>
     <string name="remember_shuffle_and_repeat_desc">Запоминать настройки перемешивания и повтора при перезапуске приложения</string>
     <string name="lyrics_offset">Смещение текста песни</string>
-    <string name="skip_silence_desc">Ускорять воспроизведение тихих участков треков</string>
+    <string name="skip_silence_desc">Ускорять воспроизведение тишины в треках</string>
     <string name="skip_silence_instant">Мгновенно пропускать тишину</string>
-    <string name="skip_silence_instant_desc">Пропускать тихие фрагменты сразу вместо их ускорения</string>
+    <string name="skip_silence_instant_desc">Мгновенно пропускать тишину вместо её ускорения</string>
     <string name="about_artist">О исполнителе</string>
     <string name="show_more">Показать больше</string>
     <string name="show_less">Показать меньше</string>
@@ -516,8 +516,8 @@
     <string name="discord_connect_description">Войдите через Discord, чтобы делиться тем, что вы слушаете</string>
     <string name="prevent_duplicate_tracks_in_queue">Исключать дубликаты в очереди</string>
     <string name="prevent_duplicate_tracks_in_queue_desc">Если трек уже есть в очереди, он будет перемещён, а не добавлен повторно</string>
-    <string name="ai_translation_literal_desc">Переводит смысл на выбранный язык</string>
-    <string name="ai_translation_transcribed_desc">Преобразует произношение в письменную форму выбранного языка</string>
+    <string name="ai_translation_literal_desc">Передаёт смысл текста на выбранном языке</string>
+    <string name="ai_translation_transcribed_desc">Преобразует произношение в письменность выбранного языка</string>
     <string name="ai_provider_help">Получение API-ключей</string>
     <string name="ai_provider_openrouter_help">Откройте https://openrouter.ai для доступа к бесплатным и платным моделям</string>
     <string name="ai_provider_openai_help">Откройте https://platform.openai.com/api-keys</string>
@@ -783,7 +783,7 @@
     <string name="android_auto_youtube_playlists_desc">Показывать рекомендованные плейлисты YouTube Music в разделе плейлистов при просмотре через Android Auto</string>
     <string name="android_auto_target_playlist">Плейлист для быстрого добавления</string>
     <string name="android_auto_target_playlist_desc">Выберите плейлист, в который будут сохраняться треки при нажатии кнопки быстрого добавления в Android Auto</string>
-    <string name="android_auto_target_playlist_auto">Не указано</string>
+    <string name="android_auto_target_playlist_auto">Не выбрано</string>
     <string name="added_to_playlist">Добавлено в плейлист</string>
     <string name="android_auto_target_playlist_not_set">Плейлист не выбран. Выберите его в настройках Android Auto</string>
     <string name="mini_player_background_style">Стиль фона мини‑плеера</string>
