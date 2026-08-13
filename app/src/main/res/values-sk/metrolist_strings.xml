@@ -296,7 +296,7 @@
     <string name="lyrics_romanize_as_main">Zobraziť romanizované lyriky ako hlavné</string>
     <string name="hide_youtube_shorts">Skryť YouTube Shorts</string>
     <string name="wrapped_thank_you">Ďakujeme za vypočutie</string>
-    <string name="wrapped_special_thanks">Špeciálne poďakovanie MO Agamy za vytvorenie Metrolistu</string>
+    <string name="wrapped_special_thanks">Špecialne podakovanie MO Agamy za vytvorenie Metrolistu</string>
     <string name="wrapped_close">Zatvoriť wrapped</string>
     <string name="wrapped_playlist_title">Vaše %s Wrapped</string>
     <string name="wrapped_create_playlist">Vytvoriť playlist</string>
@@ -319,11 +319,11 @@
         <item quantity="other">%d pásiem</item>
     </plurals>
     <string name="delete_profile_desc">Odstrániť profil</string>
-    <string name="mixes">Mixy</string>
+    <string name="mixes">mix</string>
     <string name="parsed_from_link">Získané z odkazu</string>
     <string name="and">a</string>
-    <string name="weekly_most_playlist_name">Najlepšie tento týždeň</string>
-    <string name="monthly_most_playlist_name">Najlepšie tento mesiac</string>
+    <string name="weekly_most_playlist_name">týždenne najlepšie</string>
+    <string name="monthly_most_playlist_name">najviac mesačne</string>
     <string name="metrolist">METROLIST</string>
     <string name="upload_songs">Nahrať skladby</string>
     <string name="turntable_widget_description">Kruhový hudobný widget s ovládacími prvkami pre prehrávanie a označenie „Páči sa mi“</string>
@@ -344,4 +344,6 @@
     <string name="lyrics_animation_karaoke">Karaoke</string>
     <string name="lyrics_animation_apple">Štýl Apple Music</string>
     <string name="enable_lrclib_desc">Komunitne riadená databáza synchronizovaných textov piesní</string>
+    <string name="display_density">Hustota displaya</string>
+    <string name="mini_player_background_not_available">Nedostupné keď nový mini-player dizajn je zapnutý.</string>
 </resources>
