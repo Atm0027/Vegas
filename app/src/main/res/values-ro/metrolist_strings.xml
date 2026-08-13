@@ -902,4 +902,12 @@
     <string name="dynamic_theme">Temă dinamică</string>
     <string name="enable_dynamic_icon">Culori dinamice pentru pictogramă</string>
     <string name="enable_dynamic_icon_desc">Folosește culori dinamice pentru pictograma aplicației. Atunci când această opțiune este dezactivată, pictograma folosește culori solide.</string>
+    <string name="playlist_unavailable">Playlist indisponibil</string>
+    <string name="kmp_upgrade_title">Metrolist KMP %s este disponibil</string>
+    <string name="kmp_upgrade_warning">Metrolist KMP este în acces anticipat. Caracteristicile pot fi stricate, incomplete sau să se modifice fără notificare prealabilă.</string>
+    <string name="kmp_upgrade_action">Fă upgrade către KMP</string>
+    <string name="kmp_upgrade_later">Nu acum</string>
+    <string name="android_auto_search_options">Opțiuni de căutare</string>
+    <string name="android_auto_search_local_songs_limit">Limită de căutare melodii</string>
+    <string name="android_auto_search_local_songs_limit_desc">Limitează numărul de melodii locale afișate în rezultatele căutărilor. Este recomandat să nu o setezi la Nelimitat pentru a preveni crash-urile în memorie</string>
 </resources>
