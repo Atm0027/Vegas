@@ -902,4 +902,12 @@
     <string name="stream_source_web_creator_desc">Cliente web de Creator.</string>
     <string name="stream_source_android_creator">CREADOR_ANDROID</string>
     <string name="stream_source_android_creator_desc">Cliente de creador para Android. Desactivado por defecto; requiere DroidGuard.</string>
+    <string name="playlist_unavailable">Lista de reproducción no disponible</string>
+    <string name="kmp_upgrade_title">Metrolist KMP %s está disponible</string>
+    <string name="kmp_upgrade_warning">Metrolist KMP está en acceso anticipado.</string>
+    <string name="kmp_upgrade_action">Actualizar a KMP</string>
+    <string name="kmp_upgrade_later">Ahora no</string>
+    <string name="android_auto_search_options">Opciones de búsqueda</string>
+    <string name="android_auto_search_local_songs_limit">Límite de búsqueda de canciones</string>
+    <string name="android_auto_search_local_songs_limit_desc">Limita la cantidad de canciones locales mostradas en los resultados de búsqueda. Es recomendable no configurarlo como ilimitado para evitar fallos de memoria</string>
 </resources>
