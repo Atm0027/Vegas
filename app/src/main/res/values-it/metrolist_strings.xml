@@ -879,10 +879,10 @@
     <string name="stream_source_android_creator">ANDROID_CREATOR</string>
     <string name="stream_source_android_creator_desc">Client creator Android. Disattivato per impostazione predefinita; necessita di DroidGuard.</string>
     <string name="error_job_cancelled">Il video non è disponibile per la riproduzione. Riprova o passa al brano successivo.</string>
-    <string name="discord_error_no_browser">Nessun browser trovato per completare l\'autorizzazione Discord.</string>
+    <string name="discord_error_no_browser">Nessun browser trovato per completare l\'autorizzazione per Discord.</string>
     <string name="discord_error_token_refresh_failed">La sessione Discord è scaduta. Per favore riconnettiti.</string>
     <string name="discord_error_invalid_scope">Discord ha rifiutato la connessione. Riconnettiti e concedi l\'autorizzazione richiesta.</string>
-    <string name="discord_error_banner_title">Errore Discord</string>
+    <string name="discord_error_banner_title">Errore di Discord</string>
     <string name="discord_integration">Integrazione Discord</string>
     <string name="enable_discord_rpc">Abilita Rich Presence</string>
     <string name="discord_state">Stato</string>
@@ -897,9 +897,9 @@
     <string name="discord_placeholder_album">Titolo album</string>
     <string name="restore_database_incompatible">Impossibile ripristinare il backup: versione del database incompatibile. I tuoi dati attuali sono stati conservati.</string>
     <string name="stream_client">Client streaming</string>
-    <string name="enable_landscape_scaling">Ridimensionamento Paesaggio</string>
+    <string name="enable_landscape_scaling">Ridimensionamento in modalità orizzontale</string>
     <string name="enable_landscape_scaling_desc">Ridimensiona l\'interfaccia utente in modalità orizzontale per schermi più grandi</string>
-    <string name="dynamic_theme">Tema Dinamico</string>
+    <string name="dynamic_theme">Tema dinamico</string>
     <string name="enable_dynamic_icon">Colori dinamici delle icone</string>
     <string name="enable_dynamic_icon_desc">Utilizza i colori del tema dinamico per l\'icona dell\'app. Quando disabilitata, l\'icona utilizza colori solidi.</string>
     <string name="playlist_unavailable">Playlist non disponibile</string>
@@ -907,7 +907,7 @@
     <string name="android_auto_search_local_songs_limit">Limite di ricerca dei brani</string>
     <string name="android_auto_search_options">Opzioni di ricerca</string>
     <string name="kmp_upgrade_title">Metrolist KMP %s è disponibile</string>
-    <string name="kmp_upgrade_warning">Metrolist KMP è in accesso di anteprima. Le funzionalità potrebbero essere danneggiate, incomplete o modificate senza preavviso.</string>
+    <string name="kmp_upgrade_warning">Metrolist KMP è in accesso di anteprima. Le funzionalità potrebbero non essere state correttamente implementate, essere incomplete o modificate senza preavviso.</string>
     <string name="kmp_upgrade_action">Aggiorna a KMP</string>
-    <string name="kmp_upgrade_later">Non adesso</string>
+    <string name="kmp_upgrade_later">Non ora</string>
 </resources>
