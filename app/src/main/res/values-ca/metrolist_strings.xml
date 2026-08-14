@@ -42,7 +42,7 @@
     <string name="lyrics">Lletres</string>
     <string name="close">Tanca</string>
     <string name="hide_player_thumbnail">Amaga l\'icona del reproductor</string>
-    <string name="hide_player_thumbnail_desc">Substitueix l\'art de l\'àlbum pel logotip de la app en el reproductor</string>
+    <string name="hide_player_thumbnail_desc">Substitueix l\'art de l\'àlbum pel logotip de l\'app en el reproductor</string>
     <string name="already_in_playlist">Ja a la llista:</string>
     <plurals name="n_time">
         <item quantity="one">%d vegada</item>
@@ -52,7 +52,7 @@
     <string name="seek_forward_dynamic">+%1$d segons endavant</string>
     <string name="seek_backward_dynamic">-%1$d segons enrere</string>
     <string name="seek_seconds_addup">Cerca progressiva</string>
-    <string name="seek_seconds_addup_description">Si està activat, afegeix fins a 5 segons extra per cada salt de cerca</string>
+    <string name="seek_seconds_addup_description">Si està activat, afegeix 5 segons extra per cada cerca</string>
     <string name="similar_content">Contingut similar</string>
     <string name="player_background_style">Estil de fons del reproductor</string>
     <string name="follow_theme">Segueix el tema</string>
@@ -73,8 +73,8 @@
     <string name="sync_playlist_desc">Sincronitza aquesta llista amb YouTube Music</string>
     <string name="primary_color_style">Color primari</string>
     <string name="tertiary_color_style">Color terciari</string>
-    <string name="swipe_song_to_add">Llisca la cançó cap a la esquerra per a afegir-la a la cua o a la dreta per a reproduir-la a continuació</string>
-    <string name="swipe_song_to_remove">Llisca la cançó per a eliminar-la de la llista</string>
+    <string name="swipe_song_to_add">Llisca cap a l\'esquerra per a afegir la cançó a la cua o cap a la dreta per a reproduir-la a continuació</string>
+    <string name="swipe_song_to_remove">Llisca per a eliminar la cançó de la llista</string>
     <string name="lyrics_click_change">Canvia la lletra polsant</string>
     <string name="lyrics_auto_scroll">Lletra amb desplaçament automàtic</string>
     <string name="lyrics_glow_effect">Habilita lletra amb efecte lluent</string>
@@ -310,7 +310,7 @@
     <string name="show_artist_description">Mostra la descripció de l\'artista</string>
     <string name="show_artist_subscriber_count">Mostra el nombre de subscriptors</string>
     <string name="show_artist_monthly_listeners">Mostra els oients mensuals</string>
-    <string name="crop_album_art">Retalla la coberta</string>
+    <string name="crop_album_art">Retalla la coberta de l\'àlbum</string>
     <string name="tap_to_open">Toqueu per obrir el Metrolist</string>
     <string name="remember_shuffle_and_repeat">Recorda l\'aleatori i la repetició</string>
     <string name="pause_music_when_media_is_muted">Pausa la música en silenciar la multimèdia</string>
