@@ -76,11 +76,11 @@
     <string name="swipe_song_to_add">Llisca cap a l\'esquerra per a afegir la cançó a la cua o cap a la dreta per a reproduir-la a continuació</string>
     <string name="swipe_song_to_remove">Llisca per a eliminar la cançó de la llista</string>
     <string name="lyrics_click_change">Canvia la lletra polsant</string>
-    <string name="lyrics_auto_scroll">Lletra amb desplaçament automàtic</string>
+    <string name="lyrics_auto_scroll">Desplaçament automàtic de la lletra</string>
     <string name="lyrics_glow_effect">Habilita lletra amb efecte lluent</string>
-    <string name="lyrics_glow_effect_desc">Afig animació lluent i efecte de rebot per a la lletra activa</string>
+    <string name="lyrics_glow_effect_desc">Afegeix animació lluent i efecte de rebot per a la lletra activa</string>
     <string name="enable_better_lyrics">Habilita Better Lyrics</string>
-    <string name="enable_better_lyrics_desc">Lletra sincronitzada per síl·labes per a qualsevol cançó, per a karaoke</string>
+    <string name="enable_better_lyrics_desc">Lletra sincronitzada per síl·labes per a qualsevol cançó, ideals per a karaoke</string>
     <string name="auto_scroll">Torna a sincronitzar</string>
     <string name="slim">Prim</string>
     <string name="slim_navbar">Barra de navegació inferior prima</string>
@@ -213,7 +213,7 @@
     <string name="pure_black_mini_player">Mini reproductor negre pur</string>
     <string name="cache_size_warning_title">Espera!</string>
     <string name="cache_size_warning_confirm">Continuar</string>
-    <string name="lyrics_animation_style">Animació d\'estil paraula per paraula</string>
+    <string name="lyrics_animation_style">Estil d\'animació de la lletra</string>
     <string name="none">Cap</string>
     <string name="fade">Esvair</string>
     <string name="glow">Lluir</string>
@@ -560,7 +560,7 @@
     <string name="daily_discover_for_fans_of">Per als seguidors de %1$s</string>
     <string name="from_the_community">De la comunitat</string>
     <string name="enable_lrclib_desc">Base de dades de lletres sincronitzada impulsat per la comunitat</string>
-    <string name="enable_kugou_desc">Pren les lletres de KuGou, una coneguda plataforma de música Xinesa</string>
+    <string name="enable_kugou_desc">Pren les lletres de KuGou, una coneguda plataforma de música xinesa</string>
     <string name="youtube_music_lyrics_note">NOTA: Les lletres provinents de YouTube Music es mostraran automàticament quan no haja cap altra lletra disponible. Les lletres de YTM no solen estar sincronitzades</string>
     <string name="enable_lyricsplus">Habilita LyricsPlus</string>
     <string name="enable_lyricsplus_desc">Lletra sincronitzada de diverses fonts</string>
@@ -703,12 +703,12 @@
     <string name="monthly_most_playlist_name">Els més escoltats del mes</string>
     <string name="and">i</string>
     <string name="lyrics_from_provider">Lletra de %s</string>
-    <string name="hide_status_bar_fullscreen">Amaga la barra d’estat a pantalla completa</string>
+    <string name="hide_status_bar_fullscreen">Amaga la barra d’estat amb pantalla completa</string>
     <string name="hide_status_bar_fullscreen_desc">Amaga la barra d’estat quan el mode de pantalla completa de les lletres està actiu</string>
     <string name="show_interval_indicator">Mostra l’indicator d’interval</string>
     <string name="show_interval_indicator_desc">Mostra una barra de progrés durant els intervals instrumentals llargs</string>
     <string name="respect_agent_positioning">Respetae el posicionament de l’agent</string>
-    <string name="respect_agent_positioning_desc">Alinear les lletres segons el rol de l’agent(p. ex. veus de fons)</string>
+    <string name="respect_agent_positioning_desc">Alinear les lletres segons el rol de l’agent (p. ex. veus de fons)</string>
     <string name="lyrics_animation_none">Cap</string>
     <string name="lyrics_animation_fade">Esvaïment</string>
     <string name="lyrics_animation_glow">Resplendor</string>
