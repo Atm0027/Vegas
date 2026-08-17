@@ -102,7 +102,7 @@
     <string name="lyrics_auto_scroll">Desplazamiento automático de la letra</string>
     <string name="import_csv">Importar una lista de reproducción CSV</string>
     <string name="import_online">Importar una lista de reproducción M3U</string>
-    <string name="playlist_add_local_to_synced_note">Nota: No es posible añadir canciones locales a listas de reproducción sincronizadas o remotas. Cualquier otra combinación es válida</string>
+    <string name="playlist_add_local_to_synced_note">NOTA: No es posible añadir canciones locales a listas de reproducción sincronizadas o remotas. Cualquier otra combinación es válida.</string>
     <string name="new_player_design">Nuevo diseño del reproductor</string>
     <string name="lyrics_romanize_japanese">Romanizar letras japonesas</string>
     <string name="lyrics_romanize_korean">Romanizar letras coreanas</string>
@@ -908,4 +908,6 @@
     <string name="android_auto_search_options">Opciones de búsqueda</string>
     <string name="android_auto_search_local_songs_limit">Límite de búsqueda de canciones</string>
     <string name="android_auto_search_local_songs_limit_desc">Limita el número de canciones locales mostradas en los resultados de búsqueda. Se recomienda limitarlo para prevenir cierres de la aplicación inesperados</string>
+    <string name="playlist_unavailable">Lista de reproducción no disponible</string>
+    <string name="kmp_upgrade_later">Ahora no</string>
 </resources>
