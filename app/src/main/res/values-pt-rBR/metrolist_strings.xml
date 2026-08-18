@@ -898,4 +898,16 @@
     <string name="stream_source_web_creator">WEB_CREATOR</string>
     <string name="stream_source_android_creator">ANDROID_CREATOR</string>
     <string name="stream_source_android_creator_desc">Cliente de criador Android. Desativado por padrão; requer DroidGuard.</string>
+    <string name="playlist_unavailable">Playlist Indisponível</string>
+    <string name="kmp_upgrade_later">Agora não</string>
+    <string name="discord_placeholders">Espaços reservados disponíveis</string>
+    <string name="android_auto_search_options">Opções de pesquisa</string>
+    <string name="android_auto_search_local_songs_limit">limite de pesquisa de músicas</string>
+    <string name="kmp_upgrade_title">Metrolist KMP está disponível</string>
+    <string name="kmp_upgrade_warning">O Metrolist KMP está em acesso antecipado. Funcionalidades podem estar quebradas, incompletas ou sofrer alterações sem aviso prévio.</string>
+    <string name="kmp_upgrade_action">Atualize para o KMP</string>
+    <string name="android_auto_search_local_songs_limit_desc">Limite o número de músicas locais exibidas nos resultados da pesquisa. Recomenda-se não definir como ilimitado para evitar travamentos de memória.</string>
+    <string name="stream_source_visionos_desc">Apple Vision. Sem limitador de velocidade; muito confiável.</string>
+    <string name="stream_source_ios_desc">Clientes Apple iOS e iPadOS. Desativado por padrão; limitado após ~1 MiB.</string>
+    <string name="stream_source_web_creator_desc">Cliente web do Creator.</string>
 </resources>
