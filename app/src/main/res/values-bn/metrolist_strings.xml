@@ -833,4 +833,26 @@
     <string name="loudness_level_loud">লাউড (-11dB)</string>
     <string name="loudness_level_balanced">ভারসাম্যপূর্ণ (-১৪ dB)</string>
     <string name="loudness_level_quiet">শান্ত (-১৯ dB)</string>
+    <string name="and">এবং</string>
+    <string name="auto_radio_queue">স্বয়ংক্রিয় রেডিও কিউ</string>
+    <string name="auto_radio_queue_desc">Search অথবা হোম পেজ থেকে কোনো গান চালু করলে স্বয়ংক্রিয়ভাবে একটি রেডিও কিউ তৈরি করুন</string>
+    <string name="playlist_unavailable">প্লেলিস্টটি পাওয়া যাচ্ছে না</string>
+    <string name="kmp_upgrade_title">মেট্রোলিস্ট KMP %s পাওয়া যাচ্ছে</string>
+    <string name="kmp_upgrade_warning">Metrolist KMP এখন প্রাথমিক অ্যাক্সেসে রয়েছে।ফিচারগুলো অকার্যকর বা অসম্পূর্ণ হতে পারে, অথবা কোনো নোটিশ ছাড়াই পরিবর্তিত হতে পারে।</string>
+    <string name="kmp_upgrade_action">KMP তে আপগ্রেড করুন</string>
+    <string name="kmp_upgrade_later">এখন না</string>
+    <string name="audio_track_playback_params">হার্ডওয়ারের অডিও প্রোসেসিং ব্যবহার করুন</string>
+    <string name="audio_track_playback_params_description">সফটওয়্যার প্রসেসিংয়ের বদলে স্পিড ও পিচ পরিবর্তনের জন্য অ্যান্ড্রেয়েডের AudioTrack ব্যবহার করুন। এটি চরম পিচ মানের ক্ষেত্রেও বেশি নির্ভরযোগ্য।</string>
+    <string name="error_job_cancelled">ভিডিওটি চালানো যাচ্ছে না। আবার চেষ্টা করুন অথবা পরবর্তী গানে চলে যান।</string>
+    <string name="enable_landscape_scaling">ল্যান্ডস্কেপ স্কেলিং</string>
+    <string name="enable_landscape_scaling_desc">বড় স্ক্রিনের জন্য ল্যান্ডস্কেপ মোডে UI-এর আকার পরিবর্তন করুন</string>
+    <string name="dynamic_theme">ডায়নামিক থিম</string>
+    <string name="discord_status_connecting">ডিস্কোর্ডে কানেক্ট হচ্ছে…</string>
+    <string name="discord_status_reconnecting">ডিসকর্ড-এ পুনরায় কানেক্ট হচ্ছে…</string>
+    <string name="discord_status_connected">কানেক্টেড</string>
+    <string name="discord_status_authorizing">অনুমোদন করা হচ্ছে…</string>
+    <string name="discord_status_authorized">অনুমোদিত</string>
+    <string name="discord_status_not_initialized">শুরু করা হয়নি</string>
+    <string name="discord_error_loopback_timeout">ডিসকর্ড সময়মতো সাড়া দেয়নি। অনুগ্রহ করে আবার চেষ্টা করুন।</string>
+    <string name="discord_error_loopback_unbound">একটি লোকাল কলব্যাক পোর্ট খোলা সম্ভব হয়নি। অনুগ্রহ করে একটি পোর্ট খালি করুন এবং আবার চেষ্টা করুন।</string>
 </resources>
