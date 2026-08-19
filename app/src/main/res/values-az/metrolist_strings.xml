@@ -37,7 +37,7 @@
     <string name="dislike_all">Hamısını bəyənmə</string>
     <string name="sort_by_last_updated">Yenilənmə tarixi</string>
     <string name="link_copied">Link bufetdə kopyalandı</string>
-    <string name="starting_radio">Radio işə salınır</string>
+    <string name="starting_radio">Radio işə salınır…</string>
     <string name="now_playing">İndi oynayır</string>
     <string name="lyrics">Liriklər</string>
     <string name="close">Bağla</string>
@@ -78,7 +78,7 @@
     <string name="tertiary_color_style">Ikinci rəng</string>
     <string name="display_density">Göstəriş sıxlıqı</string>
     <string name="restart">Təzədən başlad</string>
-    <string name="restart_required">Təzədən basladmağa ehtiyac var</string>
+    <string name="restart_required">Təzədən basladmağa ehtiyac var!</string>
     <string name="density_restart_message">Göstəriş sıxlıqı ancaq programı yenidən basladandan sonra effekt göstərəcək. Programı indi yenidən basladmağ isteyirsiz?</string>
     <string name="wavy">Dalğalı</string>
     <string name="enable_swipe_thumbnail">Sürtüşdürmək ilə mahnini deyişməyi yandır</string>
@@ -116,4 +116,9 @@
     <string name="uploaded_playlist">Yükləndi</string>
     <string name="filter_uploaded">Yükləndi</string>
     <string name="artist_page_settings">Sənətçinin səhifəsi</string>
+    <string name="and">və</string>
+    <string name="show_artist_description">Göstər sənətçinin təsviri</string>
+    <string name="crop_album_art_desc">Video örtükü kəsərək kvadrat aspekt nisbətini məcburi edin</string>
+    <string name="player_background_solid">Bütöv</string>
+    <string name="lyrics_from_provider">Sözləri %s</string>
 </resources>
