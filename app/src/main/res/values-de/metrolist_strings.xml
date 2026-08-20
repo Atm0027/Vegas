@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="liked">Liked</string>
+    <string name="liked">Geliket</string>
     <string name="offline">Heruntergeladen</string>
     <string name="my_top">Meine Top</string>
     <string name="select">Alles auswählen</string>
@@ -62,7 +62,7 @@
     <string name="charts">Charts</string>
     <string name="years">Jahre</string>
     <string name="weeks">Wochen</string>
-    <string name="remote_history">Remote</string>
+    <string name="remote_history">Fern</string>
     <string name="sync_playlist">Playlist synchronisieren</string>
     <string name="back_button_desc">Zurück</string>
     <string name="continuous">Fortlaufend</string>
@@ -789,7 +789,7 @@
     <string name="show_most_stats_playlists_desc">Erstellen und Anzeigen von statistikbasierten „Top“-Playlists in „Statistiken“ und „Bibliothek“</string>
     <string name="unpin">Abheften</string>
     <string name="pin">Pin</string>
-    <string name="mixes">Mixe</string>
+    <string name="mixes">Mixes</string>
     <string name="widget_playlists">Playlists</string>
     <string name="widget_playlists_description">Schnellzugriff auf Playlisten mit Steuerelementen des Mini-Players</string>
     <string name="choose_something_below">Wähle unten eine Option aus</string>
@@ -849,4 +849,10 @@
     <string name="android_auto_search_local_songs_limit">Suchlimit für Songs</string>
     <string name="android_auto_search_local_songs_limit_desc">Begrenzen Sie die Anzahl der lokalen Titel, die in den Suchergebnissen angezeigt werden. Es wird empfohlen, nicht „unbegrenzt“ einzustellen, um Speicherabstürze zu vermeiden.</string>
     <string name="playlist_unavailable">Playlist nicht verfügbar</string>
+    <string name="choose_youtube_channel">Wähle einen YouTube-Kanal</string>
+    <string name="choose_youtube_channel_description">Dieses Google-Konto besitzt mehrere Kanäle. Bitte wähle den, den du nutzen möchtest.</string>
+    <string name="switch_youtube_channel">YouTube-Kanal wechseln</string>
+    <string name="youtube_channels_failed">Infos für den YouTube-Kanal konnten nicht aufgerufen werden. Bitte probiere es nochmal.</string>
+    <string name="authentication_data_extraction_failed">Die YouTube Music-Sitzung konnte nicht gelesen werden. Bitte versuche es nochmal.</string>
+    <string name="login_failed_with_error">Fehler bei der Anmeldung: %1$s</string>
 </resources>
