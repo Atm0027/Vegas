@@ -151,21 +151,9 @@
         <item quantity="other">%d segons</item>
     </plurals>
     <string name="disable_load_more_when_repeat_all">Deshabilitar carregar més en estar repetint tot</string>
-    <string name="lyrics_romanization_cyrillic">Ciríl·lic</string>
     <string name="lyrics_romanize_title">Romanització</string>
     <string name="lyrics_romanization">Romanització de lletres</string>
-    <string name="lyrics_romanize_japanese">Romanitzar lletra en japonés</string>
-    <string name="lyrics_romanize_korean">Romanitzar lletres en coreà</string>
-    <string name="lyrics_romanize_chinese">Romanitzar lletres en xinés</string>
-    <string name="lyrics_romanize_russian">Romanitzar lletres en rus</string>
-    <string name="lyrics_romanize_ukrainian">Romanitzar lletres en ucraïnés</string>
-    <string name="lyrics_romanize_belarusian">Romanitzar lletres en bielorús</string>
-    <string name="lyrics_romanize_kyrgyz">Romanitzar lletres en kirguís</string>
-    <string name="lyrics_romanize_serbian">Romanitzar lletres en serbi</string>
-    <string name="lyrics_romanize_bulgarian">Romanitzar lletres en búlgar</string>
     <string name="line_by_line_option_title">EXPERIMENTAL: Detectar llengua línia per línia</string>
-    <string name="line_by_line_option_desc">La llengua ciríl·lic serà detectada línia per línia en lloc de per a tota la cançó.</string>
-    <string name="line_by_line_dialog_title">Està segur?</string>
     <string name="romanize_current_track">Romanitzar la pista actual</string>
     <string name="settings_section_ui">Interfície</string>
     <string name="settings_section_privacy">Privacitat i Seguretat</string>
@@ -181,7 +169,6 @@
     <string name="audio_offload">Habilitar descàrrega (offload)</string>
     <string name="google_cast">Google Cast</string>
     <string name="google_cast_description">Habilitar la transmissió d\'àudio a Chromecast i altres dispositius compatibles amb Cast</string>
-    <string name="lyrics_romanize_macedonian">Romanitzar lletra en macedoni</string>
     <string name="integrations">Integracions</string>
     <string name="username">Nom d\'usuari</string>
     <string name="password">Contrasenya</string>
@@ -210,16 +197,10 @@
     <string name="advanced_desc">Canviar tempo i to de la cançó</string>
     <string name="equalizer_desc">Ajustar l\'equalitzador d\'àudio</string>
     <string name="mini_player">Mini Reproductor</string>
-    <string name="pure_black_mini_player">Mini reproductor negre pur</string>
     <string name="cache_size_warning_title">Espera!</string>
     <string name="cache_size_warning_confirm">Continuar</string>
     <string name="lyrics_animation_style">Estil d\'animació de la lletra</string>
     <string name="none">Cap</string>
-    <string name="fade">Esvair</string>
-    <string name="glow">Lluir</string>
-    <string name="slide">Lliscar</string>
-    <string name="karaoke">Karaoke</string>
-    <string name="apple_music_style">Apple Music</string>
     <string name="lyrics_text_size">Mida del text de la lletra</string>
     <string name="lyrics_line_spacing">Espai entre línies de la lletra</string>
     <string name="album_art_for">Portada d\'àlbum de %s</string>
@@ -259,7 +240,6 @@
     <string name="wrapped_playlist_saved">Llista de reproducció desada</string>
     <string name="casting_to">Transmetent a %s</string>
     <string name="progress_percent">Progrés %s%%</string>
-    <string name="listening_to_metrolist">Escoltant Metrolist</string>
     <string name="open">Obrir</string>
     <string name="failed_to_create_image">No s\'ha pogut generar la imatge: %s</string>
     <string name="copied_title">Títol copiat</string>
@@ -268,15 +248,9 @@
     <string name="failed_to_parse_proxy">Error al processar la url del proxy.</string>
     <string name="playlist_add_local_to_synced_note">Nota: No es poden afegir cançons locals a llistes sincronitzades/remotes. Qualsevol altra combinació és acceptable</string>
     <string name="disable_load_more_when_repeat_all_desc">No carregar automàticament més cançons similars mentre està actiu el mode repetir tot</string>
-    <string name="line_by_line_dialog_desc">Es tracta d\'una característica experimental propensa a errades.\n\nPer defecte, la llengua es determina per a tota la cançó, però amb aquesta opció, en el seu lloc, es determinarà la línia per línia. Açò permetrà que cançons multi-llengua funcionen correctament PERÒ la llengua detectada pot no ser sempre correcta (per exemple, si hi ha una lletra en ucraïnés que no conté cap caràcter específic de l\'idioma pot ser romanitzada com a russa).\n\nSi no té cap problema, es recomana mantenir aquesta opció desactivada.</string>
     <string name="audio_offload_description">Utilitzar la direcció de descarrega (offload) per a la reproducció de àudio. Desactivar aquesta funció podria incrementar l\'ús d\'energia però podria ser beneficiós si està tenint problemes en la reproducció d\'àudio o en pos processat</string>
     <string name="cache_size_warning_message">Ha triat un límit de grandària de memòria cau inferior al que l\'aplicació està utilitzant actualment (%1$s). Si continua, l\'aplicació eliminarà alguns %2$s emmagatzemats per ajustar-se al nou límit. Continuar de tota manera?</string>
     <string name="wavy">Ondulat</string>
-    <plurals name="profiles_count">
-        <item quantity="one">%d Perfil</item>
-        <item quantity="many">%d de Perfils</item>
-        <item quantity="other">%d Perfils</item>
-    </plurals>
     <string name="equalizer_header">Equalitzador</string>
     <string name="no_profiles">Sense perfils d\'equalitzador</string>
     <string name="import_profile">Importar Perfil</string>
@@ -434,7 +408,6 @@
     <string name="ai_error_no_lyrics">No hi ha lletra que traduir</string>
     <string name="ai_error_lyrics_empty">No hi ha lletra</string>
     <string name="ai_error_language_required">És requereix una llengua objectiu</string>
-    <string name="ai_error_unexpected">Resultat de la traducció inesperat</string>
     <string name="ai_error_unknown">S\'ha produït un error desconegut</string>
     <string name="ai_error_translation_failed">La traducció ha fallat</string>
     <string name="palette_dynamic">Dinàmica</string>
@@ -474,8 +447,6 @@
     <string name="crossfade_duration">Durada de la Transició suau</string>
     <string name="crossfade_gapless">Deshabilita els àlbums sense pauses</string>
     <string name="crossfade_gapless_desc">No aplicar el transaccionat suau si hi ha pauses a l\'album</string>
-    <string name="crossfade_beta_title">Funcionalitat Beta</string>
-    <string name="crossfade_beta_message">El transicionat suau es una nova funcionalitat que pot presentar errors. Si trobes cap problema, per favor, informa\'ns.\n\nAquesta funcionalitat deshabilita la descarrega d\'àudio a causa de limitacions tècniques.</string>
     <string name="audio_offload_disabled_by_crossfade">Deshabilitat per que el transicionat suau està actiu</string>
     <string name="hide_youtube_shorts">Amaga Youtube Shorts</string>
     <string name="listen_together_in_top_bar">Escoltar Junts a la barra superior</string>
@@ -538,8 +509,6 @@
     <string name="discord_advanced_mode_description">Mostra opcions de personalització avançades per a Rich Presence</string>
     <string name="player_background_solid">Sòlid</string>
     <string name="resume_on_bluetooth_connect">Reprèn la connexió Bluetooth</string>
-    <string name="lyrics_romanize_hindi">Romanitza lletra en Hindi</string>
-    <string name="lyrics_romanize_punjabi">Romanitza lletra en Panjabi</string>
     <string name="lyrics_romanize_as_main">Mostra lletres romanitzades principalment</string>
     <string name="discord_information_warning">Aquesta funcionalitat utilitza la llibreria KizzyRPC per a connectar-se als ports de Discord i configurar el vostre estatus de Rich Presence. Encara que no s\'ha informat de cap suspensió de comptes per aquest tipus d\'ús, aquest mètode no està oficialment acceptat per Discord i es podria considerar una violació dels seus Termes d\'ús. El vostre token s\'extrau localment i mai s\'envia a servidors de terceres parts. Actue sota la seua pròpia consideració.</string>
     <string name="display_density">Densitat de pantalla</string>
@@ -636,12 +605,7 @@
     <string name="credits_license_desc">Software gratuït i de codi lliure. Vostè el pot fer servir, estudiar, compartir i millorar.</string>
     <string name="credits_discord">Servidor de Discord</string>
     <string name="credits_telegram">Canal de Telegram</string>
-    <string name="credits_website">Lloc web</string>
-    <string name="credits_instagram">Instagram</string>
-    <string name="credits_github">GitHub</string>
     <string name="credits_view_repo">Veure Repositori</string>
-    <string name="app_version_info">%1$s • %2$s</string>
-    <string name="like_what_i_do">T\'agrada el que faig?</string>
     <string name="buy_mo_a_coffee">Compra\'m un cafè</string>
     <string name="community_and_info">Comunitat &amp; informació</string>
     <string name="metrolist">METROLIST</string>

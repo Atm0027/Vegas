@@ -276,7 +276,6 @@
         <item quantity="other">%d liedjies</item>
     </plurals>
     <string name="alarm_selected">Gekies</string>
-    <string name="alarm_playlist_helper">Kies watter snitlys die alarm sal speel</string>
     <string name="alarm_add">Voeg alarm by</string>
     <string name="alarm_empty">Nog geen alarms nie. Voeg een by om geskeduleerde afspeel te begin</string>
     <string name="alarm_disabled">Gedeaktiveer</string>
@@ -321,7 +320,6 @@
     <string name="reject">Keur af</string>
     <string name="clear">Vee uit</string>
     <string name="copy">Kopieer</string>
-    <string name="copy_all_lyrics">Kopieer alle lirieke</string>
     <string name="change">Verander</string>
     <string name="copied_to_clipboard">Na knipbord gekopieer</string>
     <string name="not_set">Nie gestel nie</string>
@@ -340,7 +338,6 @@
     <string name="error_username_empty">\'n Gebruikersnaam word vereis</string>
     <string name="alarm_duplicate_time_warning">Daar bestaan reeds \'n ander alarm op hierdie tyd. As albei gelyktydig afgaan, sal net een dalk speel</string>
     <string name="alarm_random_song">Speel \'n lukrake liedjie uit die snitlys</string>
-    <string name="alarm_next_trigger">Volgende sneller</string>
     <string name="alarm_not_scheduled">Nie geskeduleer nie</string>
     <string name="alarm_exact_permission_title">Laat presiese alarms toe</string>
     <string name="alarm_exact_permission_desc">Verleen toestemming vir presiese alarmtydsberekening, wat betroubaarheid verbeter wanneer die toep in die agtergrond is</string>
@@ -356,26 +353,9 @@
     <string name="crossfade_duration">Kruisvervaging-duur</string>
     <string name="crossfade_gapless">Deaktiveer vir albums sonder gapings</string>
     <string name="crossfade_gapless_desc">Slaan kruisvervaging oor vir albums wat ontwerp is om sonder gapings te speel</string>
-    <string name="crossfade_beta_title">Beta-kenmerk!</string>
-    <string name="crossfade_beta_message">Kruisvervaging is \'n nuwe kenmerk en kan foute bevat. As jy enige probleme ervaar, rapporteer dit asseblief.\n\nLET WEL: Hierdie kenmerk deaktiveer oudiodeling as gevolg van tegniese beperkings</string>
-    <string name="lyrics_romanization_cyrillic">Sirillies</string>
     <string name="lyrics_romanize_title">Romanisering</string>
     <string name="lyrics_romanization">Lirieke-romanisering</string>
-    <string name="lyrics_romanize_japanese">Romaniseer Japannese lirieke</string>
-    <string name="lyrics_romanize_korean">Romaniseer Koreaanse lirieke</string>
-    <string name="lyrics_romanize_chinese">Romaniseer Chinese lirieke</string>
-    <string name="lyrics_romanize_hindi">Romaniseer Hindi-lirieke</string>
-    <string name="lyrics_romanize_punjabi">Romaniseer Punjabi-lirieke</string>
-    <string name="lyrics_romanize_russian">Romaniseer Russiese lirieke</string>
-    <string name="lyrics_romanize_ukrainian">Romaniseer Oekraïense lirieke</string>
-    <string name="lyrics_romanize_belarusian">Romaniseer Belarussiese lirieke</string>
-    <string name="lyrics_romanize_kyrgyz">Romaniseer Kirgisiese lirieke</string>
-    <string name="lyrics_romanize_serbian">Romaniseer Serwiese lirieke</string>
-    <string name="lyrics_romanize_bulgarian">Romaniseer Bulgaarse lirieke</string>
     <string name="line_by_line_option_title">Bespeur taal reël-vir-reël</string>
-    <string name="line_by_line_option_desc">Sirilliese skrif sal reël-vir-reël bespeur word eerder as oor die hele liedjie</string>
-    <string name="line_by_line_dialog_title">Is jy seker?</string>
-    <string name="line_by_line_dialog_desc">Dit is \'n eksperimentele kenmerk wat soms werk en soms nie.\n\nBy verstek word die taal van die hele liedjie bespeur. Met hierdie opsie aan, sal dit reël-vir-reël bespeur word. Dit laat meertalige liedjies werk, MAAR die bespeurde taal mag dalk nie altyd korrek wees nie. Byvoorbeeld, \'n Oekraïense reël sonder enige Oekraïens-spesifieke karakters mag dalk as Russies geromaniseer word.\n\nAs jy nie enige probleme ervaar nie, word dit aanbeveel om hierdie opsie af te hou</string>
     <string name="romanize_current_track">Romaniseer huidige snit</string>
     <string name="lyrics_offset">Lirieke-afwyking</string>
     <string name="settings_section_ui">Koppelvlak</string>
@@ -403,7 +383,6 @@
     <string name="audio_track_playback_params_description">Gebruik Android se AudioTrack vir spoed-/toonhoogte-veranderings in plaas van sagteware-verwerking. Meer betroubaar vir ekstreme toonhoogte-waardes</string>
     <string name="google_cast">Google Cast</string>
     <string name="google_cast_description">Saai oudio na Chromecast en ander Cast-versoenbare toestelle uit</string>
-    <string name="lyrics_romanize_macedonian">Romaniseer Masedoniese lirieke</string>
     <string name="lyrics_romanize_as_main">Wys geromaniseerde lirieke as hoof</string>
     <string name="integrations">Integrasies</string>
     <string name="username">Gebruikersnaam</string>
@@ -434,7 +413,6 @@
     <string name="advanced_desc">Verstel die liedjie se tempo en toonhoogte</string>
     <string name="equalizer_desc">Maak die oudio-ekwailiseerder oop</string>
     <string name="mini_player">Minispeler</string>
-    <string name="pure_black_mini_player">Suikerswart minispeler</string>
     <string name="mini_player_background_style">Minispeler-agtergrondstyl</string>
     <string name="transparent">Deursigtig</string>
     <string name="mini_player_background_not_available">Onbeskikbaar wanneer die nuwe minispeler-ontwerp gedeaktiveer is</string>
@@ -443,11 +421,6 @@
     <string name="cache_size_warning_confirm">Gaan voort</string>
     <string name="lyrics_animation_style_title">Woord-vir-woord-animasie-styl</string>
     <string name="none">Geen</string>
-    <string name="fade">Vervaag</string>
-    <string name="glow">Gloei</string>
-    <string name="slide">Gly</string>
-    <string name="karaoke">Karaoke</string>
-    <string name="apple_music_style">Apple Music</string>
     <string name="album_art_for">Albumkuns vir %s</string>
     <string name="wrapped_total_albums_title">Jy het geluister na</string>
     <string name="wrapped_total_albums_subtitle">unieke albums!</string>
@@ -492,7 +465,6 @@
     <string name="ai_error_no_lyrics">Geen lirieke om te vertaal nie</string>
     <string name="ai_error_lyrics_empty">Lirieke is leeg</string>
     <string name="ai_error_language_required">’n Teikentaal word vereis</string>
-    <string name="ai_error_unexpected">Onverwagte vertaalresultaat</string>
     <string name="ai_error_unknown">\'n Onbekende fout het voorgekom</string>
     <string name="ai_error_translation_failed">Vertaaling het misluk</string>
     <string name="ai_provider_help">Kry API-sleutels</string>
@@ -509,8 +481,6 @@
     <string name="ai_deepl_formality_more">Meer formeel</string>
     <string name="ai_deepl_formality_less">Minder formeel</string>
     <string name="ai_system_prompt">Stelselopdrag</string>
-    <string name="ai_system_prompt_desc">Pasgemaakte instruksies wat na die AI-model gestuur word. Los leeg om die standaardopdrag te gebruik</string>
-    <string name="ai_system_prompt_placeholder">Gebruik {lineCount} as \'n plekhouer vir die aantal reëls om te vertaal</string>
     <string name="ai_system_prompt_default">Standaard</string>
     <string name="ai_system_prompt_reset">Herstel na standaard</string>
     <string name="crash_title">Toepassing het vasgeloop</string>
@@ -551,7 +521,6 @@
     <string name="enable_high_refresh_rate_desc">Dwing die skerm om teen sy hoogste ondersteunde verversingspoed te werk (bv. 120Hz)</string>
     <string name="enable_landscape_scaling">Landskapskaal</string>
     <string name="enable_landscape_scaling_desc">Skaal UI in landskapmodus vir groter skerms</string>
-    <string name="dynamic_theme">Dinamiese Tema</string>
     <string name="recognize_music">Herken musiek</string>
     <string name="tap_to_recognize">Tik om te herken</string>
     <string name="listening">Besig om te luister…</string>
@@ -585,8 +554,6 @@
     <string name="column_label">Kolom %d</string>
     <string name="discord_connect_description">Teken in met Discord om te deel waarna jy luister</string>
     <string name="discord_information_warning">Metrolist gebruik Discord se publieke OAuth2- en Gateway-API\'s om te deel waarna jy luister. Magtiging vind plaas deur \'n plaaslike blaaier-sessie wat homself toemaak nadat die kode opgevang is — niks word na derdeparty-bedieners gestuur nie. Jou teken word op hierdie toestel in versleutelde voorkeure gestoor en word nooit gedeel nie. Metrolist maak direk kontak met wss://gateway.discord.gg om jou aktiwiteit te publiseer, en versoek slegs die minimum omvang wat benodig word (sdk.social_layer_presence).</string>
-    <string name="discord_status_connecting">Besig om met Discord te verbind…</string>
-    <string name="discord_status_reconnecting">Besig om weer met Discord te verbind…</string>
     <string name="discord_status_connected">Gekoppel</string>
     <string name="discord_status_authorizing">Besig om te magtig…</string>
     <string name="discord_status_authorized">Gemagtig</string>
@@ -622,10 +589,6 @@
     <string name="discord_status_online">Aanlyn</string>
     <string name="discord_status_idle">Ledig</string>
     <string name="discord_status_dnd">Moenie Steur Nie</string>
-    <string name="discord_placeholders">Beskikbare plekhouers</string>
-    <string name="discord_placeholder_song">Liednaam</string>
-    <string name="discord_placeholder_artist">Kunstenaarnaam</string>
-    <string name="discord_placeholder_album">Albumnaam</string>
     <string name="speed_dial">Snelkies</string>
     <string name="pin_to_speed_dial">Vaspen aan snelkies</string>
     <string name="unpin_from_speed_dial">Losmaak van snelkies</string>
@@ -650,12 +613,7 @@
     <string name="credits_license_desc">Gratis, oopbron-sagteware. Jy mag dit gebruik, bestudeer, deel en verbeter</string>
     <string name="credits_discord">Discord-bediener</string>
     <string name="credits_telegram">Telegram-kanaal</string>
-    <string name="credits_website">Webwerf</string>
-    <string name="credits_instagram">Instagram</string>
-    <string name="credits_github">GitHub</string>
     <string name="credits_view_repo">Bekyk bewaarplek</string>
-    <string name="app_version_info">%1$s • %2$s</string>
-    <string name="like_what_i_do">Hou jy van wat ek doen?</string>
     <string name="buy_mo_a_coffee">Koop vir my \'n koffie!</string>
     <string name="community_and_info">Gemeenskap &amp; Inligting</string>
     <string name="metrolist">METROLIST</string>
@@ -683,10 +641,6 @@
     <string name="wrapped_playlist_title">Jou %s Wrapped</string>
     <string name="wrapped_create_playlist">Skep snitlys</string>
     <string name="wrapped_playlist_saved">Snitlys gestoor</string>
-    <plurals name="profiles_count">
-        <item quantity="one">%d-profiel</item>
-        <item quantity="other">%d-profiele</item>
-    </plurals>
     <string name="equalizer_header">Equalizer</string>
     <string name="no_profiles">Geen equalizer-profiele ni</string>
     <string name="import_profile">Voer profiel in</string>
@@ -697,7 +651,6 @@
     <string name="eq_download_db">Laai AutoEQ-databasis af (17 MB)</string>
     <string name="eq_downloading">Besig om af te laai…</string>
     <string name="import_from_file">Voer uit lêer in</string>
-    <string name="add_profile">Voeg profiel by</string>
     <plurals name="band_count">
         <item quantity="one">%d-band</item>
         <item quantity="other">%d-bande</item>
@@ -803,9 +756,7 @@
     <string name="android_auto_youtube_playlists">Wys YouTube se voorgestelde snitlyste</string>
     <string name="android_auto_youtube_playlists_desc">Wys YouTube Music se aanbevole snitlyste in die snitlyste-afdeling terwyl jy met Android Auto blaai</string>
     <string name="android_auto_target_playlist">Vinnige-byvoeg-bestemming</string>
-    <string name="android_auto_target_playlist_desc">Kies die snitlys waar liedjies gestoor word wanneer jy die vinnige-byvoeg-knoppie in Android Auto gebruik</string>
     <string name="android_auto_target_playlist_auto">Nie gestel nie</string>
-    <string name="added_to_playlist">By snitlys gevoeg</string>
     <string name="android_auto_target_playlist_not_set">Geen snitlys gekies nie. Kies een in Android Auto-instellings</string>
     <string name="android_auto_search_options">Soekopsies</string>
     <string name="android_auto_search_local_songs_limit">Liedjie-soekperk</string>
@@ -852,12 +803,8 @@
     <string name="stream_source_visionos_desc">Apple Vision. Geen versmoringhek; baie betroubaar.</string>
     <string name="stream_source_android_vr">Android VR</string>
     <string name="stream_source_android_vr_desc">Android VR-kliënte (alle weergawes).</string>
-    <string name="stream_source_ios">iOS / iPadOS</string>
-    <string name="stream_source_ios_desc">Apple iOS- en iPadOS-kliënte. Af by verstek; versmoringhek na ~1 MiB.</string>
     <string name="stream_source_web_creator">WEB_CREATOR</string>
     <string name="stream_source_web_creator_desc">Skepper-webkliënt.</string>
-    <string name="stream_source_android_creator">ANDROID_CREATOR</string>
-    <string name="stream_source_android_creator_desc">Android-skepperkliënt. Af by verstek; benodig DroidGuard.</string>
     <string name="wizard_multiple_variants">Verskeie variante beskikbaar</string>
     <string name="wizard_select_eq_profiles">Kies EQ-profiele vir %s</string>
     <string name="wizard_save_profiles">Stoor Profiele</string>
@@ -866,7 +813,6 @@
     <string name="plays">speelbeurte</string>
     <string name="casting_to">Beeldskerm na %s</string>
     <string name="progress_percent">Vordering %s%%</string>
-    <string name="listening_to_metrolist">Luister na Metrolist</string>
     <string name="open">Maak oop</string>
     <string name="failed_to_create_image">Kon nie beeld skep nie: %s</string>
     <string name="copied_title">Titel gekopieer</string>
