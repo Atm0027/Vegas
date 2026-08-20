@@ -855,4 +855,9 @@
     <string name="android_auto_search_local_songs_limit_desc">Limite o número de músicas locais exibidas nos resultados da pesquisa. Recomenda-se não definir como ilimitado para evitar travamentos de memória.</string>
     <string name="stream_source_visionos_desc">Apple Vision. Sem limitador de velocidade; muito confiável.</string>
     <string name="stream_source_web_creator_desc">Cliente web do Creator.</string>
+    <string name="choose_youtube_channel">Escolha um canal do YouTube</string>
+    <string name="choose_youtube_channel_description">Essa conta do Google tem múltiplos canais. Por favor escolha o canal que você quiser usar.</string>
+    <string name="switch_youtube_channel">Troque o canal do YouTube</string>
+    <string name="youtube_channels_failed">Não foi possível recuperar os canais do YouTube para essa conta. Por favor tente novamente.</string>
+    <string name="authentication_data_extraction_failed">Não foi possível ler a sessão do YouTube Music. Por favor tente novamente.</string>
 </resources>
