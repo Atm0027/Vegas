@@ -843,4 +843,10 @@
     <string name="android_auto_search_local_songs_limit">歌曲搜索限制</string>
     <string name="android_auto_search_local_songs_limit_desc">限制搜索结果中显示的本地歌曲数量。建议不要设置为无限制，以防止内存崩溃</string>
     <string name="playlist_unavailable">播放列表不可用</string>
+    <string name="choose_youtube_channel">选择 YouTube 频道</string>
+    <string name="choose_youtube_channel_description">此 Google 账号拥有多个频道。请选择您要使用的频道。</string>
+    <string name="switch_youtube_channel">切换 YouTube 频道</string>
+    <string name="youtube_channels_failed">无法检索此账号的 YouTube 频道。请重试。</string>
+    <string name="authentication_data_extraction_failed">无法读取 YouTube Music 会话。请重试。</string>
+    <string name="login_failed_with_error">登录失败：%1$s</string>
 </resources>
