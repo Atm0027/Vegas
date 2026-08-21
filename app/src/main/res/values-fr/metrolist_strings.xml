@@ -496,7 +496,7 @@
     <string name="discord_buttons">Boutons</string>
     <string name="discord_button_1">Bouton 1</string>
     <string name="discord_button_2">Bouton 2</string>
-    <string name="discord_information_warning">Metrolist envoie le titre en cours de lecture à la passerelle Discord afin de mettre à jour votre profil enrichi. Toutes les données sont transmises directement de votre appareil à Discord — aucun serveur tiers n\'intervient. Votre jeton reste sur votre appareil et n\'est jamais partagé. Cependant, l\'utilisation d\'un jeton utilisateur pour les connexions via la passerelle n\'est pas officiellement prise en charge et peut constituer une violation des conditions d\'utilisation de Discord. Procédez à vos propres risques !</string>
+    <string name="discord_information_warning">Metrolist utilise les API publiques OAuth2 et Gateway de Discord pour partager ce que vous écoutez. L\'autorisation se produit à travers une session de navigateur locale qui se ferme après avoir capturé le code — rien n\'est envoyé à des serveur tiers. Votre jeton est enregistré sous forme encryptée sur votre appareil et n\'est jamais partagé. Metrolist se connecte directement à wss://gateway.discord.gg pour publier votre activité, et ne demande que l\'accès minimum requis (sdk.social_layer_presence).</string>
     <string name="discord_activity_type">Type d\'activité</string>
     <string name="discord_activity_playing">Lire</string>
     <string name="discord_activity_listening">Écouter</string>
@@ -855,4 +855,10 @@
     <string name="android_auto_search_local_songs_limit">Limite de recherche de titres</string>
     <string name="android_auto_search_local_songs_limit_desc">Limitez le nombre de morceaux locaux affichés dans les résultats de recherche. Il est recommandé de ne pas choisir l\'option « illimité » afin d\'éviter les plantages liés à la mémoire.</string>
     <string name="playlist_unavailable">Playlist indisponible</string>
+    <string name="choose_youtube_channel">Choisissez une chaîne YouTube</string>
+    <string name="choose_youtube_channel_description">Ce compte Google a plusieurs chaînes. Choisissez celle que vous voulez utiliser.</string>
+    <string name="switch_youtube_channel">Changer de chaîne YouTube</string>
+    <string name="youtube_channels_failed">Échec de la récupération des chaînes YouTube pour ce compte. Veuillez réessayer.</string>
+    <string name="authentication_data_extraction_failed">Échec de la lecture de la session YouTube Music. Veuillez réessayer.</string>
+    <string name="login_failed_with_error">Échec de la connection : %1$s</string>
 </resources>
