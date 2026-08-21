@@ -572,7 +572,7 @@
     <string name="credits_collaborators_section">Соавторы</string>
     <string name="credits_license_name">GNU General Public License v3.0</string>
     <string name="credits_license_desc">Свободное программное обеспечение с открытым исходным кодом. Вы можете использовать, изучать, распространять и улучшать его</string>
-    <string name="credits_discord">Сервер Discord</string>
+    <string name="credits_discord">Discord-сервер</string>
     <string name="credits_telegram">Telegram-канал</string>
     <string name="credits_view_repo">Открыть репозиторий</string>
     <string name="buy_mo_a_coffee">Угостить меня кофе!</string>
