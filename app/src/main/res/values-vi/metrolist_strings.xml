@@ -843,4 +843,10 @@
     <string name="android_auto_search_options">Tùy chọn tìm kiếm</string>
     <string name="android_auto_search_local_songs_limit">Giới hạn tìm kiếm bài hát</string>
     <string name="android_auto_search_local_songs_limit_desc">Giới hạn số lượng bài hát trên máy hiển thị trong kết quả tìm kiếm. Khuyến nghị không chọn \"không giới hạn\" để tránh lỗi tràn bộ nhớ</string>
+    <string name="choose_youtube_channel">Chọn kênh YouTube</string>
+    <string name="choose_youtube_channel_description">Tài khoản Google này có nhiều kênh. Hãy chọn kênh bạn muốn sử dụng.</string>
+    <string name="switch_youtube_channel">Chuyển kênh YouTube</string>
+    <string name="youtube_channels_failed">Không thể lấy danh sách kênh YouTube cho tài khoản này. Vui lòng thử lại.</string>
+    <string name="authentication_data_extraction_failed">Không thể truy cập phiên đăng nhập YouTube Music. Vui lòng thử lại.</string>
+    <string name="login_failed_with_error">Lỗi đăng nhập: %1$s</string>
 </resources>
