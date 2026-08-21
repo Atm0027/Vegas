@@ -855,4 +855,10 @@
     <string name="android_auto_search_options">Opțiuni de căutare</string>
     <string name="android_auto_search_local_songs_limit">Limită de căutare melodii</string>
     <string name="android_auto_search_local_songs_limit_desc">Limitează numărul de melodii locale afișate în rezultatele căutărilor. Este recomandat să nu o setezi la Nelimitat pentru a preveni crash-urile în memorie</string>
+    <string name="choose_youtube_channel">Alege un canal de YouTube</string>
+    <string name="choose_youtube_channel_description">Acest cont Google are mai multe canale. Alege unul pe care vrei să-l folosești.</string>
+    <string name="switch_youtube_channel">Schimbă canalul de YouTube</string>
+    <string name="youtube_channels_failed">Nu s-au putut obține canalele de YouTube pentru acest cont. Te rugăm să încerci din nou.</string>
+    <string name="authentication_data_extraction_failed">Nu s-a putut citi sesiunea de YouTube Music. Te rugăm să încerci din nou.</string>
+    <string name="login_failed_with_error">Autentificare eșuată: %1$s</string>
 </resources>
