@@ -855,4 +855,10 @@
     <string name="android_auto_search_options">Opciones de búsqueda</string>
     <string name="android_auto_search_local_songs_limit">Límite de búsqueda de canciones</string>
     <string name="android_auto_search_local_songs_limit_desc">Limita la cantidad de canciones locales mostradas en los resultados de búsqueda. Es recomendable no configurarlo como ilimitado para evitar fallos de memoria</string>
+    <string name="choose_youtube_channel">Elige un canal de YouTube</string>
+    <string name="choose_youtube_channel_description">Esta cuenta de Google tiene varios canales. Elige la que quieres usar.</string>
+    <string name="switch_youtube_channel">Cambia de canal de YouTube</string>
+    <string name="youtube_channels_failed">No pude recuperar los canales de YouTube de esta cuenta. Por favor, inténtalo de nuevo.</string>
+    <string name="authentication_data_extraction_failed">No pude leer la sesión de YouTube Music. Por favor, inténtalo de nuevo.</string>
+    <string name="login_failed_with_error">Inicio de sesión fallido: %1$s</string>
 </resources>
