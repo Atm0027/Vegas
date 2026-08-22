@@ -848,4 +848,5 @@
     <string name="switch_youtube_channel">Ganti Youtube channel</string>
     <string name="choose_youtube_channel">Pilih channel Youtube</string>
     <string name="choose_youtube_channel_description">Akun Google ini memiliki beberapa channel. Pilih channel yang ingin Anda gunakan.</string>
+    <string name="youtube_channels_failed">Tidak dapat mengambil saluran YouTube untuk akun ini. Silakan coba lagi.</string>
 </resources>
