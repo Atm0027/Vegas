@@ -682,4 +682,18 @@
     <string name="enable_paxsenix">Habilitar Paxsenix</string>
     <string name="enable_paxsenix_desc">Lletres sincronitzades d’alta qualitat per l’API Paxsenix</string>
     <string name="enable_song_cache">Activar memòria cau de cançons</string>
+    <string name="export_playlist">Exporta llista de reproducció</string>
+    <string name="export_as_csv">Exporta com a CSV</string>
+    <string name="export_as_m3u">Exporta com a M3U</string>
+    <string name="export_success">Llista de reproducció exportada exitosament</string>
+    <string name="export_failed">No s\'ha pogut exportar la llista de reproducció</string>
+    <string name="export_option_share">Comparteix</string>
+    <string name="export_option_save">Guardat als documents</string>
+    <string name="ai_provider_mistral_help">Visita https://console.mistral.ai/api-keys</string>
+    <string name="sleep_timer_stop_after_current_song_title">Pausa al final d\'aquesta cançó</string>
+    <string name="sleep_timer_fade_out_title">Degradat al final</string>
+    <string name="sleep_timer_fade_out_description">Baixa al volum gradualment a l\'últim minut</string>
+    <string name="enable_song_cache_desc">Guarda les cançons escoltades a la memoria cau per una reproducció futura mes ràpida</string>
+    <string name="experimental_lyrics">Lletres experimentals</string>
+    <string name="experimental_lyrics_desc">Activa les noves lletres experimentals amb animacions mes fluïdes i millorades</string>
 </resources>
