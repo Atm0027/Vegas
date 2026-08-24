@@ -58,7 +58,7 @@
     <string name="show_top_playlist">Mostrar playlist do Top</string>
     <string name="show_cached_playlist">Mostrar playlist das Em cache</string>
     <string name="remote_history">Remoto</string>
-    <string name="charts">Ranques</string>
+    <string name="charts">Gráficos</string>
     <string name="back_button_desc">Voltar</string>
     <string name="album_cover_desc">Capa do álbum</string>
     <string name="top_music_videos">Vídeoclipes populares</string>
@@ -501,7 +501,7 @@
     <string name="discord_activity_listening">Ouvindo</string>
     <string name="discord_activity_watching">Assistindo</string>
     <string name="discord_activity_competing">Competindo</string>
-    <string name="discord_information_warning">Metrolist envia a música tocando no momento para a Gateway do Discord para atualizar a sua Rich Presence. Todos os fatos vão diretamente do seu dispositivo para o Discord — nenhum servidor de terceiros está envolvido. Seu token continua no dispositivo e não é compartilhado. De qualquer maneira, usar um token para conexões de Gateway não é suportado oficialmente e pode violar os termos de serviço do Discord. Prossiga por sua responsabilidade!</string>
+    <string name="discord_information_warning">Metrolist utiliza a OAuth2 e Gateway API\'s públicas do Discord para compartilhar o que você está ouvindo. A autorização é feita por uma seção de navegador local que se fecha após capturar o código — nada é enviado para servidores de terceiros. Seu token é armazenado nesse dispositivo em preferências criptografados e nunca é compartilhado. Metrolist se conecta diretamente a wss://gateway.discord.gg para publicar sua atividade, e apenas demanda o mínimo de escopo necessário (sdk.social_layer_presence).</string>
     <string name="discord_rpc_preview">Visualização de Rich Presence</string>
     <string name="discord_presence">Presença</string>
     <string name="discord_connect_description">Entre com o Discord para compartilhar o que você está ouvindo</string>
@@ -596,7 +596,7 @@
     </plurals>
     <string name="restore_confirm_title">Restaurar backup?</string>
     <string name="restore_confirm_message">Isto vai restaurar seus dados do app do backup selecionado</string>
-    <string name="restore_account_warning">Você vai precisar fazer o login novamente após a restauração. A seguinte conta vai ser desconectada:</string>
+    <string name="restore_account_warning">As seguintes informações da conta serão restauradas e preservadas:</string>
     <string name="restore">Restaurar</string>
     <string name="checking_previous_account">Verificando se há uma conta anterior…</string>
     <string name="no_account_found">Nenhuma conta encontrada</string>
@@ -849,10 +849,10 @@
     <string name="kmp_upgrade_later">Agora não</string>
     <string name="android_auto_search_options">Opções de pesquisa</string>
     <string name="android_auto_search_local_songs_limit">limite de pesquisa de músicas</string>
-    <string name="kmp_upgrade_title">Metrolist KMP está disponível</string>
+    <string name="kmp_upgrade_title">Metrolist KMP %s está disponível</string>
     <string name="kmp_upgrade_warning">O Metrolist KMP está em acesso antecipado. Funcionalidades podem estar quebradas, incompletas ou sofrer alterações sem aviso prévio.</string>
     <string name="kmp_upgrade_action">Atualize para o KMP</string>
-    <string name="android_auto_search_local_songs_limit_desc">Limite o número de músicas locais exibidas nos resultados da pesquisa. Recomenda-se não definir como ilimitado para evitar travamentos de memória.</string>
+    <string name="android_auto_search_local_songs_limit_desc">Limite o número de músicas locais exibidas nos resultados da pesquisa. Recomenda-se não definir como ilimitado para evitar travamentos de memória</string>
     <string name="stream_source_visionos_desc">Apple Vision. Sem limitador de velocidade; muito confiável.</string>
     <string name="stream_source_web_creator_desc">Cliente web do Creator.</string>
     <string name="choose_youtube_channel">Escolha um canal do YouTube</string>
@@ -860,4 +860,5 @@
     <string name="switch_youtube_channel">Troque o canal do YouTube</string>
     <string name="youtube_channels_failed">Não foi possível recuperar os canais do YouTube para essa conta. Por favor tente novamente.</string>
     <string name="authentication_data_extraction_failed">Não foi possível ler a sessão do YouTube Music. Por favor tente novamente.</string>
+    <string name="login_failed_with_error">Falha no Login: %1$s</string>
 </resources>
