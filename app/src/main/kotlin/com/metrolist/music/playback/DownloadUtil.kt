@@ -44,6 +44,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import timber.log.Timber
+import java.io.IOException
 import java.time.LocalDateTime
 import java.util.concurrent.Executor
 import javax.inject.Inject
@@ -63,6 +64,17 @@ constructor(
     private val connectivityManager = context.getSystemService<ConnectivityManager>()!!
     private val audioQuality by enumPreference(context, AudioQualityKey, AudioQuality.AUTO)
     private val songUrlCache = StreamUrlCache()
+    private val streamHttpClient =
+        OkHttpClient.Builder()
+            .proxy(YouTube.proxy)
+            .proxyAuthenticator { _, response ->
+                YouTube.proxyAuth?.let { auth ->
+                    response.request.newBuilder()
+                        .header("Proxy-Authorization", auth)
+                        .build()
+                } ?: response.request
+            }
+            .build()
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
@@ -74,18 +86,7 @@ constructor(
                 .Factory()
                 .setCache(playerCache)
                 .setUpstreamDataSourceFactory(
-                    OkHttpDataSource.Factory(
-                        OkHttpClient.Builder()
-                            .proxy(YouTube.proxy)
-                            .proxyAuthenticator { _, response ->
-                                YouTube.proxyAuth?.let { auth ->
-                                    response.request.newBuilder()
-                                        .header("Proxy-Authorization", auth)
-                                        .build()
-                                } ?: response.request
-                            }
-                            .build(),
-                    ),
+                    OkHttpDataSource.Factory(streamHttpClient),
                 ),
         ) { dataSpec ->
             val mediaId = dataSpec.key ?: error("No media id")
@@ -116,53 +117,55 @@ constructor(
             }.getOrThrow()
             val format = playbackData.format
 
-            val actualContentLength = format.contentLength ?: run {
-                var length: Long? = null
-                val client = OkHttpClient.Builder()
-                    .proxy(YouTube.proxy)
-                    .proxyAuthenticator { _, response ->
-                        YouTube.proxyAuth?.let { auth ->
-                            response.request.newBuilder()
-                                .header("Proxy-Authorization", auth)
-                                .build()
-                        } ?: response.request
-                    }
-                    .build()
+            val actualContentLength =
+                format.contentLength?.takeIf { it > 0L } ?: run {
                 val request = okhttp3.Request.Builder()
-                    .head()
+                    .get()
                     .url(playbackData.streamUrl)
                     .apply {
                         playbackData.streamHeaders.forEach { (name, value) ->
                             header(name, value)
                         }
                     }
+                    .header("Range", "bytes=0-0")
                     .build()
-                client.newCall(request).execute().use { response ->
-                    length = response.header("Content-Length")?.toLongOrNull()
+                try {
+                    streamHttpClient.newCall(request).execute().use { response ->
+                        downloadContentLength(
+                            statusCode = response.code,
+                            contentRange = response.header("Content-Range"),
+                            contentLength = response.header("Content-Length"),
+                        )
+                    }
+                } catch (_: IOException) {
+                    null
                 }
-                length ?: error("Failed to retrieve content length")
             }
 
             database.query {
-                upsert(
-                    FormatEntity(
-                        id = mediaId,
-                        itag = format.itag,
-                        mimeType = format.mimeType.substringBefore(";"),
-                        codecs =
-                            format.mimeType
-                                .substringAfter("codecs=", missingDelimiterValue = "")
-                                .substringBefore(";")
-                                .trim()
-                                .removeSurrounding("\""),
-                        bitrate = format.bitrate,
-                        sampleRate = format.audioSampleRate,
-                        contentLength = actualContentLength,
-                        loudnessDb = playbackData.audioConfig?.loudnessDb,
-                        perceptualLoudnessDb = playbackData.audioConfig?.perceptualLoudnessDb,
-                        playbackUrl = playbackData.playbackTracking?.videostatsPlaybackUrl?.baseUrl
-                    ),
-                )
+                if (actualContentLength != null) {
+                    upsert(
+                        FormatEntity(
+                            id = mediaId,
+                            itag = format.itag,
+                            mimeType = format.mimeType.substringBefore(";"),
+                            codecs =
+                                format.mimeType
+                                    .substringAfter("codecs=", missingDelimiterValue = "")
+                                    .substringBefore(";")
+                                    .trim()
+                                    .removeSurrounding("\""),
+                            bitrate = format.bitrate,
+                            sampleRate = format.audioSampleRate,
+                            contentLength = actualContentLength,
+                            loudnessDb = playbackData.audioConfig?.loudnessDb,
+                            perceptualLoudnessDb = playbackData.audioConfig?.perceptualLoudnessDb,
+                            playbackUrl = playbackData.playbackTracking?.videostatsPlaybackUrl?.baseUrl
+                        ),
+                    )
+                } else {
+                    deleteFormat(mediaId)
+                }
 
                 // Metadata registration only — dateDownload is intentionally NOT set here.
                 // It belongs solely to onDownloadChanged()'s STATE_COMPLETED branch below,
@@ -182,9 +185,7 @@ constructor(
                 upsert(updatedSong)
             }
 
-            val streamUrl = playbackData.streamUrl.let {
-                "${it}&range=0-${actualContentLength}"
-            }
+            val streamUrl = playbackData.streamUrl
 
             songUrlCache.put(
                 mediaId = mediaId,
@@ -288,7 +289,7 @@ constructor(
         var current = this
         while (current != null) {
             if (current is HttpDataSource.InvalidResponseCodeException &&
-                (current.responseCode == 403 || current.responseCode == 410)
+                (current.responseCode == 403 || current.responseCode == 410 || current.responseCode == 416)
             ) {
                 return true
             }
@@ -297,3 +298,29 @@ constructor(
         return false
     }
 }
+
+internal fun downloadContentLength(
+    statusCode: Int,
+    contentRange: String?,
+    contentLength: String?,
+): Long? {
+    val rangePattern =
+        when (statusCode) {
+            206 -> PARTIAL_CONTENT_RANGE
+            416 -> UNSATISFIED_CONTENT_RANGE
+            else -> null
+        }
+    if (rangePattern != null) {
+        return contentRange
+            ?.trim()
+            ?.let(rangePattern::matchEntire)
+            ?.groupValues
+            ?.get(1)
+            ?.toLongOrNull()
+            ?.takeIf { it > 0L }
+    }
+    return if (statusCode == 200) contentLength?.toLongOrNull()?.takeIf { it > 0L } else null
+}
+
+private val PARTIAL_CONTENT_RANGE = Regex("""bytes\s+0-0/(\d+)""", RegexOption.IGNORE_CASE)
+private val UNSATISFIED_CONTENT_RANGE = Regex("""bytes\s+\*/(\d+)""", RegexOption.IGNORE_CASE)

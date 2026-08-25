@@ -1,5 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
+val useMavenLocalInnerTubeX = providers.gradleProperty("useMavenLocalInnerTubeX").isPresent
+
 pluginManagement {
     repositories {
         mavenLocal()
@@ -15,10 +17,16 @@ dependencyResolutionManagement {
     repositories {
         exclusiveContent {
             forRepository {
-                maven("https://jitpack.io")
+                if (useMavenLocalInnerTubeX) mavenLocal() else maven("https://jitpack.io")
             }
             filter {
-                includeGroup("com.github.MetrolistGroup.innertubex")
+                if (useMavenLocalInnerTubeX) {
+                    includeModule("com.github.MetrolistGroup", "innertubex")
+                    includeModule("com.github.MetrolistGroup", "innertubex-android")
+                    includeModule("com.github.MetrolistGroup", "innertubex-desktop")
+                } else {
+                    includeGroup("com.github.MetrolistGroup.innertubex")
+                }
             }
         }
         google()

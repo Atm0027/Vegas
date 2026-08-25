@@ -23,7 +23,11 @@ kotlin {
 }
 
 dependencies {
-    api(libs.innertubex)
+    if (providers.gradleProperty("useMavenLocalInnerTubeX").isPresent) {
+        api("com.github.MetrolistGroup:innertubex:${libs.versions.innertubex.get()}")
+    } else {
+        api(libs.innertubex)
+    }
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.okhttp)
     implementation(libs.ktor.client.content.negotiation)
