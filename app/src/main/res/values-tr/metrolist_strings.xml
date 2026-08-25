@@ -849,4 +849,10 @@
     <string name="android_auto_search_local_songs_limit">Şarkı arama sınırı</string>
     <string name="android_auto_search_local_songs_limit_desc">Arama sonuçlarında gösterilen yerel şarkıların sayısını sınırlandırın. Bellek çökmelerini önlemek için sınırsız olarak ayarlamamanız önerilir</string>
     <string name="playlist_unavailable">Oynatma listesi kullanılamıyor</string>
+    <string name="choose_youtube_channel">Bir YouTube kanalı seç</string>
+    <string name="choose_youtube_channel_description">Bu Google hesabı birden çok kanala sahip. Kullanmak istediğini seç.</string>
+    <string name="switch_youtube_channel">YouTube kanalına geç</string>
+    <string name="youtube_channels_failed">Hesaba bağlı olan YouTube kanalları alınamadı. Lütfen tekrar deneyin.</string>
+    <string name="authentication_data_extraction_failed">YouTube Music oturumu okunamadı. Lütfen tekrar deneyin.</string>
+    <string name="login_failed_with_error">Giriş başarısız: %1$s</string>
 </resources>
