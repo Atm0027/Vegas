@@ -861,4 +861,9 @@
     <string name="youtube_channels_failed">Échec de la récupération des chaînes YouTube pour ce compte. Veuillez réessayer.</string>
     <string name="authentication_data_extraction_failed">Échec de la lecture de la session YouTube Music. Veuillez réessayer.</string>
     <string name="login_failed_with_error">Échec de la connection : %1$s</string>
+    <string name="add_to_playlist_position">Ajouter à la playlist à cette position</string>
+    <string name="playlist_position_beginning">Début de la playlist</string>
+    <string name="playlist_position_beginning_desc">Les morceaux récemment ajoutés apparaissent avant les morceaux existants</string>
+    <string name="playlist_position_end">Fin de la playlist</string>
+    <string name="playlist_position_end_desc">Les morceaux récemment ajoutés apparaissent après les morceaux existants</string>
 </resources>
