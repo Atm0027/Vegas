@@ -99,6 +99,8 @@ import com.metrolist.innertubex.extraction.ContentHints
 import com.metrolist.lastfm.LastFM
 import com.metrolist.music.MainActivity
 import com.metrolist.music.R
+import com.metrolist.music.constants.AddToPlaylistPosition
+import com.metrolist.music.constants.AddToPlaylistPositionKey
 import com.metrolist.music.constants.AndroidAutoTargetPlaylistKey
 import com.metrolist.music.constants.AudioNormalizationKey
 import com.metrolist.music.constants.AudioOffload
@@ -2233,7 +2235,15 @@ class MusicService :
 
             val targetPlaylist = database.playlist(targetPlaylistId).first()
             if (targetPlaylist != null) {
-                database.addSongsToPlaylist(targetPlaylist, listOf(currentSong.id to null), prepend = true)
+                val addToPlaylistPosition =
+                    dataStore
+                        .get(AddToPlaylistPositionKey, AddToPlaylistPosition.BEGINNING.name)
+                        .toEnum(AddToPlaylistPosition.BEGINNING)
+                database.addSongsToPlaylist(
+                    targetPlaylist,
+                    listOf(currentSong.id to null),
+                    prepend = addToPlaylistPosition.prepend,
+                )
             }
         }
     }
