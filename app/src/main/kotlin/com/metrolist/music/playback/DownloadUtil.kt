@@ -8,7 +8,6 @@ package com.metrolist.music.playback
 import android.content.Context
 import android.net.ConnectivityManager
 import androidx.core.content.getSystemService
-import androidx.core.net.toUri
 import androidx.media3.database.DatabaseProvider
 import androidx.media3.datasource.HttpDataSource
 import androidx.media3.datasource.ResolvingDataSource
@@ -19,7 +18,7 @@ import androidx.media3.exoplayer.offline.Download
 import androidx.media3.exoplayer.offline.DownloadManager
 import androidx.media3.exoplayer.offline.DownloadNotificationHelper
 import com.metrolist.innertube.YouTube
-import com.metrolist.innertube.strategy.ContentHints
+import com.metrolist.innertubex.extraction.ContentHints
 import com.metrolist.music.constants.AudioQuality
 import com.metrolist.music.constants.AudioQualityKey
 import com.metrolist.music.db.MusicDatabase
@@ -27,7 +26,7 @@ import com.metrolist.music.db.entities.FormatEntity
 import com.metrolist.music.db.entities.SongEntity
 import com.metrolist.music.di.DownloadCache
 import com.metrolist.music.di.PlayerCache
-import com.metrolist.music.utils.YTPlayerUtils
+import com.metrolist.music.utils.InnerTubeXPlayer
 import com.metrolist.music.utils.enumPreference
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -97,15 +96,13 @@ constructor(
             }
 
             songUrlCache[mediaId]?.let { cachedStream ->
-                return@Factory dataSpec
-                    .withUri(cachedStream.url.toUri())
-                    .withRequestHeaders(dataSpec.httpRequestHeaders + cachedStream.requestHeaders)
+                return@Factory dataSpec.withResolvedStream(cachedStream)
             }
             val cacheGeneration = songUrlCache.generation(mediaId)
 
             val playbackData = runBlocking(Dispatchers.IO) {
                 val song = database.songEntity(mediaId)
-                YTPlayerUtils.playerResponseForPlayback(
+                InnerTubeXPlayer.playerResponseForPlayback(
                     mediaId,
                     audioQuality = audioQuality,
                     connectivityManager = connectivityManager,
@@ -113,34 +110,35 @@ constructor(
                         isExplicit = song?.explicit,
                         isUploaded = song?.isUploaded,
                     ),
+                    allowBoundedRange = false,
                 )
             }.getOrThrow()
             val format = playbackData.format
 
             val actualContentLength =
                 format.contentLength?.takeIf { it > 0L } ?: run {
-                val request = okhttp3.Request.Builder()
-                    .get()
-                    .url(playbackData.streamUrl)
-                    .apply {
-                        playbackData.streamHeaders.forEach { (name, value) ->
-                            header(name, value)
+                    val request = okhttp3.Request.Builder()
+                        .get()
+                        .url(playbackData.streamUrl)
+                        .apply {
+                            playbackData.streamHeaders.forEach { (name, value) ->
+                                header(name, value)
+                            }
                         }
+                        .header("Range", "bytes=0-0")
+                        .build()
+                    try {
+                        streamHttpClient.newCall(request).execute().use { response ->
+                            downloadContentLength(
+                                statusCode = response.code,
+                                contentRange = response.header("Content-Range"),
+                                contentLength = response.header("Content-Length"),
+                            )
+                        }
+                    } catch (_: IOException) {
+                        null
                     }
-                    .header("Range", "bytes=0-0")
-                    .build()
-                try {
-                    streamHttpClient.newCall(request).execute().use { response ->
-                        downloadContentLength(
-                            statusCode = response.code,
-                            contentRange = response.header("Content-Range"),
-                            contentLength = response.header("Content-Length"),
-                        )
-                    }
-                } catch (_: IOException) {
-                    null
                 }
-            }
 
             database.query {
                 if (actualContentLength != null) {
@@ -193,11 +191,21 @@ constructor(
                 requestHeaders = playbackData.streamHeaders,
                 clientName = playbackData.streamClient,
                 expiresInSeconds = playbackData.streamExpiresInSeconds,
+                requireBoundedRange = playbackData.requireBoundedRange,
+                rangeChunkSizeBytes = playbackData.rangeChunkSizeBytes,
+                useRangeChunks = playbackData.useRangeChunks,
                 expectedGeneration = cacheGeneration,
             )
-            dataSpec
-                .withUri(streamUrl.toUri())
-                .withRequestHeaders(dataSpec.httpRequestHeaders + playbackData.streamHeaders)
+            dataSpec.withResolvedStream(
+                CachedStreamUrl(
+                    url = streamUrl,
+                    requestHeaders = playbackData.streamHeaders,
+                    clientName = playbackData.streamClient,
+                    requireBoundedRange = playbackData.requireBoundedRange,
+                    rangeChunkSizeBytes = playbackData.rangeChunkSizeBytes,
+                    useRangeChunks = playbackData.useRangeChunks,
+                ),
+            )
         }
 
     val downloadNotificationHelper =

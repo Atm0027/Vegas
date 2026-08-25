@@ -34,9 +34,6 @@ dependencies {
     implementation(libs.ktor.serialization.json)
     implementation(libs.ktor.client.encoding)
     implementation(libs.brotli)
-    implementation(libs.extractor) {
-        exclude(group = "com.google.protobuf")
-    }
     implementation(libs.timber)
     testImplementation(libs.junit)
 
