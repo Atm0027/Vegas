@@ -501,7 +501,7 @@
     <string name="discord_activity_listening">Ouvindo</string>
     <string name="discord_activity_watching">Assistindo</string>
     <string name="discord_activity_competing">Competindo</string>
-    <string name="discord_information_warning">Metrolist utiliza a OAuth2 e Gateway API\'s públicas do Discord para compartilhar o que você está ouvindo. A autorização é feita por uma seção de navegador local que se fecha após capturar o código — nada é enviado para servidores de terceiros. Seu token é armazenado nesse dispositivo em preferências criptografados e nunca é compartilhado. Metrolist se conecta diretamente a wss://gateway.discord.gg para publicar sua atividade, e apenas demanda o mínimo de escopo necessário (sdk.social_layer_presence).</string>
+    <string name="discord_information_warning">Metrolist usa as APIs públicas OAuth2 e Gateway do Discord para compartilhar o que você está ouvindo. A autorização acontece em uma sessão local do navegador, que é fechada automaticamente após capturar o código — nada é enviado para servidores de terceiros. Seu token é armazenado neste dispositivo de forma criptografada e nunca é compartilhado. O Metrolist se conecta diretamente a wss://gateway.discord.gg para publicar sua atividade e solicita apenas a permissão mínima necessária (sdk.social_layer_presence).</string>
     <string name="discord_rpc_preview">Visualização de Rich Presence</string>
     <string name="discord_presence">Presença</string>
     <string name="discord_connect_description">Entre com o Discord para compartilhar o que você está ouvindo</string>
@@ -819,7 +819,7 @@
     <string name="not_applicable">N/A</string>
     <string name="enable_dynamic_icon_desc">Usa cores dinâmicas do tema no ícone do app. Quando desabilitado, o ícone usa cores sólidas.</string>
     <string name="enable_landscape_scaling">Escala No Modo Paisagem</string>
-    <string name="enable_landscape_scaling_desc">Escala a interface no modo paisagem para telas maiores</string>
+    <string name="enable_landscape_scaling_desc">Escala a interface no modo paisagem para telas maiores.</string>
     <string name="enable_discord_rpc">Habilitar Rich Presence</string>
     <string name="discord_state">Estado</string>
     <string name="format_cipher_support_added">Suporte a criptografia adicionado</string>
@@ -829,7 +829,7 @@
     <string name="discord_button_label">Rótulo</string>
     <string name="discord_button_url">URL</string>
     <string name="restore_database_incompatible">Não foi possível restaurar o backup: versão do banco de dados incompatível. Seus dados atuais foram preservados.</string>
-    <string name="stream_client">Cliente de streaming</string>
+    <string name="stream_client">Cliente de Stream</string>
     <string name="format_player_hash">Hash do reprodutor</string>
     <string name="enable_dynamic_icon">Cores dinâmicas do ícone</string>
     <string name="stream_sources">Fontes de streaming</string>
