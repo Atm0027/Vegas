@@ -819,7 +819,7 @@
     <string name="not_applicable">N/A</string>
     <string name="enable_dynamic_icon_desc">Usa cores dinâmicas do tema no ícone do app. Quando desabilitado, o ícone usa cores sólidas.</string>
     <string name="enable_landscape_scaling">Escala No Modo Paisagem</string>
-    <string name="enable_landscape_scaling_desc">Escala a interface no modo paisagem para telas maiores.</string>
+    <string name="enable_landscape_scaling_desc">Escala a interface no modo paisagem para telas maiores</string>
     <string name="enable_discord_rpc">Habilitar Rich Presence</string>
     <string name="discord_state">Estado</string>
     <string name="format_cipher_support_added">Suporte a criptografia adicionado</string>
@@ -829,7 +829,7 @@
     <string name="discord_button_label">Rótulo</string>
     <string name="discord_button_url">URL</string>
     <string name="restore_database_incompatible">Não foi possível restaurar o backup: versão do banco de dados incompatível. Seus dados atuais foram preservados.</string>
-    <string name="stream_client">Cliente de Stream</string>
+    <string name="stream_client">Cliente de streaming</string>
     <string name="format_player_hash">Hash do reprodutor</string>
     <string name="enable_dynamic_icon">Cores dinâmicas do ícone</string>
     <string name="stream_sources">Fontes de streaming</string>
@@ -845,13 +845,13 @@
     <string name="stream_source_android_vr">Android VR</string>
     <string name="stream_source_android_vr_desc">Clientes de Android VR (todas as versões).</string>
     <string name="stream_source_web_creator">WEB_CREATOR</string>
-    <string name="playlist_unavailable">Playlist Indisponível</string>
+    <string name="playlist_unavailable">Lista de reprodução indisponível</string>
     <string name="kmp_upgrade_later">Agora não</string>
     <string name="android_auto_search_options">Opções de pesquisa</string>
     <string name="android_auto_search_local_songs_limit">limite de pesquisa de músicas</string>
     <string name="kmp_upgrade_title">Metrolist KMP %s está disponível</string>
     <string name="kmp_upgrade_warning">O Metrolist KMP está em acesso antecipado. Funcionalidades podem estar quebradas, incompletas ou sofrer alterações sem aviso prévio.</string>
-    <string name="kmp_upgrade_action">Atualize para o KMP</string>
+    <string name="kmp_upgrade_action">Atualizar para KMP</string>
     <string name="android_auto_search_local_songs_limit_desc">Limite o número de músicas locais exibidas nos resultados da pesquisa. Recomenda-se não definir como ilimitado para evitar travamentos de memória</string>
     <string name="stream_source_visionos_desc">Apple Vision. Sem limitador de velocidade; muito confiável.</string>
     <string name="stream_source_web_creator_desc">Cliente web do Creator.</string>
@@ -861,4 +861,9 @@
     <string name="youtube_channels_failed">Não foi possível recuperar os canais do YouTube para essa conta. Por favor tente novamente.</string>
     <string name="authentication_data_extraction_failed">Não foi possível ler a sessão do YouTube Music. Por favor tente novamente.</string>
     <string name="login_failed_with_error">Falha no Login: %1$s</string>
+    <string name="add_to_playlist_position">Posição ao adicionar à playlist</string>
+    <string name="playlist_position_beginning">Início da playlist</string>
+    <string name="playlist_position_beginning_desc">Músicas recém-adicionadas aparecem antes das existentes</string>
+    <string name="playlist_position_end">Fim da playlist</string>
+    <string name="playlist_position_end_desc">Músicas recém-adicionadas aparecem depois das existentes</string>
 </resources>
