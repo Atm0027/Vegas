@@ -849,4 +849,9 @@
     <string name="youtube_channels_failed">无法检索此账号的 YouTube 频道。请重试。</string>
     <string name="authentication_data_extraction_failed">无法读取 YouTube Music 会话。请重试。</string>
     <string name="login_failed_with_error">登录失败：%1$s</string>
+    <string name="add_to_playlist_position">添加到播放列表的位置</string>
+    <string name="playlist_position_beginning">播放列表开头</string>
+    <string name="playlist_position_beginning_desc">新添加的歌曲会显示在现有歌曲之前</string>
+    <string name="playlist_position_end">播放列表结尾</string>
+    <string name="playlist_position_end_desc">新添加的歌曲会显示在现有歌曲之后</string>
 </resources>
