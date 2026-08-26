@@ -180,6 +180,17 @@ jobs:
         run: |
           mv nightly/app-universal-with-Google-Cast.apk nightly/Metrolist-with-Google-Cast.apk
 
+          PREVIOUS_NIGHTLY_SHA=$(gh release view nightly --json targetCommitish --jq .targetCommitish 2>/dev/null || true)
+          {
+            echo "Automated prerelease built from main at commit $GITHUB_SHA. It may be unstable."
+            if [ -n "$PREVIOUS_NIGHTLY_SHA" ] && [ "$PREVIOUS_NIGHTLY_SHA" != "$GITHUB_SHA" ]; then
+              echo
+              echo "## Changes since previous nightly"
+              gh api "repos/$GITHUB_REPOSITORY/compare/$PREVIOUS_NIGHTLY_SHA...$GITHUB_SHA" \
+                --jq '.commits[] | "* \(.commit.message | split("\n")[0]) (\(.sha[0:7]))"'
+            fi
+          } > nightly-notes.md
+
           if gh release view nightly > /dev/null 2>&1; then
             gh release delete nightly --yes --cleanup-tag
           elif gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/nightly" > /dev/null 2>&1; then
@@ -190,7 +201,7 @@ jobs:
             nightly/Metrolist-with-Google-Cast.apk \
             --target "$GITHUB_SHA" \
             --title "Metrolist Nightly" \
-            --notes "Automated prerelease built from main at commit $GITHUB_SHA. It may be unstable." \
+            --notes-file nightly-notes.md \
             --generate-notes \
             --prerelease \
             --latest=false
