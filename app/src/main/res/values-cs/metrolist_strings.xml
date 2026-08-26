@@ -867,4 +867,9 @@
     <string name="youtube_channels_failed">Nepodařilo se načíst YouTube kanály tohoto účtu. Zkuste to prosím znovu.</string>
     <string name="authentication_data_extraction_failed">Nepodařilo se přečíst relaci YouTube Music. Zkuste to prosím znovu.</string>
     <string name="login_failed_with_error">Přihlášení selhalo: %1$s</string>
+    <string name="add_to_playlist_position">Místo přidání do playlistu</string>
+    <string name="playlist_position_beginning">Začátek playlistu</string>
+    <string name="playlist_position_beginning_desc">Nově přidané skladby se objeví před existujícími skladbami</string>
+    <string name="playlist_position_end">Konec playlistu</string>
+    <string name="playlist_position_end_desc">Nově přidané skladby se objeví po existujících skladbách</string>
 </resources>
