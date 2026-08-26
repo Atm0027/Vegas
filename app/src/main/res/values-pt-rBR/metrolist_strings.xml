@@ -830,7 +830,7 @@
     <string name="discord_button_url">URL</string>
     <string name="restore_database_incompatible">Não foi possível restaurar o backup: versão do banco de dados incompatível. Seus dados atuais foram preservados.</string>
     <string name="stream_client">Cliente de streaming</string>
-    <string name="format_player_hash">Hash do reprodutor</string>
+    <string name="format_player_hash">Hash do player</string>
     <string name="enable_dynamic_icon">Cores dinâmicas do ícone</string>
     <string name="stream_sources">Fontes de streaming</string>
     <string name="stream_source_order">Ordem de streaming</string>
