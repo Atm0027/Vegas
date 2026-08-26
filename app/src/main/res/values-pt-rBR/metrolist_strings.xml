@@ -853,7 +853,7 @@
     <string name="kmp_upgrade_warning">O Metrolist KMP está em acesso antecipado. Funcionalidades podem estar quebradas, incompletas ou sofrer alterações sem aviso prévio.</string>
     <string name="kmp_upgrade_action">Atualizar para KMP</string>
     <string name="android_auto_search_local_songs_limit_desc">Limite o número de músicas locais exibidas nos resultados da pesquisa. Recomenda-se não definir como ilimitado para evitar travamentos de memória</string>
-    <string name="stream_source_visionos_desc">Apple Vision. Sem limitador de velocidade; muito confiável.</string>
+    <string name="stream_source_visionos_desc">Apple Vision. Sem limitação de velocidade; muito confiável.</string>
     <string name="stream_source_web_creator_desc">Cliente web do Creator.</string>
     <string name="choose_youtube_channel">Escolha um canal do YouTube</string>
     <string name="choose_youtube_channel_description">Essa conta do Google tem múltiplos canais. Por favor escolha o canal que você quiser usar.</string>
