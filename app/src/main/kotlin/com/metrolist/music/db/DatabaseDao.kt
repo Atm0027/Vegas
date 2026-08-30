@@ -1226,7 +1226,7 @@ interface DatabaseDao {
     ): Int
 
     @Query("SELECT songId from playlist_song_map WHERE playlistId = :playlistId AND songId IN (:songIds)")
-    fun playlistDuplicates(
+    suspend fun playlistDuplicates(
         playlistId: String,
         songIds: List<String>,
     ): List<String>
@@ -1260,7 +1260,7 @@ interface DatabaseDao {
 
     // This prevents songs from being removed during automatic playlist synchronization
     @Transaction
-    fun addSongsToPlaylist(
+    suspend fun addSongsToPlaylist(
         playlist: Playlist,
         songs: List<Pair<String, String?>>, // Pair of (songId, setVideoId)
         prepend: Boolean = false,

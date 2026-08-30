@@ -294,9 +294,10 @@ constructor(
 
     init {
         val result = mutableMapOf<String, Download>()
-        val cursor = downloadManager.downloadIndex.getDownloads()
-        while (cursor.moveToNext()) {
-            result[cursor.download.request.id] = cursor.download
+        downloadManager.downloadIndex.getDownloads().use { cursor ->
+            while (cursor.moveToNext()) {
+                result[cursor.download.request.id] = cursor.download
+            }
         }
         downloads.value = result
     }
@@ -310,6 +311,8 @@ constructor(
     fun download(mediaMetadata: MediaMetadata) {
         scope.launch {
             downloadPreparations.withPermit {
+                if (!shouldPrepareDownload(downloads.value[mediaMetadata.id]?.state)) return@withPermit
+
                 mediaMetadata.album?.let { album ->
                     if (database.albumEntity(album.id) == null) {
                         database.insert(
@@ -328,7 +331,16 @@ constructor(
                 if (existing == null) {
                     database.insert(mediaMetadata)
                 } else {
-                    database.update(existing, mediaMetadata)
+                    database.update(
+                        existing,
+                        mediaMetadata,
+                        overwriteTitle = false,
+                        overwriteArtists = false,
+                    )
+                }
+
+                if (!shouldPrepareDownload(downloadManager.downloadIndex.getDownload(mediaMetadata.id)?.state)) {
+                    return@withPermit
                 }
 
                 val request =
@@ -387,6 +399,8 @@ constructor(
         return false
     }
 }
+
+internal fun shouldPrepareDownload(downloadState: Int?): Boolean = downloadState != Download.STATE_COMPLETED
 
 internal fun downloadArtworkUrls(
     songArtwork: String?,
