@@ -1,5 +1,6 @@
 package com.metrolist.music.ui.component
 
+import android.view.ContextThemeWrapper
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -48,8 +49,10 @@ fun CastButton(
     if (enabled) {
         AndroidView(
             factory = { viewContext ->
-                MediaRouteButton(viewContext).apply {
-                    CastButtonFactory.setUpMediaRouteButton(viewContext, this)
+                val themedContext =
+                    ContextThemeWrapper(viewContext, androidx.appcompat.R.style.Theme_AppCompat_Light_NoActionBar)
+                MediaRouteButton(themedContext).apply {
+                    CastButtonFactory.setUpMediaRouteButton(themedContext, this)
                 }
             },
             update = { button ->
