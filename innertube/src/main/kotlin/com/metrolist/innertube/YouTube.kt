@@ -1202,10 +1202,8 @@ object YouTube {
 
             val appendedContents: List<MusicShelfRenderer.Content> =
                 response.onResponseReceivedActions
-                    ?.firstOrNull()
-                    ?.appendContinuationItemsAction
-                    ?.continuationItems
                     .orEmpty()
+                    .flatMap { it.appendContinuationItemsAction?.continuationItems.orEmpty() }
 
             val allContents = mainContents + shelfContents + musicShelfContinuationContents + appendedContents
 
@@ -1215,27 +1213,19 @@ object YouTube {
                     .mapNotNull { renderer -> PlaylistPage.fromMusicResponsiveListItemRenderer(renderer) }
 
             val nextContinuation =
-                if (songs.isEmpty()) {
-                    null
-                } else {
-                    response.continuationContents
-                        ?.sectionListContinuation
+                response.continuationContents
+                    ?.sectionListContinuation
+                    ?.continuations
+                    ?.getContinuation()
+                    ?: response.continuationContents
+                        ?.musicPlaylistShelfContinuation
                         ?.continuations
                         ?.getContinuation()
-                        ?: response.continuationContents
-                            ?.musicPlaylistShelfContinuation
-                            ?.continuations
-                            ?.getContinuation()
-                        ?: response.continuationContents
-                            ?.musicShelfContinuation
-                            ?.continuations
-                            ?.getContinuation()
-                        ?: response.onResponseReceivedActions
-                            ?.firstOrNull()
-                            ?.appendContinuationItemsAction
-                            ?.continuationItems
-                            ?.getContinuation()
-                }
+                    ?: response.continuationContents
+                        ?.musicShelfContinuation
+                        ?.continuations
+                        ?.getContinuation()
+                    ?: appendedContents.getContinuation()
 
             PlaylistContinuationPage(
                 songs = songs,

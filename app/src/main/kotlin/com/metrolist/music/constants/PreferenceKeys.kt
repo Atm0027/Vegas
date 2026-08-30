@@ -155,13 +155,6 @@ val PauseListenHistoryKey = booleanPreferencesKey("pauseListenHistory")
 val PauseSearchHistoryKey = booleanPreferencesKey("pauseSearchHistory")
 val DisableScreenshotKey = booleanPreferencesKey("disableScreenshot")
 
-// Stream sources — which innertube clients are used for stream resolution (Settings → Stream sources).
-val StreamSourceWebRemixKey = booleanPreferencesKey("streamSourceWebRemix")
-val StreamSourceTVHTML5Key = booleanPreferencesKey("streamSourceTVHTML5")
-val StreamSourceAndroidVRKey = booleanPreferencesKey("streamSourceAndroidVR")
-val StreamSourceVisionOSKey = booleanPreferencesKey("streamSourceVisionOS")
-val StreamSourceWebCreatorKey = booleanPreferencesKey("streamSourceWebCreator")
-
 val EnableDynamicIconKey = booleanPreferencesKey("enableDynamicIcon")
 
 val EnableDiscordRPCKey = booleanPreferencesKey("discordRPCEnable")
