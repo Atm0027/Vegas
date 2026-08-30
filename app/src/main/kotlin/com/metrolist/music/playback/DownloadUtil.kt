@@ -98,6 +98,7 @@ constructor(
             CacheDataSource
                 .Factory()
                 .setCache(playerCache)
+                .setCacheWriteDataSinkFactory(null)
                 .setUpstreamDataSourceFactory(
                     OkHttpDataSource.Factory(streamHttpClient),
                 ),
@@ -255,6 +256,7 @@ constructor(
                         scope.launch {
                             when (download.state) {
                                 Download.STATE_COMPLETED -> {
+                                    removeFromPlayerCache(download.request.id)
                                     database.updateDownloadedInfo(download.request.id, true, LocalDateTime.now())
                                 }
                                 Download.STATE_FAILED,
@@ -300,6 +302,11 @@ constructor(
             }
         }
         downloads.value = result
+        scope.launch {
+            result.values
+                .filter { it.state == Download.STATE_COMPLETED }
+                .forEach { removeFromPlayerCache(it.request.id) }
+        }
     }
 
     fun getDownload(songId: String): Flow<Download?> = downloads.map { it[songId] }
@@ -384,6 +391,11 @@ constructor(
 
     fun release() {
         scope.cancel()
+    }
+
+    private fun removeFromPlayerCache(songId: String) {
+        runCatching { playerCache.removeResource(songId) }
+            .onFailure { Timber.tag(TAG).w(it, "Failed to remove downloaded song $songId from player cache") }
     }
 
     private fun Throwable?.isExpiredStreamError(): Boolean {
