@@ -165,6 +165,7 @@ import com.metrolist.music.constants.SlimNavBarKey
 import com.metrolist.music.constants.StopMusicOnTaskClearKey
 import com.metrolist.music.constants.UpdateNotificationsEnabledKey
 import com.metrolist.music.constants.UseNewMiniPlayerDesignKey
+import com.metrolist.music.constants.VideoThumbnailMigrationDoneKey
 import com.metrolist.music.db.MusicDatabase
 import com.metrolist.music.db.entities.SearchHistory
 import com.metrolist.music.extensions.toEnum
@@ -443,6 +444,13 @@ class MainActivity : FragmentActivity() {
                     }
                     settings[SimpMusicMigrationDoneKey] = true
                     settings[LastSeenVersionKey] = currentVersion
+                }
+            }
+
+            if (preferences[VideoThumbnailMigrationDoneKey] != true) {
+                database.repairMissingVideoThumbnails()
+                safeDataStoreEdit { settings ->
+                    settings[VideoThumbnailMigrationDoneKey] = true
                 }
             }
         }
