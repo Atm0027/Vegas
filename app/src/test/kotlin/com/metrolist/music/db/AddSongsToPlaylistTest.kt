@@ -11,6 +11,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.metrolist.music.db.entities.Playlist
 import com.metrolist.music.db.entities.PlaylistEntity
+import com.metrolist.music.db.entities.PlaylistSongMap
 import com.metrolist.music.db.entities.SongEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -62,6 +63,32 @@ class AddSongsToPlaylistTest {
             )
 
             assertEquals(listOf("song"), database.dao.playlistSongIds("playlist"))
+        }
+
+    @Test
+    fun `append inserts after sparse playlist positions`() =
+        runBlocking {
+            val playlist =
+                PlaylistEntity(
+                    id = "playlist",
+                    name = "Playlist",
+                    bookmarkedAt = LocalDateTime.of(2026, 1, 1, 0, 0),
+                )
+            withContext(Dispatchers.IO) {
+                database.dao.insert(playlist)
+                listOf("first", "last", "new").forEach {
+                    database.dao.insert(SongEntity(id = it, title = it))
+                }
+                database.dao.insert(PlaylistSongMap(playlistId = playlist.id, songId = "first", position = 0))
+                database.dao.insert(PlaylistSongMap(playlistId = playlist.id, songId = "last", position = 5))
+            }
+
+            database.dao.addSongsToPlaylist(
+                Playlist(playlist, 2, emptyList()),
+                listOf("new" to null),
+            )
+
+            assertEquals(listOf("first", "last", "new"), database.dao.playlistSongIds(playlist.id))
         }
 
     @Test

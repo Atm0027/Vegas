@@ -1,5 +1,7 @@
 package com.metrolist.music.ui.component
 
+import android.content.Context
+import android.os.Bundle
 import android.view.ContextThemeWrapper
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
@@ -19,6 +21,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.mediarouter.app.MediaRouteButton
+import androidx.mediarouter.app.MediaRouteChooserDialog
+import androidx.mediarouter.app.MediaRouteChooserDialogFragment
+import androidx.mediarouter.app.MediaRouteControllerDialog
+import androidx.mediarouter.app.MediaRouteControllerDialogFragment
+import androidx.mediarouter.app.MediaRouteDialogFactory
 import com.google.android.gms.cast.framework.CastButtonFactory
 import com.metrolist.music.LocalPlayerConnection
 import com.metrolist.music.R
@@ -49,10 +56,10 @@ fun CastButton(
     if (enabled) {
         AndroidView(
             factory = { viewContext ->
-                val themedContext =
-                    ContextThemeWrapper(viewContext, androidx.appcompat.R.style.Theme_AppCompat_Light_NoActionBar)
+                val themedContext = viewContext.castThemedContext()
                 MediaRouteButton(themedContext).apply {
                     CastButtonFactory.setUpMediaRouteButton(themedContext, this)
+                    dialogFactory = CastDialogFactory
                 }
             },
             update = { button ->
@@ -72,4 +79,23 @@ fun CastButton(
             modifier = modifier.size(56.dp),
         )
     }
+}
+
+private fun Context.castThemedContext() =
+    ContextThemeWrapper(this, androidx.appcompat.R.style.Theme_AppCompat_Light_NoActionBar)
+
+private object CastDialogFactory : MediaRouteDialogFactory() {
+    override fun onCreateChooserDialogFragment() = CastChooserDialogFragment()
+
+    override fun onCreateControllerDialogFragment() = CastControllerDialogFragment()
+}
+
+internal class CastChooserDialogFragment : MediaRouteChooserDialogFragment() {
+    override fun onCreateChooserDialog(context: Context, savedInstanceState: Bundle?) =
+        MediaRouteChooserDialog(context.castThemedContext())
+}
+
+internal class CastControllerDialogFragment : MediaRouteControllerDialogFragment() {
+    override fun onCreateControllerDialog(context: Context, savedInstanceState: Bundle?) =
+        MediaRouteControllerDialog(context.castThemedContext())
 }
