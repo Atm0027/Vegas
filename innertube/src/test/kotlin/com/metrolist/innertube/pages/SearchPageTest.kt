@@ -11,7 +11,7 @@ import com.metrolist.innertube.models.Thumbnails
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class SearchSummaryPageTest {
+class SearchPageTest {
     @Test
     fun `card song inherits artist when response only contains type and duration`() {
         val renderer = songRenderer(
@@ -25,7 +25,7 @@ class SearchSummaryPageTest {
         )
         val fallbackArtist = Artist("Lupus Nocte", "UC123")
 
-        val song = SearchSummaryPage.fromMusicResponsiveListItemRenderer(
+        val song = SearchPage.toYTItem(
             renderer,
             fallbackArtists = listOf(fallbackArtist),
         ) as SongItem

@@ -1461,8 +1461,6 @@ class MusicService :
         runCatching { filesDir.resolve(PERSISTENT_PLAYER_STATE_FILE).delete() }
     }
 
-    fun hasAudioFocusForPlayback(): Boolean = hasAudioFocus
-
     private fun waitOnNetworkError() {
         if (waitingForNetworkConnection.value) return
 
@@ -1912,16 +1910,6 @@ class MusicService :
                 } catch (_: Exception) {
                 }
             }
-        }
-    }
-
-    fun getAutomixAlbum(albumId: String) {
-        scope.launch(SilentHandler) {
-            YouTube
-                .album(albumId)
-                .onSuccess {
-                    getAutomix(it.album.playlistId)
-                }
         }
     }
 
@@ -4612,23 +4600,6 @@ class MusicService :
     private fun stopWidgetUpdates() {
         widgetUpdateJob?.cancel()
         widgetUpdateJob = null
-    }
-
-    private fun shareSong() {
-        val songData = currentSong.value
-        val songId = songData?.song?.id ?: return
-
-        val shareIntent =
-            Intent(Intent.ACTION_SEND).apply {
-                type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, "https://music.youtube.com/watch?v=$songId")
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-        startActivity(
-            Intent.createChooser(shareIntent, null).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            },
-        )
     }
 
     /**

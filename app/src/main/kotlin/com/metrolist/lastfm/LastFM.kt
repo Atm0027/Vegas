@@ -88,10 +88,6 @@ object LastFM {
         }.body<Authentication>()
     }
 
-    fun getAuthUrl(token: String): String {
-        return "https://www.last.fm/api/auth/?api_key=$API_KEY&token=$token"
-    }
-
     // Mobile session authentication
     suspend fun getMobileSession(username: String, password: String) = runCatching {
         val response = client.post {

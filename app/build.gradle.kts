@@ -262,11 +262,9 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.util)
-    implementation(libs.compose.ui.tooling)
     implementation(libs.compose.animation)
     implementation(libs.compose.reorderable)
 
-    implementation(libs.viewmodel)
     implementation(libs.viewmodel.compose)
     implementation(libs.lifecycle.process)
 
@@ -297,7 +295,6 @@ dependencies {
     implementation(libs.kuromoji.ipadic)
     implementation(libs.tinypinyin)
     ksp(libs.room.compiler)
-    implementation(libs.room.ktx)
 
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)
@@ -305,7 +302,6 @@ dependencies {
     implementation(project(":innertube"))
 
     implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.cio)
     implementation(libs.ktor.client.okhttp)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.client.encoding)

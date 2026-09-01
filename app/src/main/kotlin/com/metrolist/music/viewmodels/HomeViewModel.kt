@@ -264,18 +264,6 @@ class HomeViewModel @Inject constructor(
         prefs[WrappedSeenKey] ?: false
     }.stateIn(viewModelScope, SharingStarted.Lazily, false)
 
-    fun togglePin(item: YTItem) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val speedDialItem = SpeedDialItem.fromYTItem(item)
-            val isPinned = database.speedDialDao.isPinned(speedDialItem.id).first()
-            if (isPinned) {
-                database.speedDialDao.delete(speedDialItem.id)
-            } else {
-                database.speedDialDao.insert(speedDialItem)
-            }
-        }
-    }
-
     fun markWrappedAsSeen() {
         viewModelScope.launch(Dispatchers.IO) {
             context.safeDataStoreEdit {

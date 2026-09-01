@@ -20,8 +20,6 @@ import com.metrolist.innertube.models.Runs
 import com.metrolist.innertube.models.SearchSuggestions
 import com.metrolist.innertube.models.SectionListRenderer
 import com.metrolist.innertube.models.SongItem
-import com.metrolist.innertube.models.TasteArtist
-import com.metrolist.innertube.models.TasteProfile
 import com.metrolist.innertube.models.WatchEndpoint
 import com.metrolist.innertube.models.WatchEndpoint.WatchEndpointMusicSupportedConfigs.WatchEndpointMusicConfig.Companion.MUSIC_VIDEO_TYPE_ATV
 import com.metrolist.innertube.models.YTItem
@@ -197,7 +195,7 @@ object YouTube {
                                     cardRenderer.contents
                                         ?.mapNotNull { it.musicResponsiveListItemRenderer }
                                         ?.mapNotNull { renderer ->
-                                            SearchSummaryPage.fromMusicResponsiveListItemRenderer(renderer, cardArtists)
+                                            SearchPage.toYTItem(renderer, cardArtists)
                                         }
                                         .orEmpty(),
                                 ).distinctBy { it.id }
@@ -221,7 +219,7 @@ object YouTube {
                         val items =
                             section.musicShelfRenderer.contents
                                 ?.getItems()
-                                ?.mapNotNull { SearchSummaryPage.fromMusicResponsiveListItemRenderer(it) }
+                                ?.mapNotNull { SearchPage.toYTItem(it) }
                                 ?.distinctBy { it.id }
                                 ?: emptyList()
 
@@ -243,7 +241,7 @@ object YouTube {
                         val items =
                             section.itemSectionRenderer.contents
                                 ?.mapNotNull { it.musicResponsiveListItemRenderer }
-                                ?.mapNotNull { SearchSummaryPage.fromMusicResponsiveListItemRenderer(it) }
+                                ?.mapNotNull { SearchPage.toYTItem(it) }
                                 ?.distinctBy { it.id }
                                 ?: emptyList()
 
@@ -1928,63 +1926,6 @@ object YouTube {
             }
         }
 
-    suspend fun libraryRecentActivity(): Result<LibraryPage> =
-        runCatching {
-            val continuation = LibraryFilter.FILTER_RECENT_ACTIVITY.value
-
-            val response =
-                innerTube
-                    .browse(
-                        client = WEB_REMIX,
-                        continuation = continuation,
-                        setLogin = true,
-                    ).body<BrowseResponse>()
-
-            val gridItems =
-                response.continuationContents
-                    ?.sectionListContinuation
-                    ?.contents
-                    ?.firstOrNull()
-                    ?.gridRenderer
-                    ?.items
-
-            if (gridItems == null) {
-                return@runCatching LibraryPage(
-                    items = emptyList(),
-                    continuation = null,
-                )
-            }
-
-            val items =
-                gridItems
-                    .mapNotNull {
-                        it.musicTwoRowItemRenderer?.let { renderer ->
-                            LibraryPage.fromMusicTwoRowItemRenderer(renderer)
-                        }
-                    }.toMutableList()
-
-        /*
-         * We need to fetch the artist page when accessing the library because it allows to have
-         * a proper playEndpoint, which is needed to correctly report the playing indicator in
-         * the home page.
-         *
-         * Despite this, we need to use the old thumbnail because it's the proper format for a
-         * square picture, which is what we need.
-         */
-            items.forEachIndexed { index, item ->
-                if (item is ArtistItem) {
-                    artist(item.id).getOrNull()?.artist?.let { fetchedArtist ->
-                        items[index] = fetchedArtist.copy(thumbnail = item.thumbnail)
-                    }
-                }
-            }
-
-            LibraryPage(
-                items = items,
-                continuation = null,
-            )
-        }
-
     suspend fun getChartsPage(continuation: String? = null): Result<ChartsPage> =
         runCatching {
             val response =
@@ -2252,42 +2193,6 @@ object YouTube {
                             }
                         },
             )
-        }
-
-    /**
-     * Fetch podcast discovery/recommendations page.
-     * Returns sections like "Popular shows", "Popular episodes", category sections.
-     */
-    suspend fun podcastDiscover(): Result<HomePage> =
-        runCatching {
-            val response =
-                innerTube
-                    .browse(
-                        client = WEB_REMIX,
-                        browseId = "FEmusic_non_music_audio",
-                        setLogin = true,
-                    ).body<BrowseResponse>()
-
-            val sectionListRenderer =
-                response.contents
-                    ?.singleColumnBrowseResultsRenderer
-                    ?.tabs
-                    ?.firstOrNull()
-                    ?.tabRenderer
-                    ?.content
-                    ?.sectionListRenderer
-            val carousels = sectionListRenderer?.contents?.mapNotNull { it.musicCarouselShelfRenderer } ?: emptyList()
-            val sections =
-                carousels.mapNotNull {
-                    HomePage.Section.fromMusicCarouselShelfRenderer(it)
-                }
-            val chips =
-                sectionListRenderer?.header?.chipCloudRenderer?.chips?.mapNotNull {
-                    HomePage.Chip.fromChipCloudChipRenderer(it)
-                }
-            val continuation = sectionListRenderer?.continuations?.getContinuation()
-
-            HomePage(chips, sections, continuation)
         }
 
     suspend fun likeVideo(
@@ -2907,64 +2812,6 @@ object YouTube {
                 } ?: emptyList()
         }
 
-    /**
-     * Fetch "Continue Listening" / Resume Playback.
-     * Returns partially played episodes for resumption.
-     */
-    suspend fun continueListening(): Result<List<SongItem>> =
-        runCatching {
-            val response =
-                innerTube
-                    .browse(
-                        client = WEB_REMIX,
-                        browseId = "FEmusic_listening_review",
-                        setLogin = true,
-                    ).body<BrowseResponse>()
-
-            response.contents
-                ?.singleColumnBrowseResultsRenderer
-                ?.tabs
-                ?.firstOrNull()
-                ?.tabRenderer
-                ?.content
-                ?.sectionListRenderer
-                ?.contents
-                ?.flatMap { section ->
-                    section.musicShelfRenderer?.contents?.mapNotNull { content ->
-                        content.musicResponsiveListItemRenderer?.let { renderer ->
-                            val videoId = renderer.videoId ?: return@mapNotNull null
-                            val title =
-                                renderer.flexColumns
-                                    .firstOrNull()
-                                    ?.musicResponsiveListItemFlexColumnRenderer
-                                    ?.text
-                                    ?.runs
-                                    ?.firstOrNull()
-                                    ?.text
-                                    ?: return@mapNotNull null
-                            val artistRun =
-                                renderer.flexColumns
-                                    .getOrNull(1)
-                                    ?.musicResponsiveListItemFlexColumnRenderer
-                                    ?.text
-                                    ?.runs
-                                    ?.firstOrNull()
-                            SongItem(
-                                id = videoId,
-                                title = title,
-                                artists =
-                                    artistRun?.let { listOf(Artist(name = it.text, id = it.navigationEndpoint?.browseEndpoint?.browseId)) }
-                                        ?: emptyList(),
-                                album = null,
-                                duration = null,
-                                thumbnail = renderer.thumbnail?.getThumbnailUrl() ?: "",
-                                isEpisode = true,
-                            )
-                        }
-                    } ?: emptyList()
-                } ?: emptyList()
-        }
-
     suspend fun getChannelId(browseId: String): String {
         artist(browseId).onSuccess {
             return it.artist.channelId ?: ""
@@ -3406,39 +3253,6 @@ object YouTube {
             return innerTube.getMediaInfo(videoId)
         }
 
-    suspend fun getTasteProfile(): Result<TasteProfile> =
-        runCatching {
-            // Browse the taste builder page
-            // Note: Full parsing requires additional model support for musicTastebuilderShelfRenderer
-            // This returns an empty profile for now - can be enhanced when models are added
-            innerTube
-                .browse(
-                    client = WEB_REMIX,
-                    browseId = "FEmusic_tastebuilder",
-                    setLogin = true,
-                ).body<BrowseResponse>()
-
-            TasteProfile(artists = emptyMap())
-        }
-
-    suspend fun setTasteProfile(
-        selectedArtists: List<String>,
-        allArtists: Map<String, TasteArtist>,
-    ): Result<Unit> =
-        runCatching {
-            val selectedValues = selectedArtists.mapNotNull { allArtists[it]?.selectionValue }
-            val impressionValues = allArtists.values.map { it.impressionValue }
-
-            if (selectedValues.isNotEmpty()) {
-                feedback(selectedValues + impressionValues).getOrThrow()
-            }
-        }
-
-    suspend fun removeHistoryItems(feedbackTokens: List<String>): Result<Boolean> =
-        runCatching {
-            feedback(feedbackTokens).getOrThrow()
-        }
-
     @JvmInline
     value class SearchFilter(
         val value: String,
@@ -3453,18 +3267,6 @@ object YouTube {
             val FILTER_PODCAST = SearchFilter("EgWKAQJQAWoKEAkQChAFEAMQBA%3D%3D")
             val FILTER_EPISODE = SearchFilter("EgWKAQJYAWoKEAkQChAFEAMQBA%3D%3D")
             val FILTER_PROFILE = SearchFilter("EgWKAQJYAWoSEAUQCRADEAQQEBAVEAoQDhAR")
-        }
-    }
-
-    @JvmInline
-    value class LibraryFilter(
-        val value: String,
-    ) {
-        companion object {
-            val FILTER_RECENT_ACTIVITY = LibraryFilter("4qmFsgIrEhdGRW11c2ljX2xpYnJhcnlfbGFuZGluZxoQZ2dNR0tnUUlCaEFCb0FZQg%3D%3D")
-            val FILTER_RECENTLY_PLAYED = LibraryFilter("4qmFsgIrEhdGRW11c2ljX2xpYnJhcnlfbGFuZGluZxoQZ2dNR0tnUUlCUkFCb0FZQg%3D%3D")
-            val FILTER_PLAYLISTS_ALPHABETICAL = LibraryFilter("4qmFsgIrEhdGRW11c2ljX2xpa2VkX3BsYXlsaXN0cxoQZ2dNR0tnUUlBUkFBb0FZQg%3D%3D")
-            val FILTER_PLAYLISTS_RECENTLY_SAVED = LibraryFilter("4qmFsgIrEhdGRW11c2ljX2xpa2VkX3BsYXlsaXN0cxoQZ2dNR0tnUUlBQkFCb0FZQg%3D%3D")
         }
     }
 

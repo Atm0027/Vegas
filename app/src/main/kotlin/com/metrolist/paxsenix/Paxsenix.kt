@@ -8,7 +8,7 @@ import com.metrolist.paxsenix.models.LyricsResponse
 import com.metrolist.paxsenix.models.SearchResult
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.engine.cio.CIO
+import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.ClientRequestException
@@ -47,7 +47,7 @@ object Paxsenix {
             
             Timber.d("Initializing Paxsenix with version: $appVersion")
             
-            client = HttpClient(CIO) {
+            client = HttpClient(OkHttp) {
                 install(HttpTimeout) {
                     requestTimeoutMillis = 15000
                     connectTimeoutMillis = 10000

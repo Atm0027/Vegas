@@ -1830,22 +1830,9 @@ class ListenTogetherManager
         fun unblockUser(username: String) = client.unblockUser(username)
 
         /**
-         * Get all currently blocked usernames
-         */
-        fun getBlockedUsernames(): Set<String> = blockedUsernames.value
-
-        /**
          * Transfer host role to another user
          */
         fun transferHost(newHostId: String) = client.transferHost(newHostId)
-
-        /**
-         * Send track change (host only) - called when host changes track
-         */
-        fun sendTrackChange(metadata: MediaMetadata) {
-            if (!isHost || isSyncing) return
-            sendTrackChangeInternal(metadata)
-        }
 
         /**
          * Internal track change - bypasses isSyncing check for initial state sync

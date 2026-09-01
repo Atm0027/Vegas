@@ -37,9 +37,6 @@ object LyricsTranslationHelper {
     private val _hasActiveTranslations = MutableStateFlow(false)
     val hasActiveTranslations: StateFlow<Boolean> = _hasActiveTranslations.asStateFlow()
 
-    private val _translationSaved = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
-    val translationSaved: SharedFlow<Unit> = _translationSaved.asSharedFlow()
-
     private val _manualTrigger = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
     val manualTrigger: SharedFlow<Unit> = _manualTrigger.asSharedFlow()
 
@@ -248,7 +245,6 @@ object LyricsTranslationHelper {
                                             ),
                                         )
                                     }
-                                    _translationSaved.tryEmit(Unit)
                                 }
                             } catch (e: Exception) {
                                 Timber.e(e, "Failed to persist cached translations to database")
@@ -387,8 +383,6 @@ object LyricsTranslationHelper {
                                                 ),
                                             )
                                         }
-                                        // Signal that translations have been saved
-                                        _translationSaved.tryEmit(Unit)
                                     }
                                 } catch (e: Exception) {
                                     Timber.e(e, "Failed to save translated lyrics to database")

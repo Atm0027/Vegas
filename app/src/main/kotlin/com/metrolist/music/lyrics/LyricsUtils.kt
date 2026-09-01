@@ -1409,11 +1409,4 @@ object LyricsUtils {
                 lyrics.contains(PAXSENIX_AGENT_LINE_REGEX) ||
                 lyrics.contains(PAXSENIX_BG_LINE_REGEX)
     }
-
-    fun getLyricsQuality(lyrics: String): Int {
-        if (lyrics.isBlank() || lyrics == "Lyrics not found") return 0
-        if (isWordSynced(lyrics)) return 3
-        if (isLineSynced(lyrics)) return 2
-        return 1
-    }
 }
