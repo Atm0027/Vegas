@@ -51,7 +51,7 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         ndk {
-            abiFilters += listOf("arm64-v8a", "armeabi-v7a")
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
         }
 
         // LastFM API keys from GitHub Secrets
