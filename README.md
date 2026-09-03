@@ -77,6 +77,7 @@
 - Audio normalization
 - Tempo & pitch control
 - Equalizer
+- Crossfade
 
 </td>
   </tr>
@@ -107,6 +108,8 @@
 
 #### Social
 - Listen together with friends in real-time
+- Last.fm integration for scrobbling
+- Safe Discord Rich Presence
 
 </td>
     <td width="50%" valign="top">
