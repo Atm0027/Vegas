@@ -2905,7 +2905,6 @@ class MusicService :
         }
         return error.errorCode == PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED ||
             error.errorCode == PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_TIMEOUT ||
-            error.errorCode == PlaybackException.ERROR_CODE_IO_INVALID_HTTP_CONTENT_TYPE ||
             error.cause is java.net.ConnectException ||
             error.cause is java.net.UnknownHostException ||
             (error.cause as? PlaybackException)?.errorCode == PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED
@@ -2937,6 +2936,15 @@ class MusicService :
 
     private fun isRemotePlaybackError(error: PlaybackException): Boolean =
         error.errorCode == PlaybackException.ERROR_CODE_REMOTE_ERROR
+
+    private fun isStreamClientError(error: PlaybackException): Boolean =
+        error.errorCode == PlaybackException.ERROR_CODE_IO_UNSPECIFIED ||
+            error.errorCode == PlaybackException.ERROR_CODE_IO_INVALID_HTTP_CONTENT_TYPE ||
+            error.errorCode == PlaybackException.ERROR_CODE_IO_BAD_HTTP_STATUS ||
+            error.errorCode == PlaybackException.ERROR_CODE_PARSING_CONTAINER_MALFORMED ||
+            error.errorCode == PlaybackException.ERROR_CODE_PARSING_CONTAINER_UNSUPPORTED ||
+            error.errorCode == PlaybackException.ERROR_CODE_PARSING_MANIFEST_MALFORMED ||
+            error.errorCode == PlaybackException.ERROR_CODE_PARSING_MANIFEST_UNSUPPORTED
 
     override fun onPlayerError(error: PlaybackException) {
         super.onPlayerError(error)
@@ -3012,15 +3020,12 @@ class MusicService :
                 handleGenericIOError(mediaId)
                 return
             }
-        }
 
-        // Transient source failures can surface without a more specific I/O code.
-        if (error.errorCode == PlaybackException.ERROR_CODE_IO_UNSPECIFIED ||
-            error.errorCode == PlaybackException.ERROR_CODE_IO_BAD_HTTP_STATUS
-        ) {
-            Timber.tag(TAG).d("IO error detected (${error.errorCode}), attempting recovery")
-            handleGenericIOError(mediaId)
-            return
+            isStreamClientError(error) -> {
+                Timber.tag(TAG).d("Stream client error detected (${error.errorCode}), trying the next client")
+                handleStreamClientError(mediaId, failedStreamClient)
+                return
+            }
         }
 
         if (dataStore.get(AutoSkipNextOnErrorKey, false)) {
@@ -3241,18 +3246,16 @@ class MusicService :
         incrementRetryCount(mediaId)
 
         songUrlCache.invalidate(mediaId)
-        if (failedStreamClient == "WEB_REMIX") {
-            InnerTubeXPlayer.markWebRemixFailed(mediaId)
-        }
+        failedStreamClient?.let { InnerTubeXPlayer.markStreamClientFailed(mediaId, it) }
         Timber.tag(TAG).d("Cleared cached URL after $retryReason (client=$failedStreamClient)")
 
         if (refreshCipherConfig) {
             // A rejection can mean the cipher produced a wrong-but-non-throwing signature. If a
-            // rate-limited refresh corrects the table, allow WEB_REMIX again on the next resolution.
+            // rate-limited refresh corrects the table, allow failed clients again on the next resolution.
             scope.launch {
                 if (InnerTubeXPlayer.refreshAfterStreamRejection()) {
-                    Timber.tag(TAG).d("Player config changed after stream rejection — restoring WEB_REMIX")
-                    InnerTubeXPlayer.clearWebRemixFailures()
+                    Timber.tag(TAG).d("Player config changed after stream rejection: restoring stream clients")
+                    InnerTubeXPlayer.clearStreamClientFailures()
                 }
             }
         }
@@ -3315,6 +3318,23 @@ class MusicService :
 
                 Timber.tag(TAG).d("Retrying playback for $mediaId after IO_FILE_NOT_FOUND")
             }
+    }
+
+    private fun handleStreamClientError(
+        mediaId: String?,
+        failedStreamClient: String?,
+    ) {
+        if (mediaId == null) {
+            handleFinalFailure()
+            return
+        }
+
+        refreshStreamAndRetry(
+            mediaId = mediaId,
+            failedStreamClient = failedStreamClient,
+            refreshCipherConfig = false,
+            retryReason = "stream client error",
+        )
     }
 
     /**
