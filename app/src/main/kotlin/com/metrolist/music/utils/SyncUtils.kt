@@ -23,7 +23,6 @@ import com.metrolist.music.constants.SYNC_COOLDOWN
 import com.metrolist.music.db.MusicDatabase
 import com.metrolist.music.db.entities.ArtistEntity
 import com.metrolist.music.db.entities.PlaylistEntity
-import com.metrolist.music.db.entities.PlaylistSongMap
 import com.metrolist.music.db.entities.PodcastEntity
 import com.metrolist.music.db.entities.SetVideoIdEntity
 import com.metrolist.music.db.entities.SongEntity
@@ -73,6 +72,24 @@ sealed class SyncOperation {
     data class SavePodcast(val podcastId: String, val save: Boolean) : SyncOperation()
     data class SaveEpisode(val episodeId: String, val save: Boolean, val setVideoId: String?) : SyncOperation()
     data object ClearPodcastData : SyncOperation()
+}
+
+internal fun localSongIndexesAbsentFromRemote(
+    localSongIds: List<String>,
+    remoteSongIds: List<String>,
+): List<Int> {
+    // Consume occurrences individually because playlists can deliberately contain duplicates.
+    val remainingRemote = remoteSongIds.groupingBy { it }.eachCount().toMutableMap()
+    return localSongIds.indices.filter { index ->
+        val songId = localSongIds[index]
+        val remaining = remainingRemote[songId] ?: 0
+        if (remaining == 0) {
+            true
+        } else {
+            remainingRemote[songId] = remaining - 1
+            false
+        }
+    }
 }
 
 @Singleton
@@ -395,6 +412,10 @@ class SyncUtils @Inject constructor(
     suspend fun syncUploadedSongsSuspend() = syncExecutionMutex.withLock { executeSyncUploadedSongs() }
     suspend fun syncPodcastSubscriptionsSuspend() = syncExecutionMutex.withLock { executeSyncPodcastSubscriptions() }
     suspend fun syncEpisodesForLaterSuspend() = syncExecutionMutex.withLock { executeSyncEpisodesForLater() }
+    suspend fun syncPlaylistSuspend(browseId: String, playlistId: String) =
+        syncExecutionMutex.withLock {
+            runQueuedPlaylistEdit { executeSyncPlaylist(browseId, playlistId) }
+        }
 
     suspend fun clearAllLibraryData() = syncExecutionMutex.withLock {
         executeClearAllLibraryData()
@@ -1412,7 +1433,8 @@ class SyncUtils @Inject constructor(
                     }
 
                     val remoteIds = songs.map { it.id }
-                    val localIds = database.playlistSongIds(playlistId)
+                    val localSongs = database.playlistSongMaps(playlistId, from = 0)
+                    val localIds = localSongs.map { it.songId }
                     val songIdsWithoutArtists = database.playlistSongIdsWithoutArtists(playlistId).toSet()
 
                     if (remoteIds == localIds) {
@@ -1430,40 +1452,30 @@ class SyncUtils @Inject constructor(
 
                     Timber.d("syncPlaylist: Updating local playlist (remote: ${remoteIds.size}, local: ${localIds.size})")
 
-                    val remoteIdSet = remoteIds.toSet()
                     val localIdSet = localIds.toSet()
-                    val downloadedSongIds = database.downloadedPlaylistSongIds(playlistId).toSet()
                     val metadataInserts = songs.filter {
                         it.id !in localIdSet || it.id in songIdsWithoutArtists
                     }
+                    val preservedSongs = localSongIndexesAbsentFromRemote(localIds, remoteIds)
+                        .map(localSongs::get)
 
                     database.withTransaction {
                         database.clearPlaylist(playlistId)
                         metadataInserts.forEach(database::insert)
-
-                        downloadedSongIds.forEach { songId ->
-                            if (songId !in remoteIdSet) {
-                                val existingSong = database.getSongByIdBlocking(songId)
-                                if (existingSong != null) {
-                                    val maxPosition = database.playlistSongsBlocking(playlistId)
-                                        .maxOfOrNull { it.map.position } ?: -1
-                                    database.insert(
-                                        PlaylistSongMap(
-                                            songId = songId,
-                                            playlistId = playlistId,
-                                            position = maxPosition + 1
-                                        )
-                                    )
-                                    Timber.d("syncPlaylist: Preserved downloaded song $songId in playlist")
-                                }
-                            }
-                        }
 
                         val playlistEntity = database.playlistBlocking(playlistId)
                         if (playlistEntity != null) {
                             database.addSongsToPlaylist(
                                 playlistEntity,
                                 songs.map { it.id to it.setVideoId }
+                            )
+                        }
+                        preservedSongs.forEachIndexed { index, song ->
+                            database.insert(
+                                song.copy(
+                                    id = 0,
+                                    position = songs.size + index,
+                                )
                             )
                         }
                     }
@@ -1538,22 +1550,54 @@ class SyncUtils @Inject constructor(
         }
     }
 
-    suspend fun addToPlaylist(
+    fun createPlaylist(
+        playlist: PlaylistEntity,
+        syncWithYouTube: Boolean,
+        onCreated: ((String, Boolean) -> Unit)? = null,
+    ) {
+        syncScope.launch {
+            val browseId = if (syncWithYouTube) {
+                runCatching { YouTube.createPlaylist(playlist.name) }
+                    .onFailure { Timber.e(it, "Failed to create playlist ${playlist.name} on YouTube") }
+                    .getOrNull()
+                    ?.takeIf { it.isNotBlank() }
+            } else {
+                null
+            }
+            val createdPlaylist = playlist.copy(
+                browseId = browseId,
+                isAutoSync = syncWithYouTube && browseId != null,
+            )
+            database.insert(createdPlaylist)
+            withContext(Dispatchers.Main) {
+                onCreated?.invoke(createdPlaylist.id, browseId != null)
+            }
+        }
+    }
+
+    fun scheduleAddToPlaylist(
         browseId: String,
         playlistId: String,
-        songId: String,
-    ): Boolean {
+        songIds: List<String>,
+    ) {
+        if (songIds.isEmpty()) return
         markPlaylistModifying(playlistId)
-        return try {
-            runQueuedPlaylistEdit {
-                YouTube.addToPlaylist(browseId, songId).getOrThrow()
+        syncScope.launch {
+            try {
+                songIds.forEach { songId ->
+                    try {
+                        runQueuedPlaylistEdit {
+                            YouTube.addToPlaylist(browseId, songId).getOrThrow()
+                        }
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        Timber.e(e, "Failed to add song $songId to playlist $browseId")
+                    }
+                }
+            } finally {
+                unmarkPlaylistModifying(playlistId)
             }
-            true
-        } catch (e: Exception) {
-            Timber.e(e, "Failed to add song $songId to playlist $browseId")
-            false
-        } finally {
-            unmarkPlaylistModifying(playlistId)
         }
     }
 
