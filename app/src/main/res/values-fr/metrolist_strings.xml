@@ -848,8 +848,8 @@
     <string name="enable_dynamic_icon">Couleurs dynamiques des icônes</string>
     <string name="enable_dynamic_icon_desc">Utilisez les couleurs dynamiques du thème pour l\'icône de l\'application. Lorsque cette option est désactivée, l\'icône affiche des couleurs unies.</string>
     <string name="kmp_upgrade_title">Metrolist KMP %s est disponible</string>
-    <string name="kmp_upgrade_warning">Metrolist KMP est en phase d\'accès anticipé. Certaines fonctionnalités peuvent présenter des dysfonctionnements, être incomplètes ou faire l\'objet de modifications sans préavis.</string>
-    <string name="kmp_upgrade_action">Passer à KMP</string>
+    <string name="kmp_upgrade_warning">Metrolist KMP est encore en cours de développement. Vous pourriez rencontrer des bugs ou des fonctionnalités incomplètes.</string>
+    <string name="kmp_upgrade_action">Essayez KMP</string>
     <string name="kmp_upgrade_later">Pas maintenant</string>
     <string name="android_auto_search_options">Options de recherche</string>
     <string name="android_auto_search_local_songs_limit">Limite de recherche de titres</string>
@@ -873,4 +873,6 @@
     <string name="ai_provider_inception_help">Rendez-vous sur https://platform.inceptionlabs.ai pour obtenir des clés API</string>
     <string name="enable_zemer">Activer Zemer</string>
     <string name="enable_zemer_desc">Paroles de musique juive</string>
+    <string name="update_available_message">Metrolist %s est prêt à être téléchargé.</string>
+    <string name="update_action">Mettre à jour</string>
 </resources>
