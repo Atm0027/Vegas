@@ -813,8 +813,6 @@
     <string name="discord_error_no_browser">找不到可用的瀏覽器以進行 Discord 授權。</string>
     <string name="discord_error_token_refresh_failed">Discord 授權已失效，請重新連結。</string>
     <string name="discord_error_invalid_scope">Discord 拒絕了連接要求。請重新連接並授予必要權限。</string>
-    <string name="discord_integration">Discord 整合</string>
-    <string name="enable_discord_rpc">啟用豐富狀態</string>
     <string name="enable_dynamic_icon">動態圖示顏色</string>
     <string name="enable_dynamic_icon_desc">讓應用程式圖示套用動態主題色彩。關閉時，圖示將使用純色呈現。</string>
     <string name="restore_database_incompatible">無法恢復備份：資料庫版本不相容。您目前的資料已保留。</string>

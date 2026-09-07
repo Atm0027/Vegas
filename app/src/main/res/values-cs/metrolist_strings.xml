@@ -820,8 +820,6 @@
     <string name="discord_error_token_refresh_failed">Relace Discordu vypršela. Připojte se prosím znovu.</string>
     <string name="discord_error_invalid_scope">Discord odmítnul připojení. Připojte se prosím znovu a udělte požadované oprávnění.</string>
     <string name="discord_error_banner_title">Chyba Discordu</string>
-    <string name="discord_integration">Integrace Discordu</string>
-    <string name="enable_discord_rpc">Povolit stav na Discordu</string>
     <string name="discord_state">Stav</string>
     <string name="discord_details">Podrobnosti</string>
     <string name="discord_enable_button_1">Zobrazit tlačítko 1</string>

@@ -820,8 +820,6 @@
     <string name="discord_error_token_refresh_failed">Сессия Discord истекла. Пожалуйста, переподключитесь.</string>
     <string name="discord_error_invalid_scope">Discord отклонил подключение. Пожалуйста, переподключитесь и предоставьте необходимые разрешения.</string>
     <string name="discord_error_banner_title">Ошибка Discord</string>
-    <string name="discord_integration">Интеграция с Discord</string>
-    <string name="enable_discord_rpc">Включить Rich Presence</string>
     <string name="discord_state">Состояние</string>
     <string name="discord_details">Подробности</string>
     <string name="discord_enable_button_1">Показывать кнопку 1</string>
