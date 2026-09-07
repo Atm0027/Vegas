@@ -637,7 +637,7 @@
     <string name="lyrics_animation_karaoke">Karaoke</string>
     <string name="lyrics_animation_apple">Phong cách Apple Music</string>
     <string name="enable_paxsenix">Bật nhà cung cấp lời bài hát Paxsenix</string>
-    <string name="enable_paxsenix_desc">Lời bài hát chất lượng cao được đồng bộ từ API Paxsenix</string>
+    <string name="enable_paxsenix_desc">Lời bài hát chất lượng cao được đồng bộ từ API của Paxsenix</string>
     <string name="experimental_lyrics">Phong cách lời bài hát mới (Thử nghiệm)</string>
     <string name="experimental_lyrics_desc">Kích hoạt phong cách lời bài hát mới với hoạt ảnh và hiệu suất được nâng cao</string>
     <string name="experimental_lyrics_beta_title">Tính năng thử nghiệm</string>
