@@ -1,43 +1,34 @@
 ---v13.7.0
-# KMP STATUS UPDATE
-Metrolist-KMP is still in Alpha, but tester reception has been incredibly positive. If you'd like to try it out, please join our Discord server and donate at least 1$ to support the project!
+# KMP status update
+Metrolist-KMP remains in alpha, but tester feedback has been very positive. To try it, join our Discord and donate at least $1 to support development.
 
-# Major changes
-- Replace innertube with InnerTubeX, added automatic client rollover on failure (@nyxiereal)
-- Fixed out-of-memory crashes and excessive background work in large libraries, History, Cache, Android Auto, and audio processing (@makro17 @nyxiereal)
-- Repaired upgrades from older versions, Android Auto browsing, artist aliases, and missing artist metadata (@nyxiereal)
-- Restored YouTube channel switching and improved login webview redirects and account loading (@nyxiereal)
-- Improved the reliability of song uploads, downloads, caching, metadata editing, and playlist synchronization (@nyxiereal)
+## Highlights
+- Migrated networking to InnerTubeX with automatic client fallback (@nyxiereal)
+- Reduced memory use and background work in large libraries, History, Cache, Android Auto, and audio processing (@makro17 @nyxiereal)
+- Repaired older-version upgrades, Android Auto browsing, artist metadata, and YouTube channel switching (@nyxiereal)
+- Improved login, account loading, uploads, downloads, caching, metadata editing, and playlist sync (@nyxiereal)
 - Restored the classic app icon (@nyxiereal)
 
-## Notable new features
-- Added a setting to insert songs at the beginning or end of playlists (@nyxiereal)
-- Added the Zemer lyrics provider for Jewish music (@alltechdev)
-- Added copyable playback error reports additional details (@nyxiereal)
-- Added a unified update prompt for standalone and Metrolist KMP releases (@nyxiereal)
-- Added Inception as an AI provider, refreshed model choices, and improved structured lyric translation output (@nyxiereal)
-- Added back support for x86_64 and x64 releases, making them fully universal (@nyxiereal)
+## New features
+- Choose whether songs are added to the start or end of playlists (@nyxiereal)
+- Added Zemer lyrics for Jewish music (@alltechdev)
+- Added detailed, copyable playback error reports (@nyxiereal)
+- Added a unified update prompt for standalone and KMP releases (@nyxiereal)
+- Added Inception AI models and improved lyric translation output (@nyxiereal)
+- Restored universal x86 and x86_64 support (@nyxiereal)
 
-## Other improvements
-- Fixed missing and incorrectly cropped playlist, artist, and video artwork (@RizkLee @nyxiereal)
-- Fixed background vocals cutting off word-by-word lyrics and made gap indicators respect lyric timing offsets (@GameOn223 @Cocoa2219)
-- Fixed Cyrillic lyrics switching alphabets within a song and added support for accented Macedonian letters (@GameOn223)
-- Preserved edited song titles and artists during automatic metadata refreshes, while explicit refetches still restore server metadata (@nyxiereal)
-- Fixed cached-song detection, bulk cache removal, and downloaded songs incorrectly appearing in the Cache Playlist (@nyxiereal)
-- Fixed repeat and shuffle state during crossfade, Listen Together heartbeat stutter, and paused queues restarting after reaching the end (@nyxiereal)
-- Fixed volume normalization carrying gain between songs and applying too late for cached or crossfaded playback (@nyxiereal)
-- Improved playback recovery, player configuration fallback, offline errors, and cleanup of crossfade and equalizer resources (@nyxiereal)
-- Fixed media controls reappearing after dismissal and startup crashes (@nyxiereal)
-- Fixed incomplete liked-song responses clearing local likes and improved playlist and uploaded song handling (@nyxiereal)
-- Updated dependencies, improved CI efficiency, and improved documentation (@nyxiereal)
-- Fixed miscellaneous small annoyances (thanks Reg!) (@nyxiereal)
+## Fixes and improvements
+- Fixed missing or cropped artwork and improved timed and Cyrillic lyrics (@RizkLee @GameOn223 @Cocoa2219 @nyxiereal)
+- Preserved manual metadata edits during refreshes and corrected Cache Playlist contents (@nyxiereal)
+- Fixed repeat and shuffle with crossfade, Listen Together stutter, and paused queues restarting at the end (@nyxiereal)
+- Fixed per-song volume normalization and improved playback recovery (@nyxiereal)
+- Fixed dismissed media controls reappearing and several startup crashes (@nyxiereal)
+- Protected local likes from incomplete sync responses and improved uploaded-song handling (@nyxiereal)
+- Updated dependencies and CI (@nyxiereal)
 
-## New Contributors
-* @RizkLee made their first contribution in https://github.com/MetrolistGroup/Metrolist/pull/4277
-* @GameOn223 made their first contribution in https://github.com/MetrolistGroup/Metrolist/pull/4269
-* @makro17 made their first contribution in https://github.com/MetrolistGroup/Metrolist/pull/4270
+New contributors: @RizkLee (#4277), @GameOn223 (#4269), and @makro17 (#4270)
 
-**Full Changelog**: https://github.com/MetrolistGroup/Metrolist/compare/v13.6.3...v13.7.0
+**Full changelog**: https://github.com/MetrolistGroup/Metrolist/compare/v13.6.3...v13.7.0
 
 ---v13.6.3
 
