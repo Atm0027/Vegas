@@ -150,7 +150,7 @@
     <string name="updater">Aggiornamenti</string>
     <string name="check_for_updates">Controlla automaticamente se ci sono aggiornamenti</string>
     <string name="update_notifications">Attiva le notifiche sugli aggiornamenti</string>
-    <string name="update_available_title">È disponibile un\'aggiornamento</string>
+    <string name="update_available_title">Nuovo aggiornamento disponibile</string>
     <string name="update_channel_name">Aggiornamenti dell\'app</string>
     <string name="update_channel_desc">Notifiche sulle nuove versioni app</string>
     <string name="enable_scrobbling">Attiva scrobbling</string>
@@ -867,8 +867,8 @@
     <string name="error_explicit_login_recommended">La riproduzione esplicita funziona meglio se si è fatto l\'accesso.</string>
     <string name="error_offline_playback">Sei disconnesso. Connettiti a internet o riproduci una traccia scaricata per riprodurla offline.</string>
     <string name="error_no_internet_connection">Nessuna connessione a internet</string>
-    <string name="enable_zemer">Abilita Zemer</string>
-    <string name="enable_zemer_desc">Testo per musica in Ebraico</string>
+    <string name="enable_zemer">Attiva Zemer</string>
+    <string name="enable_zemer_desc">Testi per musica in ebraico</string>
     <string name="playlist_created_locally">Sincronizzazione con YouTube fallita. La playlist è stata creata localmente.</string>
     <string name="update_available_message">Metrolist %s è pronto per essere scaricato.</string>
     <string name="update_action">Aggiorna</string>
