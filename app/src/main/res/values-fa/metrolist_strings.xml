@@ -128,4 +128,13 @@
     <string name="seek_seconds_addup">افزایش تدریجی زمان پرش</string>
     <string name="about_artist">درباره</string>
     <string name="hide_player_thumbnail">پنهان کردن تصویر پخش کننده</string>
+    <string name="and">و</string>
+    <string name="enable">فعال‌کردن</string>
+    <string name="restart">راه‌اندازی مجدد</string>
+    <string name="restart_required">راه‌اندازی مجدد لازم است!</string>
+    <string name="lyrics_animation_none">هیچ‌کدام</string>
+    <string name="lyrics_animation_glow">درخشش</string>
+    <string name="lyrics_animation_apple">به سبک اپل موزیک</string>
+    <string name="lyrics_text_size">اندازه متن آهنگ</string>
+    <string name="lyrics_line_spacing">فاصله بین خطوط متن آهنگ</string>
 </resources>
