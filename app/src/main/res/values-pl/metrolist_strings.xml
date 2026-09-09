@@ -805,4 +805,5 @@
     <string name="playlist_position_end_desc">Nowo dodane piosenki pojawiają się przed istniejącymi już piosenkami</string>
     <string name="auto_radio_queue">Automatyczna kolejka radia</string>
     <string name="playlist_created_locally">Synchronizacja z platformą YouTube nie udana. Playlista utworzona lokalnie.</string>
+    <string name="auto_radio_queue_desc">Automatycznie utwórz kolejkę radia gdy gra muzyka z pola wyszukiwanie lub domu</string>
 </resources>
