@@ -509,4 +509,9 @@
     <string name="listen_together_suggestion_sent">Sugestão enviada para o dono!</string>
     <string name="listen_together_join_request_notification">%1$s quer entrar na sala</string>
     <string name="listen_together_notification_channel_name">Ouvir Juntos</string>
+    <string name="enable_zemer_desc">Letras para música Judaica</string>
+    <string name="playlist_position_beginning">Começo da lista de reprodução</string>
+    <string name="playlist_position_beginning_desc">Faixas recentemente adicionadas aparecem antes de faixas existentes</string>
+    <string name="playlist_position_end">Fim da lista de reprodução</string>
+    <string name="playlist_position_end_desc">Faixas recentemente adicionadas aparecem depois de faixas existentes</string>
 </resources>
