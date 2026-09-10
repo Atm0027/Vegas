@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="local_history">Lịch sử nghe cục bộ</string>
-    <string name="remote_history">Lịch sử nghe từ xa</string>
+    <string name="local_history">Thiết bị này</string>
+    <string name="remote_history">YouTube Music</string>
     <string name="weeks">Tuần</string>
     <string name="months">Tháng</string>
     <string name="years">Năm</string>
@@ -39,7 +39,7 @@
     <string name="last_song_listened">Dựa trên bài hát cuối cùng bạn đã nghe</string>
     <string name="app_language">Ngôn ngữ ứng dụng</string>
     <string name="enable_similar_content">Bật hiển thị nội dung tương tự</string>
-    <string name="similar_content_desc">Tự động thêm các bài hát tương tự khi phát hết danh sách hàng chờ</string>
+    <string name="similar_content_desc">Tự động thêm các bài hát tương tự khi phát hết hàng chờ</string>
     <string name="percentage_format">%d%%</string>
     <string name="clear_song_cache_dialog">Bạn có muốn xóa tất cả bộ nhớ đệm (cache) liên quan đến nhạc?</string>
     <string name="clear_downloads_dialog">Bạn có muốn xóa tất cả bài hát đã tải xuống?</string>
@@ -322,8 +322,8 @@
     <string name="lyrics_line_spacing">Giãn dòng lời bài hát</string>
     <string name="wavy">Lượn sóng</string>
     <string name="lyrics_offset">Độ trễ lời bài hát</string>
-    <string name="play_next_desc">Thêm vào đầu danh sách phát trong hàng đợi</string>
-    <string name="add_to_queue_desc">Thêm vào cuối hàng chờ</string>
+    <string name="play_next_desc">Thêm vào đầu danh sách phát trong danh sách hàng chờ</string>
+    <string name="add_to_queue_desc">Thêm vào cuối danh sách hàng chờ</string>
     <string name="add_to_library_desc">Lưu vào thư viện</string>
     <string name="download_desc">Tải xuống để phát ngoại tuyến</string>
     <string name="add_to_playlist_desc">Thêm vào danh sách phát</string>
@@ -397,7 +397,7 @@
     <string name="scrobble_delay_percent">Độ trễ scrobble (phần trăm)</string>
     <string name="scrobble_delay_minutes">Phút chờ Scrobble (phút)</string>
     <string name="hide_youtube_shorts">Ẩn YouTube Shorts</string>
-    <string name="start_radio_desc">Bắt đầu phát radio dựa trên mục này</string>
+    <string name="start_radio_desc">Bắt đầu phát danh sách kết hợp dựa trên mục này</string>
     <string name="mini_player">Trình phát mini</string>
     <string name="cache_size_warning_title">Khoan đã!</string>
     <string name="cache_size_warning_message">Giới hạn bạn đã chọn (%1$s) nhỏ hơn dung lượng ứng dụng hiện đang sử dụng. Tiếp tục có thể khiến một số %2$s trong bộ nhớ đệm bị xóa. Bạn vẫn muốn tiếp tục chứ?</string>
@@ -787,7 +787,7 @@
     <string name="widget_playlists">Danh sách phát</string>
     <string name="widget_playlists_description">Lối tắt danh sách phát với trình điều khiển mini</string>
     <string name="choose_something_below">Chọn một mục bên dưới</string>
-    <string name="auto_radio_queue_desc">Tự động tạo danh sách phát radio khi phát bài hát từ tìm kiếm hoặc từ trang chủ</string>
+    <string name="auto_radio_queue_desc">Tự động tạo danh sách phát kết hợp khi phát bài hát từ tìm kiếm hoặc từ trang chủ</string>
     <string name="audio_track_playback_params">Xử lý âm thanh bằng phần cứng</string>
     <string name="audio_track_playback_params_description">Sử dụng AudioTrack của Android để thay đổi tốc độ/cao độ thay vì xử lý bằng phần mềm. Hoạt động ổn định hơn khi điều chỉnh cao độ ở mức cực hạn</string>
     <string name="auto_radio_queue">Tự động thêm vào hàng chờ</string>
@@ -861,4 +861,6 @@
     <string name="enable_zemer_desc">Lời bài hát cho âm nhạc Do Thái</string>
     <string name="update_available_message">Metrolist %s đã sẵn sàng để tải xuống.</string>
     <string name="update_action">Cập nhật</string>
+    <string name="discord_integration">Tích hợp Discord</string>
+    <string name="enable_discord_rpc">Kích hoạt Rich Presence</string>
 </resources>
