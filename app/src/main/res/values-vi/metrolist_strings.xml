@@ -331,7 +331,7 @@
     <string name="share_desc">Chia sẻ liên kết cho bài hát này</string>
     <string name="delete_desc">Xóa vĩnh viễn bài hát này</string>
     <string name="advanced_desc">Điều chỉnh tốc độ (tempo) và cao độ (pitch) của bài hát</string>
-    <string name="equalizer_desc">Mở bộ cân bằng âm thanh</string>
+    <string name="equalizer_desc">Mở bộ chỉnh âm trong ứng dụng</string>
     <string name="enable">Cho phép</string>
     <string name="save_episode_for_later">Lưu để nghe sau</string>
     <string name="metrolist">METROLIST</string>
@@ -492,13 +492,13 @@
     <string name="wrapped_close">Đóng Wrapped</string>
     <string name="wrapped_create_playlist">Tạo danh sách phát</string>
     <string name="wrapped_playlist_saved">Danh sách phát đã được lưu</string>
-    <string name="equalizer_header">Bộ cân bằng âm thanh</string>
+    <string name="equalizer_header">Bộ chỉnh âm</string>
     <string name="no_profiles">Không có hồ sơ chỉnh âm</string>
     <string name="import_profile">Nhập hồ sơ</string>
     <string name="system_equalizer">Bộ chỉnh âm hệ thống</string>
     <string name="eq_disabled">Vô hiệu hoá</string>
     <plurals name="band_count">
-        <item quantity="other">%d ban nhạc</item>
+        <item quantity="other">%d băng tần</item>
     </plurals>
     <string name="delete_profile_desc">Xóa hồ sơ</string>
     <string name="delete_profile_confirmation">Bạn có chắc mình muốn xoá %1$s không? Hành động này không thể được hoàn tác</string>
@@ -506,7 +506,7 @@
     <string name="error_file_open">Không thể mở file: %1$s</string>
     <string name="import_error_title">Lỗi khi nhập</string>
     <string name="error_title">Lỗi</string>
-    <string name="error_eq_apply_failed">Không thể áp dụng cấu hình bộ cân bằng âm thanh: %1$s</string>
+    <string name="error_eq_apply_failed">Không thể áp dụng cấu hình bộ chỉnh âm: %1$s</string>
     <string name="weekly_most_playlist_name">Top Tuần</string>
     <string name="monthly_most_playlist_name">Top Tháng</string>
     <string name="enable_song_cache">Bật bộ nhớ đệm bài hát</string>
