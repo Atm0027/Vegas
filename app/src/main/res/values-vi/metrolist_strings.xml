@@ -863,4 +863,5 @@
     <string name="update_action">Cập nhật</string>
     <string name="discord_integration">Tích hợp Discord</string>
     <string name="enable_discord_rpc">Kích hoạt Rich Presence</string>
+    <string name="force_bottom_navbar">Buộc thanh điều hướng phía dưới</string>
 </resources>
