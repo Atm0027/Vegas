@@ -3834,16 +3834,18 @@ class MusicService :
             Timber.tag(TAG).i("FETCHING STREAM: $mediaId | quality=$audioQuality")
             val playbackData =
                 runBlocking(Dispatchers.IO) {
-                    val song = database.songEntity(mediaId)
-                    InnerTubeXPlayer.playerResponseForPlayback(
-                        mediaId,
-                        audioQuality = audioQuality,
-                        connectivityManager = connectivityManager,
-                        contentHints = ContentHints(
-                            isExplicit = song?.explicit,
-                            isUploaded = song?.isUploaded,
-                        ),
-                    )
+                    resolveWithTimeout(STREAM_RESOLVE_TIMEOUT_MS, mediaId) {
+                        val song = database.songEntity(mediaId)
+                        InnerTubeXPlayer.playerResponseForPlayback(
+                            mediaId,
+                            audioQuality = audioQuality,
+                            connectivityManager = connectivityManager,
+                            contentHints = ContentHints(
+                                isExplicit = song?.explicit,
+                                isUploaded = song?.isUploaded,
+                            ),
+                        )
+                    }
                 }.getOrElse { throwable ->
                     when (throwable) {
                         is PlaybackException -> {
@@ -5048,6 +5050,7 @@ class MusicService :
         const val MAX_RETRY_COUNT = 10
 
         private const val INITIAL_BUFFER_RECOVERY_DELAY_MS = 15_000L
+        private const val STREAM_RESOLVE_TIMEOUT_MS = 20_000L
         private const val INITIAL_BUFFER_RECOVERY_POSITION_MS = 5_000L
         private const val TAG = "MusicService"
 
