@@ -1889,7 +1889,10 @@ class MusicService :
                     player.addMediaItems(currentIndex + 1, radioItems)
                     if (player.shuffleModeEnabled) {
                         val shufflePlaylistFirst = dataStore.get(ShufflePlaylistFirstKey, false)
-                        applyShuffleOrder(player.currentMediaItemIndex, player.mediaItemCount, shufflePlaylistFirst)
+                        extendShuffleOrder(
+                            (currentIndex + 1 until currentIndex + 1 + radioItems.size).toSet(),
+                            shufflePlaylistFirst,
+                        )
                     }
                 }
 
@@ -1920,9 +1923,8 @@ class MusicService :
                                 }
                                 player.addMediaItems(currentIndex + 1, radioItems)
                                 if (player.shuffleModeEnabled) {
-                                    applyShuffleOrder(
-                                        player.currentMediaItemIndex,
-                                        player.mediaItemCount,
+                                    extendShuffleOrder(
+                                        (currentIndex + 1 until currentIndex + 1 + radioItems.size).toSet(),
                                         cachedShufflePlaylistFirst,
                                     )
                                 }
@@ -2138,10 +2140,11 @@ class MusicService :
             }
         }
 
+        val start = player.mediaItemCount
         player.addMediaItems(items)
         if (player.shuffleModeEnabled) {
             val shufflePlaylistFirst = dataStore.get(ShufflePlaylistFirstKey, false)
-            applyShuffleOrder(player.currentMediaItemIndex, player.mediaItemCount, shufflePlaylistFirst)
+            extendShuffleOrder((start until player.mediaItemCount).toSet(), shufflePlaylistFirst)
         }
         player.prepare()
     }
@@ -2577,7 +2580,7 @@ class MusicService :
 
         if (cachedAutoLoadMore &&
             reason != Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT &&
-            player.mediaItemCount - player.currentMediaItemIndex <= 5 &&
+            remainingInPlayOrder() < 5 &&
             currentQueue.hasNextPage() &&
             !(cachedDisableLoadMoreWhenRepeatAll && player.repeatMode == REPEAT_MODE_ALL)
         ) {
@@ -2590,9 +2593,10 @@ class MusicService :
                             .filterVideoSongs(cachedHideVideoSongs)
                     }
                 if (player.playbackState != STATE_IDLE && mediaItems.isNotEmpty()) {
+                    val start = player.mediaItemCount
                     player.addMediaItems(mediaItems)
                     if (player.shuffleModeEnabled) {
-                        applyShuffleOrder(player.currentMediaItemIndex, player.mediaItemCount, cachedShufflePlaylistFirst)
+                        extendShuffleOrder((start until player.mediaItemCount).toSet(), cachedShufflePlaylistFirst)
                     }
                 }
             }
@@ -2852,38 +2856,34 @@ class MusicService :
         shufflePlaylistFirst: Boolean,
     ) {
         if (totalCount == 0) return
+        val order = ShuffleOrders.fresh(currentIndex, totalCount, originalQueueSize, shufflePlaylistFirst)
+        player.setShuffleOrder(DefaultShuffleOrder(order, System.currentTimeMillis()))
+    }
 
-        if (shufflePlaylistFirst && originalQueueSize > 0 && originalQueueSize < totalCount) {
-            // Shuffle original items and added items separately
-            val originalIndices = (0 until originalQueueSize).filter { it != currentIndex }.toMutableList()
-            val addedIndices = (originalQueueSize until totalCount).filter { it != currentIndex }.toMutableList()
-
-            originalIndices.shuffle()
-            addedIndices.shuffle()
-
-            val shuffledIndices = IntArray(totalCount)
-            var pos = 0
-            shuffledIndices[pos++] = currentIndex
-
-            if (currentIndex < originalQueueSize) {
-                originalIndices.forEach { shuffledIndices[pos++] = it }
-                addedIndices.forEach { shuffledIndices[pos++] = it }
+    /** Re-shuffles only what has not played yet, so "previous" history survives queue growth. */
+    private fun extendShuffleOrder(
+        addedIndices: Set<Int>,
+        keepAddedLast: Boolean,
+    ) {
+        val count = player.mediaItemCount
+        if (count == 0) return
+        val current = player.shuffleOrder.toIntArray(count)
+        val order =
+            if (current.size == count) {
+                ShuffleOrders.extend(current, player.currentMediaItemIndex, addedIndices, keepAddedLast)
             } else {
-                (0 until originalQueueSize).shuffled().forEach { shuffledIndices[pos++] = it }
-                addedIndices.forEach { shuffledIndices[pos++] = it }
+                ShuffleOrders.fresh(player.currentMediaItemIndex, count, originalQueueSize, keepAddedLast)
             }
-            player.setShuffleOrder(DefaultShuffleOrder(shuffledIndices, System.currentTimeMillis()))
+        player.setShuffleOrder(DefaultShuffleOrder(order, System.currentTimeMillis()))
+    }
+
+    private fun remainingInPlayOrder(): Int {
+        val count = player.mediaItemCount
+        val index = player.currentMediaItemIndex
+        return if (player.shuffleModeEnabled) {
+            ShuffleOrders.remainingAfter(player.shuffleOrder.toIntArray(count), index)
         } else {
-            val shuffledIndices = IntArray(totalCount) { it }
-            shuffledIndices.shuffle()
-            // Ensure current item is first in the shuffle order
-            val currentItemIndexInShuffled = shuffledIndices.indexOf(currentIndex)
-            if (currentItemIndexInShuffled != -1) { // Should always be true if totalCount > 0
-                val temp = shuffledIndices[0]
-                shuffledIndices[0] = shuffledIndices[currentItemIndexInShuffled]
-                shuffledIndices[currentItemIndexInShuffled] = temp
-            }
-            player.setShuffleOrder(DefaultShuffleOrder(shuffledIndices, System.currentTimeMillis()))
+            count - index - 1
         }
     }
 
