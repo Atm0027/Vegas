@@ -2713,7 +2713,6 @@ class MusicService :
         val shouldWatch =
             playbackState == Player.STATE_BUFFERING &&
                 player.playWhenReady &&
-                player.currentPosition < INITIAL_BUFFER_RECOVERY_POSITION_MS &&
                 mediaId != null &&
                 initialBufferRecoveryAttemptedMediaId != mediaId
 
@@ -2726,10 +2725,11 @@ class MusicService :
 
         initialBufferRecoveryJob =
             scope.launch {
-                delay(INITIAL_BUFFER_RECOVERY_DELAY_MS)
+                val stallPosition = player.currentPosition
+                delay(StallRecovery.delayMs(stallPosition))
                 if (player.playbackState != Player.STATE_BUFFERING ||
                     !player.playWhenReady ||
-                    player.currentPosition >= INITIAL_BUFFER_RECOVERY_POSITION_MS ||
+                    player.currentPosition != stallPosition ||
                     player.currentMediaItem?.mediaId != mediaId
                 ) {
                     return@launch
@@ -5049,9 +5049,7 @@ class MusicService :
         const val MAX_CONSECUTIVE_ERR = 5
         const val MAX_RETRY_COUNT = 10
 
-        private const val INITIAL_BUFFER_RECOVERY_DELAY_MS = 15_000L
         private const val STREAM_RESOLVE_TIMEOUT_MS = 20_000L
-        private const val INITIAL_BUFFER_RECOVERY_POSITION_MS = 5_000L
         private const val TAG = "MusicService"
 
         @Volatile
