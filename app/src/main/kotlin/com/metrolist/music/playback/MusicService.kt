@@ -3970,7 +3970,7 @@ class MusicService :
             ExtractorsFactory {
                 arrayOf(MatroskaExtractor(), FragmentedMp4Extractor(), Mp4Extractor())
             },
-        )
+        ).setLoadErrorHandlingPolicy(FastFailLoadErrorPolicy())
 
     private fun createRenderersFactory(
         normalizationProcessor: VolumeNormalizationAudioProcessor,
