@@ -474,6 +474,9 @@ class MusicService :
     // Tracks the original queue size to distinguish original items from auto-added ones
     private var originalQueueSize: Int = 0
 
+    // Songs the user added on top of the current queue (add to queue, radio continuation).
+    private val userAddedMediaIds = mutableSetOf<String>()
+
     private var consecutivePlaybackErr = 0
     private var retryJob: Job? = null
     private var retryCount = 0
@@ -1780,6 +1783,7 @@ class MusicService :
             player.shuffleModeEnabled = false
         }
         originalQueueSize = 0
+        userAddedMediaIds.clear()
         if (queue.preloadItem != null) {
             player.setMediaItem(queue.preloadItem!!.toMediaItem())
             player.prepare()
@@ -1887,6 +1891,7 @@ class MusicService :
                     }
 
                     player.addMediaItems(currentIndex + 1, radioItems)
+                    radioItems.mapTo(userAddedMediaIds) { it.mediaId }
                     if (player.shuffleModeEnabled) {
                         val shufflePlaylistFirst = dataStore.get(ShufflePlaylistFirstKey, false)
                         extendShuffleOrder(
@@ -1922,6 +1927,7 @@ class MusicService :
                                     player.removeMediaItems(currentIndex + 1, itemCount)
                                 }
                                 player.addMediaItems(currentIndex + 1, radioItems)
+                                radioItems.mapTo(userAddedMediaIds) { it.mediaId }
                                 if (player.shuffleModeEnabled) {
                                     extendShuffleOrder(
                                         (currentIndex + 1 until currentIndex + 1 + radioItems.size).toSet(),
@@ -2142,6 +2148,7 @@ class MusicService :
 
         val start = player.mediaItemCount
         player.addMediaItems(items)
+        items.mapTo(userAddedMediaIds) { it.mediaId }
         if (player.shuffleModeEnabled) {
             val shufflePlaylistFirst = dataStore.get(ShufflePlaylistFirstKey, false)
             extendShuffleOrder((start until player.mediaItemCount).toSet(), shufflePlaylistFirst)
@@ -2714,7 +2721,8 @@ class MusicService :
             playbackState == Player.STATE_BUFFERING &&
                 player.playWhenReady &&
                 mediaId != null &&
-                initialBufferRecoveryAttemptedMediaId != mediaId
+                initialBufferRecoveryAttemptedMediaId != mediaId &&
+                StallRecovery.canRefreshStream(isNetworkConnected.value, waitingForNetworkConnection.value)
 
         if (!shouldWatch) {
             initialBufferRecoveryJob?.cancel()
@@ -2730,7 +2738,8 @@ class MusicService :
                 if (player.playbackState != Player.STATE_BUFFERING ||
                     !player.playWhenReady ||
                     player.currentPosition != stallPosition ||
-                    player.currentMediaItem?.mediaId != mediaId
+                    player.currentMediaItem?.mediaId != mediaId ||
+                    !StallRecovery.canRefreshStream(isNetworkConnected.value, waitingForNetworkConnection.value)
                 ) {
                     return@launch
                 }
@@ -2814,10 +2823,13 @@ class MusicService :
             if (player.mediaItemCount == 0) return
 
             val shufflePlaylistFirst = dataStore.get(ShufflePlaylistFirstKey, false)
-            val currentIndex = player.currentMediaItemIndex
-            val totalCount = player.mediaItemCount
-
-            applyShuffleOrder(currentIndex, totalCount, shufflePlaylistFirst)
+            val order =
+                ShuffleOrders.enable(
+                    player.currentMediaItemIndex,
+                    player.mediaItemCount,
+                    userAddedIndices(shufflePlaylistFirst),
+                )
+            player.setShuffleOrder(DefaultShuffleOrder(order, System.currentTimeMillis()))
         }
 
         if (dataStore.get(RememberShuffleAndRepeatKey, true)) {
@@ -2856,7 +2868,7 @@ class MusicService :
         shufflePlaylistFirst: Boolean,
     ) {
         if (totalCount == 0) return
-        val order = ShuffleOrders.fresh(currentIndex, totalCount, originalQueueSize, shufflePlaylistFirst)
+        val order = ShuffleOrders.fresh(currentIndex, totalCount, userAddedIndices(shufflePlaylistFirst))
         player.setShuffleOrder(DefaultShuffleOrder(order, System.currentTimeMillis()))
     }
 
@@ -2870,11 +2882,18 @@ class MusicService :
         val current = player.shuffleOrder.toIntArray(count)
         val order =
             if (current.size == count) {
-                ShuffleOrders.extend(current, player.currentMediaItemIndex, addedIndices, keepAddedLast)
+                ShuffleOrders.extend(current, player.currentMediaItemIndex, addedIndices, userAddedIndices(keepAddedLast))
             } else {
-                ShuffleOrders.fresh(player.currentMediaItemIndex, count, originalQueueSize, keepAddedLast)
+                ShuffleOrders.fresh(player.currentMediaItemIndex, count, userAddedIndices(keepAddedLast))
             }
         player.setShuffleOrder(DefaultShuffleOrder(order, System.currentTimeMillis()))
+    }
+
+    private fun userAddedIndices(playlistFirst: Boolean): Set<Int>? {
+        if (!playlistFirst || userAddedMediaIds.isEmpty()) return null
+        return (0 until player.mediaItemCount)
+            .filter { player.getMediaItemAt(it).mediaId in userAddedMediaIds }
+            .toSet()
     }
 
     private fun remainingInPlayOrder(): Int {
