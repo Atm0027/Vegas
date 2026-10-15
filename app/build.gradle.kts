@@ -21,6 +21,11 @@ val debugKeystorePassword = System.getenv("METROLIST_DEBUG_KEYSTORE_PASSWORD")?.
 val debugKeyAlias = System.getenv("METROLIST_DEBUG_KEY_ALIAS")?.takeIf { it.isNotBlank() } ?: "androiddebugkey"
 val debugKeyPassword = System.getenv("METROLIST_DEBUG_KEY_PASSWORD")?.takeIf { it.isNotBlank() } ?: "android"
 val persistentDebugKeystoreFile = file("persistent-debug.keystore")
+
+// Versión de Vega al estilo JARVIS: nombre semántico deducido de los commits
+// (Conventional Commits) desde la última etiqueta `vX.Y.Z-N`, y código = número
+// de commits propios de Vega. Ver buildSrc/src/main/kotlin/VersionSemantica.kt.
+val versionVega = providers.versionVega(providers.gradleProperty("vega.forkBase").get())
 val workflowDebugKeystoreFile = debugKeystorePathOverride?.let(::file)
 
 plugins {
@@ -40,8 +45,8 @@ android {
         applicationId = applicationIdOverride ?: baseApplicationId
         minSdk = 26
         targetSdk = 36
-        versionCode = 153
-        versionName = "13.7.0"
+        versionCode = versionVega.codigo
+        versionName = versionVega.nombre
         val baseVersionName = requireNotNull(versionName)
         buildConfigField("String", "BASE_VERSION_NAME", "\"$baseVersionName\"")
         buildCommit?.let { versionName = "$baseVersionName+$it" }
@@ -333,4 +338,21 @@ dependencies {
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.ktor.client.mock)
+}
+
+androidComponents {
+    onVariants { variant ->
+        variant.outputs.forEach { output ->
+            (output as? com.android.build.api.variant.impl.VariantOutputImpl)
+                ?.outputFileName
+                ?.set("vega-${versionVega.nombre}-${versionVega.codigo}-${variant.name}.apk")
+        }
+    }
+}
+
+// Publicar = dejar la etiqueta de esta versión; la siguiente compilación parte de ella.
+tasks.register<Exec>("publicarVersion") {
+    group = "vega"
+    description = "Crea la etiqueta git ${versionVega.etiqueta} para la versión actual."
+    commandLine("git", "tag", versionVega.etiqueta)
 }
