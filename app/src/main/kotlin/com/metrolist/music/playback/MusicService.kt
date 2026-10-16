@@ -179,6 +179,7 @@ import com.metrolist.music.playback.alarm.MusicAlarmStore
 import com.metrolist.music.playback.audio.SilenceDetectorAudioProcessor
 import com.metrolist.music.offline.DownloadSlots
 import com.metrolist.music.offline.NetworkFailure
+import com.metrolist.music.offline.SourceLock
 import com.metrolist.music.offline.OfflineSkip
 import com.metrolist.music.offline.OfflineStore
 import com.metrolist.music.playback.queues.EmptyQueue
@@ -2366,6 +2367,7 @@ class MusicService :
                 scope.launch(Dispatchers.IO) { markCachedIfFullyDownloaded(previousId) }
             }
         }
+        lastTransitionedMediaId?.takeIf { it != mediaItem?.mediaId }?.let(sourceLock::left)
         lastTransitionedMediaId = mediaItem?.mediaId
         initialBufferRecoveryJob?.cancel()
         initialBufferRecoveryJob = null
@@ -3335,8 +3337,9 @@ class MusicService :
             ).setFlags(FLAG_IGNORE_CACHE_ON_ERROR)
 
     /** Downloaded file of [mediaId], if it is there; a file deleted outside Vega drops its row. */
+    private val sourceLock = SourceLock()
+
     private fun localFileUri(mediaId: String): Uri? {
-        if (mediaId !in downloadedIds.value) return null
         val entity = runBlocking(Dispatchers.IO) { database.downloadEntity(mediaId) } ?: return null
         val uri = entity.uri.toUri()
         return when (offlineStore.exists(uri)) {
@@ -3473,9 +3476,10 @@ class MusicService :
                 preserveCachedIfMissing = true,
             )
 
-            localFileUri(mediaId)?.let { uri ->
+            val localUri = if (sourceLock.isLocked(mediaId)) null else localFileUri(mediaId)
+            if (sourceLock.useLocal(mediaId, hasLocalFile = localUri != null) && localUri != null) {
                 recoverSongDeduped(mediaId)
-                return@Factory dataSpec.buildUpon().setUri(uri).build()
+                return@Factory dataSpec.buildUpon().setUri(localUri).build()
             }
             if (!isNetworkConnected.value && !isPlayableOffline(mediaId)) {
                 throw PlaybackException(
