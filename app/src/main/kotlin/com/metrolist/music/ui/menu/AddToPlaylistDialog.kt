@@ -246,11 +246,12 @@ fun AddToPlaylistDialog(
                 }
             }
 
-            if (selectedPlaylistIds.isNotEmpty()) {
+            // Always present so marking the first playlist does not shift the rows under the finger.
+            if (playlists.isNotEmpty()) {
                 item {
                     FilledTonalButton(
                         onClick = ::addToSelected,
-                        enabled = !adding,
+                        enabled = selectedPlaylistIds.isNotEmpty() && !adding,
                         shape = RoundedCornerShape(50),
                         modifier =
                             Modifier
@@ -258,7 +259,12 @@ fun AddToPlaylistDialog(
                                 .padding(horizontal = 16.dp, vertical = 4.dp),
                     ) {
                         Text(
-                            text = stringResource(R.string.add_to_playlists, selectedPlaylistIds.size),
+                            text =
+                                if (selectedPlaylistIds.isEmpty()) {
+                                    stringResource(R.string.add_to_playlist)
+                                } else {
+                                    stringResource(R.string.add_to_playlists, selectedPlaylistIds.size)
+                                },
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                         )
