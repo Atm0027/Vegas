@@ -10,6 +10,7 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
+import com.metrolist.music.offline.ConnectedNetworks
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -24,17 +25,26 @@ class NetworkConnectivityObserver(context: Context) {
     private val _networkStatus = MutableStateFlow(isCurrentlyConnected())
     val networkStatus = _networkStatus.asStateFlow()
 
+    private val connectedNetworks = ConnectedNetworks()
+
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
-            _networkStatus.value = isCurrentlyConnected()
+            connectedNetworks.available(network)
+            _networkStatus.value = connectedNetworks.isConnected
         }
 
         override fun onLost(network: Network) {
-            _networkStatus.value = isCurrentlyConnected()
+            connectedNetworks.lost(network)
+            _networkStatus.value = connectedNetworks.isConnected
         }
 
         override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
-            _networkStatus.value = isCurrentlyConnected()
+            if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
+                connectedNetworks.available(network)
+            } else {
+                connectedNetworks.lost(network)
+            }
+            _networkStatus.value = connectedNetworks.isConnected
         }
     }
 

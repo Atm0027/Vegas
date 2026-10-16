@@ -177,6 +177,7 @@ import com.metrolist.music.models.toMediaMetadata
 import com.metrolist.music.playback.alarm.MusicAlarmScheduler
 import com.metrolist.music.playback.alarm.MusicAlarmStore
 import com.metrolist.music.playback.audio.SilenceDetectorAudioProcessor
+import com.metrolist.music.offline.NetworkFailure
 import com.metrolist.music.offline.OfflineSkip
 import com.metrolist.music.offline.OfflineStore
 import com.metrolist.music.playback.queues.EmptyQueue
@@ -2802,7 +2803,7 @@ class MusicService :
             error.errorCode == PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_TIMEOUT ||
             error.cause is java.net.ConnectException ||
             error.cause is java.net.UnknownHostException ||
-            (error.cause as? PlaybackException)?.errorCode == PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED
+            NetworkFailure.isNetworkFailure(error)
     }
 
     /**
@@ -2856,13 +2857,6 @@ class MusicService :
             .w(error, "Player error occurred for $mediaId: errorCode=${error.errorCode}, message=${error.message}")
         reportException(error)
 
-        if (mediaId != null && hasExceededRetryLimit(mediaId)) {
-            Timber.tag(TAG).w("Song $mediaId has exceeded retry limit, skipping")
-            markSongAsFailed(mediaId)
-            handleFinalFailure()
-            return
-        }
-
         if (mediaId != null && !isPlayableOffline(mediaId) &&
             (!isNetworkConnected.value || isNetworkRelatedError(error))
         ) {
@@ -2871,6 +2865,13 @@ class MusicService :
                 pauseAtEndOfDownloads()
                 return
             }
+        }
+
+        if (mediaId != null && hasExceededRetryLimit(mediaId)) {
+            Timber.tag(TAG).w("Song $mediaId has exceeded retry limit, skipping")
+            markSongAsFailed(mediaId)
+            handleFinalFailure()
+            return
         }
 
         if (mediaId != null) {
