@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Vega: stylised V with the four-point sparkle of the star Vega. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:pathData="M36,40 L53,73 L70,40"
+        android:strokeWidth="9"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="#00000000">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:type="linear"
+                android:startX="36"
+                android:startY="40"
+                android:endX="70"
+                android:endY="73">
+                <item android:offset="0" android:color="#FFB39DFF" />
+                <item android:offset="1" android:color="#FF7C4DFF" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path
+        android:fillColor="#FFE9E1FF"
+        android:pathData="M71,26.5 Q72,32 77.5,33 Q72,34 71,39.5 Q70,34 64.5,33 Q70,32 71,26.5 Z" />
+</vector>
