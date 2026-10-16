@@ -50,6 +50,27 @@ class OfflineStoreTest {
         assertTrue(!temp.exists())
     }
 
+    @Test
+    fun storedIdNowPointingToAnotherSong_isMissing() {
+        Robolectric.setupContentProvider(NamedProvider::class.java, "vega.named")
+        val uri = Uri.parse("content://vega.named/audio/7")
+        assertEquals(OfflineStore.Existence.PRESENT, store.exists(uri, videoId = "UYUUb6Dl5D8"))
+        assertEquals(OfflineStore.Existence.MISSING, store.exists(uri, videoId = "imJSUk0Z3Vg"))
+    }
+
+    class NamedProvider : ContentProvider() {
+        override fun onCreate() = true
+        override fun openFile(uri: Uri, mode: String): ParcelFileDescriptor =
+            ParcelFileDescriptor.open(File.createTempFile("named", ".m4a"), ParcelFileDescriptor.MODE_READ_ONLY)
+        override fun query(uri: Uri, p: Array<out String>?, s: String?, a: Array<out String>?, o: String?): Cursor =
+            android.database.MatrixCursor(arrayOf(android.provider.MediaStore.MediaColumns.DISPLAY_NAME))
+                .apply { addRow(arrayOf("Eladio Carrión - Hugo [UYUUb6Dl5D8].m4a")) }
+        override fun getType(uri: Uri): String? = null
+        override fun insert(uri: Uri, values: ContentValues?): Uri? = null
+        override fun delete(uri: Uri, s: String?, a: Array<out String>?) = 0
+        override fun update(uri: Uri, v: ContentValues?, s: String?, a: Array<out String>?) = 0
+    }
+
     class DenyingProvider : ContentProvider() {
         override fun onCreate() = true
         override fun openFile(uri: Uri, mode: String): ParcelFileDescriptor? = throw SecurityException("no read permission")

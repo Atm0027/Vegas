@@ -3342,7 +3342,7 @@ class MusicService :
     private fun localFileUri(mediaId: String): Uri? {
         val entity = runBlocking(Dispatchers.IO) { database.downloadEntity(mediaId) } ?: return null
         val uri = entity.uri.toUri()
-        return when (offlineStore.exists(uri)) {
+        return when (offlineStore.exists(uri, mediaId)) {
             OfflineStore.Existence.PRESENT -> uri
             OfflineStore.Existence.MISSING -> {
                 scope.launch(Dispatchers.IO) { database.deleteDownload(mediaId) }

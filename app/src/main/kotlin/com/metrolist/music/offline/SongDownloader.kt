@@ -70,7 +70,7 @@ class SongDownloader @Inject constructor(
         withContext(Dispatchers.IO) {
             try {
                 database.downloadEntity(songId)?.let { existing ->
-                    if (store.exists(android.net.Uri.parse(existing.uri)) == OfflineStore.Existence.PRESENT) {
+                    if (store.exists(android.net.Uri.parse(existing.uri), songId) != OfflineStore.Existence.MISSING) {
                         return@withContext DownloadOutcome.Done(existing)
                     }
                 }

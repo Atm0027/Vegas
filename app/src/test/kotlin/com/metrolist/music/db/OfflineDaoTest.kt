@@ -178,4 +178,13 @@ class OfflineDaoTest {
         sql.version = 39
         sql.close()
     }
+
+    @Test
+    fun untrackAll_unmarksEveryPlaylistSoNothingAutoDownloads() = runBlocking {
+        song("a")
+        playlist("p", downloaded = true)
+        add("p", "a")
+        dao.untrackAllPlaylists()
+        assertEquals(emptySet<String>(), pending())
+    }
 }

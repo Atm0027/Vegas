@@ -1198,6 +1198,9 @@ interface DatabaseDao {
     @Query("UPDATE playlist SET downloaded = :downloaded WHERE id = :playlistId")
     suspend fun setPlaylistDownloaded(playlistId: String, downloaded: Boolean)
 
+    @Query("UPDATE playlist SET downloaded = 0 WHERE downloaded = 1")
+    suspend fun untrackAllPlaylists()
+
     @Query(
         """
         SELECT DISTINCT p.name FROM playlist p JOIN playlist_song_map psm ON psm.playlistId = p.id

@@ -55,4 +55,9 @@ class OfflineFileNameTest {
         assertNull(noArtist.artist)
         assertEquals("Solo", noArtist.title)
     }
+
+    @Test
+    fun `recognises the copy MediaStore names with a number suffix`() {
+        assertEquals("UYUUb6Dl5D8", OfflineFileName.videoIdOf("Eladio Carrión - Hugo [UYUUb6Dl5D8] (1).m4a"))
+    }
 }

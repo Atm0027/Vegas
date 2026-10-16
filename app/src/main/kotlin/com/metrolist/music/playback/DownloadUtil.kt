@@ -19,6 +19,7 @@ import androidx.media3.exoplayer.offline.DownloadProgress
 import androidx.media3.exoplayer.offline.DownloadRequest
 import com.metrolist.innertube.models.SongItem
 import com.metrolist.music.R
+import androidx.datastore.preferences.core.edit
 import com.metrolist.music.constants.DownloadLikedKey
 import com.metrolist.music.db.MusicDatabase
 import com.metrolist.music.db.entities.AlbumEntity
@@ -159,6 +160,15 @@ constructor(
     fun remove(songId: String) = removeAll(listOf(songId))
 
     /** Cancels queued work and deletes the files; asks once for files another install created. */
+    /** Deletes every download and unmarks the tracked lists, so nothing is downloaded again. */
+    fun removeEverything(songIds: List<String>) {
+        scope.launch {
+            database.untrackAllPlaylists()
+            context.dataStore.edit { it[DownloadLikedKey] = false }
+            removeAll(songIds)
+        }
+    }
+
     fun removeAll(songIds: List<String>) {
         if (songIds.isEmpty()) return
         scope.launch {

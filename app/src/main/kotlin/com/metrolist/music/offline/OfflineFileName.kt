@@ -11,7 +11,7 @@ object OfflineFileName {
 
     private const val MAX_TEXT = 150
     private val invalid = Regex("[/\\\\:*?\"<>|\\p{Cntrl}]")
-    private val idPattern = Regex("""\[([A-Za-z0-9_-]{11})]\.[A-Za-z0-9]+$""")
+    private val idPattern = Regex("""\[([A-Za-z0-9_-]{11})](?: \(\d+\))?\.[A-Za-z0-9]+$""")
 
     fun build(artist: String?, title: String, videoId: String, ext: String): String {
         val text = listOfNotNull(artist?.takeIf { it.isNotBlank() }, title)

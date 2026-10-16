@@ -189,7 +189,7 @@ fun StorageSettings(
             title = stringResource(R.string.delete_all_downloads),
             onDismiss = { clearDownloads = false },
             onConfirm = {
-                downloadUtil.removeAll(downloadRows.map { it.songId })
+                downloadUtil.removeEverything(downloadRows.map { it.songId })
                 clearDownloads = false
             },
             onCancel = { clearDownloads = false },

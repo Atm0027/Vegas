@@ -11,6 +11,7 @@ package com.metrolist.music.offline
 
 import android.Manifest
 import android.app.RecoverableSecurityException
+import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
@@ -104,10 +105,18 @@ class OfflineStore @Inject constructor(
         }
     }
 
-    fun exists(uri: Uri): Existence =
+    /**
+     * [videoId] guards against a stored MediaStore id that now belongs to another file (backup
+     * restored on another phone, media database rebuilt): such a row counts as missing.
+     */
+    fun exists(uri: Uri, videoId: String? = null): Existence =
         try {
             resolver.openFileDescriptor(uri, "r")?.close()
-            Existence.PRESENT
+            if (videoId != null && uri.scheme == ContentResolver.SCHEME_CONTENT && displayName(uri)?.let(OfflineFileName::videoIdOf).let { it != null && it != videoId }) {
+                Existence.MISSING
+            } else {
+                Existence.PRESENT
+            }
         } catch (_: FileNotFoundException) {
             Existence.MISSING
         } catch (_: SecurityException) {
@@ -115,6 +124,10 @@ class OfflineStore @Inject constructor(
         } catch (_: IllegalArgumentException) {
             Existence.MISSING
         }
+
+    private fun displayName(uri: Uri): String? =
+        resolver.query(uri, arrayOf(MediaStore.MediaColumns.DISPLAY_NAME), null, null, null)
+            ?.use { c -> if (c.moveToFirst()) c.getString(0) else null }
 
     fun delete(uri: Uri): DeleteResult {
         if (uri.scheme == "file") {

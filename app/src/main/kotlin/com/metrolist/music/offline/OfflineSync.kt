@@ -85,7 +85,7 @@ class OfflineSync @Inject constructor(
         var missing = 0
         var noAccess = 0
         database.allDownloadsOnce().forEach { row ->
-            when (store.exists(Uri.parse(row.uri))) {
+            when (store.exists(Uri.parse(row.uri), row.songId)) {
                 OfflineStore.Existence.PRESENT -> Unit
                 OfflineStore.Existence.MISSING -> {
                     database.deleteDownload(row.songId)
