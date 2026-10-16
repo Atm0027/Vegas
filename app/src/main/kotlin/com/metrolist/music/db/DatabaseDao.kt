@@ -32,6 +32,7 @@ import com.metrolist.music.db.entities.AlbumEntity
 import com.metrolist.music.db.entities.AlbumWithSongs
 import com.metrolist.music.db.entities.Artist
 import com.metrolist.music.db.entities.ArtistEntity
+import com.metrolist.music.db.entities.DownloadEntity
 import com.metrolist.music.db.entities.Event
 import com.metrolist.music.db.entities.EventWithSong
 import com.metrolist.music.db.entities.FormatEntity
@@ -1145,6 +1146,80 @@ interface DatabaseDao {
 
     @Query("UPDATE playlist SET pinned = :pinned WHERE id = :playlistId")
     fun setPlaylistPinned(playlistId: String, pinned: Boolean)
+
+    // Vega offline: downloads are real files tracked in the download table.
+    @Query("SELECT songId FROM download")
+    fun downloadedIdList(): Flow<List<String>>
+
+    fun downloadedIds(): Flow<Set<String>> = downloadedIdList().map { it.toSet() }
+
+    @Query("SELECT * FROM download WHERE songId = :songId")
+    suspend fun downloadEntity(songId: String): DownloadEntity?
+
+    @Query("SELECT * FROM download")
+    fun allDownloads(): Flow<List<DownloadEntity>>
+
+    @Query("SELECT * FROM download")
+    suspend fun allDownloadsOnce(): List<DownloadEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertDownload(entity: DownloadEntity)
+
+    @Query("DELETE FROM download WHERE songId = :songId")
+    suspend fun deleteDownloadRow(songId: String)
+
+    @Query("UPDATE song SET isDownloaded = :downloaded, dateDownload = :date WHERE id = :songId")
+    suspend fun setSongDownloaded(songId: String, downloaded: Boolean, date: LocalDateTime?)
+
+    @Transaction
+    suspend fun upsertDownload(entity: DownloadEntity) {
+        insertDownload(entity)
+        setSongDownloaded(entity.songId, true, entity.addedAt)
+    }
+
+    @Transaction
+    suspend fun deleteDownload(songId: String) {
+        deleteDownloadRow(songId)
+        setSongDownloaded(songId, false, null)
+    }
+
+    @Query(
+        """
+        SELECT DISTINCT id FROM (
+            SELECT psm.songId AS id FROM playlist_song_map psm
+            JOIN playlist p ON p.id = psm.playlistId WHERE p.downloaded = 1
+            UNION
+            SELECT song.id AS id FROM song WHERE :includeLiked AND song.liked = 1
+        ) WHERE id NOT IN (SELECT songId FROM download)
+        """,
+    )
+    fun songsToAutoDownload(includeLiked: Boolean): Flow<List<String>>
+
+    @Query("UPDATE playlist SET downloaded = :downloaded WHERE id = :playlistId")
+    suspend fun setPlaylistDownloaded(playlistId: String, downloaded: Boolean)
+
+    @Query(
+        """
+        SELECT DISTINCT p.name FROM playlist p JOIN playlist_song_map psm ON psm.playlistId = p.id
+        WHERE p.downloaded = 1 AND psm.songId = :songId
+        """,
+    )
+    suspend fun trackedPlaylistNames(songId: String): List<String>
+
+    /** Downloaded songs of [playlistId] that no other tracked playlist (nor Liked, if tracked) keeps. */
+    @Query(
+        """
+        SELECT DISTINCT psm.songId FROM playlist_song_map psm
+        JOIN download d ON d.songId = psm.songId
+        WHERE psm.playlistId = :playlistId
+          AND psm.songId NOT IN (
+              SELECT o.songId FROM playlist_song_map o JOIN playlist p ON p.id = o.playlistId
+              WHERE p.downloaded = 1 AND o.playlistId != :playlistId
+          )
+          AND NOT (:includeLiked AND psm.songId IN (SELECT id FROM song WHERE liked = 1))
+        """,
+    )
+    suspend fun songsOnlyInPlaylist(playlistId: String, includeLiked: Boolean): List<String>
 
     @Query("UPDATE playlist SET customOrder = :customOrder WHERE id = :playlistId")
     fun setPlaylistCustomOrder(playlistId: String, customOrder: Int)

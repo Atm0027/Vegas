@@ -42,6 +42,8 @@ data class PlaylistEntity(
     val customOrder: Int = 0,
     @ColumnInfo(defaultValue = "0")
     val pinned: Boolean = false,
+    @ColumnInfo(defaultValue = "0")
+    val downloaded: Boolean = false,
 ) {
     companion object {
         const val LIKED_PLAYLIST_ID = "LP_LIKED"
