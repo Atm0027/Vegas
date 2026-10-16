@@ -13,6 +13,7 @@ import com.metrolist.music.db.entities.Playlist
 import com.metrolist.music.db.entities.PlaylistEntity
 import com.metrolist.music.db.entities.PlaylistSongMap
 import com.metrolist.music.db.entities.SongEntity
+import com.metrolist.music.playlist.planPlaylistAdd
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -118,5 +119,31 @@ class AddSongsToPlaylistTest {
 
             assertTrue(result.isFailure)
             assertEquals(emptyList<String>(), database.dao.playlistSongIds("playlist"))
+        }
+
+    @Test
+    fun `adding several songs puts only the new ones on top in selection order`() =
+        runBlocking {
+            val playlist =
+                PlaylistEntity(
+                    id = "playlist",
+                    name = "Playlist",
+                    bookmarkedAt = LocalDateTime.of(2026, 1, 1, 0, 0),
+                )
+            withContext(Dispatchers.IO) {
+                database.dao.insert(playlist)
+                listOf("A", "B", "C").forEach { database.dao.insert(SongEntity(id = it, title = it)) }
+                database.dao.insert(PlaylistSongMap(playlistId = playlist.id, songId = "B", position = 0))
+            }
+
+            val plan = database.dao.planPlaylistAdd(playlist.id, listOf("A", "B", "C"))
+            database.dao.addSongsToPlaylist(
+                Playlist(playlist, 1, emptyList()),
+                plan.idsToAdd(emptySet()).map { it to null },
+                prepend = true,
+            )
+
+            assertEquals(listOf("B"), plan.alreadyThere)
+            assertEquals(listOf("A", "C", "B"), database.dao.playlistSongIds(playlist.id))
         }
 }

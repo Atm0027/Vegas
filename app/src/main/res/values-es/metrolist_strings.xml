@@ -735,4 +735,11 @@
     <string name="playlist_edit_hint">Arrastra para reordenar. Toca una canción para usar su carátula como portada.</string>
     <string name="playlist_edit_removed">%d por quitar</string>
     <string name="playlist_cover_automatic">Portada automática</string>
+    <string name="add_to_playlists">Añadir a %d listas</string>
+    <string name="added_to_playlist_summary">%1$d añadidas a %2$s</string>
+    <string name="already_in_playlist_count">%d ya estaban</string>
+    <string name="probable_duplicates_title">Canciones parecidas</string>
+    <string name="probable_duplicates_desc">Se parecen a canciones que ya están en la lista. Marca las que quieras añadir igualmente.</string>
+    <string name="add_checked">Añadir marcadas</string>
+    <string name="skip_similar">Omitir parecidas</string>
 </resources>

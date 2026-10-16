@@ -773,7 +773,6 @@ fun SongMenu(
                                     },
                                     onClick = {
                                         playlistSong.let { ps ->
-                                            val capturedSetVideoId = ps.map.setVideoId
                                             database.transaction {
                                                 move(
                                                     ps.map.playlistId,

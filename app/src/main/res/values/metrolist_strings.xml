@@ -854,4 +854,11 @@
     <string name="playlist_edit_hint">Drag to reorder. Tap a song to use its artwork as the cover.</string>
     <string name="playlist_edit_removed">%d to remove</string>
     <string name="playlist_cover_automatic">Automatic cover</string>
+    <string name="add_to_playlists">Add to %d playlists</string>
+    <string name="added_to_playlist_summary">%1$d added to %2$s</string>
+    <string name="already_in_playlist_count">%d already there</string>
+    <string name="probable_duplicates_title">Similar songs</string>
+    <string name="probable_duplicates_desc">These look like songs already in the playlist. Check the ones you want to add anyway.</string>
+    <string name="add_checked">Add checked</string>
+    <string name="skip_similar">Skip similar</string>
 </resources>

@@ -30,7 +30,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.metrolist.innertube.utils.parseCookieString
 import com.metrolist.music.LocalDatabase
 import com.metrolist.music.R
 import com.metrolist.music.constants.AddToPlaylistPosition
@@ -56,6 +55,18 @@ import androidx.compose.foundation.background
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.withContext
+import android.widget.Toast
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Checkbox
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.ui.platform.LocalContext
+import com.metrolist.music.playlist.AddPlan
+import com.metrolist.music.playlist.Candidate
+import com.metrolist.music.playlist.planPlaylistAdd
+import com.metrolist.music.utils.makeTimeString
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
@@ -104,29 +115,61 @@ fun AddToPlaylistDialog(
         mutableStateOf(false)
     }
 
-    var showDuplicateDialog by remember {
-        mutableStateOf(false)
-    }
-    var selectedPlaylist by remember {
-        mutableStateOf<Playlist?>(null)
-    }
+    val context = LocalContext.current
     var songIds by remember {
         mutableStateOf<List<String>?>(null)
-    }
-    var duplicates by remember {
-        mutableStateOf(emptyList<String>())
     }
     var playlistsContainingSong by remember {
         mutableStateOf<Set<String>>(emptySet())
     }
+    val selectedPlaylistIds = remember { mutableStateListOf<String>() }
+    var pendingPlans by remember { mutableStateOf<List<Pair<Playlist, AddPlan>>>(emptyList()) }
+    // "playlistId|songId" of probable duplicates the user still wants to add
+    val acceptedProbables = remember { mutableStateListOf<String>() }
 
-    suspend fun addSongsAndSync(targetPlaylist: Playlist, ids: List<String>) {
-        database.addSongsToPlaylist(
-            targetPlaylist,
-            ids.map { it to null },
-            prepend = addToPlaylistPosition.prepend,
-        )
-        targetPlaylist.playlist.browseId?.let { browseId ->
+    fun commitPlans(plans: List<Pair<Playlist, AddPlan>>, accepted: Set<String>) {
+        coroutineScope.launch(Dispatchers.IO) {
+            val summary =
+                plans.map { (target, plan) ->
+                    val ids =
+                        plan.idsToAdd(
+                            accepted.filter { it.startsWith("${target.id}|") }.map { it.substringAfter('|') }.toSet(),
+                        )
+                    if (ids.isNotEmpty()) {
+                        database.addSongsToPlaylist(target, ids.map { it to null }, prepend = addToPlaylistPosition.prepend)
+                    }
+                    buildString {
+                        append(context.getString(R.string.added_to_playlist_summary, ids.size, target.playlist.name))
+                        if (plan.alreadyThere.isNotEmpty()) {
+                            append(" · ")
+                            append(context.getString(R.string.already_in_playlist_count, plan.alreadyThere.size))
+                        }
+                    }
+                }
+            withContext(Dispatchers.Main) {
+                Toast.makeText(context, summary.joinToString("\n"), Toast.LENGTH_LONG).show()
+                selectedPlaylistIds.clear()
+                pendingPlans = emptyList()
+                acceptedProbables.clear()
+                onDismiss()
+            }
+        }
+    }
+
+    fun addToSelected() {
+        val targets = playlists.filter { it.id in selectedPlaylistIds }
+        if (targets.isEmpty()) return
+        coroutineScope.launch(Dispatchers.IO) {
+            val ids = onGetSong()
+            val plans = targets.map { it to database.planPlaylistAdd(it.id, ids) }
+            withContext(Dispatchers.Main) {
+                if (plans.any { it.second.probable.isNotEmpty() }) {
+                    acceptedProbables.clear()
+                    pendingPlans = plans
+                } else {
+                    commitPlans(plans, emptySet())
+                }
+            }
         }
     }
 
@@ -141,6 +184,7 @@ fun AddToPlaylistDialog(
         if (!isVisible) {
             songIds = null
             playlistsContainingSong = emptySet()
+            selectedPlaylistIds.clear()
             return@LaunchedEffect
         }
         val ids = songIds ?: return@LaunchedEffect
@@ -192,6 +236,25 @@ fun AddToPlaylistDialog(
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                     )
+                }
+            }
+
+            if (selectedPlaylistIds.isNotEmpty()) {
+                item {
+                    FilledTonalButton(
+                        onClick = ::addToSelected,
+                        shape = RoundedCornerShape(50),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 4.dp),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.add_to_playlists, selectedPlaylistIds.size),
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.SemiBold,
+                        )
+                    }
                 }
             }
 
@@ -286,25 +349,20 @@ fun AddToPlaylistDialog(
                     animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
                     label = "playlistBg"
                 )
+                val checked = playlist.id in selectedPlaylistIds
+                val toggle = {
+                    if (checked) selectedPlaylistIds.remove(playlist.id) else selectedPlaylistIds.add(playlist.id)
+                }
                 PlaylistListItem(
                     playlist = playlist,
+                    trailingContent = {
+                        Checkbox(checked = checked, onCheckedChange = { toggle() })
+                    },
                     modifier = Modifier
                     .padding(horizontal = 8.dp, vertical = 2.dp)
                     .clip(RoundedCornerShape(16.dp))
                     .background(rowBg)
-                    .clickable {
-                        selectedPlaylist = playlist
-                        coroutineScope.launch(Dispatchers.IO) {
-                            songIds = onGetSong()
-                            duplicates = database.playlistDuplicatesBatched(playlist.id, songIds!!)
-                            if (duplicates.isNotEmpty()) {
-                                showDuplicateDialog = true
-                            } else {
-                                addSongsAndSync(playlist, songIds!!)
-                                withContext(Dispatchers.Main) { onDismiss() }
-                            }
-                        }
-                    }
+                    .clickable { toggle() }
                 )
             }
         }
@@ -317,62 +375,73 @@ fun AddToPlaylistDialog(
         )
     }
 
-    // duplicate songs warning
-        if (showDuplicateDialog) {
-            DefaultDialog(
-                title = { Text(stringResource(R.string.duplicates)) },
-                buttons = {
-                    TextButton(
-                        onClick = {
-                            showDuplicateDialog = false
-                            coroutineScope.launch(Dispatchers.IO) {
-                                addSongsAndSync(
-                                    selectedPlaylist!!,
-                                    songIds!!.filter { !duplicates.contains(it) }
-                                )
-                                withContext(Dispatchers.Main) { onDismiss() }
-                            }
-                        }
-                    ) {
-                        Text(stringResource(R.string.skip_duplicates))
-                    }
-
-                    TextButton(
-                        onClick = {
-                            showDuplicateDialog = false
-                            coroutineScope.launch(Dispatchers.IO) {
-                                addSongsAndSync(selectedPlaylist!!, songIds!!)
-                                withContext(Dispatchers.Main) { onDismiss() }
-                            }
-                        }
-                    ) {
-                        Text(stringResource(R.string.add_anyway))
-                    }
-
-                    TextButton(
-                        onClick = {
-                            showDuplicateDialog = false
-                        }
-                    ) {
-                        Text(stringResource(android.R.string.cancel))
-                    }
-                },
-                onDismiss = {
-                    showDuplicateDialog = false
+    if (pendingPlans.isNotEmpty()) {
+        val plans = pendingPlans
+        DefaultDialog(
+            title = { Text(stringResource(R.string.probable_duplicates_title)) },
+            buttons = {
+                TextButton(onClick = { pendingPlans = emptyList() }) {
+                    Text(stringResource(android.R.string.cancel))
                 }
+                TextButton(onClick = { commitPlans(plans, emptySet()) }) {
+                    Text(stringResource(R.string.skip_similar))
+                }
+                TextButton(onClick = { commitPlans(plans, acceptedProbables.toSet()) }) {
+                    Text(stringResource(R.string.add_checked))
+                }
+            },
+            onDismiss = { pendingPlans = emptyList() },
+        ) {
+            Text(
+                text = stringResource(R.string.probable_duplicates_desc),
+                textAlign = TextAlign.Start,
+                modifier = Modifier.align(Alignment.Start),
+            )
+            Column(
+                modifier =
+                    Modifier
+                        .heightIn(max = 360.dp)
+                        .verticalScroll(rememberScrollState()),
             ) {
-                Text(
-                    text = if (duplicates.size == 1) {
-                        stringResource(R.string.duplicates_description_single)
-                    } else {
-                        stringResource(R.string.duplicates_description_multiple, duplicates.size)
-                    },
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier.align(Alignment.Start)
-                )
+                plans.forEach { (target, plan) ->
+                    plan.probable.forEach { (candidate, existing) ->
+                        val key = "${target.id}|${candidate.id}"
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        if (key in acceptedProbables) acceptedProbables.remove(key) else acceptedProbables.add(key)
+                                    }.padding(vertical = 4.dp),
+                        ) {
+                            Checkbox(
+                                checked = key in acceptedProbables,
+                                onCheckedChange = {
+                                    if (it) acceptedProbables.add(key) else acceptedProbables.remove(key)
+                                },
+                            )
+                            Column {
+                                Text(
+                                    text = describe(candidate),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                )
+                                Text(
+                                    text = "≈ ${describe(existing)} · ${target.playlist.name}",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
+    }
 }
+
+private fun describe(song: Candidate): String =
+    listOfNotNull(song.title, song.artist, makeTimeString(song.durationSec * 1000L)).joinToString(" · ")
 
 internal const val MAX_PLAYLIST_DUPLICATES_BATCH_SIZE = 500
 
