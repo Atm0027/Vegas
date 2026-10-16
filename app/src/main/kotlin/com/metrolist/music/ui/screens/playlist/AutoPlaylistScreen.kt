@@ -47,9 +47,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
-import androidx.compose.material3.pulltorefresh.pullToRefresh
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -135,10 +132,6 @@ fun AutoPlaylistScreen(
     val context = LocalContext.current
     val menuState = LocalMenuState.current
     val haptic = LocalHapticFeedback.current
-    val uploadUnsupportedFormatStr = stringResource(R.string.upload_unsupported_format)
-    val uploadFileTooLargeStr = stringResource(R.string.upload_file_too_large)
-    val uploadFailedStr = stringResource(R.string.upload_failed)
-    val uploadCompleteStr = stringResource(R.string.upload_complete)
     val focusManager = LocalFocusManager.current
     val playerConnection = LocalPlayerConnection.current ?: return
     val isPlaying by playerConnection.isEffectivelyPlaying.collectAsStateWithLifecycle()
@@ -222,109 +215,6 @@ fun AutoPlaylistScreen(
 
     val scope = rememberCoroutineScope()
 
-    // Upload state
-    var showUploadDialog by remember { mutableStateOf(false) }
-    var uploadProgress by remember { mutableFloatStateOf(0f) }
-    var currentUploadIndex by remember { mutableIntStateOf(0) }
-    var totalUploads by remember { mutableIntStateOf(0) }
-    var currentFileName by remember { mutableStateOf("") }
-    var isUploading by remember { mutableStateOf(false) }
-    var uploadJob by remember { mutableStateOf<kotlinx.coroutines.Job?>(null) }
-
-    val filePickerLauncher =
-        rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.OpenMultipleDocuments(),
-        ) { uris: List<Uri> ->
-            if (uris.isNotEmpty()) {
-                uris.forEach { uri ->
-                    try {
-                        val takeFlags = android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        context.contentResolver.takePersistableUriPermission(uri, takeFlags)
-                    } catch (e: SecurityException) {
-                        Timber.w(e, "Could not take persistable permission")
-                    }
-                }
-                uploadJob =
-                    scope.launch {
-                        isUploading = true
-                        showUploadDialog = true
-                        totalUploads = uris.size
-                        var successCount = 0
-
-                        uris.forEachIndexed { index, uri ->
-                            currentUploadIndex = index + 1
-                            uploadProgress = 0f
-
-                            try {
-                                val (fileName, contentLength) =
-                                    withContext(Dispatchers.IO) {
-                                        context.contentResolver.fileNameAndSize(uri)
-                                    }
-                                currentFileName = fileName
-
-                                if (fileName.substringAfterLast('.', "").lowercase() !in YouTube.SUPPORTED_UPLOAD_TYPES) {
-                                    Toast.makeText(context, uploadUnsupportedFormatStr, Toast.LENGTH_SHORT).show()
-                                    return@forEachIndexed
-                                }
-                                if (contentLength >= YouTube.MAX_UPLOAD_SIZE) {
-                                    Toast.makeText(context, uploadFileTooLargeStr, Toast.LENGTH_SHORT).show()
-                                    return@forEachIndexed
-                                }
-                                if (contentLength <= 0) {
-                                    Toast.makeText(context, uploadFailedStr, Toast.LENGTH_SHORT).show()
-                                    return@forEachIndexed
-                                }
-
-                                val result =
-                                    YouTube.uploadSong(
-                                        filename = fileName,
-                                        contentLength = contentLength,
-                                        content = { checkNotNull(context.contentResolver.openInputStream(uri)) },
-                                        onProgress = { progress -> uploadProgress = progress },
-                                    )
-
-                                if (result.getOrThrow()) successCount++
-                            } catch (e: CancellationException) {
-                                throw e
-                            } catch (e: Exception) {
-                                Toast
-                                    .makeText(
-                                        context,
-                                        uploadFailedStr + ": ${e.message}",
-                                        Toast.LENGTH_SHORT,
-                                    ).show()
-                            }
-                        }
-
-                        isUploading = false
-
-                        if (successCount > 0) {
-                            // Show completion briefly
-                            uploadProgress = 1f
-                            currentFileName = uploadCompleteStr
-                            kotlinx.coroutines.delay(1000)
-
-                            // Show toast on main thread
-                            withContext(Dispatchers.Main) {
-                                Toast
-                                    .makeText(
-                                        context,
-                                        uploadCompleteStr,
-                                        Toast.LENGTH_SHORT,
-                                    ).show()
-                            }
-
-                            showUploadDialog = false
-
-                            // Refresh uploaded songs
-                            viewModel.syncUploadedSongs()
-                        } else {
-                            showUploadDialog = false
-                        }
-                    }
-            }
-        }
-
     LaunchedEffect(songs) {
         mutableSongs.apply {
             clear()
@@ -388,55 +278,6 @@ fun AutoPlaylistScreen(
         )
     }
 
-    // Upload progress dialog
-    if (showUploadDialog) {
-        DefaultDialog(
-            onDismiss = {
-                if (isUploading) {
-                    uploadJob?.cancel()
-                    isUploading = false
-                }
-                showUploadDialog = false
-            },
-            icon = {
-                Icon(
-                    painter = painterResource(R.drawable.upload),
-                    contentDescription = null,
-                )
-            },
-            title = { Text(stringResource(R.string.uploading)) },
-            buttons = {
-                TextButton(
-                    onClick = {
-                        if (isUploading) {
-                            uploadJob?.cancel()
-                            isUploading = false
-                        }
-                        showUploadDialog = false
-                    },
-                ) {
-                    Text(stringResource(R.string.cancel))
-                }
-            },
-        ) {
-            Text(
-                text = stringResource(R.string.upload_progress, currentUploadIndex, totalUploads),
-                style = MaterialTheme.typography.bodyMedium,
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = currentFileName,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            LinearProgressIndicator(
-                progress = { uploadProgress },
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
-    }
-
     val filteredSongs =
         remember(songs, query) {
             if (query.text.isEmpty()) {
@@ -463,25 +304,10 @@ fun AutoPlaylistScreen(
 
     val state = rememberLazyListState()
 
-    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
-    val pullRefreshState = rememberPullToRefreshState()
-    val canRefresh = playlistType == PlaylistType.LIKE || playlistType == PlaylistType.UPLOADED
-
     Box(
         modifier =
             Modifier
-                .fillMaxSize()
-                .then(
-                    if (canRefresh) {
-                        Modifier.pullToRefresh(
-                            state = pullRefreshState,
-                            isRefreshing = isRefreshing,
-                            onRefresh = viewModel::refresh,
-                        )
-                    } else {
-                        Modifier
-                    },
-                ),
+                .fillMaxSize(),
     ) {
         LazyColumn(
             state = state,
@@ -640,52 +466,6 @@ fun AutoPlaylistScreen(
             headerItems = 2,
         )
 
-        if (canRefresh) {
-            Indicator(
-                isRefreshing = isRefreshing,
-                state = pullRefreshState,
-                modifier =
-                    Modifier
-                        .align(Alignment.TopCenter)
-                        .padding(LocalPlayerAwareWindowInsets.current.asPaddingValues()),
-            )
-        }
-
-        // Upload FAB for uploaded playlist - positioned above mini player
-        if (playlistType == PlaylistType.UPLOADED) {
-            androidx.compose.animation.AnimatedVisibility(
-                visible = state.isScrollingUp(),
-                enter = androidx.compose.animation.slideInVertically { it },
-                exit = androidx.compose.animation.slideOutVertically { it },
-                modifier =
-                    Modifier
-                        .align(Alignment.BottomEnd)
-                        .windowInsetsPadding(
-                            LocalPlayerAwareWindowInsets.current
-                                .only(WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal),
-                        ).padding(16.dp),
-            ) {
-                FloatingActionButton(
-                    onClick = {
-                        filePickerLauncher.launch(
-                            arrayOf(
-                                "audio/mpeg",
-                                "audio/mp4",
-                                "audio/x-m4a",
-                                "audio/flac",
-                                "audio/ogg",
-                                "audio/x-ms-wma",
-                            ),
-                        )
-                    },
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.upload),
-                        contentDescription = stringResource(R.string.upload_songs),
-                    )
-                }
-            }
-        }
 
         TopAppBar(
             title = {

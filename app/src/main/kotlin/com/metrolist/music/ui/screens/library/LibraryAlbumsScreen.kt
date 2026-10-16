@@ -137,8 +137,6 @@ fun LibraryAlbumsScreen(
         }
     }
 
-    LaunchedEffect(Unit) {
-    }
 
     val albums by viewModel.allAlbums.collectAsStateWithLifecycle()
     var isSearchActive by rememberSaveable { mutableStateOf(false) }

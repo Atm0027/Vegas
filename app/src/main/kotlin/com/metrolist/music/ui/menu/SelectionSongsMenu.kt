@@ -229,15 +229,10 @@ fun SelectionSongMenu(
                                 var successCount = 0
                                 songsToDelete.forEachIndexed { index, song ->
                                     deleteProgress = index + 1
-                                    val entityId = song.song.uploadEntityId
-                                    if (entityId != null) {
-                                        YouTube.deleteUploadedSong(entityId).onSuccess {
-                                            database.query {
-                                                delete(song.song)
-                                            }
-                                            successCount++
-                                        }
+                                    database.query {
+                                        delete(song.song)
                                     }
+                                    successCount++
                                 }
                                 withContext(Dispatchers.Main) {
                                     Toast
@@ -455,26 +450,12 @@ fun SelectionSongMenu(
                                                 inLibrary(song.id, null)
                                             }
                                         }
-                                        coroutineScope.launch {
-                                            // Use the new reliable method that fetches fresh tokens
-                                            songSelection.forEach { song ->
-                                                YouTube.toggleSongLibrary(song.id, false)
-                                            }
-                                        }
                                     } else {
                                         database.transaction {
                                             songSelection.forEach { song ->
                                                 insert(song.toMediaMetadata())
                                                 inLibrary(song.id, LocalDateTime.now())
                                             }
-                                        }
-                                        coroutineScope.launch {
-                                            // Use the new reliable method that fetches fresh tokens
-                                            songSelection
-                                                .filter { it.song.inLibrary == null }
-                                                .forEach { song ->
-                                                    YouTube.toggleSongLibrary(song.id, true)
-                                                }
                                         }
                                     }
                                 },

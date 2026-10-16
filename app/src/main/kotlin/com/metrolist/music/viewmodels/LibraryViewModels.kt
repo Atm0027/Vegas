@@ -48,7 +48,6 @@ import com.metrolist.music.extensions.matchesNormalizedQuery
 import com.metrolist.music.extensions.normalizeForSearch
 import com.metrolist.music.extensions.toEnum
 import com.metrolist.music.playback.DownloadUtil
-import com.metrolist.music.utils.PodcastRefreshTrigger
 import com.metrolist.music.utils.dataStore
 import com.metrolist.music.utils.reportException
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -111,14 +110,8 @@ constructor(
                 }
             }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    fun syncLikedSongs() {
-    }
 
-    fun syncLibrarySongs() {
-    }
 
-    fun syncUploadedSongs() {
-    }
 }
 
 @HiltViewModel
@@ -164,8 +157,6 @@ constructor(
                 .distinctBy { it.id }
         }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    fun sync() {
-    }
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -228,8 +219,6 @@ constructor(
                 }
             }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    fun sync() {
-    }
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -284,8 +273,6 @@ constructor(
                 database.playlists(sortType, descending).map { it.filterYoutubeShorts(hideYoutubeShorts) }
             }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    fun sync() {
-    }
 
     val topValue =
         context.dataStore.data
@@ -330,8 +317,6 @@ constructor(
     @ApplicationContext context: Context,
     database: MusicDatabase,
 ) : ViewModel() {
-    private val _isRefreshing = MutableStateFlow(false)
-    val isRefreshing = _isRefreshing.asStateFlow()
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery = _searchQuery.asStateFlow()
@@ -343,17 +328,7 @@ constructor(
         _searchQuery.value = query
     }
 
-    val syncAllLibrary = {
-         viewModelScope.launch(Dispatchers.IO) {
-         }
-    }
 
-    fun refresh() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _isRefreshing.value = true
-            _isRefreshing.value = false
-        }
-    }
 
     val topValue =
         context.dataStore.data
@@ -508,26 +483,6 @@ constructor(
                 database.savedPodcastEpisodes(sortType, descending).map { it.filterExplicit(hideExplicit) }
             }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
-    private suspend fun fetchSePlaylist() {
-        YouTube.library("FEmusic_liked_playlists").completed().onSuccess {
-            _sePlaylist.value = it.items
-                .filterIsInstance<com.metrolist.innertube.models.PlaylistItem>()
-                .find { it.id == "SE" }
-        }.onFailure {
-            timber.log.Timber.e(it, "[PODCAST] Failed to fetch SE playlist")
-        }
-    }
-
-    private suspend fun fetchPodcastChannels() {
-        YouTube.libraryPodcastChannels().onSuccess { page ->
-            val channels = page.items.filterIsInstance<ArtistItem>()
-            _apiPodcastChannels.value = channels
-            timber.log.Timber.d("[PODCAST] Fetched ${channels.size} podcast channels from YT Music")
-        }.onFailure {
-            timber.log.Timber.e(it, "[PODCAST] Failed to fetch podcast channels")
-        }
-    }
-
     private suspend fun fetchRdpnPlaylist() {
         YouTube.newEpisodesPlaylistInfo().onSuccess { item ->
             _rdpnPlaylist.value = item
@@ -539,43 +494,11 @@ constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            fetchSePlaylist()
-        }
-        viewModelScope.launch(Dispatchers.IO) {
-            fetchPodcastChannels()
-        }
-        viewModelScope.launch(Dispatchers.IO) {
             fetchRdpnPlaylist()
-        }
-        viewModelScope.launch(Dispatchers.IO) {
-        }
-        // Observe refresh trigger for auto-refresh after subscribe/unsubscribe
-        viewModelScope.launch(Dispatchers.IO) {
-            PodcastRefreshTrigger.refreshFlow.collect {
-                // Small delay to allow YouTube's backend to update
-                kotlinx.coroutines.delay(1500)
-                fetchPodcastChannels()
-            }
-        }
-    }
-
-    fun clearPodcastData() {
-        viewModelScope.launch(Dispatchers.IO) {
         }
     }
 
     suspend fun refreshAll() {
-        fetchSePlaylist()
-        fetchPodcastChannels()
         fetchRdpnPlaylist()
-    }
-
-    /**
-     * Force refresh podcast channels. Called when screen becomes visible.
-     */
-    fun refreshChannels() {
-        viewModelScope.launch(Dispatchers.IO) {
-            fetchPodcastChannels()
-        }
     }
 }

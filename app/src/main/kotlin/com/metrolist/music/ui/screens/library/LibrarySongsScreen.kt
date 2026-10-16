@@ -106,10 +106,6 @@ fun LibrarySongsScreen(
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val menuState = LocalMenuState.current
-    val uploadUnsupportedFormatStr = stringResource(R.string.upload_unsupported_format)
-    val uploadFileTooLargeStr = stringResource(R.string.upload_file_too_large)
-    val uploadFailedStr = stringResource(R.string.upload_failed)
-    val uploadCompleteStr = stringResource(R.string.upload_complete)
     val queueAllSongsStr = stringResource(R.string.queue_all_songs)
     val playerConnection = LocalPlayerConnection.current ?: return
     val isPlaying by playerConnection.isEffectivelyPlaying.collectAsStateWithLifecycle()
@@ -133,111 +129,6 @@ fun LibrarySongsScreen(
 
     var filter by rememberEnumPreference(SongFilterKey, SongFilter.LIKED)
 
-    // Upload state
-    var showUploadDialog by remember { mutableStateOf(false) }
-    var uploadProgress by remember { mutableFloatStateOf(0f) }
-    var currentUploadIndex by remember { mutableIntStateOf(0) }
-    var totalUploads by remember { mutableIntStateOf(0) }
-    var currentFileName by remember { mutableStateOf("") }
-    var isUploading by remember { mutableStateOf(false) }
-    var uploadJob by remember { mutableStateOf<kotlinx.coroutines.Job?>(null) }
-
-    val filePickerLauncher =
-        rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.OpenMultipleDocuments(),
-        ) { uris: List<Uri> ->
-            if (uris.isNotEmpty()) {
-                uris.forEach { uri ->
-                    try {
-                        val takeFlags = android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        context.contentResolver.takePersistableUriPermission(uri, takeFlags)
-                    } catch (e: SecurityException) {
-                        Timber.w(e, "Could not take persistable permission")
-                    }
-                }
-                uploadJob =
-                    scope.launch {
-                        isUploading = true
-                        showUploadDialog = true
-                        totalUploads = uris.size
-                        var successCount = 0
-
-                        uris.forEachIndexed { index, uri ->
-                            currentUploadIndex = index + 1
-                            uploadProgress = 0f
-
-                            try {
-                                val (fileName, contentLength) =
-                                    withContext(Dispatchers.IO) {
-                                        context.contentResolver.fileNameAndSize(uri)
-                                    }
-                                currentFileName = fileName
-
-                                if (fileName.substringAfterLast('.', "").lowercase() !in YouTube.SUPPORTED_UPLOAD_TYPES) {
-                                    Toast.makeText(context, uploadUnsupportedFormatStr, Toast.LENGTH_SHORT).show()
-                                    return@forEachIndexed
-                                }
-                                if (contentLength >= YouTube.MAX_UPLOAD_SIZE) {
-                                    Toast.makeText(context, uploadFileTooLargeStr, Toast.LENGTH_SHORT).show()
-                                    return@forEachIndexed
-                                }
-                                if (contentLength <= 0) {
-                                    Toast.makeText(context, uploadFailedStr, Toast.LENGTH_SHORT).show()
-                                    return@forEachIndexed
-                                }
-
-                                val result =
-                                    YouTube.uploadSong(
-                                        filename = fileName,
-                                        contentLength = contentLength,
-                                        content = { checkNotNull(context.contentResolver.openInputStream(uri)) },
-                                        onProgress = { progress -> uploadProgress = progress },
-                                    )
-
-                                if (result.getOrThrow()) successCount++
-                            } catch (e: CancellationException) {
-                                throw e
-                            } catch (e: Exception) {
-                                Toast
-                                    .makeText(
-                                        context,
-                                        uploadFailedStr + ": ${e.message}",
-                                        Toast.LENGTH_SHORT,
-                                    ).show()
-                            }
-                        }
-
-                        isUploading = false
-
-                        if (successCount > 0) {
-                            // Show completion briefly
-                            uploadProgress = 1f
-                            currentFileName = uploadCompleteStr
-                            kotlinx.coroutines.delay(1000)
-
-                            // Show toast on main thread
-                            withContext(Dispatchers.Main) {
-                                Toast
-                                    .makeText(
-                                        context,
-                                        uploadCompleteStr,
-                                        Toast.LENGTH_SHORT,
-                                    ).show()
-                            }
-
-                            showUploadDialog = false
-
-                            // Refresh uploaded songs
-                            viewModel.syncUploadedSongs()
-                        } else {
-                            showUploadDialog = false
-                        }
-                    }
-            }
-        }
-
-    LaunchedEffect(Unit) {
-    }
 
     val lazyListState = rememberLazyListState()
 
@@ -261,55 +152,6 @@ fun LibrarySongsScreen(
             val artistNames = song.artists.map { it.name }.toTypedArray()
             matchesNormalizedQuery(normalizedQuery, song.song.title, song.album?.title, *artistNames)
         }
-
-    // Upload progress dialog
-    if (showUploadDialog) {
-        DefaultDialog(
-            onDismiss = {
-                if (isUploading) {
-                    uploadJob?.cancel()
-                    isUploading = false
-                }
-                showUploadDialog = false
-            },
-            icon = {
-                Icon(
-                    painter = painterResource(R.drawable.upload),
-                    contentDescription = null,
-                )
-            },
-            title = { Text(stringResource(R.string.uploading)) },
-            buttons = {
-                TextButton(
-                    onClick = {
-                        if (isUploading) {
-                            uploadJob?.cancel()
-                            isUploading = false
-                        }
-                        showUploadDialog = false
-                    },
-                ) {
-                    Text(stringResource(R.string.cancel))
-                }
-            },
-        ) {
-            Text(
-                text = stringResource(R.string.upload_progress, currentUploadIndex, totalUploads),
-                style = MaterialTheme.typography.bodyMedium,
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = currentFileName,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            LinearProgressIndicator(
-                progress = { uploadProgress },
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
-    }
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -467,31 +309,17 @@ fun LibrarySongsScreen(
             }
         }
 
-        // Show upload FAB when on UPLOADED filter, shuffle FAB otherwise
         HideOnScrollFAB(
-            visible = if (filter == SongFilter.UPLOADED) true else filteredSongs.isNotEmpty(),
+            visible = filteredSongs.isNotEmpty(),
             lazyListState = lazyListState,
-            icon = if (filter == SongFilter.UPLOADED) R.drawable.upload else R.drawable.shuffle,
+            icon = R.drawable.shuffle,
             onClick = {
-                if (filter == SongFilter.UPLOADED) {
-                    filePickerLauncher.launch(
-                        arrayOf(
-                            "audio/mpeg",
-                            "audio/mp4",
-                            "audio/x-m4a",
-                            "audio/flac",
-                            "audio/ogg",
-                            "audio/x-ms-wma",
-                        ),
-                    )
-                } else {
-                    playerConnection.playQueue(
-                        ListQueue(
-                            title = queueAllSongsStr,
-                            items = filteredSongs.shuffled().map { it.toMediaItem() },
-                        ),
-                    )
-                }
+                playerConnection.playQueue(
+                    ListQueue(
+                        title = queueAllSongsStr,
+                        items = filteredSongs.shuffled().map { it.toMediaItem() },
+                    ),
+                )
             },
         )
     }

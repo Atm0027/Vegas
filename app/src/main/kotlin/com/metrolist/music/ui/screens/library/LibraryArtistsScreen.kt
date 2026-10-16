@@ -124,8 +124,6 @@ fun LibraryArtistsScreen(
         }
     }
 
-    LaunchedEffect(Unit) {
-    }
 
     var isSearchActive by rememberSaveable { mutableStateOf(false) }
     val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()

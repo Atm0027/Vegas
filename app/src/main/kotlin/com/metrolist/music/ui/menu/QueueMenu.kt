@@ -197,31 +197,6 @@ fun QueueMenu(
                                 database.query {
                                     update(songEntity.copy(inLibrary = if (isCurrentlySaved) null else java.time.LocalDateTime.now()))
                                 }
-                                launch {
-                                    if (isCurrentlySaved) {
-                                        val setVideoIdEntity = database.getSetVideoId(songEntity.id)
-                                        val setVideoId = setVideoIdEntity?.setVideoId
-                                        if (setVideoId != null) {
-                                            YouTube.removeEpisodeFromSavedEpisodes(songEntity.id, setVideoId).onSuccess {
-                                                timber.log.Timber.d("[EPISODE_SAVE] Removed episode from Episodes for Later: ${songEntity.id}")
-                                            }.onFailure { e ->
-                                                timber.log.Timber.e(e, "[EPISODE_SAVE] Failed to remove episode: ${songEntity.id}")
-                                                kotlinx.coroutines.withContext(Dispatchers.Main) {
-                                                    android.widget.Toast.makeText(context, R.string.error_episode_remove, android.widget.Toast.LENGTH_SHORT).show()
-                                                }
-                                            }
-                                        }
-                                    } else {
-                                        YouTube.addEpisodeToSavedEpisodes(songEntity.id).onSuccess {
-                                            timber.log.Timber.d("[EPISODE_SAVE] Saved episode to Episodes for Later: ${songEntity.id}")
-                                        }.onFailure { e ->
-                                            timber.log.Timber.e(e, "[EPISODE_SAVE] Failed to save episode: ${songEntity.id}")
-                                            kotlinx.coroutines.withContext(Dispatchers.Main) {
-                                                android.widget.Toast.makeText(context, R.string.error_episode_save, android.widget.Toast.LENGTH_SHORT).show()
-                                            }
-                                        }
-                                    }
-                                }
                             } else {
                                 // Regular song: toggle like
                                 val s = songEntity.toggleLike()

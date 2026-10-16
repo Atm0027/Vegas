@@ -61,13 +61,11 @@ import com.metrolist.music.LocalDatabase
 import com.metrolist.music.LocalPlayerAwareWindowInsets
 import com.metrolist.music.LocalPlayerConnection
 import com.metrolist.music.R
-import com.metrolist.music.constants.HistorySource
 import com.metrolist.music.extensions.metadata
 import com.metrolist.music.extensions.toMediaItem
 import com.metrolist.music.models.toMediaMetadata
 import com.metrolist.music.playback.queues.ListQueue
 import com.metrolist.music.playback.queues.YouTubeQueue
-import com.metrolist.music.ui.component.ChipsRow
 import com.metrolist.music.ui.component.HideOnScrollFAB
 import com.metrolist.music.ui.component.IconButton
 import com.metrolist.music.ui.component.LocalMenuState
@@ -130,10 +128,6 @@ fun HistoryScreen(
         BackHandler(onBack = onExitSelectionMode)
     }
 
-    val historySource by viewModel.historySource.collectAsStateWithLifecycle()
-
-    val historyPage by viewModel.historyPage.collectAsStateWithLifecycle()
-
     val events by viewModel.events.collectAsStateWithLifecycle()
 
 
@@ -168,25 +162,6 @@ fun HistoryScreen(
             }
         }
 
-    val filteredRemoteContent =
-        remember(historyPage, query) {
-            if (query.text.isEmpty()) {
-                historyPage?.sections
-            } else {
-                historyPage
-                    ?.sections
-                    ?.map { section ->
-                        section.copy(
-                            songs =
-                                section.songs.filter { song ->
-                                    song.title.contains(query.text, ignoreCase = true) ||
-                                        song.artists.any { it.name.contains(query.text, ignoreCase = true) }
-                                },
-                        )
-                    }?.filter { it.songs.isNotEmpty() }
-            }
-        }
-
     val allEvents =
         remember(filteredEvents) {
             filteredEvents.values.flatten()
@@ -216,20 +191,6 @@ fun HistoryScreen(
                     ),
                 ),
         ) {
-            item(key = "chips_row") {
-                ChipsRow(
-                    chips =
-                        listOf(HistorySource.LOCAL to stringResource(R.string.local_history)),
-                    currentValue = historySource,
-                    onValueUpdate = {
-                        viewModel.historySource.value = it
-                        if (it == HistorySource.REMOTE) {
-                            viewModel.fetchRemoteHistory()
-                        }
-                    },
-                )
-            }
-
             filteredEvents.forEach { (dateAgo, dateEvents) ->
                 stickyHeader {
                     NavigationTitle(
@@ -319,33 +280,16 @@ fun HistoryScreen(
         val historyTitle = stringResource(R.string.history)
 
         HideOnScrollFAB(
-            visible =
-                if (historySource == HistorySource.REMOTE) {
-                    filteredRemoteContent?.any { it.songs.isNotEmpty() } == true
-                } else {
-                    allEvents.isNotEmpty()
-                },
+            visible = allEvents.isNotEmpty(),
             lazyListState = lazyListState,
             icon = R.drawable.shuffle,
             onClick = {
-                if (historySource == HistorySource.REMOTE && historyPage != null) {
-                    val songs = filteredRemoteContent?.flatMap { it.songs } ?: emptyList()
-                    if (songs.isNotEmpty()) {
-                        playerConnection.playQueue(
-                            ListQueue(
-                                title = historyTitle,
-                                items = songs.map { it.toMediaItem() }.shuffled(),
-                            ),
-                        )
-                    }
-                } else {
-                    playerConnection.playQueue(
-                        ListQueue(
-                            title = historyTitle,
-                            items = allEvents.map { it.song.toMediaItem() }.shuffled(),
-                        ),
-                    )
-                }
+                playerConnection.playQueue(
+                    ListQueue(
+                        title = historyTitle,
+                        items = allEvents.map { it.song.toMediaItem() }.shuffled(),
+                    ),
+                )
             },
         )
     }

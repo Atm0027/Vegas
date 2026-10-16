@@ -215,12 +215,16 @@ class App :
                 }
         }
 
-        // Vega has no YouTube account: drop any account data left by older installs or restored backups.
+        // Vega has no YouTube account or Discord: drop data left by older installs or restored backups.
         applicationScope.launch(Dispatchers.IO) {
+            deleteSharedPreferences(LegacyAccountCleanup.DISCORD_TOKEN_PREFS)
             val stale = LegacyAccountCleanup.keysToRemove(dataStore.data.first())
             if (stale.isNotEmpty()) {
                 safeDataStoreEdit { prefs -> stale.forEach { prefs.remove(it) } }
-                withContext(Dispatchers.Main) { CookieManager.getInstance().removeAllCookies(null) }
+                withContext(Dispatchers.Main) {
+                    runCatching { CookieManager.getInstance().removeAllCookies(null) }
+                        .onFailure { Timber.w(it, "WebView unavailable; cookies not cleared") }
+                }
             }
         }
 

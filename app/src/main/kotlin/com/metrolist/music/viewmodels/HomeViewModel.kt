@@ -106,16 +106,11 @@ class HomeViewModel @Inject constructor(
     val forgottenFavorites = MutableStateFlow<List<Song>?>(null)
     val keepListening = MutableStateFlow<List<LocalItem>?>(null)
     val similarRecommendations = MutableStateFlow<List<SimilarRecommendation>?>(null)
-    val accountPlaylists = MutableStateFlow<List<PlaylistItem>?>(null)
     val homePage = MutableStateFlow<HomePage?>(null)
     val explorePage = MutableStateFlow<ExplorePage?>(null)
     val communityPlaylists = MutableStateFlow<List<CommunityPlaylistItem>?>(null)
     val selectedChip = MutableStateFlow<HomePage.Chip?>(null)
     private val previousHomePage = MutableStateFlow<HomePage?>(null)
-
-    // Official API data for podcast sections
-    val savedPodcastShows = MutableStateFlow<List<com.metrolist.innertube.models.PodcastItem>>(emptyList())
-    val episodesForLater = MutableStateFlow<List<SongItem>>(emptyList())
 
     val allLocalItems = MutableStateFlow<List<LocalItem>>(emptyList())
     val allYtItems = MutableStateFlow<List<YTItem>>(emptyList())
@@ -244,9 +239,6 @@ class HomeViewModel @Inject constructor(
             isRandomizing.value = false
         }
     }
-
-    val accountName = MutableStateFlow("Guest")
-    val accountImageUrl = MutableStateFlow<String?>(null)
 
 	val showWrappedCard: StateFlow<Boolean> = context.dataStore.data.map { prefs ->
         val showWrappedPref = prefs[ShowWrappedCardKey] ?: false
@@ -475,11 +467,6 @@ class HomeViewModel @Inject constructor(
                     )
                 }.onFailure { reportException(it) }
             }
-
-            if (YouTube.cookie != null) {
-                launch(Dispatchers.IO) { loadAccountInfo() }
-                launch(Dispatchers.IO) { loadAccountPlaylists() }
-            }
         }
 
         allLocalItems.value = (quickPicks.value.orEmpty() + forgottenFavorites.value.orEmpty() + keepListening.value.orEmpty())
@@ -625,48 +612,6 @@ class HomeViewModel @Inject constructor(
                 }
             )
             selectedChip.value = chip
-
-            // Fetch podcast-specific data when podcasts chip is selected
-            if (chip.title.contains("Podcast", ignoreCase = true)) {
-                fetchPodcastData()
-            }
-        }
-    }
-
-    private suspend fun fetchPodcastData() {
-        // Fetch saved podcast shows from official API
-        YouTube.savedPodcastShows().onSuccess { shows ->
-            savedPodcastShows.value = shows.filterOutNulls()
-        }.onFailure {
-            reportException(it)
-        }
-
-        // Fetch episodes for later from official API
-        YouTube.episodesForLater().onSuccess { episodes ->
-            episodesForLater.value = episodes.filterOutNulls()
-        }.onFailure {
-            reportException(it)
-        }
-    }
-
-    private suspend fun loadAccountInfo() {
-        YouTube.accountInfo().onSuccess { info ->
-            accountName.value = info.name
-            accountImageUrl.value = info.thumbnailUrl
-        }.onFailure {
-            reportException(it)
-        }
-    }
-
-    private suspend fun loadAccountPlaylists() {
-        val hideYoutubeShorts = context.dataStore.get(HideYoutubeShortsKey, false)
-        YouTube.library("FEmusic_liked_playlists").completed().onSuccess {
-            accountPlaylists.value = it.items.filterIsInstance<PlaylistItem>()
-                .filterOutNulls()
-                .filterNot { it.id == "SE" }
-                .filterYoutubeShorts(hideYoutubeShorts)
-        }.onFailure {
-            reportException(it)
         }
     }
 
@@ -702,9 +647,6 @@ class HomeViewModel @Inject constructor(
             }
             isRefreshing.value = false
         }
-        // Run sync when user manually refreshes
-        viewModelScope.launch(Dispatchers.IO) {
-        }
     }
 
     override fun onCleared() {
@@ -713,9 +655,6 @@ class HomeViewModel @Inject constructor(
     }
 
     init {
-        // Run sync in separate coroutine with cooldown to avoid blocking UI
-        viewModelScope.launch(Dispatchers.IO) {
-        }
 
         var wasOffline = !networkConnectivity.networkStatus.value
         viewModelScope.launch(Dispatchers.IO) {
@@ -746,18 +685,6 @@ class HomeViewModel @Inject constructor(
                     }
                 }
             }
-        }
-
-        // Listen for HideYoutubeShorts preference changes and reload account playlists instantly
-        viewModelScope.launch(Dispatchers.IO) {
-            context.dataStore.data
-                .map { it[HideYoutubeShortsKey] ?: false }
-                .distinctUntilChanged()
-                .collect {
-                    if (YouTube.cookie != null && accountPlaylists.value != null) {
-                        loadAccountPlaylists()
-                    }
-                }
         }
     }
 

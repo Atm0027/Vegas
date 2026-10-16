@@ -124,20 +124,6 @@ fun LibraryPodcastsScreen(
     val podcastChannels by viewModel.podcastChannels.collectAsStateWithLifecycle()
     val rdpnPlaylist by viewModel.rdpnPlaylist.collectAsStateWithLifecycle()
 
-    // Refresh channels when screen becomes visible (ON_RESUME)
-    val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(lifecycleOwner) {
-        val observer =
-            LifecycleEventObserver { _, event ->
-                if (event == Lifecycle.Event.ON_RESUME) {
-                    viewModel.refreshChannels()
-                }
-            }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
-    }
 
     val lazyListState = rememberLazyListState()
 

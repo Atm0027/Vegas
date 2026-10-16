@@ -2003,13 +2003,6 @@ class MusicService :
         scope.launch {
             val songToToggle = currentSong.first()
             songToToggle?.let {
-                val isInLibrary = it.song.inLibrary != null
-                val token = if (isInLibrary) it.song.libraryRemoveToken else it.song.libraryAddToken
-
-                token?.let { feedbackToken ->
-                    YouTube.feedback(listOf(feedbackToken))
-                }
-
                 database.query {
                     update(it.song.toggleLibrary())
                 }
@@ -2030,7 +2023,7 @@ class MusicService :
                     return@let
                 }
 
-                val song = songEntity.toggleLike(syncToYouTube = false)
+                val song = songEntity.toggleLike()
 
                 updateNotification(isLiked = song.liked)
                 updateWidgetUI(player.isPlaying, isLiked = song.liked)

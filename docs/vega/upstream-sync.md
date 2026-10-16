@@ -8,7 +8,7 @@ a Vega y se implementa solo si conviene**. Este documento son las reglas; el est
 
 - App personal, solo audio, sin cuenta ni sincronización con YouTube, biblioteca local.
 - `applicationId = dev.alextorres.vega`, flavor `personal` (sin Cast, sin actualizador).
-- **Eliminado a propósito, no reintroducir:** Escuchar juntos (Listen Together) y protobuf, Discord, login/cuenta de YouTube y sincronización de biblioteca (`SyncUtils`). Al arrancar y al restaurar se borran datos de cuenta (`LegacyAccountCleanup`); `visitorData` anónimo se conserva.
+- **Eliminado a propósito, no reintroducir:** Escuchar juntos (Listen Together) y protobuf, Discord, login/cuenta de YouTube y sincronización de biblioteca (`SyncUtils`). Al arrancar se borran datos de cuenta y Discord (`LegacyAccountCleanup`); `visitorData` anónimo se conserva. Tampoco: subir canciones a YouTube, historial remoto, podcasts de cuenta.
 - **No ampliar:** vídeo (Metrolist ya no tiene reproductor de vídeo), Google Cast.
 - **Se mantiene:** Android Auto.
 - Lógica propia de Vega que un cambio de upstream no debe pisar:
@@ -47,7 +47,7 @@ Cada vez que Vega mejore algo nuevo, se añade una fila aquí.
 |---|---|---|
 | **Adoptar** | arreglos de reproducción, InnerTube/InnerTubeX, cifrado/PoToken, cierres, batería, descargas, letras, base de datos, Android Auto, rendimiento | Adaptar e implementar |
 | **Valorar** | funciones nuevas de UI, ajustes nuevos, refactors grandes | Implementar solo si encaja con Vega y no choca con lo anterior |
-| **Descartar** | Listen Together, Discord, login/cuenta/sync YouTube (incl. cambios en `SyncUtils`, `LoginScreen`, `AccountSettings`), vídeo, Cast, Discord, updater, Firebase/telemetría, subidas de versión de Metrolist, CI/workflows, traducciones de textos que Vega ya no tiene | No implementar; anotar el motivo |
+| **Descartar** | Listen Together, Discord, login/cuenta/sync YouTube (incl. cambios en `SyncUtils`, `LoginScreen`, `AccountSettings`), vídeo, Cast, updater, Firebase/telemetría, subidas de versión de Metrolist, CI/workflows, traducciones de textos que Vega ya no tiene | No implementar; anotar el motivo |
 
 Las traducciones: solo se adoptan cadenas que Vega usa.
 

@@ -180,7 +180,7 @@ class WrappedManager(
         val toTimestamp = LocalDateTime.of(WrappedConstants.YEAR, 12, 31, 23, 59, 59)
 
         withContext(Dispatchers.IO) {
-            val accountInfoDeferred = async { YouTube.accountInfo().getOrNull() }
+            val accountInfoDeferred = async { null as AccountInfo? }
             val topSongsDeferred = async { databaseDao.mostPlayedSongsStats(fromTimestamp, toTimeStamp = toTimestamp, limit = 30).first() }
             val topArtistsDeferred = async { databaseDao.mostPlayedArtists(fromTimestamp, toTimeStamp = toTimestamp, limit = 5).first() }
             val topAlbumsDeferred = async { databaseDao.mostPlayedAlbums(fromTimestamp, toTimeStamp = toTimestamp, limit = 5).first() }

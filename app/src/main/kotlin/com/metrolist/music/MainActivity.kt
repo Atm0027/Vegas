@@ -714,7 +714,6 @@ class MainActivity : FragmentActivity() {
                 }
 
                 val homeViewModel: HomeViewModel = hiltViewModel()
-                val accountImageUrl by homeViewModel.accountImageUrl.collectAsStateWithLifecycle()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val (previousTab, setPreviousTab) = rememberSaveable { mutableStateOf("home") }
 
@@ -1051,22 +1050,11 @@ class MainActivity : FragmentActivity() {
                                                         Badge()
                                                     }
                                                 }) {
-                                                    if (accountImageUrl != null) {
-                                                        AsyncImage(
-                                                            model = accountImageUrl,
-                                                            contentDescription = stringResource(R.string.account),
-                                                            modifier =
-                                                                Modifier
-                                                                    .size(24.dp)
-                                                                    .clip(CircleShape),
-                                                        )
-                                                    } else {
-                                                        Icon(
-                                                            painter = painterResource(R.drawable.account),
-                                                            contentDescription = stringResource(R.string.account),
-                                                            modifier = Modifier.size(24.dp),
-                                                        )
-                                                    }
+                                                    Icon(
+                                                        painter = painterResource(R.drawable.settings),
+                                                        contentDescription = stringResource(R.string.settings),
+                                                        modifier = Modifier.size(24.dp),
+                                                    )
                                                 }
                                             }
                                         },

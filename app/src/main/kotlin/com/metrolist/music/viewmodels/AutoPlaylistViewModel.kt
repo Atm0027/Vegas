@@ -43,8 +43,6 @@ constructor(
 ) : ViewModel() {
     val playlist = savedStateHandle.get<String>("playlist")!!
 
-    private val _isRefreshing = MutableStateFlow(false)
-    val isRefreshing = _isRefreshing.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val likedSongs =
@@ -75,20 +73,6 @@ constructor(
             }
             .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Lazily, emptyList())
 
-    fun syncLikedSongs() {
-    }
 
-    fun syncUploadedSongs() {
-    }
 
-    fun refresh() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _isRefreshing.value = true
-            when (playlist) {
-                "liked" -> Unit
-                "uploaded" -> Unit
-            }
-            _isRefreshing.value = false
-        }
-    }
 }

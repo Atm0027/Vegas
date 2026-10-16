@@ -33,9 +33,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
-import androidx.compose.material3.pulltorefresh.pullToRefresh
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -363,8 +360,6 @@ fun LibraryMixScreen(
         }
     }
 
-    LaunchedEffect(Unit) {
-    }
 
     val headerContent = @Composable {
         LibrarySearchHeader(
@@ -429,18 +424,10 @@ fun LibraryMixScreen(
         }
     }
 
-    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
-    val pullRefreshState = rememberPullToRefreshState()
-
     Box(
         modifier =
             Modifier
-                .fillMaxSize()
-                .pullToRefresh(
-                    state = pullRefreshState,
-                    isRefreshing = isRefreshing,
-                    onRefresh = viewModel::refresh,
-                ),
+                .fillMaxSize(),
     ) {
         when (viewType) {
             LibraryViewType.LIST -> {
@@ -1061,14 +1048,5 @@ fun LibraryMixScreen(
                 contentDescription = stringResource(R.string.create_playlist),
             )
         }
-
-        Indicator(
-            isRefreshing = isRefreshing,
-            state = pullRefreshState,
-            modifier =
-                Modifier
-                    .align(Alignment.TopCenter)
-                    .padding(LocalPlayerAwareWindowInsets.current.asPaddingValues()),
-        )
     }
 }

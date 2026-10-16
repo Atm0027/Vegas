@@ -288,27 +288,12 @@ fun YouTubeSelectionSongMenu(
                                         inLibrary(song.id, null)
                                     }
                                 }
-                                coroutineScope.launch {
-                                    // Use the new reliable method that fetches fresh tokens
-                                    songSelection.forEach { song ->
-                                        YouTube.toggleSongLibrary(song.id, false)
-                                    }
-                                }
                             } else {
                                 database.transaction {
                                     songSelection.forEach { song ->
                                         insert(song.toMediaMetadata())
                                         inLibrary(song.id, LocalDateTime.now())
                                     }
-                                }
-                                coroutineScope.launch {
-                                    // Use the new reliable method that fetches fresh tokens
-                                    songSelection
-                                        .filter { song ->
-                                            song.toMediaMetadata().inLibrary == null
-                                        }.forEach { song ->
-                                            YouTube.toggleSongLibrary(song.id, true)
-                                        }
                                 }
                             }
                             clearAction()

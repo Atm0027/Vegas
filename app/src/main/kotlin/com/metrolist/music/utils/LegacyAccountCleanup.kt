@@ -1,30 +1,43 @@
 /**
- * Vega: no YouTube account. Removes account data that older installs or restored
- * Metrolist backups may still carry. The anonymous visitorData is kept on purpose:
- * account-less playback depends on it.
+ * Vega: no YouTube account and no Discord. Removes the data that older installs or restored
+ * Metrolist backups may still carry. The anonymous visitorData is kept on purpose: account-less
+ * playback depends on it. Only a visitorData minted next to a signed-in cookie is dropped, since it
+ * may be tied to that session; a fresh anonymous one is generated on demand.
  * Licensed under GPL-3.0
  */
 
 package com.metrolist.music.utils
 
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.longPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
 
 object LegacyAccountCleanup {
-    private val KEYS: List<Preferences.Key<*>> =
-        listOf(
-            stringPreferencesKey("innerTubeCookie"),
-            stringPreferencesKey("innerTubeAuthUser"),
-            stringPreferencesKey("accountName"),
-            stringPreferencesKey("accountEmail"),
-            stringPreferencesKey("accountChannelHandle"),
-            stringPreferencesKey("dataSyncId"),
-            booleanPreferencesKey("ytmSync"),
-            booleanPreferencesKey("useLoginForBrowse"),
-            longPreferencesKey("last_full_sync"),
+    private const val COOKIE = "innerTubeCookie"
+    private const val VISITOR_DATA = "visitorData"
+    private const val DISCORD_PREFIX = "discord"
+
+    /** SharedPreferences file where Metrolist kept its encrypted Discord tokens. */
+    const val DISCORD_TOKEN_PREFS = "discord_token"
+
+    private val ACCOUNT_KEYS =
+        setOf(
+            COOKIE,
+            "innerTubeAuthUser",
+            "accountName",
+            "accountEmail",
+            "accountChannelHandle",
+            "dataSyncId",
+            "ytmSync",
+            "useLoginForBrowse",
+            "last_full_sync",
         )
 
-    fun keysToRemove(prefs: Preferences): List<Preferences.Key<*>> = KEYS.filter { it in prefs }
+    fun keysToRemove(prefs: Preferences): List<Preferences.Key<*>> {
+        val keys = prefs.asMap().keys
+        val signedIn = keys.any { it.name == COOKIE }
+        return keys.filter {
+            it.name in ACCOUNT_KEYS ||
+                it.name.startsWith(DISCORD_PREFIX) ||
+                (signedIn && it.name == VISITOR_DATA)
+        }
+    }
 }

@@ -288,8 +288,6 @@ fun LibraryPlaylistsScreen(
 
 
 
-    LaunchedEffect(Unit) {
-    }
 
     LaunchedEffect(scrollToTop?.value) {
         if (scrollToTop?.value == true) {

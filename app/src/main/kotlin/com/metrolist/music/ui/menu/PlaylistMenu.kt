@@ -156,9 +156,6 @@ fun PlaylistMenu(
                         ),
                     )
                 }
-                coroutineScope.launch(Dispatchers.IO) {
-                    playlist.playlist.browseId?.let { YouTube.renamePlaylist(it, name) }
-                }
             },
         )
     }
@@ -244,10 +241,6 @@ fun PlaylistMenu(
                             }
                             // Then delete the playlist
                             delete(playlist.playlist)
-                        }
-
-                        coroutineScope.launch(Dispatchers.IO) {
-                            playlist.playlist.browseId?.let { YouTube.deletePlaylist(it) }
                         }
                     },
                 ) {
