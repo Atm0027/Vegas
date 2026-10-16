@@ -33,6 +33,7 @@ import com.metrolist.music.constants.*
 import com.metrolist.music.di.ApplicationScope
 import com.metrolist.music.extensions.toEnum
 import com.metrolist.music.extensions.toInetSocketAddress
+import com.metrolist.music.offline.LegacyDownloadMigration
 import com.metrolist.music.offline.OfflineSync
 import com.metrolist.music.utils.CrashHandler
 import com.metrolist.music.utils.ArtistNameAliases
@@ -72,6 +73,9 @@ class App :
     @Inject
     lateinit var offlineSync: OfflineSync
 
+    @Inject
+    lateinit var legacyDownloadMigration: LegacyDownloadMigration
+
     override fun onCreate() {
         super.onCreate()
 
@@ -96,6 +100,11 @@ class App :
         // Plant logging before extraction services initialize.
         Timber.plant(Timber.DebugTree())
         InnerTubeXPlayer.initialize(this)
+        offlineSync.beforeFirstPass = {
+            if (!legacyDownloadMigration.isDone()) {
+                Timber.i("Legacy downloads migrated: %s", legacyDownloadMigration.run())
+            }
+        }
         offlineSync.start(applicationScope)
 
         // Pre-read Coil cache size on background to avoid runBlocking in newImageLoader

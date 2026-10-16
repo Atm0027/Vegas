@@ -117,12 +117,33 @@ class SongDownloader @Inject constructor(
         fetch(playback.streamUrl, playback.streamHeaders, length, part, onProgress)
         if (!verifySize(part, length)) throw IOException("Incomplete download of $songId")
 
-        val title = song?.song?.title ?: playback.videoDetails?.title ?: songId
-        val artists = song?.orderedArtists?.map { it.name }.orEmpty()
-            .ifEmpty { listOfNotNull(playback.videoDetails?.author) }
+        val entity = publishFile(
+            songId = songId,
+            part = part,
+            mimeType = mimeType,
+            fallbackTitle = playback.videoDetails?.title,
+            fallbackArtist = playback.videoDetails?.author,
+            fallbackCover = playback.videoDetails?.thumbnail?.thumbnails?.lastOrNull()?.url,
+        )
+        onProgress(1f)
+        return DownloadOutcome.Done(entity)
+    }
+
+    /** Tags a complete audio file, publishes it to Music/Vega and records it as downloaded. */
+    suspend fun publishFile(
+        songId: String,
+        part: File,
+        mimeType: String,
+        fallbackTitle: String? = null,
+        fallbackArtist: String? = null,
+        fallbackCover: String? = null,
+    ): DownloadEntity {
+        val song = database.getSongById(songId)
+        val title = song?.song?.title ?: fallbackTitle ?: songId
+        val artists = song?.orderedArtists?.map { it.name }.orEmpty().ifEmpty { listOfNotNull(fallbackArtist) }
         if (mimeType == "audio/mp4") {
             runCatching {
-                val cover = cover(song?.song?.thumbnailUrl ?: song?.album?.thumbnailUrl ?: playback.videoDetails?.thumbnail?.thumbnails?.lastOrNull()?.url)
+                val cover = runCatching { cover(song?.song?.thumbnailUrl ?: song?.album?.thumbnailUrl ?: fallbackCover) }.getOrNull()
                 M4aTagger.write(part, SongTags(title, artists, song?.album?.title, cover))
             }.onFailure { Timber.tag(TAG).w(it, "Could not tag $songId") }
         }
@@ -132,8 +153,7 @@ class SongDownloader @Inject constructor(
         val uri = store.publish(part, fileName, mimeType)
         val entity = DownloadEntity(songId, uri.toString(), fileName, size, mimeType, LocalDateTime.now())
         database.upsertDownload(entity)
-        onProgress(1f)
-        return DownloadOutcome.Done(entity)
+        return entity
     }
 
     private suspend fun fetch(url: String, headers: Map<String, String>, length: Long, part: File, onProgress: (Float) -> Unit) {
