@@ -21,13 +21,9 @@
     <string name="weeks">Savaitės</string>
     <string name="months">Mėnesiai</string>
     <string name="continuous">Tęstinis</string>
-    <string name="remote_history">Nuotolinė istorija</string>
     <string name="local_history">Vietinė istorija</string>
     <string name="trending">Tendencijos</string>
     <string name="filter_uploaded">Įkėlimai</string>
-    <string name="sync_playlist">Sinchronizuoti grojaraštį</string>
-    <string name="sync_disabled">Sinchronizavimas išjungtas</string>
-    <string name="allows_for_sync_witch_youtube">Pastaba: Tai leidžia sinchronizuoti su YouTube Muzika. To NEGALIMA pakeisti vėliau.</string>
     <string name="generating_image">Generuojamas paveikslėlis</string>
     <string name="please_wait">Prašome palaukti</string>
     <string name="share_lyrics">Dalintis dainos žodžiais</string>
@@ -77,9 +73,6 @@
     <string name="show_top_playlist">Rodyti grojaraštį \"Populiariausi\"</string>
     <string name="show_cached_playlist">Rodyti grojaraštį \"Saugykloje\"</string>
     <string name="show_uploaded_playlist">Rodyti grojaraštį \"Įkėlimai\"</string>
-    <string name="advanced_login">Prisijungti naudojant žetoną</string>
-    <string name="token_hidden">Prilieskite kad matytumėte žetoną</string>
-    <string name="token_shown">Prilieskite dar kartą, kad kopijuoti ar redaguoti</string>
     <string name="auto_scroll">Sinchronizuoti</string>
     <string name="show_less">Rodyti mažiau</string>
     <string name="artist_page_settings">Kūrėjo puslapis</string>
@@ -250,9 +243,6 @@
     <string name="skip_silence_desc">Greitasis perėjimas per tyliąsias dainos vietas</string>
     <string name="skip_silence_instant">Staigiai praleiskite tylą</string>
     <string name="skip_silence_instant_desc">Peršokite per tylias vietas, vietoj pagreitinant atkūrimą</string>
-    <string name="token_adv_login_description">Tai PAŽANGUS prisijungimo būdas. Kaip alternatyvą žiniatinklio portalui, galite tiesiogiai įvesti arba atnaujinti savo prisijungimo raktą čia. Pavyzdžiui, tai gali pagreitinti prisijungimą keliuose įrenginiuose. Atminkite, kad bet kokie neteisingi rakto formatai, kurių programa nesugeba išanalizuoti, nebus priimti</string>
-    <string name="yt_sync">Automatiškai sinchronizuoti su paskyra</string>
-    <string name="more_content">Daugiau turinio</string>
     <string name="edit_playlist_cover">Koreguokite grojaraščio viršelį</string>
     <string name="edit_playlist_cover_note">Pastaba: norint pakeisti grojaraščio viršelį, jūsų paskyra turi būti susieta su telefono numeriu ir patvirtinta „YouTube Muzika“.</string>
     <string name="edit_playlist_cover_note_wait">Pasirinkę paveikslėlį, palaukite, kol naujas viršelis pasirodys jūsų grojaraštyje.</string>
@@ -298,7 +288,6 @@
     <string name="clear_image_cache_dialog">Ar esate įsitikinę, kad norite pašalinti visus paveikslėlius iš podėlio?</string>
     <string name="clear_downloads_dialog">Ar esate įsitikinę, kad norite pašalinti visus atsisiuntimus?</string>
     <string name="disable">Išjungti</string>
-    <string name="not_logged_in_youtube">Neprisijungta prie YouTube</string>
     <string name="default_links">Atidaryti palaikomas nuorodas</string>
     <string name="open_app_settings_error">Klaida atidarant programėlės nustatymus</string>
     <string name="release_notes">Leidimo pastabos</string>

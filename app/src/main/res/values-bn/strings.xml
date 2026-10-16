@@ -257,7 +257,6 @@
     <string name="action_logout">লগ আউট করুন</string>
     <string name="action_login">লগ ইন করুন</string>
     <string name="not_logged_in">লগ ইন করা হয়নি</string>
-    <string name="login_failed">লগইন ব্যর্থ হয়েছে</string>
     <string name="queue">কিউ</string>
     <string name="persistent_queue_desc">অ্যাপ শুরু হলে আপনার শেষ কিউ পুনরুদ্ধার করুন</string>
     <string name="auto_load_more">অটো আরও গান লোড করুন</string>
@@ -273,10 +272,8 @@
     <string name="disable_screenshot_desc">যখন এই বিকল্পটি চালু থাকে, তখন স্ক্রিনশট এবং রিসেন্টস-এ অ্যাপের ভিউ নিষ্ক্রিয় থাকে।</string>
     <string name="enable_lrclib">LrcLib গানের লিরিক্স প্রদানকারী সক্রিয় করুন</string>
     <string name="hide_explicit">স্পষ্ট বিষয়বস্তু লুকান</string>
-    <string name="discord_integration">ডিসকর্ড ইন্টিগ্রেশন</string>
     <string name="discord_information">Metrolist আপনার Discord অ্যাকাউন্টের স্ট্যাটাস সেট করার জন্য KizzyRPC লাইব্রেরি ব্যবহার করে। এর মধ্যে Discord Gateway সংযোগ ব্যবহার করা হয়, যা Discord-এর পরিষেবার শর্তাবলীর (TOS) লঙ্ঘন হিসেবে বিবেচিত হতে পারে। তবে, এই কারণে ব্যবহারকারীর অ্যাকাউন্ট সাসপেন্ড হওয়ার কোনো পরিচিত ঘটনা নেই। ব্যবহার আপনার নিজের ঝুঁকিতে করুন।\n\nMetrolist শুধুমাত্র আপনার টোকেন সংগ্রহ করবে, এবং বাকী সবকিছু স্থানীয়ভাবে সংরক্ষিত থাকবে।</string>
     <string name="dismiss">বাতিল করুন</string>
     <string name="options">বিকল্পসমূহ</string>
     <string name="preview">প্রিভিউ</string>
-    <string name="enable_discord_rpc">রিচ প্রেজেন্স সক্ষম করুন</string>
 </resources>

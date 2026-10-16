@@ -227,7 +227,6 @@
     <string name="auto_load_more">Daha fazla şarkıyı otomatik ekle</string>
     <string name="preview">Ön izleme</string>
     <string name="theme">Tema</string>
-    <string name="login_failed">Oturum açma başarısız</string>
     <string name="disable_screenshot_desc">Bu özellik etkinleştirildiğinde ekran görüntüleri ve son kullanılanlardaki uygulamalar görünümü devre dışı bırakılır.</string>
     <string name="disable_screenshot">Ekran görüntüsünü devre dışı bırak</string>
     <string name="remove_from_queue">Sıradan çıkar</string>

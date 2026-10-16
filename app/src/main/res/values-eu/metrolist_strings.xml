@@ -13,14 +13,10 @@
     <string name="offline">Jaiskia</string>
     <string name="my_top">Nire Onenak</string>
     <string name="cached_playlist">Cachean gordeta</string>
-    <string name="sync_playlist">Zerrenda sinkronizatu</string>
-    <string name="sync_disabled">Sinkronizazioa itzalita</string>
-    <string name="allows_for_sync_witch_youtube">OHARRA: Aukera honek YouTube Music-ekin sinkronizatzea ahalbidetzen du eta beranduago EZINGO DA aldatu</string>
     <string name="generating_image">Irudia sortzen…</string>
     <string name="please_wait">Itxaron, mesedez</string>
     <string name="cancel">Utzi</string>
     <string name="local_history">Bertakoa</string>
-    <string name="remote_history">Lainoan</string>
     <string name="share_lyrics">Letrak partekatu</string>
     <string name="share_as_text">Testu moduan partekatu</string>
     <string name="share_as_image">Irudi moduan partekatu</string>
@@ -72,12 +68,6 @@
     <string name="show_downloaded_playlist">\"Deskargatuak\" zerrenda ikusi</string>
     <string name="show_top_playlist">Onenak zerrenda ikusi</string>
     <string name="show_cached_playlist">Cacheko erreprodukzio zerrenda ikusi</string>
-    <string name="advanced_login">Token-arekin saioa hasi</string>
-    <string name="token_hidden">Sakatu \"token\"-a ikusteko</string>
-    <string name="token_shown">Sakatu berriro kopiatu edo editatzeko</string>
-    <string name="token_adv_login_description">Hau saioa hasteko modu AURRERATUA da. Web-portalaerabili ordez, hemen zuzenean sartu edo eguneratu dezakezu zure sarrera-tokena. Adibidez, honek hainbat gailutan sartzea azkartzen lagun dezake. Formatu ezezaguneko token-ak errefusatuko dira</string>
-    <string name="yt_sync">Kontuarekin sinkronizazio automatikoa</string>
-    <string name="more_content">Eduki gehiago</string>
     <string name="edit_playlist_cover">Editatu erreprodukzio-zerrendaren azala</string>
     <string name="edit_playlist_cover_note">OHARRA: Zure kontua telefono-zenbaki batekin lotuta egon behar da eta YouTube Music-en egiaztatuta egon behar du erreprodukzio-zerrendaren azala aldatzeko</string>
     <string name="edit_playlist_cover_note_wait">Irudi bat hautatu ondoren, mesedez itxaron une batez zure erreprodukzio-zerrendan azala agertu dadin</string>
@@ -107,7 +97,6 @@
     <string name="clear_image_cache_dialog">Ziur al zaude cachean dauden irudi guztiak ezabatu nahi dituzula?</string>
     <string name="clear_downloads_dialog">Ziur zaude deskarga guztiak ezabatu nahi dituzula?</string>
     <string name="disable">Desgaitu</string>
-    <string name="not_logged_in_youtube">YouTube-n saioa ez hasita</string>
     <string name="default_links">Ireki onartutako estekak</string>
     <string name="open_app_settings_error">Aplikazioaren ezarpenak ezin dira ireki</string>
     <string name="release_notes">Bertsio oharrak</string>

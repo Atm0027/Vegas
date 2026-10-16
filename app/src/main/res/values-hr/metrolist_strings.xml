@@ -13,9 +13,6 @@
     <string name="offline">Preuzeto</string>
     <string name="my_top">Moja najbolje</string>
     <string name="cached_playlist">Predmemorirano</string>
-    <string name="sync_playlist">Sinkroniziraj popis za reprodukciju</string>
-    <string name="sync_disabled">Sync onemogućen</string>
-    <string name="allows_for_sync_witch_youtube">Napomena: Ovo omogućuje sinkronizaciju s YouTube Music-om, ovo NIJE moguće kasnije promijeniti</string>
     <string name="generating_image">Generiram sliku…</string>
     <string name="please_wait">Molim pričekajte</string>
     <string name="cancel">Odustani</string>
@@ -23,7 +20,6 @@
     <string name="share_as_text">Podijeli kao tekst</string>
     <string name="share_as_image">Podijeli kao sliku</string>
     <string name="local_history">Lokalno</string>
-    <string name="remote_history">Udaljeno</string>
     <string name="max_selection_limit">Maksimalno ograničenje odabira</string>
     <string name="share_selected">Podijeli odabrano</string>
     <string name="customize_colors">Prilagodi boje</string>
@@ -64,12 +60,6 @@
     <string name="show_downloaded_playlist">Prikaži \"Preuzeto\" listu pjesama</string>
     <string name="show_top_playlist">Prikaži \"Top\" listu</string>
     <string name="show_cached_playlist">Prikaži \"Prije spremljeni\" popis</string>
-    <string name="advanced_login">Prijavite se sa žetonom</string>
-    <string name="token_hidden">Ako pritisnite, prikazat će se žeton</string>
-    <string name="token_shown">Pritisni opet da kopiras ili uredi</string>
-    <string name="token_adv_login_description">Ovo je napredan način PRISTUPA LOGINu. Umjesto web portala, možete direktno unijeti ili ažurirati svoj token prijave ovdje. Na primjer, to može ubrzati prijavu na više uređaja. Molimo primijetite da će se bilo koji nevažeći formati tokena koje aplikacija ne može analizirati odbijati</string>
-    <string name="yt_sync">Sinkronizacija automatski sa nalogom</string>
-    <string name="more_content">Više sadržaja</string>
     <string name="general">Općenito</string>
     <string name="proxy">Proxy</string>
     <string name="default_lib_chips">Promijeni zadanu knjižnicu čipa</string>
@@ -90,7 +80,6 @@
     <string name="clear_image_cache_dialog">Sigurno želite obrisati sve slike pohranjene u cache?</string>
     <string name="clear_downloads_dialog">Sigurno želite obrisati sve preuzete datoteke?</string>
     <string name="disable">Onemogući</string>
-    <string name="not_logged_in_youtube">Nije se prijavljen na YouTube</string>
     <string name="default_links">Otavanje podržanih poveznica</string>
     <string name="open_app_settings_error">Nemogće otvaranje postavka aplikacije</string>
     <string name="release_notes">Obavijest o izdanjima [Croatian</string>

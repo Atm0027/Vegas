@@ -15,7 +15,6 @@
     <string name="cached_playlist">Nakacache</string>
     <string name="uploaded_playlist">Naka upload</string>
     <string name="filter_uploaded">Naka upload</string>
-    <string name="allows_for_sync_witch_youtube">Paunawa; ito\'y nagpapagana ng pagsasabay sa YouTube Music at BAWAL na itong palitan</string>
     <string name="generating_image">Gumagawa ng imahe</string>
     <string name="please_wait">Pakiantay</string>
     <string name="cancel">Kanselahin</string>
@@ -41,8 +40,6 @@
     <string name="hide_player_thumbnail_desc">Palitan ang artwork ng album ng logo ng aplikasyon sa player</string>
     <string name="already_in_playlist">Nasa playlist na:</string>
     <string name="album_cover_desc">Cover ng Album</string>
-    <string name="remote_history">Remote</string>
-    <string name="sync_playlist">Ipagsabay ang playlist</string>
     <string name="show_more">Ipakita pa ang iba</string>
     <string name="show_less">itago ang iba</string>
     <string name="artist_page_settings">Page ng artista</string>
@@ -62,7 +59,6 @@
     <string name="parsed_from_link">Kinuha mula sa link</string>
     <string name="weekly_most_playlist_name">Lingguhang Pinaka</string>
     <string name="monthly_most_playlist_name">Buwanang Pinaka</string>
-    <string name="sync_disabled">Hindi naka sync</string>
     <string name="and">at</string>
     <string name="enable">Paganahin</string>
     <string name="about_artist">Artista</string>

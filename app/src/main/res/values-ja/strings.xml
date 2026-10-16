@@ -258,7 +258,6 @@
     <string name="dismiss">非表示</string>
     <string name="options">オプション</string>
     <string name="preview">プレビュー</string>
-    <string name="login_failed">ログインに失敗しました</string>
     <string name="action_logout">ログアウト</string>
     <string name="about">アプリについて</string>
     <string name="app_version">アプリのバージョン</string>

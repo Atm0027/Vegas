@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="local_history">로컬</string>
-    <string name="remote_history">원격</string>
     <string name="charts">차트</string>
     <string name="back_button_desc">뒤로</string>
     <string name="album_cover_desc">앨범 커버</string>
@@ -23,7 +22,6 @@
     <string name="new_player_design">새로운 플레이어 디자인</string>
     <string name="new_mini_player_design">새로운 미니 플레이어 디자인</string>
     <string name="app_language">앱 언어</string>
-    <string name="not_logged_in_youtube">YouTube에 로그인되어 있지 않습니다</string>
     <string name="views">조회수</string>
     <string name="likes">좋아요</string>
     <string name="subscribe">구독</string>
@@ -56,12 +54,10 @@
     <string name="open">열기</string>
     <string name="lyrics_text_size">가사 글씨 크기</string>
     <string name="lyrics_line_spacing">가사 줄간격</string>
-    <string name="token_adv_login_description">고급 로그인 방식입니다. 토큰을 직접 입력해 여러 기기에 빠르게 로그인할 수 있습니다. 올바르지 않은 형식의 토큰은 거부됩니다</string>
     <string name="youtube_music_lyrics_note">참고: 다른 출처가 없으면 YouTube Music 가사가 자동으로 표시되며, 보통 싱크가 지원되지 않습니다</string>
     <string name="swipe_song_to_add">왼쪽으로 스와이프해 재생목록에 추가, 혹은 오른쪽으로 스와이프해 다음에 재생</string>
     <string name="density_restart_message">앱을 재시작해야 변경 사항이 적용됩니다. 지금 재시작하시겠습니까?</string>
     <string name="playlist_add_local_to_synced_note">참고: 동기화 / 원격 재생목록에 로컬 곡 추가는 지원되지 않습니다. 그 외 조합은 모두 가능합니다</string>
-    <string name="allows_for_sync_witch_youtube">참고: 이 옵션은 YouTube Music과의 동기화를 활성화하며 나중에 변경할 수 없습니다</string>
     <string name="seek_seconds_addup_description">탐색 시마다 탐색 시간이 5초씩 누적됩니다</string>
     <string name="sleep_timer_stop_after_current_song_description">현재 재생 중인 곡이 끝나면 재생을 중단합니다</string>
     <string name="crop_album_art_desc">비디오 썸네일을 크롭하여 정사각형 화면비 강제 적용</string>
@@ -82,10 +78,8 @@
     <string name="offline">다운로드됨</string>
     <string name="uploaded_playlist">업로드됨</string>
     <string name="filter_uploaded">업로드됨</string>
-    <string name="sync_playlist">재생목록 동기화</string>
     <string name="enable">활성화</string>
     <string name="please_wait">잠시만 기다려 주십시오</string>
-    <string name="sync_disabled">동기화 비활성화됨</string>
     <string name="share_as_text">텍스트로 공유</string>
     <string name="share_as_image">이미지로 공유</string>
     <string name="share_selected">선택 항목 공유</string>
@@ -150,10 +144,6 @@
     <string name="skip_silence_desc">무음 구간을 빨리 감기</string>
     <string name="skip_silence_instant">무음 구간 건너뛰기</string>
     <string name="skip_silence_instant_desc">무음 구간을 빨리 감기 하는대신 바로 건너 뜁니다</string>
-    <string name="advanced_login">토큰으로 로그인</string>
-    <string name="token_hidden">탭하여 토큰 표시</string>
-    <string name="token_shown">다시 탭하여 복사 또는 수정</string>
-    <string name="yt_sync">계정 자동 동기화</string>
     <string name="sort_ascending">오름차순</string>
     <string name="sort_descending">내림차순</string>
     <string name="edit_playlist_cover">재생목록 커버 편집</string>
@@ -461,16 +451,11 @@
     <string name="daily_discover_based_on">%1$s 기반 추천</string>
     <string name="daily_discover_for_fans_of">%1$s의 팬을 위한 추천</string>
     <string name="from_the_community">커뮤니티 추천</string>
-    <string name="logout_dialog_title">라이브러리 데이터를 보관하시겠습니까?</string>
-    <string name="logout_dialog_message">재생목록과 라이브러리 데이터를 보관하시겠습니까? 다운로드한 곡은 로그아웃 후에도 항상 유지됩니다</string>
-    <string name="logout_keep">보관</string>
-    <string name="logout_clear">삭제</string>
     <string name="credits_lead_developer">메인 개발자</string>
     <string name="credits_collaborator">공동 기여자</string>
     <string name="credits_collaborators_section">기여자 목록</string>
     <string name="credits_license_name">GNU General Public License v3.0</string>
     <string name="credits_license_desc">자유로운 오픈 소스 소프트웨어입니다. 누구나 사용, 연구, 공유 및 개선할 수 있습니다</string>
-    <string name="credits_discord">Discord 서버</string>
     <string name="credits_view_repo">저장소 보기</string>
     <string name="credits_telegram">Telegram 채널</string>
     <string name="randomize_home_order_desc">우선순위에 따라 홈 화면 섹션을 무작위로 정렬합니다</string>
@@ -613,25 +598,6 @@
     <string name="continue_action">계속</string>
     <string name="recently_converted">최근 변환된 항목</string>
     <string name="column_label">%d열</string>
-    <string name="discord_status">상태</string>
-    <string name="discord_status_online">온라인</string>
-    <string name="discord_status_idle">자리 비움</string>
-    <string name="discord_status_dnd">방해 금지</string>
-    <string name="discord_buttons">버튼</string>
-    <string name="discord_button_1">버튼 1</string>
-    <string name="discord_button_2">버튼 2</string>
-    <string name="discord_information_warning">이 기능은 KizzyRPC 라이브러리를 사용하여 Discord 게이트웨이에 연결하고 Rich Presence 상태를 업데이트합니다. 이와 유사한 방식으로 사용해 계정이 정지된 사례는 보고된 바 없으나, 이 방식은 Discord에서 공식적으로 지원하지 않으며 서비스 약관 위반으로 간주될 수 있습니다. 귀하의 토큰은 기기 내에서만 처리되며 타사 서버로 전송되지 않습니다. 사용에 따른 책임은 사용자 본인에게 있습니다!</string>
-    <string name="discord_activity_type">활동 유형</string>
-    <string name="discord_activity_playing">플레이 중</string>
-    <string name="discord_activity_listening">듣는 중</string>
-    <string name="discord_activity_watching">시청 중</string>
-    <string name="discord_activity_competing">경쟁 중</string>
-    <string name="discord_rpc_preview">Rich Presence 미리보기</string>
-    <string name="discord_presence">활동 상태</string>
-    <string name="discord_connect_description">Discord에 로그인하여 현재 듣고 있는 곡을 공유하세요</string>
-    <string name="discord_activity_name">활동 이름</string>
-    <string name="discord_advanced_mode">고급 모드</string>
-    <string name="discord_advanced_mode_description">추가 Rich Presence 사용자 지정 옵션을 표시합니다</string>
     <string name="clear">지우기</string>
     <string name="copy">복사</string>
     <string name="change">변경</string>
@@ -647,7 +613,6 @@
     <string name="lyrics_animation_slide">슬라이드</string>
     <string name="lyrics_animation_karaoke">노래방</string>
     <string name="lyrics_animation_apple">Apple Music</string>
-    <string name="more_content">추가 콘텐츠</string>
     <string name="general">일반</string>
     <string name="default_lib_chips">기본 라이브러리 탭 변경</string>
     <string name="set_quick_picks">빠른 선곡 설정</string>

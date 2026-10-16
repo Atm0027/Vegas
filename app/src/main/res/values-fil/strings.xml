@@ -205,7 +205,6 @@
     <string name="action_login">Mag-log in</string>
     <string name="login">Login</string>
     <string name="not_logged_in">Hindi naka-log in</string>
-    <string name="login_failed">Nabigong mag-login</string>
     <string name="content_language">Default na wika ng nilalaman</string>
     <string name="content_country">Default na bansa ng nilalaman</string>
     <string name="system_default">Default ng sistema</string>
@@ -264,12 +263,10 @@
     <string name="backup_create_success">Matagumpay na nilikha ang backup</string>
     <string name="backup_create_failed">Hindi makagawa ng backup</string>
     <string name="restore_failed">Nabigong ibalik ang backup</string>
-    <string name="discord_integration">Pagsasama ng Discord</string>
     <string name="discord_information">Ginagamit ng Metrolist ang aklatan ng KizzyRPC para itakda ang kapalaran ng iyong Discord account. Kabilang dito ang paggamit ng koneksyon sa Discord Gateway, na maaaring ituring na isang paglabag sa TOS ng Discord. Gayunpaman, walang mga kilalang kaso ng mga user account na sinuspinde para sa kadahilanang ito. Gamitin sa iyong sariling peligro.\n\nKukunin lang ng Metrolist ang iyong token, at lahat ng iba pa ay lokal na iniimbak.</string>
     <string name="dismiss">Balewalain</string>
     <string name="options">Mga Opsyon</string>
     <string name="preview">Pasilip</string>
-    <string name="enable_discord_rpc">Paganahin ang Rich Presence</string>
     <string name="about">Tungkol sa</string>
     <string name="app_version">Bersyon ng aplikasyon</string>
     <string name="new_version_available">Magagamit ang bagong bersyon</string>

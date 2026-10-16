@@ -268,7 +268,6 @@
     <string name="action_login">Log in</string>
     <string name="login">Login</string>
     <string name="not_logged_in">Not logged in</string>
-    <string name="login_failed">Login failed</string>
 
     <string name="content_language">Default content language</string>
     <string name="content_country">Default content country</string>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="local_history">Local</string>
-    <string name="remote_history">Remote</string>
 
     <string name="charts">Charts</string>
     <string name="mixes">Mixes</string>
@@ -24,9 +23,6 @@
     <string name="cached_playlist">Cached</string>
     <string name="uploaded_playlist">Uploaded</string>
     <string name="filter_uploaded">Uploaded</string>
-    <string name="sync_playlist">Sync playlist</string>
-    <string name="sync_disabled">Sync disabled</string>
-    <string name="allows_for_sync_witch_youtube">NOTE: This option enables syncing with YouTube Music and CANNOT be changed later</string>
 
     <string name="and">and</string>
     <string name="generating_image">Generating image…</string>
@@ -171,12 +167,6 @@
     <string name="skip_silence_instant">Instantly skip silence</string>
     <string name="skip_silence_instant_desc">Jump ahead during silent moments instead of speeding up playback</string>
 
-    <string name="advanced_login">Log in with token</string>
-    <string name="token_hidden">Tap to show token</string>
-    <string name="token_shown">Tap again to copy or edit</string>
-    <string name="token_adv_login_description">This is an ADVANCED login method. Instead of using the web portal, you can enter or update your login token directly. This can be useful for signing in across multiple devices quickly. Tokens in an unrecognized format will be rejected</string>
-    <string name="yt_sync">Auto-sync with account</string>
-    <string name="more_content">More content</string>
 
     <string name="sort_ascending">Sort ascending</string>
     <string name="sort_descending">Sort descending</string>
@@ -220,7 +210,6 @@
     <string name="import_online">Import an M3U playlist</string>
     <string name="import_csv">Import a CSV playlist</string>
     <string name="playlist_unavailable">Playlist unavailable</string>
-    <string name="playlist_created_locally">YouTube sync failed. Playlist created locally.</string>
     <string name="playlist_add_local_to_synced_note">NOTE: Adding local songs to synced or remote playlists is not supported. Any other combination is valid</string>
     <string name="export_playlist">Export playlist</string>
     <string name="export_as_csv">Export as CSV</string>
@@ -242,7 +231,6 @@
 
     <string name="disable">Disable</string>
 
-    <string name="not_logged_in_youtube">Not logged in to YouTube</string>
 
     <string name="default_links">Open supported links</string>
     <string name="open_app_settings_error">Couldn\'t open the app settings</string>
@@ -704,43 +692,6 @@
     <string name="recently_converted">Recently converted</string>
     <string name="column_label">Column %d</string>
 
-    <string name="discord_connect_description">Sign in with Discord to share what you\'re listening to</string>
-    <string name="discord_information_warning">Metrolist uses Discord\'s public OAuth2 and Gateway APIs to share what you\'re listening to. Authorization happens through a local browser session that closes itself after capturing the code — nothing is sent to third-party servers. Your token is stored on this device in encrypted preferences and is never shared. Metrolist connects directly to wss://gateway.discord.gg to publish your activity, and only requests the minimum scope required (sdk.social_layer_presence).</string>
-    <string name="discord_status_connected">Connected</string>
-    <string name="discord_status_authorizing">Authorizing…</string>
-    <string name="discord_status_authorized">Authorized</string>
-    <string name="discord_status_not_initialized">Not initialized</string>
-    <string name="discord_error_loopback_timeout">Discord didn\'t respond in time. Please try again.</string>
-    <string name="discord_error_loopback_unbound">Couldn\'t open a local callback port. Please free one and try again.</string>
-    <string name="discord_error_no_browser">No browser was found to complete Discord authorization.</string>
-    <string name="discord_error_token_refresh_failed">Discord session expired. Please reconnect.</string>
-    <string name="discord_error_invalid_scope">Discord rejected the connection. Please reconnect and grant the required permission.</string>
-    <string name="discord_error_banner_title">Discord error</string>
-    <string name="discord_rpc_preview">Rich Presence preview</string>
-    <string name="discord_integration">Discord Integration</string>
-    <string name="enable_discord_rpc">Enable Rich Presence</string>
-    <string name="discord_advanced_mode">Advanced mode</string>
-    <string name="discord_advanced_mode_description">Customize every field of your Rich Presence with placeholders</string>
-    <string name="discord_presence">Presence</string>
-    <string name="discord_activity_type">Activity type</string>
-    <string name="discord_activity_playing">Playing</string>
-    <string name="discord_activity_listening">Listening</string>
-    <string name="discord_activity_watching">Watching</string>
-    <string name="discord_activity_competing">Competing</string>
-    <string name="discord_activity_name">Activity name</string>
-    <string name="discord_state">State</string>
-    <string name="discord_details">Details</string>
-    <string name="discord_buttons">Buttons</string>
-    <string name="discord_button_1">Button 1</string>
-    <string name="discord_button_2">Button 2</string>
-    <string name="discord_enable_button_1">Show button 1</string>
-    <string name="discord_enable_button_2">Show button 2</string>
-    <string name="discord_button_label">Label</string>
-    <string name="discord_button_url">URL</string>
-    <string name="discord_status">Status</string>
-    <string name="discord_status_online">Online</string>
-    <string name="discord_status_idle">Idle</string>
-    <string name="discord_status_dnd">Do Not Disturb</string>
     <string name="speed_dial">Speed dial</string>
     <string name="pin_to_speed_dial">Pin to speed dial</string>
     <string name="unpin_from_speed_dial">Unpin from speed dial</string>
@@ -758,10 +709,6 @@
     <string name="from_the_community">From the community</string>
 
     <!-- Logout dialog -->
-    <string name="logout_dialog_title">Keep library data?</string>
-    <string name="logout_dialog_message">Do you want to keep your playlists and library data? Downloaded songs will always be kept</string>
-    <string name="logout_keep">Keep</string>
-    <string name="logout_clear">Clear</string>
 
     <!-- Credits / About Screen -->
     <string name="credits_lead_developer">Lead developer</string>
@@ -769,7 +716,6 @@
     <string name="credits_collaborators_section">Collaborators</string>
     <string name="credits_license_name">GNU General Public License v3.0</string>
     <string name="credits_license_desc">Free, open-source software. You may use, study, share, and improve it</string>
-    <string name="credits_discord">Discord server</string>
     <string name="credits_telegram">Telegram channel</string>
     <string name="credits_view_repo">View repository</string>
     <string name="buy_mo_a_coffee">Buy me a coffee!</string>
@@ -878,12 +824,6 @@
     <string name="widget_playlists">Playlists</string>
     <string name="widget_playlists_description">Playlist shortcuts with mini-player controls</string>
     <string name="choose_something_below">Choose something below</string>
-    <string name="choose_youtube_channel">Choose a YouTube channel</string>
-    <string name="choose_youtube_channel_description">This Google account has multiple channels. Pick the one you want to use.</string>
-    <string name="switch_youtube_channel">Switch YouTube channel</string>
-    <string name="youtube_channels_failed">Couldn\'t retrieve the YouTube channels for this account. Please try again.</string>
-    <string name="authentication_data_extraction_failed">Couldn\'t read the YouTube Music session. Please try again.</string>
-    <string name="login_failed_with_error">Login failed: %1$s</string>
     <string name="stream_client">Stream client</string>
     <string name="format_player_hash">Player hash</string>
     <string name="format_cipher_support_added">Cipher support added</string>

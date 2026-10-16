@@ -2,7 +2,6 @@
 <resources>
     <string name="likes">Lajkovi</string>
     <string name="local_history">Lokalna</string>
-    <string name="remote_history">Udaljena</string>
     <string name="charts">Liste</string>
     <string name="back_button_desc">Nazad</string>
     <string name="album_cover_desc">Omot albuma</string>
@@ -16,9 +15,6 @@
     <string name="my_top">Moje najbolje</string>
     <string name="offline">Preuzeto</string>
     <string name="cached_playlist">Keširano</string>
-    <string name="sync_playlist">Sinhronizuj plejlistu</string>
-    <string name="sync_disabled">Sinhronizacija onemogućena</string>
-    <string name="allows_for_sync_witch_youtube">NAPOMENA: Ovo omogućava sinhronizaciju sa YouTube Music-om i NE MOŽE se promeniti kasnije</string>
     <string name="generating_image">Generišem sliku…</string>
     <string name="please_wait">Molimo sačekajte</string>
     <string name="cancel">Otkaži</string>

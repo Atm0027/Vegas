@@ -207,7 +207,6 @@
     <string name="action_login">Hyj në llogari</string>
     <string name="login">Identifikohu</string>
     <string name="not_logged_in">Nuk jeni identifikuar</string>
-    <string name="login_failed">Identifikimi dështoi</string>
     <string name="content_language">Gjuha e parazgjedhur e përmbajtjes</string>
     <string name="content_country">Shteti i parazgjedhur i përmbajtjes</string>
     <string name="system_default">Parazgjedhja e sistemit</string>

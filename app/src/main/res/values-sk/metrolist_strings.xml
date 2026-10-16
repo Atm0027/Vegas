@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="local_history">Miestny</string>
-    <string name="remote_history">Vzdialené</string>
     <string name="charts">Grafy</string>
     <string name="back_button_desc">Späť</string>
     <string name="album_cover_desc">Obal albumu</string>
@@ -15,9 +14,6 @@
     <string name="offline">Stiahnuté</string>
     <string name="my_top">Moje najlepšie</string>
     <string name="cached_playlist">Vo vyrovnávacej pamäti</string>
-    <string name="sync_playlist">Synchronizácia playlistu</string>
-    <string name="sync_disabled">Synchronizácia zakázaná</string>
-    <string name="allows_for_sync_witch_youtube">Poznámka: Toto umožňuje synchronizáciu s YouTube Music. Toto sa neskôr NEDÁ zmeniť</string>
     <string name="generating_image">Generovanie obrázka…</string>
     <string name="please_wait">Prosím, počkajte</string>
     <string name="cancel">Zrušiť</string>
@@ -74,12 +70,6 @@
     <string name="show_downloaded_playlist">Zobraziť playlist so stiahnutými skladbami</string>
     <string name="show_top_playlist">Zobraziť najlepšie playlisty</string>
     <string name="show_cached_playlist">Zobraziť playlist s vyrovnávacou pamäťou</string>
-    <string name="advanced_login">Prihlásiť sa pomocou tokenu</string>
-    <string name="token_hidden">Klepnutím zobrazíte token</string>
-    <string name="token_shown">Klepnite znova pre kopírovanie alebo úpravu</string>
-    <string name="token_adv_login_description">Toto je POKROČILÁ metóda prihlásenia. Namiesto použitia webového portálu môžete priamo zadať alebo aktualizovať svoj prihlasovací token. To môže byť užitočné na rýchle prihlásenie na viacerých zariadeniach. Tokeny v nerozpoznanom formáte budú odmietnuté.</string>
-    <string name="yt_sync">Automatická synchronizácia s účtom</string>
-    <string name="more_content">Viac obsahu</string>
     <string name="general">Všeobecné</string>
     <string name="proxy">Proxy</string>
     <string name="default_lib_chips">Zmeniť predvolený čip knižnice</string>
@@ -100,7 +90,6 @@
     <string name="clear_image_cache_dialog">Naozaj chcete vymazať všetky obrázky z vyrovnávacej pamäte?</string>
     <string name="clear_downloads_dialog">Naozaj chcete vymazať všetky stiahnuté súbory?</string>
     <string name="disable">Zakázať</string>
-    <string name="not_logged_in_youtube">Nie ste prihlásený/á na YouTube</string>
     <string name="default_links">Otvoriť podporované odkazy</string>
     <string name="open_app_settings_error">Nastavenia aplikácie sa nepodarilo otvoriť</string>
     <string name="release_notes">Poznámky k vydaniu</string>

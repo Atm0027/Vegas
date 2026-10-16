@@ -2,14 +2,12 @@
 <resources>
     <string name="lyrics_auto_scroll">Automatsko pomjeranje stihova</string>
     <string name="show_cached_playlist">Prikaži \"Keširanu\" plejlistu</string>
-    <string name="remote_history">Udaljen</string>
     <string name="back_button_desc">Nazad</string>
     <string name="trending">U trendu</string>
     <string name="weeks">Sedmice</string>
     <string name="years">Godina</string>
     <string name="continuous">Kontinuirano</string>
     <string name="offline">Skinuto</string>
-    <string name="sync_playlist">Sinhronizovana plejlista</string>
     <string name="please_wait">Molimo vas sačekajte</string>
     <string name="select">Izaberi sve</string>
     <string name="similar_content">#Sličan #sadržaj</string>
@@ -35,9 +33,6 @@
     <string name="show_top_playlist">Prikaži \"Najbolju\" plejlistu</string>
     <string name="local_history">Lokalno</string>
     <string name="months">Mjeseci</string>
-    <string name="advanced_login">Napredni login(token)</string>
-    <string name="token_hidden">Pritisni da pokažeš token</string>
-    <string name="token_shown">Pritisni opet da kopiraš ili urediš</string>
     <string name="general">Generalno</string>
     <string name="proxy">Proxy</string>
     <string name="default_lib_chips">Promijenite zadani bibliotečki čip</string>
@@ -70,8 +65,6 @@
     <string name="liked">Lajkovano</string>
     <string name="my_top">Moj top</string>
     <string name="cached_playlist">Keširano</string>
-    <string name="sync_disabled">Sinhronizacoja onemogućena</string>
-    <string name="allows_for_sync_witch_youtube">Napomena: Ovo omogućava sinhronizaciju s YouTube Music. Ovo se NE može kasnije promijeniti.</string>
     <string name="generating_image">Generisanje slike</string>
     <string name="cancel">Otkaži</string>
     <string name="share_lyrics">Podjeli stihove</string>
@@ -95,12 +88,10 @@
     <string name="past_year">Prošle godine</string>
     <string name="playlist_add_local_to_synced_note">Napomena: Dodavanje lokalnih pjesama na sinhronizovane/udaljene plejliste nije podržano. Bilo koja druga kombinacija je važeća</string>
     <string name="percentage_format">%d%%</string>
-    <string name="not_logged_in_youtube">Niste prijavljeni na YouTube</string>
     <string name="history_duration">Trajanje istorije</string>
     <plurals name="seconds">
         <item quantity="one">%dsekund</item>
         <item quantity="few">%dsekunde</item>
         <item quantity="other">%dsekundi</item>
     </plurals>
-    <string name="token_adv_login_description">Ovo je NAPREDNA metoda prijave. Kao alternativa web portalu, ovdje možete direktno unijeti ili ažurirati svoj token za prijavu. Na primjer, ovo može ubrzati prijavu na više uređaja. Imajte na umu da neće biti prihvaćeni nevažeći formati tokena koje aplikacija ne uspije analizirati</string>
 </resources>

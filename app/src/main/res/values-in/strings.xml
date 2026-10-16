@@ -232,7 +232,6 @@
     <string name="auto_skip_next_on_error">Lewati secara otomatis ke lagu berikutnya ketika terjadi kesalahan</string>
     <string name="sided">Sisi</string>
     <string name="options">Opsi</string>
-    <string name="login_failed">Login gagal</string>
     <string name="add_anyway">Tetap tambahkan</string>
     <string name="action_logout">Keluar</string>
     <string name="misc">Lainnya</string>

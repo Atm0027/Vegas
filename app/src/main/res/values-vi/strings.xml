@@ -224,7 +224,6 @@
     <string name="dismiss">Bỏ qua</string>
     <string name="options">Tùy chọn</string>
     <string name="preview">Xem trước</string>
-    <string name="login_failed">Đăng nhập không thành công</string>
     <string name="action_logout">Đăng xuất</string>
     <string name="sided">Cạnh bên</string>
     <string name="player_text_alignment">Căn chỉnh văn bản của trình phát</string>

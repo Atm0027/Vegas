@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="local_history">Eining</string>
-    <string name="remote_history">Tenar</string>
     <string name="charts">Hittlister</string>
     <string name="back_button_desc">Far atter</string>
     <string name="album_cover_desc">Albumomslag</string>
@@ -17,9 +16,6 @@
     <string name="cached_playlist">Snarlagra</string>
     <string name="uploaded_playlist">Oppladde</string>
     <string name="filter_uploaded">Oppladde</string>
-    <string name="sync_playlist">Synkroniser speleliste</string>
-    <string name="sync_disabled">Synkronisering deaktivert</string>
-    <string name="allows_for_sync_witch_youtube">Obs! Dette tillèt synkronisering med YouTube Music og kan IKKJE brigdast seinare.</string>
     <string name="generating_image">Skapar bilete</string>
     <string name="please_wait">Venlegast vent</string>
     <string name="cancel">Bryt av</string>
@@ -76,12 +72,6 @@
     <string name="show_top_playlist">Syn «Mine topp»-spelelista</string>
     <string name="show_cached_playlist">Syn «Snarlagra»-spelelista</string>
     <string name="show_uploaded_playlist">Syn «Oppladde»-spelelista</string>
-    <string name="advanced_login">Logg inn med lykel</string>
-    <string name="token_hidden">Trykk for å syna lykelen</string>
-    <string name="token_shown">Trykk att for å kopiera eller brigda</string>
-    <string name="token_adv_login_description">Dette er ein AVANSERT innloggingsmetode. Som alternativ til nettportalen, kan du direkte leggja inn eller oppdatera innloggingslykelen din (innloggings-«token») her. Dette kan t.d. gjera det å logga inn på fleire einingar snøggare. NB: Ugilde lykelformat som appen ikkje lukkast i å tolka, kjem ikkje til å verta godtekne</string>
-    <string name="yt_sync">Automatisk synkronisering med konto</string>
-    <string name="more_content">Meir innhald</string>
     <string name="edit_playlist_cover">Brigd spelelisteomslag</string>
     <string name="edit_playlist_cover_note">NB: Kontoen din lyt vera lenkt til eit telefonnummer og stadfest på YouTube Music for å brigda spelelisteomslaget.</string>
     <string name="edit_playlist_cover_note_wait">Etter at du vel eit bilete, dukkar det nye omslaget på spelelista opp om eit bel. Venlegast vent imedan dette hender.</string>
@@ -127,7 +117,6 @@
     <string name="clear_image_cache_dialog">Er du viss på at du vil reinsa alle hurtiglagra bilete?</string>
     <string name="clear_downloads_dialog">Er du viss på at du vil reinsa alle nedladingar?</string>
     <string name="disable">Slå av</string>
-    <string name="not_logged_in_youtube">Ikkje logga på YouTube</string>
     <string name="default_links">Opna stødde lenkjer</string>
     <string name="open_app_settings_error">Klarte ikkje å opna applikasjonsinnstillingar</string>
     <string name="release_notes">Sleppsnotat</string>

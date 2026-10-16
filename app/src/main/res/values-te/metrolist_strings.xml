@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="local_history">స్థానిక</string>
-    <string name="remote_history">దూరస్థ</string>
     <string name="charts">పట్టికలు</string>
     <string name="back_button_desc">వెనుకకు</string>
     <string name="album_cover_desc">ఆల్బమ్ ముఖచిత్రం</string>
@@ -15,9 +14,6 @@
     <string name="offline">దింపబడినవి</string>
     <string name="my_top">నా అగ్రస్థానంలో ఉన్నవి</string>
     <string name="cached_playlist">తాత్కాలిక నిల్వ</string>
-    <string name="sync_playlist">జాబితాను సమకాలీకరించు</string>
-    <string name="sync_disabled">సమకాలీకరణ నిలిపివేయబడింది</string>
-    <string name="allows_for_sync_witch_youtube">గమనిక: ఈ ఎంపిక యూట్యూబ్ మ్యూజిక్‌తో సమకాలీకరించడానికి అనుమతిస్తుంది. దీనిని తర్వాత మార్చడం సాధ్యం కాదు</string>
     <string name="generating_image">చిత్రాన్ని సృష్టిస్తోంది…</string>
     <string name="please_wait">దయచేసి వేచి ఉండండి</string>
     <string name="cancel">రద్దు చేయి</string>

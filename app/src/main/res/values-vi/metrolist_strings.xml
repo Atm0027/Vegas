@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="local_history">Thiết bị này</string>
-    <string name="remote_history">YouTube Music</string>
     <string name="weeks">Tuần</string>
     <string name="months">Tháng</string>
     <string name="years">Năm</string>
@@ -9,8 +8,6 @@
     <string name="liked">Đã thích</string>
     <string name="offline">Đã tải xuống</string>
     <string name="my_top">Nghe nhiều nhất</string>
-    <string name="sync_playlist">Đồng bộ danh sách phát</string>
-    <string name="allows_for_sync_witch_youtube">LƯU Ý: Tùy chọn này cho phép đồng bộ hóa với YouTube Music và KHÔNG THỂ thay đổi sau này</string>
     <string name="select">Chọn tất cả</string>
     <string name="like_all">Thích tất cả</string>
     <string name="dislike_all">Không thích toàn bộ</string>
@@ -28,10 +25,6 @@
     <string name="lyrics_click_change">Thay đổi lời bài hát khi nhấp vào</string>
     <string name="slim">Dạng mỏng</string>
     <string name="slim_navbar">Thanh điều hướng mỏng phía dưới</string>
-    <string name="advanced_login">Đăng nhập bằng token</string>
-    <string name="token_hidden">Chạm để xem Token</string>
-    <string name="token_shown">Chạm lần nữa để sao chép hoặc chỉnh sửa</string>
-    <string name="token_adv_login_description">Đây là phương thức đăng nhập NÂNG CAO. Thay vì sử dụng cổng thông tin trên web, bạn có thể nhập hoặc cập nhật trực tiếp Token đăng nhập. Cách này giúp bạn đăng nhập nhanh chóng trên nhiều thiết bị. Các mã xác thực có định dạng không hợp lệ sẽ bị từ chối</string>
     <string name="general">Nâng cao</string>
     <string name="proxy">Proxy</string>
     <string name="default_lib_chips">Thay đổi thư viện mặc định</string>
@@ -43,7 +36,6 @@
     <string name="percentage_format">%d%%</string>
     <string name="clear_song_cache_dialog">Bạn có muốn xóa tất cả bộ nhớ đệm (cache) liên quan đến nhạc?</string>
     <string name="clear_downloads_dialog">Bạn có muốn xóa tất cả bài hát đã tải xuống?</string>
-    <string name="not_logged_in_youtube">Chưa đăng nhập vào YouTube</string>
     <string name="default_links">Mở đường liên kết được hỗ trợ</string>
     <string name="open_app_settings_error">Không thể mở cài đặt ứng dụng</string>
     <string name="release_notes">Ghi chú của bản phát hành</string>
@@ -70,7 +62,6 @@
     <string name="charts">Bảng xếp hạng</string>
     <string name="album_cover_desc">Ảnh bìa album</string>
     <string name="top_music_videos">Video âm nhạc hàng đầu</string>
-    <string name="sync_disabled">Đã tắt đồng bộ</string>
     <string name="cancel">Huỷ bỏ</string>
     <string name="share_as_text">Chia sẻ dưới dạng văn bản</string>
     <string name="share_as_image">Chia sẻ dưới dạng hình ảnh</string>
@@ -96,8 +87,6 @@
     <string name="trending">Thịnh hành</string>
     <string name="share_lyrics">Chia sẻ lời bài hát</string>
     <string name="cached_playlist">Đã lưu vào bộ đệm</string>
-    <string name="yt_sync">Tự động đồng bộ tài khoản</string>
-    <string name="more_content">Nội dung khác</string>
     <string name="playlist_add_local_to_synced_note">LƯU Ý: Không hỗ trợ thêm bài hát cục bộ vào danh sách phát đã đồng bộ hoặc danh sách phát từ xa. Mọi sự kết hợp khác đều hợp lệ</string>
     <string name="auto_download_on_like">Tự động tải xuống khi thích</string>
     <string name="auto_download_on_like_desc">Tự động tải xuống các bài hát khi bạn thích chúng</string>
@@ -259,8 +248,6 @@
     <string name="metrolist">METROLIST</string>
     <string name="credits_license_name">Giấy phép Công cộng GNU phiên bản 3.0 (GPLv3)</string>
     <string name="daily_discover_based_on">Dựa trên %1$s</string>
-    <string name="logout_keep">Giữ lại</string>
-    <string name="logout_clear">Xoá bỏ</string>
     <string name="credits_telegram">Kênh Telegram</string>
     <string name="filter_podcasts">Podcasts</string>
     <string name="view_podcast">Xem podcast</string>
@@ -333,7 +320,6 @@
     <string name="wrapped_album_listening_time_minutes">%d phút</string>
     <string name="wrapped_no_data">Không có dữ liệu khả dụng</string>
     <string name="credits_license_desc">Phần mềm miễn phí, mã nguồn mở. Bạn có thể sử dụng, học hỏi, chia sẻ và cải thiện nó😉</string>
-    <string name="credits_discord">Máy chủ Discord</string>
     <string name="credits_view_repo">Xem kho lưu trữ</string>
     <string name="buy_mo_a_coffee">Ủng hộ tôi một ly cà phê!</string>
     <string name="community_and_info">Cộng đồng &amp; Thông tin</string>
@@ -601,23 +587,6 @@
     <string name="importing_playlist">Đang nhập Danh sách phát…</string>
     <string name="recently_converted">Mới chuyển đổi</string>
     <string name="column_label">Cột %d</string>
-    <string name="discord_status">Trạng thái</string>
-    <string name="discord_status_online">Trực tuyến</string>
-    <string name="discord_status_idle">Không hoạt động</string>
-    <string name="discord_status_dnd">Không làm phiền</string>
-    <string name="discord_buttons">Nút</string>
-    <string name="discord_button_1">Nút 1</string>
-    <string name="discord_button_2">Nút 2</string>
-    <string name="discord_information_warning">Metrolist sử dụng API OAuth2 công khai và Gateway của Discord để chia sẻ nội dung bạn đang nghe. Quá trình ủy quyền diễn ra thông qua một phiên trình duyệt cục bộ và tự động đóng sau khi nhận mã — không có dữ liệu nào được gửi đến máy chủ bên thứ ba. Mã token của bạn được lưu trữ trên thiết bị này trong phần cài đặt bảo mật mã hóa và không bao giờ được chia sẻ. Metrolist kết nối trực tiếp đến wss://gateway.discord.gg để cập nhật hoạt động của bạn, và chỉ yêu cầu các quyền tối thiểu cần thiết (sdk.social_layer_presence).</string>
-    <string name="discord_activity_type">Loại hoạt động</string>
-    <string name="discord_activity_playing">Đang phát</string>
-    <string name="discord_activity_listening">Đang nghe</string>
-    <string name="discord_activity_watching">Đang xem</string>
-    <string name="discord_rpc_preview">Xem trước Rich Presence</string>
-    <string name="discord_connect_description">Đăng nhập bằng Discord để chia sẻ những gì bạn đang nghe</string>
-    <string name="discord_activity_name">Tên hoạt động</string>
-    <string name="discord_advanced_mode">Chế độ nâng cao</string>
-    <string name="discord_advanced_mode_description">Hiển thị thêm các tùy chọn tùy chỉnh Rich Presence</string>
     <string name="pin_to_speed_dial">Ghim vào kệ Phát nhanh</string>
     <string name="unpin_from_speed_dial">Bỏ ghim khỏi kệ Phát nhanh</string>
     <string name="randomize_home_order">Xáo trộn thứ tự trên màn hình chính</string>
@@ -628,8 +597,6 @@
     <string name="daily_discover_similar_to">Tương tự như %1$s</string>
     <string name="daily_discover_for_fans_of">Dành cho người hâm mộ của %1$s</string>
     <string name="from_the_community">Danh sách phát mọi người tạo</string>
-    <string name="logout_dialog_title">Giữ dữ liệu thư viện?</string>
-    <string name="logout_dialog_message">Bạn có muốn giữ danh sách phát và dữ liệu thư viện không? Các bài hát đã tải về sẽ luôn được giữ lại</string>
     <string name="credits_lead_developer">Trưởng nhóm phát triển</string>
     <string name="credits_collaborator">Cộng tác viên</string>
     <string name="credits_collaborators_section">Các cộng tác viên</string>
@@ -687,8 +654,6 @@
     <string name="wizard_multiple_variants">Có nhiều biến thể khác nhau đang khả dụng</string>
     <string name="wizard_select_eq_profiles">Chọn hồ sơ EQ cho %s</string>
     <string name="wizard_save_profiles">Lưu hồ sơ</string>
-    <string name="discord_activity_competing">Cạnh tranh</string>
-    <string name="discord_presence">Hiện diện</string>
     <string name="loudness_level">Mức âm lượng</string>
     <string name="loudness_level_aggressive">Mạnh (-7 dB)</string>
     <string name="loudness_level_loud">Lớn (-11 dB)</string>
@@ -707,22 +672,6 @@
     <string name="audio_track_playback_params_description">Sử dụng AudioTrack của Android để thay đổi tốc độ/cao độ thay vì xử lý bằng phần mềm. Hoạt động ổn định hơn khi điều chỉnh cao độ ở mức cực hạn</string>
     <string name="auto_radio_queue">Tự động thêm vào hàng chờ</string>
     <string name="and">và</string>
-    <string name="discord_status_connected">Đã kết nối</string>
-    <string name="discord_status_authorizing">Đang ủy quyền…</string>
-    <string name="discord_status_authorized">Đã ủy quyền</string>
-    <string name="discord_status_not_initialized">Chưa kích hoạt</string>
-    <string name="discord_error_loopback_timeout">Discord không phản hồi. Vui lòng thử lại.</string>
-    <string name="discord_error_loopback_unbound">Không thể mở cổng phản hồi nội bộ. Vui lòng giải phóng một cổng và thử lại.</string>
-    <string name="discord_error_no_browser">Không tìm thấy trình duyệt nào để hoàn tất ủy quyền Discord.</string>
-    <string name="discord_error_token_refresh_failed">Phiên đăng nhập Discord đã hết hạn. Vui lòng kết nối lại.</string>
-    <string name="discord_error_invalid_scope">Discord đã từ chối kết nối. Vui lòng kết nối lại và cấp quyền truy cập theo yêu cầu.</string>
-    <string name="discord_error_banner_title">Lỗi Discord</string>
-    <string name="discord_state">Trạng thái</string>
-    <string name="discord_details">Chi tiết</string>
-    <string name="discord_enable_button_1">Hiển thị nút 1</string>
-    <string name="discord_enable_button_2">Hiển thị nút 2</string>
-    <string name="discord_button_label">Nhãn</string>
-    <string name="discord_button_url">URL</string>
     <string name="restore_database_incompatible">Không thể khôi phục bản sao lưu: phiên bản cơ sở dữ liệu không tương thích. Dữ liệu hiện tại của bạn đã được giữ nguyên.</string>
     <string name="stream_client">Ứng dụng phát trực tuyến</string>
     <string name="format_player_hash">Mã người dùng</string>
@@ -756,12 +705,6 @@
     <string name="android_auto_search_options">Tùy chọn tìm kiếm</string>
     <string name="android_auto_search_local_songs_limit">Giới hạn tìm kiếm bài hát</string>
     <string name="android_auto_search_local_songs_limit_desc">Giới hạn số lượng bài hát trên máy hiển thị trong kết quả tìm kiếm. Khuyến nghị không chọn \"không giới hạn\" để tránh lỗi tràn bộ nhớ</string>
-    <string name="choose_youtube_channel">Chọn kênh YouTube</string>
-    <string name="choose_youtube_channel_description">Tài khoản Google này có nhiều kênh. Hãy chọn kênh bạn muốn sử dụng.</string>
-    <string name="switch_youtube_channel">Chuyển kênh YouTube</string>
-    <string name="youtube_channels_failed">Không thể lấy danh sách kênh YouTube cho tài khoản này. Vui lòng thử lại.</string>
-    <string name="authentication_data_extraction_failed">Không thể truy cập phiên đăng nhập YouTube Music. Vui lòng thử lại.</string>
-    <string name="login_failed_with_error">Lỗi đăng nhập: %1$s</string>
     <string name="add_to_playlist_position">Vị trí thêm vào danh sách phát</string>
     <string name="playlist_position_beginning">Đầu danh sách phát</string>
     <string name="playlist_position_beginning_desc">Bài hát mới thêm sẽ xuất hiện trước các bài hát cũ</string>
@@ -770,13 +713,10 @@
     <string name="error_no_internet_connection">Không có kết nối Internet</string>
     <string name="error_offline_playback">Bạn đang ngoại tuyến. Hãy kết nối Internet hoặc phát bản nhạc đã tải xuống để nghe ngoại tuyến.</string>
     <string name="error_explicit_login_recommended">Phát nội dung nhạy cảm hoạt động tốt hơn khi đăng nhập tài khoản.</string>
-    <string name="playlist_created_locally">Đồng bộ hóa với YouTube thất bại. Đã tạo danh sách phát cục bộ.</string>
     <string name="ai_provider_inception_help">Truy cập https://platform.inceptionlabs.ai để lấy khóa API</string>
     <string name="enable_zemer">Bật nhà cung cấp lời bài hát Zemer</string>
     <string name="enable_zemer_desc">Lời bài hát cho âm nhạc Do Thái</string>
     <string name="update_available_message">Metrolist %s đã sẵn sàng để tải xuống.</string>
     <string name="update_action">Cập nhật</string>
-    <string name="discord_integration">Tích hợp Discord</string>
-    <string name="enable_discord_rpc">Kích hoạt Rich Presence</string>
     <string name="force_bottom_navbar">Buộc thanh điều hướng phía dưới</string>
 </resources>

@@ -214,7 +214,6 @@
     <string name="action_login">Autentifică-te</string>
     <string name="login">Autentificare</string>
     <string name="not_logged_in">Nu ești autentificat</string>
-    <string name="login_failed">Autentificare eșuată</string>
     <string name="content_language">Limba prestabilită a conținutului</string>
     <string name="content_country">Țara prestabilită a conținutului</string>
     <string name="system_default">Prestabilită de sistem</string>

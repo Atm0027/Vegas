@@ -11,9 +11,6 @@
     <string name="liked">Упадабаныя</string>
     <string name="offline">Спампоўкі</string>
     <string name="my_top">Мой топ</string>
-    <string name="sync_playlist">Сінхранізаваць плей-ліст</string>
-    <string name="sync_disabled">Сінхранізацыя адключана</string>
-    <string name="allows_for_sync_witch_youtube">ЗАЎВАГА: Гэта опцыя ўключае сінхранізацыю з YouTube Music. Гэта НЕЛЬГА змяніць пазней.</string>
     <string name="generating_image">Генерацыя відарыса…</string>
     <string name="please_wait">Пачакайце, калі ласка</string>
     <string name="cancel">Скасаваць</string>
@@ -37,7 +34,6 @@
     <string name="cd_pure_black_mode">Вельмі цёмны рэжым</string>
     <string name="cd_light_mode">Светлы рэжым</string>
     <string name="local_history">Лакальны</string>
-    <string name="remote_history">Дістанцыйны</string>
     <string name="uploaded_playlist">Загружаны</string>
     <string name="filter_uploaded">Загружаны</string>
     <string name="max_selection_limit">Максімальны ліміт выбара дасягнуты</string>
@@ -160,11 +156,6 @@
     <string name="skip_silence_desc">Паскараць узнаўленне ціхіх участкаў трэкаў</string>
     <string name="skip_silence_instant">Імгненна прапускаць цішыню</string>
     <string name="skip_silence_instant_desc">Прапускаць ціхія фрагменты адразу замест іх паскарэння</string>
-    <string name="token_hidden">Націсніце, каб паказаць токен</string>
-    <string name="token_shown">Націсніце яшчэ раз, каб скапіяваць або змяніць</string>
-    <string name="token_adv_login_description">Гэта ПРАСУНУТЫ спосаб ўваходу. Замест вэб-партала можна напрамую ўвесці або абнавіць токен. Зручна для хуткага ўваходу на некалькіх прыладах. Токены з няправільным фарматам не прымаюцца</string>
-    <string name="yt_sync">Аўтасінхранізацыя з акаўнтам</string>
-    <string name="more_content">Болей кантенту</string>
     <string name="sort_ascending">Сартаваць па ўзрастанні</string>
     <string name="sort_descending">Сартаваць па змяншэнні</string>
     <string name="edit_playlist_cover">Рэдагаваць вокладку плэйліста</string>
@@ -214,7 +205,6 @@
     <string name="clear_image_cache_dialog">Вы ўпэўненыя, што хочаце ачысціць усе закэшаваныя выявы?</string>
     <string name="clear_downloads_dialog">Вы ўпэўненыя, што хочаце ачысціць усе запампаваныя?</string>
     <string name="disable">Адключыць</string>
-    <string name="not_logged_in_youtube">Вы не ўвайшлі ў YouTube</string>
     <string name="default_links">Адкрыць падтрымліваемыя ссылкі</string>
     <string name="open_app_settings_error">Не атрымалася адкрыць налады прыкладання</string>
     <string name="release_notes">Заўвагі да выпуску</string>
@@ -316,7 +306,6 @@
     <string name="show_interval_indicator">Паказваць індыкатар паўз</string>
     <string name="respect_agent_positioning">Улічваць пазіцыянаванне артыста</string>
     <string name="enable_lrclib_desc">База сінхранізаваных тэкстаў песень, якая падтрымліваецца супольнасцю</string>
-    <string name="advanced_login">Уваход па токену</string>
     <string name="remove_custom_image">Выдаліць свой малюнак</string>
     <string name="resume_on_bluetooth_connect">Працягваць пры падключэнні Bluetooth</string>
     <string name="keep_screen_on_when_player_is_expanded">Не выключаць экран калі плэер разгорнуты</string>

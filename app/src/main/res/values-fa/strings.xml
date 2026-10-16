@@ -257,6 +257,5 @@
     <string name="action_logout">خارج شدن</string>
     <string name="action_login">وارد شدن</string>
     <string name="not_logged_in">وارد حساب نشدی</string>
-    <string name="login_failed">ورود به اکانت، با خطا مواجه شد</string>
     <string name="queue">صف</string>
 </resources>

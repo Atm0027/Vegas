@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="local_history">Τοπικά</string>
-    <string name="remote_history">Απομακρυσμένα</string>
     <string name="charts">Κατατάξεις</string>
     <string name="back_button_desc">Πίσω</string>
     <string name="album_cover_desc">Εξώφυλλο άλμπουμ</string>
@@ -15,9 +14,6 @@
     <string name="offline">Ληφθέντα</string>
     <string name="my_top">Τα Κορυφαία μου</string>
     <string name="cached_playlist">Αποθηκευμένα στην προσωρινή μνήμη</string>
-    <string name="sync_playlist">Συγχρονισμός λίστας αναπαραγωγής</string>
-    <string name="sync_disabled">Συγχρονισμός ανενεργός</string>
-    <string name="allows_for_sync_witch_youtube">ΣΗΜΕΙΩΣΗ: Αυτή η επιλογή επιτρέπει τον συγχρονισμό με το YouTube Music και ΔΕΝ μπορεί να αλλάξει αργότερα</string>
     <string name="remove_from_cache">Αφαίρεση από την προσωρινή μνήμη</string>
     <string name="copy_link">Αντιγραφή συνδέσμου</string>
     <string name="select">Επιλογή όλων</string>
@@ -48,10 +44,6 @@
     <string name="show_downloaded_playlist">Εμφάνιση Κατεβασμένων Λιστών</string>
     <string name="show_top_playlist">Εμφάνιση Κορυφαίων Λιστών</string>
     <string name="show_cached_playlist">Εμφάνιση Λιστών στην Κρυφή Μνήμη</string>
-    <string name="advanced_login">Σύνθετη σύνδεση (token)</string>
-    <string name="token_hidden">Πατήστε για να εμφανιστεί το token</string>
-    <string name="token_shown">Πατήστε ξανά για αντιγραφή ή επεξεργασία</string>
-    <string name="token_adv_login_description">Αυτή είναι μια ΣΥΝΘΕΤΗ μέθοδος σύνδεσης. Ως εναλλακτική της πύλης Ιστού, μπορείτε να εισαγάγετε ή να ενημερώσετε απευθείας το token σύνδεσής σας εδώ. Για παράδειγμα, αυτό μπορεί να επιταχύνει τη σύνδεση σε πολλές συσκευές. Λάβετε υπόψη ότι τυχόν μη έγκυρες μορφές διακριτικών που η εφαρμογή αποτυγχάνει να αναλύσει δεν θα γίνουν αποδεκτές</string>
     <string name="general">Γενικά</string>
     <string name="proxy">Διακομιστής μεσολάβησης</string>
     <string name="default_lib_chips">Αλλαγή προεπιλεγμένου τσιπ βιβλιοθήκης</string>
@@ -63,7 +55,6 @@
     <string name="percentage_format">%d%%</string>
     <string name="clear_song_cache_dialog">Είστε σίγουροι ότι θέλετε να διαγράψετε όλα τα τραγούδια που είναι στην κρυφή μνήμη;</string>
     <string name="clear_downloads_dialog">Είστε σίγουροι ότι θέλετε να διαγράψετε όλες τις λήψεις;</string>
-    <string name="not_logged_in_youtube">Δεν έχετε συνδεθεί στο YouTube</string>
     <string name="default_links">Άνοιγμα υποστηριζόμενων συνδέσμων</string>
     <string name="open_app_settings_error">Αδυναμία ανοίγματος των ρυθμίσεων της εφαρμογής</string>
     <string name="release_notes">Σημειώσεις Έκδοσης</string>
@@ -108,8 +99,6 @@
     <string name="disable">Απενεργοποίηση</string>
     <string name="subscribe">Εγραφή</string>
     <string name="subscribed">Οι εγραφές μου</string>
-    <string name="more_content">Περισσότερο περιεχόμενο</string>
-    <string name="yt_sync">Αυτόματος συγχρονισμός με λογαριασμό</string>
     <string name="new_player_design">Νέος σχεδιασμός προγράμματος αναπαραγωγής</string>
     <string name="uploaded_playlist">Ανεβασμένα</string>
     <string name="filter_uploaded">Ανεβασμένα</string>

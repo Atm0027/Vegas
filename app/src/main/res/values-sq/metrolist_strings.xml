@@ -72,7 +72,6 @@
     <string name="trending">Në trend</string>
     <string name="parsed_from_link">Analizuar nga lidhja</string>
     <string name="mixes">Përzierjet</string>
-    <string name="remote_history">Nga larg</string>
     <string name="charts">Tabelat</string>
     <string name="my_top">My Top</string>
     <string name="weekly_most_playlist_name">Më të dëgjuar e javës</string>
@@ -80,9 +79,6 @@
     <string name="cached_playlist">Të ruajtur në memorinë e përkohshme</string>
     <string name="uploaded_playlist">Të ngarkuara</string>
     <string name="filter_uploaded">Të ngarkuara</string>
-    <string name="sync_playlist">Sinkronizo listën e luajtjes</string>
-    <string name="sync_disabled">Sinkronizimi është çaktivizuar</string>
-    <string name="allows_for_sync_witch_youtube">SHËNIM: Ky opsion mundëson sinkronizimin me YouTube Music dhe NUK MUND të ndryshohet më vonë</string>
     <string name="enable">Aktivizo</string>
     <string name="share_lyrics">Ndaj tekst këngë</string>
     <string name="share_as_text">Ndaj si tekst</string>
@@ -205,12 +201,6 @@
     <string name="edit_playlist_cover_note_wait">Pasi të zgjidhni një imazh, ju lutemi prisni një moment që kopertina e re të shfaqet në listën tuaj të këngëve</string>
     <string name="choose_from_library">Zgjidhni nga biblioteka</string>
     <string name="skip_silence_instant_desc">Kalo përpara gjatë momenteve të heshtura në vend që të përshpejtosh luajtjen</string>
-    <string name="advanced_login">Hyr me token</string>
-    <string name="token_hidden">Trokit për të shfaqur tokenin</string>
-    <string name="token_shown">Trokit përsëri për të kopjuar ose modifikuar</string>
-    <string name="token_adv_login_description">Kjo është një metodë e AVANCUAR hyrjeje. Në vend që të përdorni portalin në internet, mund të futni ose përditësoni direkt tokenin tuaj të hyrjes. Kjo mund të jetë e dobishme për t\'u identifikuar shpejt në shumë pajisje. Tokenët në një format të panjohur do të refuzohen</string>
-    <string name="yt_sync">Sinkronizim automatik me llogarinë</string>
-    <string name="more_content">Më shumë përmbajtje</string>
     <string name="integrations">Integrimet</string>
     <string name="username">Emri i përdoruesit</string>
     <string name="password">Fjalëkalimi</string>
@@ -265,7 +255,6 @@
     <string name="clear_image_cache_dialog">A jeni i sigurt që dëshironi të fshini të gjitha imazhet e ruajtura në memorie?</string>
     <string name="clear_downloads_dialog">A jeni i sigurt që dëshironi të fshini të gjitha shkarkimet?</string>
     <string name="disable">Çaktivizo</string>
-    <string name="not_logged_in_youtube">Nuk jeni identifikuar në YouTube</string>
     <string name="default_links">Hap lidhjet e mbështetura</string>
     <string name="open_app_settings_error">Nuk u hapën dot cilësimet e aplikacionit</string>
     <string name="release_notes">Shënimet e versionit</string>

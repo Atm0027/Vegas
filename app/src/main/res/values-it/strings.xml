@@ -281,7 +281,6 @@
     <string name="options">Opzioni</string>
     <string name="use_login_for_browse">Accedi per riprodurre i contenuti</string>
     <string name="preview">Anteprima</string>
-    <string name="login_failed">Accesso fallito</string>
     <string name="action_logout">Esci</string>
     <string name="use_login_for_browse_desc">Ciò può influenzare i contenuti che vedi e ad esempio mostra album solo premium se hai effettuato l\'accesso con un account Premium</string>
     <string name="dismiss">Ignora</string>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="local_history">Локально</string>
-    <string name="remote_history">Віддалено</string>
     <string name="weeks">Тижні</string>
     <string name="months">Місяці</string>
     <string name="years">Роки</string>
@@ -9,8 +8,6 @@
     <string name="liked">Вподобане</string>
     <string name="offline">Завантажене</string>
     <string name="my_top">Мій Топ</string>
-    <string name="sync_playlist">Синхронізувати список відтворення</string>
-    <string name="allows_for_sync_witch_youtube">ПРИМІТКА: Ця опція вмикає синхронізацію з YouTube Music і її НЕ МОЖНА змінити згодом</string>
     <string name="select">Обрати все</string>
     <string name="like_all">Вподобати все</string>
     <string name="dislike_all">Позначити все як не вподобане</string>
@@ -31,10 +28,6 @@
     <string name="enable_swipe_thumbnail">Перемикання пісень проведенням по обкладинці</string>
     <string name="lyrics_click_change">Змінити текст пісні при натисканні</string>
     <string name="slim_navbar">Тонка нижня панель навігації</string>
-    <string name="advanced_login">Вхід через токен</string>
-    <string name="token_hidden">Натисніть для показу токену</string>
-    <string name="token_shown">Повторно натисніть, щоб скопіювати або редагувати</string>
-    <string name="token_adv_login_description">Це ПРОСУНУТИЙ метод входу в систему. Альтернативно до веб-порталу, ви можете безпосередньо ввести або оновити свій токен для входу тут. Наприклад, це може прискорити вхід на декількох пристроях. Зверніть увагу, що будь-які недійсні формати токенів, які додаток не зможе розпізнати, не будуть прийняті</string>
     <string name="general">Загальне</string>
     <string name="default_lib_chips">Змінити головну сторінку бібліотеки</string>
     <string name="set_quick_picks">Налаштувати швидкі добірки</string>
@@ -65,7 +58,6 @@
     <string name="trending">Тренди</string>
     <string name="cached_playlist">Кешовано</string>
     <string name="generating_image">Генерація зображення…</string>
-    <string name="sync_disabled">Синхронізація вимкнена</string>
     <string name="please_wait">Зачекайте, будь ласка</string>
     <string name="cancel">Скасувати</string>
     <string name="share_lyrics">Поділитися текстом пісні</string>
@@ -95,7 +87,6 @@
     <string name="auto_download_on_like_desc">Автоматично завантажувати пісні, які ви вподобали</string>
     <string name="clear_song_cache_dialog">Ви впевнені, що хочете очистити всі кешовані пісні?</string>
     <string name="clear_downloads_dialog">Ви впевнені, що хочете очистити всі завантаження?</string>
-    <string name="not_logged_in_youtube">Ви не ввійшли в YouTube</string>
     <string name="information">Інформація</string>
     <string name="description">Опис</string>
     <string name="views">Перегляди</string>
@@ -106,8 +97,6 @@
     <string name="import_csv">Імпортувати список відтворення у форматі CSV</string>
     <string name="playlist_add_local_to_synced_note">ПРИМІТКА: Додавання локальних пісень до синхронізованих або віддалених списків відтворення не підтримується. Усі інші комбінації можливі</string>
     <string name="new_player_design">Новий дизайн програвача</string>
-    <string name="yt_sync">Автосинхронізація з акаунтом</string>
-    <string name="more_content">Більше контенту</string>
     <string name="swipe_sensitivity">Чутливість проведення по мініпрогравачу</string>
     <string name="sensitivity_percentage">%1$d%%</string>
     <string name="clear_image_cache_dialog">Ви дійсно хочете очистити всі кешовані зображення?</string>

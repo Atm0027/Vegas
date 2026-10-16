@@ -12,9 +12,6 @@
     <string name="offline">Gedownload</string>
     <string name="my_top">Meest geluisterd</string>
     <string name="cached_playlist">Gecached</string>
-    <string name="sync_playlist">Playlist synchroniseren</string>
-    <string name="sync_disabled">Synchroniseren uitgeschakeld</string>
-    <string name="allows_for_sync_witch_youtube">Opmerking: Dit activeert synchronisatie met YouTube Music. Dit kan later NIET worden gewijzigd.</string>
     <string name="generating_image">Afbeelding genereren…</string>
     <string name="please_wait">Een ogenblik geduld alstublieft</string>
     <string name="cancel">Annuleren</string>
@@ -43,9 +40,6 @@
     <string name="follow_theme">Volg thema</string>
     <string name="gradient">Gradient</string>
     <string name="default_style">Standaard</string>
-    <string name="advanced_login">Login met token</string>
-    <string name="token_hidden">Klik om token te tonen</string>
-    <string name="token_shown">Klik opnieuw om te kopiëren of te wijzigen</string>
     <string name="general">Algemeen</string>
     <string name="proxy">Proxy</string>
     <plurals name="seconds">
@@ -53,7 +47,6 @@
         <item quantity="other">%d seconden</item>
     </plurals>
     <string name="local_history">Lokaal</string>
-    <string name="remote_history">Afstandsbediening</string>
     <string name="uploaded_playlist">Geüpload</string>
     <string name="filter_uploaded">Geüpload</string>
     <string name="remove_from_cache">Verwijder van cache</string>
@@ -80,7 +73,6 @@
     <string name="auto_download_on_like">Automatisch downloaden bij het liken</string>
     <string name="clear_song_cache_dialog">Weet je zeker dat je alle gecached nummers wilt wissen?</string>
     <string name="clear_downloads_dialog">Weet je zeker dat je alle downloads wilt wissen?</string>
-    <string name="not_logged_in_youtube">Niet op YouTube ingelogd</string>
     <string name="default_links">Open ondersteunde links</string>
     <string name="open_app_settings_error">Kon app instellingen niet openen</string>
     <string name="release_notes">Uitgaven informatie</string>
@@ -94,8 +86,6 @@
     <string name="description">Omschrijving</string>
     <string name="views">Weergaven</string>
     <string name="lyrics_auto_scroll">Automatisch songtekst scrollen</string>
-    <string name="yt_sync">Account automatisch synchroniseren</string>
-    <string name="more_content">Meer inhoud</string>
     <string name="new_player_design">Nieuw speler ontwerp</string>
     <string name="swipe_sensitivity">Mini speler swipe gevoeligheid</string>
     <string name="clear_image_cache_dialog">Weet je zeker dat je gecached afbeeldingen wilt wissen?</string>

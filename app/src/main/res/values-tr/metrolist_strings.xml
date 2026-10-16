@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="local_history">Yerel</string>
-    <string name="remote_history">Uzak</string>
     <string name="charts">Listeler</string>
     <string name="back_button_desc">Geri</string>
     <string name="album_cover_desc">Albüm kapağı</string>
@@ -15,9 +14,6 @@
     <string name="offline">İndirilenler</string>
     <string name="my_top">En Çok Dinlediklerim</string>
     <string name="cached_playlist">Önbelleğe Alınanlar</string>
-    <string name="sync_playlist">Oynatma listesini eşitle</string>
-    <string name="sync_disabled">Eşitleme devre dışı</string>
-    <string name="allows_for_sync_witch_youtube">NOT: Bu seçenek YouTube Music ile eşitlemeyi etkinleştirir ve daha sonra DEĞİŞTİRİLEMEZ</string>
     <string name="remove_from_cache">Önbellekten kaldır</string>
     <string name="copy_link">Bağlantıyı kopyala</string>
     <string name="select">Tümünü seç</string>
@@ -48,10 +44,6 @@
     <string name="show_downloaded_playlist">İndirilenler listesini göster</string>
     <string name="show_top_playlist">En Çok Dinlediklerim listesini göster</string>
     <string name="show_cached_playlist">Önbelleğe Alınanlar listesini göster</string>
-    <string name="advanced_login">Token ile giriş yap</string>
-    <string name="token_hidden">Tokeni görmek için dokunun</string>
-    <string name="token_shown">Kopyalamak veya düzenlemek için tekrar dokunun</string>
-    <string name="token_adv_login_description">Bu GELİŞMİŞ bir giriş yöntemidir. Giriş tokeninizi doğrudan girebilirsiniz. Birden fazla cihazda hızlı giriş için kullanışlıdır. Geçersiz formatlı tokenler reddedilir</string>
     <string name="general">Genel</string>
     <string name="proxy">Proxy</string>
     <string name="default_lib_chips">Varsayılan kitaplık çipini değiştir</string>
@@ -63,7 +55,6 @@
     <string name="percentage_format">%d%%</string>
     <string name="clear_song_cache_dialog">Tüm önbelleğe alınmış şarkıları temizlemek istediğinize emin misiniz?</string>
     <string name="clear_downloads_dialog">Tüm indirmeleri temizlemek istediğinize emin misiniz?</string>
-    <string name="not_logged_in_youtube">YouTube girişi yapılmadı</string>
     <string name="default_links">Desteklenen bağlantıları aç</string>
     <string name="open_app_settings_error">Uygulama ayarları açılamadı</string>
     <string name="release_notes">Sürüm notları</string>
@@ -96,8 +87,6 @@
     <string name="background_color">Arka plan rengi</string>
     <string name="new_player_design">Yeni oynatıcı tasarımı</string>
     <string name="lyrics_auto_scroll">Şarkı sözlerini otomatik kaydır</string>
-    <string name="yt_sync">Hesapla otomatik eşitle</string>
-    <string name="more_content">Daha fazla içerik</string>
     <string name="import_online">Bir M3U listesi içe aktar</string>
     <string name="import_csv">Bir CSV listesi içe aktar</string>
     <string name="playlist_add_local_to_synced_note">NOT: Yerel şarkıların eşitlenmiş veya uzak listelere eklenmesi desteklenmez. Diğer tüm kombinasyonlar geçerlidir</string>
@@ -403,25 +392,6 @@
     <string name="ai_deepl_formality_default">Varsayılan</string>
     <string name="ai_deepl_formality_more">Daha resmi</string>
     <string name="ai_deepl_formality_less">Daha az resmi</string>
-    <string name="discord_status">Durum bilgisi</string>
-    <string name="discord_status_online">Çevrim içi</string>
-    <string name="discord_status_idle">Boşta</string>
-    <string name="discord_status_dnd">Rahatsız etmeyin</string>
-    <string name="discord_buttons">Butonlar</string>
-    <string name="discord_button_1">1. buton</string>
-    <string name="discord_button_2">2. buton</string>
-    <string name="discord_information_warning">Metrolist, ne dinlediğinizi paylaşmak için Discord\'un herkese açık OAuth2 ve Gateway API\'lerini kullanır. Yetkilendirme, kodu aldıktan sonra kendini kapatan yerel bir tarayıcı oturumu üzerinden yapılır; üçüncü taraf sunuculara hiçbir şey gönderilmez. Token\'ınız bu cihazda şifrelenmiş tercihlerde saklanır ve asla paylaşılmaz. Metrolist, etkinliğinizi yayımlamak için doğrudan wss://gateway.discord.gg adresine bağlanır ve yalnızca gereken minimum kapsamı ister (sdk.social_layer_presence).</string>
-    <string name="discord_activity_type">Etkinlik türü</string>
-    <string name="discord_activity_playing">Oynuyor</string>
-    <string name="discord_activity_listening">Dinliyor</string>
-    <string name="discord_activity_watching">İzliyor</string>
-    <string name="discord_activity_competing">Yarışıyor</string>
-    <string name="discord_rpc_preview">Rich Presence önizlemesi</string>
-    <string name="discord_presence">Durum</string>
-    <string name="discord_connect_description">Ne dinlediğini paylaşmak için Discord\'a giriş yap</string>
-    <string name="discord_activity_name">Etkinlik adı</string>
-    <string name="discord_advanced_mode">Gelişmiş mod</string>
-    <string name="discord_advanced_mode_description">Rich Presence\'ın her alanını yer tutucularla özelleştir</string>
     <string name="player_background_solid">Düz</string>
     <string name="resume_on_bluetooth_connect">Bluetooth bağlandığında oynatmayı sürdür</string>
     <string name="lyrics_romanize_as_main">Latinleştirilmiş sözleri ana metin olarak göster</string>
@@ -472,16 +442,11 @@
     <string name="daily_discover_based_on">%1$s baz alınarak</string>
     <string name="daily_discover_for_fans_of">%1$s sevenler için</string>
     <string name="from_the_community">Topluluktan</string>
-    <string name="logout_dialog_title">Kitaplık verileri saklansın mı?</string>
-    <string name="logout_dialog_message">Oynatma listelerinizi ve kitaplık verilerinizi saklamak istiyor musunuz? İndirilen şarkılar her durumda saklanacaktır</string>
-    <string name="logout_keep">Sakla</string>
-    <string name="logout_clear">Temizle</string>
     <string name="credits_lead_developer">Baş geliştirici</string>
     <string name="credits_collaborator">Katkıda bulunan</string>
     <string name="credits_collaborators_section">Katkıda bulunanlar</string>
     <string name="credits_license_name">GNU Genel Kamu Lisansı v3.0</string>
     <string name="credits_license_desc">Ücretsiz, açık kaynaklı yazılım. Kullanabilir, inceleyebilir, paylaşabilir ve geliştirebilirsiniz</string>
-    <string name="credits_discord">Discord sunucusu</string>
     <string name="credits_telegram">Telegram kanalı</string>
     <string name="credits_view_repo">Depoyu görüntüle</string>
     <string name="buy_mo_a_coffee">Bana bir kahve ısmarla!</string>
@@ -713,22 +678,6 @@
     <string name="auto_radio_queue_desc">aramadan veya ana ekrandan şarkı başlatıldığında otomatik olarak şarkı sırası oluştur</string>
     <string name="audio_track_playback_params">Donanım ses işlemeyi kullan</string>
     <string name="audio_track_playback_params_description">Yazılımsal işleme yerine hız/perde (speed/pitch) değişiklikleri için Android\'in AudioTrack altyapısını kullanır. Aşırı perde değerlerinde daha güvenilirdir</string>
-    <string name="discord_status_connected">Bağlanıldı</string>
-    <string name="discord_status_authorizing">Yetkilendiriliyor…</string>
-    <string name="discord_status_authorized">Yetkilendirildi</string>
-    <string name="discord_status_not_initialized">Başlatılmadı</string>
-    <string name="discord_error_loopback_timeout">Discord zamanında yanıt vermedi. Lütfen tekrar deneyin.</string>
-    <string name="discord_error_loopback_unbound">Yerel callback port\'u açılamadı. Lütfen bir port\'u serbest bırakıp tekrar deneyin.</string>
-    <string name="discord_error_no_browser">Discord yetkilendirmesini tamamlamak için tarayıcı bulunamadı.</string>
-    <string name="discord_error_token_refresh_failed">Discord oturumunun süresi doldu. Lütfen yeniden bağlanın.</string>
-    <string name="discord_error_invalid_scope">Discord bağlantıyı reddetti. Lütfen yeniden bağlanıp gerekli izni verin.</string>
-    <string name="discord_error_banner_title">Discord hatası</string>
-    <string name="discord_state">Durum</string>
-    <string name="discord_details">Ayrıntılar</string>
-    <string name="discord_enable_button_1">1. butonu göster</string>
-    <string name="discord_enable_button_2">2. butonu göster</string>
-    <string name="discord_button_label">Etiket</string>
-    <string name="discord_button_url">URL</string>
     <string name="restore_database_incompatible">Yedek geri yüklenemiyor: veritabanı sürümü uyumsuz. Mevcut verileriniz korundu.</string>
     <string name="stream_client">Akış istemcisi</string>
     <string name="format_player_hash">Oynatıcı hash\'i</string>
@@ -762,12 +711,6 @@
     <string name="android_auto_search_local_songs_limit">Şarkı arama sınırı</string>
     <string name="android_auto_search_local_songs_limit_desc">Arama sonuçlarında gösterilen yerel şarkıların sayısını sınırlandırın. Bellek çökmelerini önlemek için sınırsız olarak ayarlamamanız önerilir</string>
     <string name="playlist_unavailable">Oynatma listesi kullanılamıyor</string>
-    <string name="choose_youtube_channel">Bir YouTube kanalı seç</string>
-    <string name="choose_youtube_channel_description">Bu Google hesabı birden çok kanala sahip. Kullanmak istediğini seç.</string>
-    <string name="switch_youtube_channel">YouTube kanalına geç</string>
-    <string name="youtube_channels_failed">Hesaba bağlı olan YouTube kanalları alınamadı. Lütfen tekrar deneyin.</string>
-    <string name="authentication_data_extraction_failed">YouTube Music oturumu okunamadı. Lütfen tekrar deneyin.</string>
-    <string name="login_failed_with_error">Giriş başarısız: %1$s</string>
     <string name="add_to_playlist_position">Oynatma listesine ekle</string>
     <string name="playlist_position_beginning">Oynat listesinin başı</string>
     <string name="playlist_position_beginning_desc">Eklenen yeni şarkılar mevcut olanların üstünde görünür</string>
@@ -776,12 +719,9 @@
     <string name="error_no_internet_connection">İnternet bağlantısı yok</string>
     <string name="error_offline_playback">Çevrimdışı durumdasınız. İnternete bağlanın veya çevrimdışı kullanım için indirdiğiniz bir parçayı oynatın.</string>
     <string name="error_explicit_login_recommended">Açık içerikli oynatma, oturum açılmış bir hesapla daha iyi çalışır.</string>
-    <string name="playlist_created_locally">YouTube eşitlemesi başarısız. Oynatma listeleri yerelde oluşturuldu.</string>
     <string name="ai_provider_inception_help">API anahtarları için https://platform.inceptionlabs.ai sitesini ziyaret edin</string>
     <string name="enable_zemer">Zemer\'i aktifleştir</string>
     <string name="enable_zemer_desc">Yahudi müzikleri için şarkı sözleri</string>
     <string name="update_available_message">Metrolist %s indirmeye hazır.</string>
     <string name="update_action">Güncelle</string>
-    <string name="discord_integration">Discord entegrasyonu</string>
-    <string name="enable_discord_rpc">Rich Presence\'i etkinleştir</string>
 </resources>

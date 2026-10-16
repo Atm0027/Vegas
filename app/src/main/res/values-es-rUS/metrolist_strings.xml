@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="lyrics_auto_scroll">Desplazamiento automático de letras</string>
-    <string name="advanced_login">Iniciar sesión con token</string>
-    <string name="token_hidden">Presiona para mostrar el token</string>
-    <string name="token_shown">Presiona de nuevo para copiar o editar</string>
     <string name="general">General</string>
     <string name="proxy">Proxy</string>
     <string name="default_lib_chips">Cambiar pestaña predeterminada de la biblioteca</string>
@@ -34,7 +31,6 @@
     <string name="likes">Me gustas</string>
     <string name="history_duration">Duración del historial</string>
     <string name="local_history">Local</string>
-    <string name="remote_history">Remoto</string>
     <string name="charts">Lista de éxitos</string>
     <string name="back_button_desc">Atrás</string>
     <string name="album_cover_desc">Portada de Álbum</string>
@@ -45,9 +41,6 @@
     <string name="liked">Tus \"me gusta\"</string>
     <string name="offline">Descargados</string>
     <string name="cached_playlist">Guardado en la caché</string>
-    <string name="sync_playlist">Sincronizar lista de reproducción</string>
-    <string name="sync_disabled">Sincronización desactivada</string>
-    <string name="allows_for_sync_witch_youtube">Nota: Esto permite sincronizarse con YouTube Music. NO se puede cambiar después</string>
     <string name="generating_image">Generando imagen…</string>
     <string name="please_wait">Por favor, espera</string>
     <string name="cancel">Cancelar</string>
@@ -88,7 +81,6 @@
     <string name="auto_download_on_like_desc">Automáticamente se descargarán las canciones cuando le des me gusta</string>
     <string name="clear_song_cache_dialog">¿Estás seguro de eliminar todas las canciones de la caché?</string>
     <string name="clear_downloads_dialog">¿Estás seguro de eliminar todas las canciones descargadas?</string>
-    <string name="not_logged_in_youtube">No haz iniciado sesión en YouTube</string>
     <string name="default_links">Abrir links soportados</string>
     <string name="dislikes">No me gusta</string>
     <plurals name="seconds">
@@ -98,7 +90,6 @@
     </plurals>
     <string name="trending">Tendencia</string>
     <string name="link_copied">Link copiado al portapapeles</string>
-    <string name="token_adv_login_description">Este es un método de inicio de sesión AVANZADO. En lugar de usar el portal web, puedes ingresar o actualizar tu token de inicio de sesión directamente. Esto puede ser útil para iniciar sesión rápidamente en varios dispositivos. Los tokens en un formato no reconocido serán rechazados</string>
     <string name="months">Meses</string>
     <string name="past_year">Año pasado</string>
     <string name="slim">Delgado</string>
@@ -113,8 +104,6 @@
     <string name="seek_seconds_addup_description">Al activarlo, añade 5 segundos adicionales de forma incremental en cada búsqueda</string>
     <string name="new_player_design">Nuevo diseño del reproductor</string>
     <string name="new_mini_player_design">Nuevo diseño del minirreproductor</string>
-    <string name="yt_sync">Sincronización automática con la cuenta</string>
-    <string name="more_content">Más contenido</string>
     <string name="swipe_sensitivity">Sensibilidad del deslizamiento del mini-reproductor</string>
     <string name="clear_image_cache_dialog">¿Estás seguro de querer limpiar todas las imágenes en caché?</string>
     <string name="disable">Desactivar</string>
@@ -409,25 +398,6 @@
     <string name="importing_csv">Importando CSV…</string>
     <string name="recently_converted">Recientemente convertido</string>
     <string name="column_label">Columna %d</string>
-    <string name="discord_status">Estado de actividad</string>
-    <string name="discord_status_online">En línea</string>
-    <string name="discord_status_idle">Inactivo</string>
-    <string name="discord_status_dnd">No Molestar</string>
-    <string name="discord_buttons">Botones</string>
-    <string name="discord_button_1">Botón 1</string>
-    <string name="discord_button_2">Botón 2</string>
-    <string name="discord_information_warning">Metrolist utiliza las APIs públicas OAuth2 y Gateway de Discord para compartir lo que estás escuchando. La autorización se realiza a través de una sesión de navegador local que se cierra automáticamente tras capturar el código: no se envía nada a servidores de terceros. Tu token se almacena en este dispositivo en preferencias cifradas y nunca se comparte. MetroList se conecta directamente a wss://gateway.discord.gg para publicar tu actividad y solo solicita el alcance mínimo requerido (sdk.social_layer_presence).</string>
-    <string name="discord_activity_type">Tipo de actividad</string>
-    <string name="discord_activity_playing">Reproduciendo</string>
-    <string name="discord_activity_listening">Escuchando</string>
-    <string name="discord_activity_watching">Viendo</string>
-    <string name="discord_activity_competing">Compitiendo</string>
-    <string name="discord_rpc_preview">Vista previa de Rich Presence</string>
-    <string name="discord_presence">Presencia</string>
-    <string name="discord_connect_description">Inicia sesión con Discord para compartir lo que estás escuchando</string>
-    <string name="discord_activity_name">Nombre de la actividad</string>
-    <string name="discord_advanced_mode">Modo avanzado</string>
-    <string name="discord_advanced_mode_description">Personaliza cada campo de tu Rich Presence con marcadores de posición</string>
     <string name="display_density">Densidad de la pantalla</string>
     <string name="restart">Reiniciar</string>
     <string name="restart_required">Reinicio requerido!</string>
@@ -612,16 +582,11 @@
     <string name="importing_playlist">Importando listas de reproducción…</string>
     <string name="pin_to_speed_dial">Anclar para acción rapida</string>
     <string name="unpin_from_speed_dial">Desanclar de acción rapida</string>
-    <string name="logout_dialog_title">¿Mantener los datos de la biblioteca?</string>
-    <string name="logout_dialog_message">¿Quieres mantener tus listas de reproducción y datos de la biblioteca? las canciones descargadas siempre estarán</string>
-    <string name="logout_keep">Mantener</string>
-    <string name="logout_clear">Eliminar</string>
     <string name="credits_lead_developer">Desarrollador principal</string>
     <string name="credits_collaborator">Colaborador</string>
     <string name="credits_collaborators_section">Colaboradores</string>
     <string name="credits_license_name">GNU Licencia Pública General v3.0</string>
     <string name="credits_license_desc">Gratis, de código abierto. Puedes usarlo, estudiarlo, compartirlo y mejorarlo</string>
-    <string name="credits_discord">Servidor de Discord</string>
     <string name="credits_telegram">Canal de Telegram</string>
     <string name="credits_view_repo">Ver repositorio</string>
     <string name="buy_mo_a_coffee">¡Cómprame un café!</string>
@@ -720,22 +685,6 @@
     <string name="error_job_cancelled">El vídeo no está disponible para la reproducción. Prueba de nuevo o salta a la siguiente canción.</string>
     <string name="enable_landscape_scaling">Ajuste horizontal</string>
     <string name="enable_landscape_scaling_desc">Ajustar el tamaño de la interfaz en modo horizontal para pantallas grandes</string>
-    <string name="discord_status_connected">Conectado</string>
-    <string name="discord_status_authorizing">Autorizando…</string>
-    <string name="discord_status_authorized">Autorizado</string>
-    <string name="discord_status_not_initialized">No inicializado</string>
-    <string name="discord_error_loopback_timeout">Discord no respondió a tiempo. Por favor, inténtalo de nuevo.</string>
-    <string name="discord_error_loopback_unbound">No se pudo abrir un puerto de devolución local. Por favor, libere uno e inténtelo de nuevo.</string>
-    <string name="discord_error_no_browser">No se encontró un navegador para completar la autorización de Discord.</string>
-    <string name="discord_error_token_refresh_failed">La sesión de Discord ha caducado. Por favor, vuelve a conectarte.</string>
-    <string name="discord_error_invalid_scope">Discord rechazó la conexión. Por favor, vuelve a conectarte y concede el permiso necesario.</string>
-    <string name="discord_error_banner_title">Error de Discord</string>
-    <string name="discord_state">Estado</string>
-    <string name="discord_details">Detalles</string>
-    <string name="discord_enable_button_1">Mostrar botón 1</string>
-    <string name="discord_enable_button_2">Mostrar botón 2</string>
-    <string name="discord_button_label">Etiqueta</string>
-    <string name="discord_button_url">URL</string>
     <string name="restore_database_incompatible">No se puede restaurar la copia de seguridad: la versión de la base de datos es incompatible. Sus datos actuales han sido preservados.</string>
     <string name="widget_playlists_description">Atajos de lista de reproducción con controles de minirreproductor</string>
     <string name="choose_something_below">Elige algo de lo siguiente</string>
@@ -768,12 +717,6 @@
     <string name="android_auto_search_options">Opciones de búsqueda</string>
     <string name="android_auto_search_local_songs_limit">Límite de búsqueda de canciones</string>
     <string name="android_auto_search_local_songs_limit_desc">Limita la cantidad de canciones locales mostradas en los resultados de búsqueda. Es recomendable no configurarlo como ilimitado para evitar fallos de memoria</string>
-    <string name="choose_youtube_channel">Elige un canal de YouTube</string>
-    <string name="choose_youtube_channel_description">Esta cuenta de Google tiene varios canales. Elige la que quieres usar.</string>
-    <string name="switch_youtube_channel">Cambia de canal de YouTube</string>
-    <string name="youtube_channels_failed">No pude recuperar los canales de YouTube de esta cuenta. Por favor, inténtalo de nuevo.</string>
-    <string name="authentication_data_extraction_failed">No pude leer la sesión de YouTube Music. Por favor, inténtalo de nuevo.</string>
-    <string name="login_failed_with_error">Inicio de sesión fallido: %1$s</string>
     <string name="add_to_playlist_position">Añadir a la posición de la lista de reproducción</string>
     <string name="playlist_position_beginning">Inicio de la lista de reproducción</string>
     <string name="playlist_position_beginning_desc">Las canciones nuevas aparecen antes de las canciones existentes</string>

@@ -266,7 +266,6 @@
     <string name="dismiss">Descartar</string>
     <string name="options">Opciones</string>
     <string name="preview">Vista previa</string>
-    <string name="login_failed">Error al acceder a la cuenta</string>
     <string name="action_logout">Finalizar sesión</string>
     <string name="about">Acerca de</string>
     <string name="app_version">Versión de la app</string>

@@ -4,16 +4,11 @@
     <string name="share_as_text">Del som tekst</string>
     <string name="share_as_image">Del som bilde</string>
     <string name="link_copied">Lenke kopiert til utklippstavlen</string>
-    <string name="token_hidden">Klikk for å vise tokenen</string>
     <string name="enable_swipe_thumbnail">Sveip for å bytte sanger</string>
-    <string name="token_adv_login_description">Dette er en AVANSERT innloggingsmetode. Som alternativ til nettportalen, kan du direkte legge inn eller oppdatere innloggingstokenen din her. Dette kan f.eks. gjøre innlogging på flere enheter raskere. NB: Ugyldige tokenformater som appen ikke lykkes til i å tolke, vil ikke godtas</string>
     <string name="lyrics">Sangtekster</string>
-    <string name="allows_for_sync_witch_youtube">NB: Dette tillater synkronisering med YouTube Music. Dette kan ikke endres senere.</string>
     <string name="share_lyrics">Del sangtekster</string>
     <string name="similar_content">Lignende innhold</string>
     <string name="local_history">Lokal</string>
-    <string name="sync_disabled">Synkronisering deaktivert</string>
-    <string name="remote_history">Fjern</string>
     <string name="charts">Hitlister</string>
     <string name="back_button_desc">Tilbake</string>
     <string name="album_cover_desc">Albumomslag</string>
@@ -27,7 +22,6 @@
     <string name="liked">Likt</string>
     <string name="my_top">Mine topp</string>
     <string name="cached_playlist">Hurtiglagret</string>
-    <string name="sync_playlist">Synkroniser spilleliste</string>
     <string name="generating_image">Skaper bilde</string>
     <string name="please_wait">Vennligst vent</string>
     <string name="max_selection_limit">Øvre grense for utvalg</string>
@@ -62,8 +56,6 @@
     <string name="show_downloaded_playlist">Vis «Nedlastet»-spilleliste</string>
     <string name="show_top_playlist">Vis «Topp»-spilleliste</string>
     <string name="show_cached_playlist">Vis «Hurtiglagret»-spilleliste</string>
-    <string name="advanced_login">Avansert innlogging (med token)</string>
-    <string name="token_shown">Klikk igjen for å kopiere eller redigere tokenen</string>
     <string name="general">Alminnelig</string>
     <string name="proxy">Proxy</string>
     <string name="default_lib_chips">Endre standardvisning i biblioteket</string>

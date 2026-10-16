@@ -230,7 +230,6 @@
     <string name="backup_create_success">Cópia de segurança criada com sucesso</string>
     <string name="restore_failed">Não foi possível restaurar a cópia de segurança</string>
     <string name="dismiss">Ignorar</string>
-    <string name="login_failed">Autenticação falhou</string>
     <string name="action_logout">Terminar sessão</string>
     <string name="about">Sobre</string>
     <string name="app_version">Versão da Aplicação</string>

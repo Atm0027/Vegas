@@ -276,7 +276,6 @@
     <string name="hide_explicit">Skrýt explicitní obsah</string>
     <string name="options">Možnosti</string>
     <string name="preview">Náhled</string>
-    <string name="login_failed">Přihlášení selhalo</string>
     <string name="delete_playlist_confirm">Opravdu chcete odstranit playlist „%s“?</string>
     <string name="default_">Výchozí</string>
     <string name="theme">Motiv</string>

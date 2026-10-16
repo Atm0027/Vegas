@@ -248,7 +248,6 @@
     <string name="player_text_alignment">Ausrichtung des Player-textes</string>
     <string name="disable_screenshot">Screenshots deaktivieren</string>
     <string name="small">Klein</string>
-    <string name="login_failed">Anmeldung fehlgeschlagen</string>
     <string name="queue">Warteschlange</string>
     <string name="skip_duplicates">Duplikate überspringen</string>
     <string name="remove_from_playlist">Aus Playlist entfernen</string>

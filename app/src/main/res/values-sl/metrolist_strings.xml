@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="local_history">Lokalni</string>
-    <string name="remote_history">Oddaljeno</string>
     <string name="charts">Grafikoni</string>
     <string name="back_button_desc">Nazaj</string>
     <string name="album_cover_desc">Naslovnica albuma</string>
@@ -15,9 +14,6 @@
     <string name="offline">Preneseno</string>
     <string name="my_top">Moj top</string>
     <string name="cached_playlist">Predpomnjeno</string>
-    <string name="sync_playlist">Sinhronizacija seznama predvajanja</string>
-    <string name="sync_disabled">Sinhronizacija onemogočena</string>
-    <string name="allows_for_sync_witch_youtube">Opomba: To omogoča sinhronizacijo z aplikacijo YouTube Music. Tega kasneje NI mogoče spremeniti.</string>
     <string name="generating_image">Generiranje slike</string>
     <string name="please_wait">Prosim, počakajte</string>
     <string name="cancel">Prekliči</string>
@@ -64,12 +60,6 @@
     <string name="show_downloaded_playlist">Prikaži seznam predvajanja \"Preneseno\"</string>
     <string name="show_top_playlist">Prikaži seznam predvajanja \"Top\"</string>
     <string name="show_cached_playlist">Prikaži seznam predvajanja \"Predpomnjeno\"</string>
-    <string name="advanced_login">Prijava s tokenom</string>
-    <string name="token_hidden">Tapnite za prikaz tokena</string>
-    <string name="token_shown">Ponovno tapnite za kopiranje ali urejanje</string>
-    <string name="token_adv_login_description">To je NAPREDEN način prijave. Namesto spletnega portala lahko tukaj neposredno vnesete ali posodobite svoj prijavni token. S tem lahko na primer pospešite prijavo v več napravah. Upoštevajte, da vsi neveljavni formati tokenov, ki jih aplikacija ne uspe razčleniti, ne bodo sprejeti</string>
-    <string name="yt_sync">Samodejna sinhronizacija z računom</string>
-    <string name="more_content">Več vsebine</string>
     <string name="general">Splošno</string>
     <string name="proxy">Proxy</string>
     <string name="default_lib_chips">Sprememba privzetega knjižničnega čipa</string>
@@ -90,7 +80,6 @@
     <string name="clear_image_cache_dialog">Ali ste prepričani, da želite počistiti vse slike v predpomnilniku?</string>
     <string name="clear_downloads_dialog">Ali ste prepričani, da želite počistiti vse prenose?</string>
     <string name="disable">Onemogoči</string>
-    <string name="not_logged_in_youtube">Niste prijavljeni na YouTube</string>
     <string name="default_links">Odpri podprte povezave</string>
     <string name="open_app_settings_error">Ni bilo mogoče odpreti nastavitev aplikacije</string>
     <string name="release_notes">Opombe ob izdaji</string>

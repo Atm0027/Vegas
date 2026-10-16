@@ -244,7 +244,6 @@
     <string name="options">Options</string>
     <string name="preview">Prévisualisation</string>
     <string name="action_logout">Se déconnecter</string>
-    <string name="login_failed">Échec de la connexion</string>
     <string name="delete_playlist_confirm">Êtes-vous sûr de vouloir supprimer la playlist « %s » ?</string>
     <string name="listen_history">Historique d\'écoute</string>
     <string name="disable_screenshot">Désactiver les captures d\'écran</string>

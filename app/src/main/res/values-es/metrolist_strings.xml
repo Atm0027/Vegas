@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="local_history">Local</string>
-    <string name="remote_history">Remoto</string>
     <string name="charts">Listas de éxitos</string>
     <string name="back_button_desc">Atrás</string>
     <string name="album_cover_desc">Portada del álbum</string>
@@ -15,9 +14,6 @@
     <string name="offline">Descargado</string>
     <string name="my_top">Mi Top</string>
     <string name="cached_playlist">En caché</string>
-    <string name="sync_playlist">Sincronizar lista de reproducción</string>
-    <string name="sync_disabled">Sincronización deshabilitada</string>
-    <string name="allows_for_sync_witch_youtube">Nota: Esto habilita la sincronización con YouTube Music. y NO se puede cambiar después</string>
     <string name="remove_from_cache">Eliminar de la caché</string>
     <string name="copy_link">Copiar enlace</string>
     <string name="select">Seleccionar todo</string>
@@ -49,10 +45,6 @@
     <string name="show_downloaded_playlist">Mostrar lista de reproducción «Descargado»</string>
     <string name="show_top_playlist">Mostrar lista de reproducción «Top»</string>
     <string name="show_cached_playlist">Mostrar lista de reproducción «En caché»</string>
-    <string name="advanced_login">Iniciar sesión con token</string>
-    <string name="token_hidden">Toca para mostrar el token</string>
-    <string name="token_shown">Toca de nuevo para copiar o editar</string>
-    <string name="token_adv_login_description">Este es un método de inicio de sesión AVANZADO. En lugar de usar el portal web, puedes introducir o actualizar directamente tu token de inicio de sesión. Esto puede ser útil para iniciar sesión rápidamente en varios dispositivos. Los tokens con un formato no reconocido serán rechazados</string>
     <string name="general">General</string>
     <string name="proxy">Proxy</string>
     <string name="default_lib_chips">Cambiar chip de biblioteca predeterminado</string>
@@ -64,7 +56,6 @@
     <string name="percentage_format">%d%%</string>
     <string name="clear_song_cache_dialog">¿Estás seguro de que quieres borrar todas las canciones en caché?</string>
     <string name="clear_downloads_dialog">¿Estás seguro de que quieres eliminar todas las descargas?</string>
-    <string name="not_logged_in_youtube">No has iniciado sesión en YouTube</string>
     <string name="default_links">Abrir enlaces compatibles</string>
     <string name="open_app_settings_error">No se pudieron abrir los ajustes de la aplicación</string>
     <string name="release_notes">Notas de la versión</string>
@@ -104,8 +95,6 @@
     <string name="import_online">Importar una lista de reproducción M3U</string>
     <string name="playlist_add_local_to_synced_note">NOTA: No es posible añadir canciones locales a listas de reproducción sincronizadas o remotas. Cualquier otra combinación es válida.</string>
     <string name="new_player_design">Nuevo diseño del reproductor</string>
-    <string name="yt_sync">Sincronización automática con la cuenta</string>
-    <string name="more_content">Más contenido</string>
     <string name="swipe_sensitivity">Sensibilidad al deslizar el mini reproductor</string>
     <string name="clear_image_cache_dialog">¿Estás seguro de que deseas borrar todas las imágenes almacenadas en caché?</string>
     <string name="disable">Deshabilitar</string>
@@ -394,10 +383,6 @@
     <string name="prevent_duplicate_tracks_in_queue_desc">Al agregar una pista que ya está en la cola, se moverá desde su posición anterior en lugar de añadirse de nuevo</string>
     <string name="ai_translation_transcribed_desc">Convertir la pronunciación al sistema de escritura de destino</string>
     <string name="ai_provider_help">Obtener claves de API</string>
-    <string name="discord_status">Status</string>
-    <string name="discord_status_online">Online</string>
-    <string name="discord_activity_competing">Compitiendo</string>
-    <string name="discord_presence">Presencia</string>
     <string name="player_background_solid">Sólido</string>
     <string name="resume_on_bluetooth_connect">Reanudar al conectar Bluetooth</string>
     <string name="lyrics_romanize_as_main">Mostrar letras romanizadas como principales</string>
@@ -413,21 +398,6 @@
     <string name="ai_deepl_formality_default">Predeterminado</string>
     <string name="ai_deepl_formality_more">Más formal</string>
     <string name="ai_deepl_formality_less">Menos formal</string>
-    <string name="discord_status_idle">Ausente</string>
-    <string name="discord_status_dnd">No molestar</string>
-    <string name="discord_buttons">Botones</string>
-    <string name="discord_button_1">Botón 1</string>
-    <string name="discord_button_2">Botón 2</string>
-    <string name="discord_information_warning">Metrolist utiliza las API públicas de OAuth2 y Gateway de Discord para compartir lo que estás escuchando. La autorización se realiza mediante una sesión local del navegador que se cierra automáticamente tras capturar el código; no se envía nada a servidores de terceros. Tu token se almacena en este dispositivo en preferencias cifradas y nunca se comparte. Metrolist se conecta directamente a wss://gateway.discord.gg para publicar tu actividad y solo solicita el alcance mínimo necesario (sdk.social_layer_presence).</string>
-    <string name="discord_activity_type">Tipo de actividad</string>
-    <string name="discord_activity_playing">Jugando</string>
-    <string name="discord_activity_listening">Escuchando</string>
-    <string name="discord_activity_watching">Viendo</string>
-    <string name="discord_rpc_preview">Vista previa de Rich Presence</string>
-    <string name="discord_connect_description">Inicia sesión con Discord para compartir lo que estás escuchando</string>
-    <string name="discord_activity_name">Nombre de la actividad</string>
-    <string name="discord_advanced_mode">Modo avanzado</string>
-    <string name="discord_advanced_mode_description">Mostrar opciones adicionales de personalización de Rich Presence</string>
     <string name="display_density">Densidad de pantalla</string>
     <string name="restart">Reiniciar</string>
     <string name="restart_required">¡Se requiere reiniciar!</string>
@@ -476,16 +446,11 @@
     <string name="error_podcast_subscribe">Error al suscribirse al pódcast</string>
     <string name="error_podcast_unsubscribe">Error al cancelar la suscripción al pódcast</string>
     <string name="importing_playlist">Importando lista de reproducción…</string>
-    <string name="logout_dialog_title">¿Conservar los datos de la biblioteca?</string>
-    <string name="logout_dialog_message">¿Quieres conservar tus listas de reproducción y los datos de tu biblioteca? Las canciones descargadas se conservarán igualmente</string>
-    <string name="logout_keep">Conservar</string>
-    <string name="logout_clear">Borrar</string>
     <string name="credits_lead_developer">Desarrollador principal</string>
     <string name="credits_collaborator">Colaborador</string>
     <string name="credits_collaborators_section">Colaboradores</string>
     <string name="credits_license_name">GNU General Licencia pública v3.0</string>
     <string name="credits_license_desc">Software libre y de código abierto. Puedes usarlo, estudiarlo, compartirlo y mejorarlo</string>
-    <string name="credits_discord">Servidor de Discord</string>
     <string name="credits_telegram">Canal de Telegram</string>
     <string name="credits_view_repo">Ver repositorio</string>
     <string name="buy_mo_a_coffee">¡Invítame un café!</string>
@@ -719,22 +684,6 @@
     <string name="widget_playlists">Listas de reproducción</string>
     <string name="widget_playlists_description">Accesos directos de listas de reproducción con controles del mini reproductor</string>
     <string name="choose_something_below">Elige algo de abajo</string>
-    <string name="discord_status_connected">Conectado</string>
-    <string name="discord_error_loopback_timeout">Discord no respondió a tiempo. Inténtalo de nuevo.</string>
-    <string name="discord_status_authorizing">Autorizando…</string>
-    <string name="discord_status_authorized">Autorizado</string>
-    <string name="discord_status_not_initialized">No inicializado</string>
-    <string name="discord_error_loopback_unbound">No se pudo abrir un puerto local de callback. Libera uno e inténtalo de nuevo.</string>
-    <string name="discord_error_no_browser">No se encontró ningún navegador para completar la autorización de Discord.</string>
-    <string name="discord_error_token_refresh_failed">La sesión de Discord ha expirado. Vuelve a conectarte.</string>
-    <string name="discord_error_invalid_scope">Discord rechazó la conexión. Vuelve a conectarte y concede el permiso requerido.</string>
-    <string name="discord_error_banner_title">Error de Discord</string>
-    <string name="discord_state">Estado</string>
-    <string name="discord_details">Detalles</string>
-    <string name="discord_enable_button_1">Mostrar botón 1</string>
-    <string name="discord_enable_button_2">Mostrar botón 2</string>
-    <string name="discord_button_label">Etiqueta</string>
-    <string name="discord_button_url">URL</string>
     <string name="restore_database_incompatible">No se puede restaurar la copia de seguridad: la versión de la base de datos es incompatible. Tus datos actuales se han conservado.</string>
     <string name="stream_client">Cliente de streaming</string>
     <string name="format_player_hash">Hash del reproductor</string>
@@ -768,12 +717,6 @@
     <string name="android_auto_search_local_songs_limit_desc">Limita el número de canciones locales mostradas en los resultados de búsqueda. Se recomienda limitarlo para prevenir cierres de la aplicación inesperados</string>
     <string name="playlist_unavailable">Lista de reproducción no disponible</string>
     <string name="kmp_upgrade_later">Ahora no</string>
-    <string name="choose_youtube_channel">Elegir un canal de YouTube</string>
-    <string name="choose_youtube_channel_description">Esta cuenta de Google tiene varios canales. Elige la que quieres usar.</string>
-    <string name="switch_youtube_channel">Cambiar de canal de YouTube</string>
-    <string name="youtube_channels_failed">No pude recuperar los canales de YouTube de esta cuenta. Por favor, inténtalo de nuevo.</string>
-    <string name="authentication_data_extraction_failed">No pude leer la sesión de YouTube Music. Por favor, inténtalo de nuevo.</string>
-    <string name="login_failed_with_error">Inicio de sesión fallido: %1$s</string>
     <string name="add_to_playlist_position">Agregar a la posición de la lista de reproducción</string>
     <string name="playlist_position_beginning">Inicio de la lista de reproducción</string>
     <string name="playlist_position_beginning_desc">Las canciones nuevas aparecen antes de las canciones existentes</string>
@@ -784,10 +727,7 @@
     <string name="error_offline_playback">Estás sin conexión. Conéctate a internet, o reproduce una pista descargada para uso sin conexión.</string>
     <string name="enable_zemer">Activar Zemer</string>
     <string name="enable_zemer_desc">Letras para música judía</string>
-    <string name="playlist_created_locally">Sincronización de YouTube se fallido. Se ha creado la lista de reproducción local.</string>
     <string name="ai_provider_inception_help">Visit https://platform.inceptionlabs.ai para claves API</string>
     <string name="update_available_message">Metrolist %s está listo para descargar.</string>
     <string name="update_action">Actualizar</string>
-    <string name="discord_integration">Integración con Discord</string>
-    <string name="enable_discord_rpc">Activar Rich Presence</string>
 </resources>
