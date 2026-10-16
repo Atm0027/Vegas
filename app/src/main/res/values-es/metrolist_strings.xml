@@ -730,4 +730,9 @@
     <string name="ai_provider_inception_help">Visit https://platform.inceptionlabs.ai para claves API</string>
     <string name="update_available_message">Metrolist %s está listo para descargar.</string>
     <string name="update_action">Actualizar</string>
+    <string name="playlist_edit_done">Hecho</string>
+    <string name="playlist_updated">Lista actualizada</string>
+    <string name="playlist_edit_hint">Arrastra para reordenar. Toca una canción para usar su carátula como portada.</string>
+    <string name="playlist_edit_removed">%d por quitar</string>
+    <string name="playlist_cover_automatic">Portada automática</string>
 </resources>

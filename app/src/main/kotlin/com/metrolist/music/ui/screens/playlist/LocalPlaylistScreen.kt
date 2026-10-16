@@ -109,7 +109,6 @@ import com.metrolist.music.LocalPlayerAwareWindowInsets
 import com.metrolist.music.LocalPlayerConnection
 import com.metrolist.music.R
 import com.metrolist.music.constants.DarkModeKey
-import com.metrolist.music.constants.PlaylistEditLockKey
 import com.metrolist.music.constants.PlaylistSongSortDescendingKey
 import com.metrolist.music.constants.PlaylistSongSortType
 import com.metrolist.music.constants.PlaylistSongSortTypeKey
@@ -149,6 +148,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.first
+import androidx.compose.foundation.clickable
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarResult
+import com.metrolist.music.playlist.PlaylistEditSession
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 import java.time.LocalDateTime
@@ -186,7 +191,12 @@ fun LocalPlaylistScreen(
             PlaylistSongSortDescendingKey,
             true,
         )
-    var locked by rememberPreference(PlaylistEditLockKey, defaultValue = true)
+    // Edit mode: changes stay in memory until "Done", then are written in one transaction.
+    var editSession by remember { mutableStateOf<PlaylistEditSession?>(null) }
+    var editRevision by remember { mutableIntStateOf(0) }
+    var editName by remember { mutableStateOf("") }
+    val editSongs = remember { mutableStateListOf<PlaylistSong>() }
+    val editing = editSession != null
 
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -230,7 +240,57 @@ fun LocalPlaylistScreen(
         selectionAnchorMapId = null
     }
 
-    if (isSearching) {
+    val playlistUpdatedStr = stringResource(R.string.playlist_updated)
+    val undoStr = stringResource(R.string.undo)
+
+    val startEditing: () -> Unit = {
+        playlist?.playlist?.let { entity ->
+            coroutineScope.launch {
+                // Edit every row, including ones hidden by filters, so positions stay dense.
+                val all = withContext(Dispatchers.IO) { database.playlistSongs(viewModel.playlistId).first() }
+                editSongs.clear()
+                editSongs.addAll(all)
+                editName = entity.name
+                editSession = PlaylistEditSession(all.map { it.map.id }, entity.name, entity.thumbnailUrl)
+                isSearching = false
+                query = TextFieldValue()
+                inSelectMode = false
+                selection.clear()
+            }
+        }
+    }
+    val cancelEditing: () -> Unit = { editSession = null }
+    val finishEditing: () -> Unit = {
+        editSession?.let { session ->
+            editSession = null
+            editName.trim().takeIf { it.isNotEmpty() }?.let(session::rename)
+            val result = session.commit()
+            if (result.changed) {
+                coroutineScope.launch {
+                    val snapshot =
+                        withContext(Dispatchers.IO) {
+                            database.playlistSnapshot(viewModel.playlistId)?.also {
+                                database.applyPlaylistEdit(viewModel.playlistId, result)
+                            }
+                        } ?: return@launch
+                    if (sortType != PlaylistSongSortType.CUSTOM) onSortTypeChange(PlaylistSongSortType.CUSTOM)
+                    val action =
+                        snackbarHostState.showSnackbar(
+                            message = playlistUpdatedStr,
+                            actionLabel = undoStr,
+                            duration = SnackbarDuration.Long,
+                        )
+                    if (action == SnackbarResult.ActionPerformed) {
+                        withContext(Dispatchers.IO) { database.restorePlaylistSnapshot(snapshot) }
+                    }
+                }
+            }
+        }
+    }
+
+    if (editing) {
+        BackHandler(onBack = cancelEditing)
+    } else if (isSearching) {
         BackHandler {
             isSearching = false
             query = TextFieldValue()
@@ -406,40 +466,23 @@ fun LocalPlaylistScreen(
 
     val headerItems = 2
     val lazyListState = rememberLazyListState()
-    var dragInfo by remember {
-        mutableStateOf<Pair<Int, Int>?>(null)
-    }
     val reorderableState =
         rememberReorderableLazyListState(
             lazyListState = lazyListState,
             scrollThresholdPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues(),
         ) { from, to ->
-            if (to.index >= headerItems && from.index >= headerItems) {
-                val currentDragInfo = dragInfo
-                dragInfo =
-                    if (currentDragInfo == null) {
-                        (from.index - headerItems) to (to.index - headerItems)
-                    } else {
-                        currentDragInfo.first to (to.index - headerItems)
-                    }
-
-                mutableSongs.move(from.index - headerItems, to.index - headerItems)
+            val session = editSession
+            if (session != null && to.index >= headerItems && from.index >= headerItems) {
+                session.move(from.index - headerItems, to.index - headerItems)
+                editRevision++
             }
         }
 
-    LaunchedEffect(reorderableState.isAnyItemDragging) {
-        if (!reorderableState.isAnyItemDragging) {
-            dragInfo?.let { (from, to) ->
-                viewModel.viewModelScope.launch(Dispatchers.IO) {
-                    database.withTransaction {
-                        move(viewModel.playlistId, from, to)
-                    }
-                }
-
-                dragInfo = null
-            }
+    val editSongsById = remember(editSongs.size, editSession) { editSongs.associateBy { it.map.id } }
+    val editDisplayed =
+        remember(editSession, editRevision, editSongsById) {
+            editSession?.order?.mapNotNull { editSongsById[it] }.orEmpty()
         }
-    }
 
     val showTopBarTitle by remember {
         derivedStateOf {
@@ -464,7 +507,51 @@ fun LocalPlaylistScreen(
                         )
                     }
                 } else {
-                    if (!isSearching) {
+                    if (editing) {
+                        item(key = "playlist_header") {
+                            Column(
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                            ) {
+                                OutlinedTextField(
+                                    value = editName,
+                                    onValueChange = { editName = it },
+                                    label = { Text(stringResource(R.string.playlist_name)) },
+                                    singleLine = true,
+                                    modifier = Modifier.fillMaxWidth(),
+                                )
+                                val cover = editSession?.thumbnailUrl.also { editRevision }
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.padding(top = 12.dp),
+                                ) {
+                                    if (cover != null) {
+                                        AsyncImage(
+                                            model = cover,
+                                            contentDescription = null,
+                                            modifier =
+                                                Modifier
+                                                    .size(48.dp)
+                                                    .clip(RoundedCornerShape(8.dp)),
+                                        )
+                                        TextButton(onClick = {
+                                            editSession?.setThumbnail(null)
+                                            editRevision++
+                                        }) {
+                                            Text(stringResource(R.string.playlist_cover_automatic))
+                                        }
+                                    } else {
+                                        Text(
+                                            text = stringResource(R.string.playlist_cover_automatic),
+                                            style = MaterialTheme.typography.bodyMedium,
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    } else if (!isSearching) {
                         item(key = "playlist_header") {
                             LocalPlaylistHeader(
                                 playlist = playlist,
@@ -480,7 +567,22 @@ fun LocalPlaylistScreen(
                         }
                     }
 
-                    item(key = "controls_row") {
+                    if (editing) {
+                        item(key = "controls_row") {
+                            val removed = editSession?.removedIds?.size.also { editRevision } ?: 0
+                            Text(
+                                text =
+                                    if (removed > 0) {
+                                        stringResource(R.string.playlist_edit_removed, removed)
+                                    } else {
+                                        stringResource(R.string.playlist_edit_hint)
+                                    },
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                            )
+                        }
+                    } else item(key = "controls_row") {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier =
@@ -506,12 +608,12 @@ fun LocalPlaylistScreen(
                             )
                             if (editable) {
                                 IconButton(
-                                    onClick = { locked = !locked },
+                                    onClick = startEditing,
                                     modifier = Modifier.padding(horizontal = 6.dp),
                                 ) {
                                     Icon(
-                                        painter = painterResource(if (locked) R.drawable.lock else R.drawable.lock_open),
-                                        contentDescription = null,
+                                        painter = painterResource(R.drawable.edit),
+                                        contentDescription = stringResource(R.string.edit),
                                     )
                                 }
                             }
@@ -520,7 +622,12 @@ fun LocalPlaylistScreen(
                 }
             }
 
-            val displayedSongs = if (isSearching) filteredSongs else mutableSongs
+            val displayedSongs =
+                when {
+                    editing -> editDisplayed
+                    isSearching -> filteredSongs
+                    else -> mutableSongs
+                }
 
             itemsIndexed(
                 items = displayedSongs,
@@ -601,17 +708,6 @@ fun LocalPlaylistScreen(
                                         )
                                     }
 
-                                    if (sortType == PlaylistSongSortType.CUSTOM && !locked && !inSelectMode && !isSearching && editable) {
-                                        IconButton(
-                                            onClick = { },
-                                            modifier = Modifier.draggableHandle(),
-                                        ) {
-                                            Icon(
-                                                painter = painterResource(R.drawable.drag_handle),
-                                                contentDescription = null,
-                                            )
-                                        }
-                                    }
                                 }
                             },
                             modifier =
@@ -663,7 +759,41 @@ fun LocalPlaylistScreen(
                         )
                     }
 
-                    if (locked || inSelectMode || !swipeRemoveEnabled) {
+                    if (editing) {
+                        SongListItem(
+                            song = song.song,
+                            isActive = song.song.id == mediaMetadata?.id,
+                            isPlaying = isPlaying,
+                            trailingContent = {
+                                IconButton(onClick = {
+                                    editSession?.toggleRemove(song.map.id)
+                                    editRevision++
+                                }) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.remove),
+                                        contentDescription = null,
+                                    )
+                                }
+                                IconButton(
+                                    onClick = { },
+                                    modifier = Modifier.draggableHandle(),
+                                ) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.drag_handle),
+                                        contentDescription = null,
+                                    )
+                                }
+                            },
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .animateItem()
+                                    .clickable {
+                                        editSession?.setThumbnail(song.song.song.thumbnailUrl)
+                                        editRevision++
+                                    },
+                        )
+                    } else if (inSelectMode || !swipeRemoveEnabled) {
                         Box(modifier = Modifier.animateItem()) {
                             content()
                         }
@@ -694,7 +824,9 @@ fun LocalPlaylistScreen(
 
         TopAppBar(
             title = {
-                if (inSelectMode) {
+                if (editing) {
+                    Text(stringResource(R.string.edit_playlist))
+                } else if (inSelectMode) {
                     Text(pluralStringResource(R.plurals.n_selected, selection.size, selection.size))
                 } else if (isSearching) {
                     TextField(
@@ -727,7 +859,14 @@ fun LocalPlaylistScreen(
                 }
             },
             navigationIcon = {
-                if (inSelectMode) {
+                if (editing) {
+                    IconButton(onClick = cancelEditing) {
+                        Icon(
+                            painter = painterResource(R.drawable.close),
+                            contentDescription = stringResource(R.string.cancel),
+                        )
+                    }
+                } else if (inSelectMode) {
                     IconButton(onClick = onExitSelectionMode) {
                         Icon(
                             painter = painterResource(R.drawable.close),
@@ -758,7 +897,11 @@ fun LocalPlaylistScreen(
                 }
             },
             actions = {
-                if (inSelectMode) {
+                if (editing) {
+                    TextButton(onClick = finishEditing) {
+                        Text(stringResource(R.string.playlist_edit_done))
+                    }
+                } else if (inSelectMode) {
                     Checkbox(
                         checked = selection.size == songs.size && selection.isNotEmpty(),
                         onCheckedChange = {

@@ -849,4 +849,9 @@
     <string name="stream_source_web_creator_desc">Creator web client.</string>
     <string name="top_result">Top result</string>
     <string name="other">Other</string>
+    <string name="playlist_edit_done">Done</string>
+    <string name="playlist_updated">Playlist updated</string>
+    <string name="playlist_edit_hint">Drag to reorder. Tap a song to use its artwork as the cover.</string>
+    <string name="playlist_edit_removed">%d to remove</string>
+    <string name="playlist_cover_automatic">Automatic cover</string>
 </resources>
