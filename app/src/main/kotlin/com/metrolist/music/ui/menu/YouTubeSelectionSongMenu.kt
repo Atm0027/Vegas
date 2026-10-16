@@ -86,16 +86,6 @@ fun YouTubeSelectionSongMenu(
         )
     }
 
-    // Check if all songs are in library
-    val allInLibrary by remember(songSelection) {
-        mutableStateOf(
-            songSelection.all { song ->
-                val metadata = song.toMediaMetadata()
-                metadata.inLibrary != null
-            },
-        )
-    }
-
     LaunchedEffect(songSelection) {
         if (songSelection.isEmpty()) return@LaunchedEffect
         downloadUtil.downloads.collect { downloads ->
@@ -255,43 +245,6 @@ fun YouTubeSelectionSongMenu(
                         title = { Text(stringResource(R.string.add_to_playlist)) },
                         onClick = {
                             showChoosePlaylistDialog = true
-                        },
-                    ),
-                    Material3MenuItemData(
-                        title = {
-                            Text(
-                                text =
-                                    stringResource(
-                                        if (allInLibrary) R.string.remove_from_library else R.string.add_to_library,
-                                    ),
-                            )
-                        },
-                        icon = {
-                            Icon(
-                                painter =
-                                    painterResource(
-                                        if (allInLibrary) R.drawable.library_add_check else R.drawable.library_add,
-                                    ),
-                                contentDescription = null,
-                            )
-                        },
-                        onClick = {
-                            if (allInLibrary) {
-                                database.query {
-                                    songSelection.forEach { song ->
-                                        inLibrary(song.id, null)
-                                    }
-                                }
-                            } else {
-                                database.transaction {
-                                    songSelection.forEach { song ->
-                                        insert(song.toMediaMetadata())
-                                        inLibrary(song.id, LocalDateTime.now())
-                                    }
-                                }
-                            }
-                            clearAction()
-                            onDismiss()
                         },
                     ),
                     when (downloadState) {

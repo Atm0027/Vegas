@@ -704,42 +704,6 @@ fun SongMenu(
                                     },
                                 ),
                             )
-                        } else {
-                            add(
-                                Material3MenuItemData(
-                                    title = {
-                                        Text(
-                                            text =
-                                                stringResource(
-                                                    if (song.song.inLibrary == null) {
-                                                        R.string.add_to_library
-                                                    } else {
-                                                        R.string.remove_from_library
-                                                    },
-                                                ),
-                                        )
-                                    },
-                                    description = { Text(text = stringResource(R.string.add_to_library_desc)) },
-                                    icon = {
-                                        Icon(
-                                            painter =
-                                                painterResource(
-                                                    if (song.song.inLibrary == null) {
-                                                        R.drawable.library_add
-                                                    } else {
-                                                        R.drawable.library_add_check
-                                                    },
-                                                ),
-                                            contentDescription = null,
-                                        )
-                                    },
-                                    onClick = {
-                                        database.query {
-                                            update(song.song.toggleLibrary())
-                                        }
-                                    },
-                                ),
-                            )
                         }
                         if (event != null) {
                             add(

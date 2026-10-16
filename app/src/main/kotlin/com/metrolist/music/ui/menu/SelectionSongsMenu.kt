@@ -82,14 +82,6 @@ fun SelectionSongMenu(
     val playerConnection = LocalPlayerConnection.current ?: return
     val deletedNSongsTemplate = stringResource(R.string.deleted_n_songs)
 
-    val allInLibrary by remember {
-        mutableStateOf(
-            songSelection.all {
-                it.song.inLibrary != null
-            },
-        )
-    }
-
     val allLiked by remember(songSelection) {
         mutableStateOf(
             songSelection.isNotEmpty() &&
@@ -415,43 +407,6 @@ fun SelectionSongMenu(
                                 },
                                 onClick = {
                                     showChoosePlaylistDialog = true
-                                },
-                            ),
-                        )
-                        add(
-                            Material3MenuItemData(
-                                title = {
-                                    Text(
-                                        text =
-                                            stringResource(
-                                                if (allInLibrary) R.string.remove_from_library else R.string.add_to_library,
-                                            ),
-                                    )
-                                },
-                                icon = {
-                                    Icon(
-                                        painter =
-                                            painterResource(
-                                                if (allInLibrary) R.drawable.library_add_check else R.drawable.library_add,
-                                            ),
-                                        contentDescription = null,
-                                    )
-                                },
-                                onClick = {
-                                    if (allInLibrary) {
-                                        database.query {
-                                            songSelection.forEach { song ->
-                                                inLibrary(song.id, null)
-                                            }
-                                        }
-                                    } else {
-                                        database.transaction {
-                                            songSelection.forEach { song ->
-                                                insert(song.toMediaMetadata())
-                                                inLibrary(song.id, LocalDateTime.now())
-                                            }
-                                        }
-                                    }
                                 },
                             ),
                         )

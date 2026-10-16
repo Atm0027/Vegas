@@ -130,7 +130,6 @@ fun PlayerMenu(
 
     val varispeedMode by rememberPreference(VarispeedKey, defaultValue = false)
 
-    val librarySong by database.song(mediaMetadata.id).collectAsStateWithLifecycle(initialValue = null)
     val coroutineScope = rememberCoroutineScope()
     val downloadUtil = LocalDownloadUtil.current
 
@@ -426,42 +425,6 @@ fun PlayerMenu(
                                 ),
                             )
                         }
-                        // Add to Library option
-                        val isInLibrary = librarySong?.song?.inLibrary != null
-                        add(
-                            Material3MenuItemData(
-                                title = {
-                                    Text(
-                                        text =
-                                            stringResource(
-                                                if (isInLibrary) {
-                                                    R.string.remove_from_library
-                                                } else {
-                                                    R.string.add_to_library
-                                                },
-                                            ),
-                                    )
-                                },
-                                icon = {
-                                    Icon(
-                                        painter =
-                                            painterResource(
-                                                if (isInLibrary) {
-                                                    R.drawable.library_add_check
-                                                } else {
-                                                    R.drawable.library_add
-                                                },
-                                            ),
-                                        contentDescription = null,
-                                        modifier = Modifier.size(24.dp),
-                                    )
-                                },
-                                onClick = {
-                                    playerConnection.toggleLibrary()
-                                    onDismiss()
-                                },
-                            ),
-                        )
                         add(
                             Material3MenuItemData(
                                 title = {

@@ -128,6 +128,10 @@ fun LibrarySongsScreen(
     val normalizedQuery = remember(debouncedSearchQuery) { debouncedSearchQuery.normalizeForSearch() }
 
     var filter by rememberEnumPreference(SongFilterKey, SongFilter.LIKED)
+    // Vega: there is no "add to library" anymore, so the Library filter is gone.
+    LaunchedEffect(filter) {
+        if (filter == SongFilter.LIBRARY) filter = SongFilter.LIKED
+    }
 
 
     val lazyListState = rememberLazyListState()
@@ -183,7 +187,6 @@ fun LibrarySongsScreen(
                         chips =
                             listOf(
                                 SongFilter.LIKED to stringResource(R.string.filter_liked),
-                                SongFilter.LIBRARY to stringResource(R.string.filter_library),
                                 SongFilter.UPLOADED to stringResource(R.string.filter_uploaded),
                                 SongFilter.DOWNLOADED to stringResource(R.string.filter_downloaded),
                             ),

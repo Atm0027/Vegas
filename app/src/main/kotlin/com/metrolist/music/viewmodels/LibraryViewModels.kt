@@ -92,7 +92,7 @@ constructor(
             .map {
                 Triple(
                     Triple(
-                        it[SongFilterKey].toEnum(SongFilter.LIKED),
+                        it[SongFilterKey].toEnum(SongFilter.LIKED).takeUnless { f -> f == SongFilter.LIBRARY } ?: SongFilter.LIKED,
                         it[SongSortTypeKey].toEnum(SongSortType.CREATE_DATE),
                         (it[SongSortDescendingKey] ?: true),
                     ),
