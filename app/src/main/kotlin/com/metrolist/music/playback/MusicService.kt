@@ -30,6 +30,7 @@ import android.net.ConnectivityManager
 import android.os.Binder
 import android.os.Build
 import android.os.Bundle
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.os.PowerManager
@@ -177,6 +178,8 @@ import com.metrolist.music.models.toMediaMetadata
 import com.metrolist.music.playback.alarm.MusicAlarmScheduler
 import com.metrolist.music.playback.alarm.MusicAlarmStore
 import com.metrolist.music.playback.audio.SilenceDetectorAudioProcessor
+import com.metrolist.music.offline.OfflineSkip
+import com.metrolist.music.offline.OfflineStore
 import com.metrolist.music.playback.queues.EmptyQueue
 import com.metrolist.music.playback.queues.ListQueue
 import com.metrolist.music.playback.queues.Queue
@@ -229,6 +232,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import timber.log.Timber
+import java.io.IOException
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.time.LocalDateTime
@@ -367,6 +371,14 @@ class MusicService :
     @Inject
     @DownloadCache
     lateinit var downloadCache: Cache
+
+    @Inject
+    lateinit var offlineStore: OfflineStore
+
+    // Vega offline: ids of songs with a downloaded file, kept in memory for the playback thread.
+    private val downloadedIds = MutableStateFlow<Set<String>>(emptySet())
+    private var offlineEndNotified = false
+    private var offlineStallJob: Job? = null
 
     lateinit var player: ExoPlayer
         private set
@@ -723,8 +735,13 @@ class MusicService :
         }
 
         scope.launch {
+            database.downloadedIds().collect { downloadedIds.value = it }
+        }
+
+        scope.launch {
             connectivityObserver.networkStatus.collect { isConnected ->
                 isNetworkConnected.value = isConnected
+                if (isConnected) offlineEndNotified = false
                 if (isConnected && waitingForNetworkConnection.value) {
                     triggerRetry()
                 }
@@ -766,8 +783,7 @@ class MusicService :
                     runBlocking(Dispatchers.IO) {
                         try {
                             playerCache.removeResource(mediaId)
-                            downloadCache.removeResource(mediaId)
-                            Timber.tag(TAG).d("Cleared player and download cache for $mediaId")
+                            Timber.tag(TAG).d("Cleared player cache for $mediaId")
                         } catch (e: Exception) {
                             Timber.tag(TAG).e(e, "Failed to clear cache for $mediaId")
                         }
@@ -2360,6 +2376,7 @@ class MusicService :
         retryJob?.cancel()
         retryJob = null
         updateInitialBufferRecovery(player.playbackState)
+        updateOfflineStallWatch(player.playbackState)
 
         previousEpisodeId?.let { episodeId ->
             if (previousEpisodePosition > 0) {
@@ -2445,6 +2462,7 @@ class MusicService :
         @Player.State playbackState: Int,
     ) {
         updateInitialBufferRecovery(playbackState)
+        updateOfflineStallWatch(playbackState)
 
         if (playbackState == Player.STATE_ENDED) {
             player.currentMediaItem?.mediaId?.let { mediaId ->
@@ -2538,6 +2556,7 @@ class MusicService :
         }
 
         updateInitialBufferRecovery(player.playbackState)
+        updateOfflineStallWatch(player.playbackState)
     }
 
     private fun updateInitialBufferRecovery(
@@ -2847,6 +2866,16 @@ class MusicService :
             markSongAsFailed(mediaId)
             handleFinalFailure()
             return
+        }
+
+        if (mediaId != null && !isPlayableOffline(mediaId) &&
+            (!isNetworkConnected.value || isNetworkRelatedError(error))
+        ) {
+            if (skipToNextPlayableOffline()) return
+            if (!isNetworkConnected.value) {
+                pauseAtEndOfDownloads()
+                return
+            }
         }
 
         if (mediaId != null) {
@@ -3288,31 +3317,101 @@ class MusicService :
     private fun createCacheDataSource(): CacheDataSource.Factory =
         CacheDataSource
             .Factory()
-            .setCache(downloadCache)
+            .setCache(playerCache)
             .setUpstreamDataSourceFactory(
-                CacheDataSource
-                    .Factory()
-                    .setCache(playerCache)
-                    .setUpstreamDataSourceFactory(
-                        DefaultDataSource.Factory(
-                            this,
-                            OkHttpDataSource.Factory(
-                                OkHttpClient
-                                    .Builder()
-                                    .proxy(YouTube.proxy)
-                                    .proxyAuthenticator { _, response ->
-                                        YouTube.proxyAuth?.let { auth ->
-                                            response.request
-                                                .newBuilder()
-                                                .header("Proxy-Authorization", auth)
-                                                .build()
-                                        } ?: response.request
-                                    }.build(),
-                            ),
-                        ),
+                DefaultDataSource.Factory(
+                    this,
+                    OkHttpDataSource.Factory(
+                        OkHttpClient
+                            .Builder()
+                            .proxy(YouTube.proxy)
+                            .proxyAuthenticator { _, response ->
+                                YouTube.proxyAuth?.let { auth ->
+                                    response.request
+                                        .newBuilder()
+                                        .header("Proxy-Authorization", auth)
+                                        .build()
+                                } ?: response.request
+                            }.build(),
                     ),
-            ).setCacheWriteDataSinkFactory(null)
-            .setFlags(FLAG_IGNORE_CACHE_ON_ERROR)
+                ),
+            ).setFlags(FLAG_IGNORE_CACHE_ON_ERROR)
+
+    /** Downloaded file of [mediaId], if it is there; a file deleted outside Vega drops its row. */
+    private fun localFileUri(mediaId: String): Uri? {
+        if (mediaId !in downloadedIds.value) return null
+        val entity = runBlocking(Dispatchers.IO) { database.downloadEntity(mediaId) } ?: return null
+        val uri = entity.uri.toUri()
+        return when (offlineStore.exists(uri)) {
+            OfflineStore.Existence.PRESENT -> uri
+            OfflineStore.Existence.MISSING -> {
+                scope.launch(Dispatchers.IO) { database.deleteDownload(mediaId) }
+                null
+            }
+            OfflineStore.Existence.NO_ACCESS -> null
+        }
+    }
+
+    private fun isFullyInPlayerCache(mediaId: String): Boolean {
+        val length = ContentMetadata.getContentLength(playerCache.getContentMetadata(mediaId))
+        return length > 0 && playerCache.isCached(mediaId, 0, length)
+    }
+
+    /** Plays without a connection: a downloaded file, or a song the player cache holds entirely. */
+    private fun isPlayableOffline(mediaId: String): Boolean =
+        mediaId in downloadedIds.value || runCatching { isFullyInPlayerCache(mediaId) }.getOrDefault(false)
+
+    /** Jumps to the next song in play order that can play offline. Returns false if there is none. */
+    private fun skipToNextPlayableOffline(): Boolean {
+        val timeline = player.currentTimeline
+        if (timeline.isEmpty) return false
+        val current = player.currentMediaItemIndex
+        val repeatMode = if (player.repeatMode == Player.REPEAT_MODE_ONE) Player.REPEAT_MODE_ALL else player.repeatMode
+        val target = OfflineSkip.nextPlayableIndex(
+            current = current,
+            itemCount = timeline.windowCount,
+            next = { timeline.getNextWindowIndex(it, repeatMode, player.shuffleModeEnabled) },
+            isPlayable = { isPlayableOffline(player.getMediaItemAt(it).mediaId) },
+        ) ?: return false
+        Timber.tag(TAG).i("Offline: skipping from index $current to downloaded index $target")
+        player.seekTo(target, C.TIME_UNSET)
+        player.prepare()
+        player.play()
+        return true
+    }
+
+    private fun pauseAtEndOfDownloads() {
+        player.pause()
+        if (!offlineEndNotified) {
+            offlineEndNotified = true
+            Handler(Looper.getMainLooper()).post {
+                Toast.makeText(this, getString(R.string.offline_no_more_downloaded), Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    /** Weak coverage: a song that is not downloaded and makes no progress for a few seconds is skipped. */
+    private fun updateOfflineStallWatch(@Player.State playbackState: Int) {
+        val mediaId = player.currentMediaItem?.mediaId
+        val shouldWatch = playbackState == Player.STATE_BUFFERING && player.playWhenReady &&
+            mediaId != null && !isPlayableOffline(mediaId)
+        if (!shouldWatch) {
+            offlineStallJob?.cancel()
+            offlineStallJob = null
+            return
+        }
+        if (offlineStallJob?.isActive == true) return
+        offlineStallJob = scope.launch {
+            val stallPosition = player.currentPosition
+            delay(OfflineSkip.STALL_MS)
+            if (player.playbackState == Player.STATE_BUFFERING && player.playWhenReady &&
+                player.currentPosition == stallPosition && player.currentMediaItem?.mediaId == mediaId
+            ) {
+                Timber.tag(TAG).w("Offline: $mediaId made no progress for ${OfflineSkip.STALL_MS} ms")
+                skipToNextPlayableOffline()
+            }
+        }
+    }
 
     private var isSilenceSkipping = false
 
@@ -3363,7 +3462,8 @@ class MusicService :
         normalizationProcessor: VolumeNormalizationAudioProcessor,
         playerProvider: () -> ExoPlayer?,
     ): DataSource.Factory {
-        return ResolvingDataSource.Factory(createCacheDataSource()) { dataSpec ->
+        val localFirst = LocalFirstDataSource.Factory(DefaultDataSource.Factory(this), createCacheDataSource())
+        return ResolvingDataSource.Factory(localFirst) { dataSpec ->
             val mediaId = dataSpec.key ?: error("No media id")
             val storedFormat = runBlocking(Dispatchers.IO) { database.format(mediaId).first() }
             applyAudioNormalizationBeforePlayback(
@@ -3375,6 +3475,18 @@ class MusicService :
                 preserveCachedIfMissing = true,
             )
 
+            localFileUri(mediaId)?.let { uri ->
+                recoverSongDeduped(mediaId)
+                return@Factory dataSpec.buildUpon().setUri(uri).build()
+            }
+            if (!isNetworkConnected.value && !isPlayableOffline(mediaId)) {
+                throw PlaybackException(
+                    getString(R.string.error_no_internet),
+                    IOException("offline"),
+                    PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED,
+                )
+            }
+
             val shouldBypassCache = bypassCacheForQualityChange.contains(mediaId)
 
             if (!shouldBypassCache) {
@@ -3383,7 +3495,7 @@ class MusicService :
                 val contentLength =
                     storedFormat?.contentLength
                         ?: ContentMetadata
-                            .getContentLength(downloadCache.getContentMetadata(mediaId))
+                            .getContentLength(playerCache.getContentMetadata(mediaId))
                             .takeIf { it > 0L }
                 val requiredLength =
                     when {
@@ -3391,11 +3503,6 @@ class MusicService :
                         contentLength != null -> (contentLength - dataSpec.position).coerceAtLeast(1)
                         else -> CHUNK_LENGTH // contentLength unknown yet — fall back to old probe size
                     }
-
-                if (downloadCache.isCached(mediaId, dataSpec.position, requiredLength)) {
-                    recoverSongDeduped(mediaId)
-                    return@Factory dataSpec
-                }
 
                 if (usePlayerCache && playerCache.isCached(mediaId, dataSpec.position, requiredLength)) {
                     recoverSongDeduped(mediaId)
