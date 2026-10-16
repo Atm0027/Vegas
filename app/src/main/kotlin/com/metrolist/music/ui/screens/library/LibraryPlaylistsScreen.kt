@@ -37,6 +37,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -71,6 +72,9 @@ import com.metrolist.music.constants.ShowLikedPlaylistKey
 import com.metrolist.music.constants.ShowTopPlaylistKey
 import com.metrolist.music.constants.ShowUploadedPlaylistKey
 import com.metrolist.music.db.entities.Playlist
+import com.metrolist.music.LocalDatabase
+import sh.calvin.reorderable.ReorderableItem
+import sh.calvin.reorderable.rememberReorderableLazyListState
 import com.metrolist.music.db.entities.PlaylistEntity
 import com.metrolist.music.ui.component.CreatePlaylistDialog
 import com.metrolist.music.ui.component.LibrarySearchEmptyPlaceholder
@@ -123,7 +127,25 @@ fun LibraryPlaylistsScreen(
     )
     val gridItemSize by rememberEnumPreference(GridItemsSizeKey, GridItemSize.BIG)
 
+    val database = LocalDatabase.current
     val playlists by viewModel.allPlaylists.collectAsStateWithLifecycle()
+
+    // Custom order: the first time it is chosen, freeze the order the user is looking at.
+    val selectSortType: (PlaylistSortType) -> Unit = { type ->
+        if (type == PlaylistSortType.CUSTOM && playlists.all { it.playlist.customOrder == 0 }) {
+            val current = playlists.map { it.id }
+            database.query { setPlaylistCustomOrders(current) }
+        }
+        onSortTypeChange(type)
+    }
+    var reordering by rememberSaveable { mutableStateOf(false) }
+    val reorderList = remember { mutableStateListOf<Playlist>() }
+    LaunchedEffect(playlists, reordering) {
+        if (!reordering) {
+            reorderList.clear()
+            reorderList.addAll(playlists)
+        }
+    }
 
     var isSearchActive by rememberSaveable { mutableStateOf(false) }
     val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
@@ -327,10 +349,11 @@ fun LibraryPlaylistsScreen(
             SortHeader(
                 sortType = sortType,
                 sortDescending = sortDescending,
-                onSortTypeChange = onSortTypeChange,
+                onSortTypeChange = selectSortType,
                 onSortDescendingChange = onSortDescendingChange,
                 sortTypeText = { sortType ->
                     when (sortType) {
+                        PlaylistSortType.CUSTOM -> R.string.sort_by_custom
                         PlaylistSortType.CREATE_DATE -> R.string.sort_by_create_date
                         PlaylistSortType.NAME -> R.string.sort_by_name
                         PlaylistSortType.SONG_COUNT -> R.string.sort_by_song_count
@@ -350,6 +373,24 @@ fun LibraryPlaylistsScreen(
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.secondary,
             )
+
+            if (sortType == PlaylistSortType.CUSTOM && viewType == LibraryViewType.LIST && searchQuery.isBlank()) {
+                IconButton(
+                    onClick = {
+                        if (reordering) {
+                            val order = reorderList.map { it.id }
+                            database.query { setPlaylistCustomOrders(order) }
+                        }
+                        reordering = !reordering
+                    },
+                    modifier = Modifier.padding(start = 8.dp).size(40.dp),
+                ) {
+                    Icon(
+                        painter = painterResource(if (reordering) R.drawable.check else R.drawable.drag_handle),
+                        contentDescription = stringResource(R.string.reorder_playlists),
+                    )
+                }
+            }
 
             IconButton(
                 onClick = { isSearchActive = true },
@@ -390,7 +431,48 @@ fun LibraryPlaylistsScreen(
         modifier = Modifier.fillMaxSize(),
     ) {
         when (viewType) {
-            LibraryViewType.LIST -> {
+            LibraryViewType.LIST -> if (reordering) {
+                val reorderState =
+                    rememberReorderableLazyListState(
+                        lazyListState = lazyListState,
+                        scrollThresholdPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues(),
+                    ) { from, to ->
+                        val offset = 2
+                        if (from.index >= offset && to.index >= offset) {
+                            reorderList.add(to.index - offset, reorderList.removeAt(from.index - offset))
+                        }
+                    }
+                LazyColumn(
+                    state = lazyListState,
+                    contentPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues(),
+                ) {
+                    item(key = "filter", contentType = CONTENT_TYPE_HEADER) { filterContent() }
+                    item(key = "header", contentType = CONTENT_TYPE_HEADER) { headerContent() }
+                    items(items = reorderList, key = { it.id }) { playlist ->
+                        ReorderableItem(state = reorderState, key = playlist.id) {
+                            PlaylistListItem(
+                                playlist = playlist,
+                                trailingContent = {
+                                    if (playlist.playlist.pinned) {
+                                        Icon(
+                                            painter = painterResource(R.drawable.ic_push_pin),
+                                            contentDescription = null,
+                                            modifier = Modifier.size(18.dp),
+                                        )
+                                    }
+                                    IconButton(onClick = {}, modifier = Modifier.draggableHandle()) {
+                                        Icon(
+                                            painter = painterResource(R.drawable.drag_handle),
+                                            contentDescription = null,
+                                        )
+                                    }
+                                },
+                                modifier = Modifier.fillMaxWidth(),
+                            )
+                        }
+                    }
+                }
+            } else {
                 LazyColumn(
                     state = lazyListState,
                     contentPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues(),

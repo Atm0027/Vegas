@@ -1136,7 +1136,23 @@ interface DatabaseDao {
 
         PlaylistSortType.SONG_COUNT -> playlistsBySongCountAsc()
         PlaylistSortType.LAST_UPDATED -> playlistsByUpdatedDateAsc()
-    }.map { it.reversed(descending) }
+        PlaylistSortType.CUSTOM -> playlistsByCreateDateAsc().map { list -> list.sortedBy { it.playlist.customOrder } }
+    }.map { list ->
+        // Pinned playlists stay on top whatever the order; sortedBy is stable.
+        (if (sortType == PlaylistSortType.CUSTOM) list else list.reversed(descending))
+            .sortedBy { !it.playlist.pinned }
+    }
+
+    @Query("UPDATE playlist SET pinned = :pinned WHERE id = :playlistId")
+    fun setPlaylistPinned(playlistId: String, pinned: Boolean)
+
+    @Query("UPDATE playlist SET customOrder = :customOrder WHERE id = :playlistId")
+    fun setPlaylistCustomOrder(playlistId: String, customOrder: Int)
+
+    @Transaction
+    fun setPlaylistCustomOrders(playlistIds: List<String>) {
+        playlistIds.forEachIndexed { index, id -> setPlaylistCustomOrder(id, index) }
+    }
 
     @Transaction
     @Query("SELECT *, (SELECT COUNT(*) FROM playlist_song_map WHERE playlistId = playlist.id) AS songCount FROM playlist WHERE id = :playlistId")

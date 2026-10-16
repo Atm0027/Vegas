@@ -742,4 +742,7 @@
     <string name="probable_duplicates_desc">Se parecen a canciones que ya están en la lista. Marca las que quieras añadir igualmente.</string>
     <string name="add_checked">Añadir marcadas</string>
     <string name="skip_similar">Omitir parecidas</string>
+    <string name="pin_playlist_to_top">Fijar arriba</string>
+    <string name="unpin_playlist">Desfijar</string>
+    <string name="reorder_playlists">Ordenar listas</string>
 </resources>

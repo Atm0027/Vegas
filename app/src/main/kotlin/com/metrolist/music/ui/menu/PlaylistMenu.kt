@@ -472,6 +472,28 @@ fun PlaylistMenu(
                                 ),
                             )
                         }
+                        if (autoPlaylist != true) {
+                            val pinnedOnTop = dbPlaylist?.playlist?.pinned == true
+                            add(
+                                Material3MenuItemData(
+                                    title = {
+                                        Text(
+                                            text = stringResource(if (pinnedOnTop) R.string.unpin_playlist else R.string.pin_playlist_to_top),
+                                        )
+                                    },
+                                    icon = {
+                                        Icon(
+                                            painter = painterResource(R.drawable.ic_push_pin),
+                                            contentDescription = null,
+                                        )
+                                    },
+                                    onClick = {
+                                        database.query { setPlaylistPinned(playlist.id, !pinnedOnTop) }
+                                        onDismiss()
+                                    },
+                                ),
+                            )
+                        }
                         add(
                             Material3MenuItemData(
                                 title = {

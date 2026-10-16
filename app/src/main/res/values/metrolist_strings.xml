@@ -861,4 +861,7 @@
     <string name="probable_duplicates_desc">These look like songs already in the playlist. Check the ones you want to add anyway.</string>
     <string name="add_checked">Add checked</string>
     <string name="skip_similar">Skip similar</string>
+    <string name="pin_playlist_to_top">Pin to top</string>
+    <string name="unpin_playlist">Unpin</string>
+    <string name="reorder_playlists">Reorder playlists</string>
 </resources>

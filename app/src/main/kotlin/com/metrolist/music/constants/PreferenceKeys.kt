@@ -305,6 +305,7 @@ enum class AlbumSortType {
 }
 
 enum class PlaylistSortType {
+    CUSTOM,
     CREATE_DATE,
     NAME,
     SONG_COUNT,

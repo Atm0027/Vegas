@@ -293,6 +293,7 @@ fun AddToPlaylistDialog(
                                     label = {
                                         Text(
                                             text = stringResource(when (type) {
+                                                PlaylistSortType.CUSTOM       -> R.string.sort_by_custom
                                                 PlaylistSortType.CREATE_DATE  -> R.string.sort_by_create_date
                                                 PlaylistSortType.NAME         -> R.string.sort_by_name
                                                 PlaylistSortType.SONG_COUNT   -> R.string.sort_by_song_count
