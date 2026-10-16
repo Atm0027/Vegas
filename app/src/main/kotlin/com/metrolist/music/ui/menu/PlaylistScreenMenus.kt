@@ -32,7 +32,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.media3.exoplayer.offline.Download
-import com.metrolist.music.LocalListenTogetherManager
 import com.metrolist.music.R
 import com.metrolist.music.db.entities.Playlist
 import com.metrolist.music.db.entities.PlaylistSong
@@ -61,8 +60,6 @@ fun LocalPlaylistMenu(
     onQueue: () -> Unit,
     onDismiss: () -> Unit,
 ) {
-    val listenTogetherManager = LocalListenTogetherManager.current
-    val isGuest = listenTogetherManager?.isInRoom == true && !listenTogetherManager.isHost
     val coroutineScope = rememberCoroutineScope()
     val localContext = LocalContext.current
 
@@ -163,24 +160,22 @@ fun LocalPlaylistMenu(
                 )
             }
 
-            if (!isGuest) {
-                add(
-                    Material3MenuItemData(
-                        title = { Text(stringResource(R.string.add_to_queue)) },
-                        description = { Text(stringResource(R.string.add_to_queue_desc)) },
-                        icon = {
-                            Icon(
-                                painter = painterResource(R.drawable.queue_music),
-                                contentDescription = null,
-                            )
-                        },
-                        onClick = {
-                            onQueue()
-                            onDismiss()
-                        },
-                    ),
-                )
-            }
+            add(
+                Material3MenuItemData(
+                    title = { Text(stringResource(R.string.add_to_queue)) },
+                    description = { Text(stringResource(R.string.add_to_queue_desc)) },
+                    icon = {
+                        Icon(
+                            painter = painterResource(R.drawable.queue_music),
+                            contentDescription = null,
+                        )
+                    },
+                    onClick = {
+                        onQueue()
+                        onDismiss()
+                    },
+                ),
+            )
 
             add(downloadMenuItem)
 
@@ -320,8 +315,6 @@ fun AutoPlaylistMenu(
     songs: List<Song> = emptyList(),
     playlistName: String = "Playlist",
 ) {
-    val listenTogetherManager = LocalListenTogetherManager.current
-    val isGuest = listenTogetherManager?.isInRoom == true && !listenTogetherManager.isHost
     val coroutineScope = rememberCoroutineScope()
     val localContext = LocalContext.current
 
@@ -384,24 +377,20 @@ fun AutoPlaylistMenu(
     Material3MenuGroup(
         items =
             listOfNotNull(
-                if (!isGuest) {
-                    Material3MenuItemData(
-                        title = { Text(stringResource(R.string.add_to_queue)) },
-                        description = { Text(stringResource(R.string.add_to_queue_desc)) },
-                        icon = {
-                            Icon(
-                                painter = painterResource(R.drawable.queue_music),
-                                contentDescription = null,
-                            )
-                        },
-                        onClick = {
-                            onQueue()
-                            onDismiss()
-                        },
-                    )
-                } else {
-                    null
-                },
+                Material3MenuItemData(
+                    title = { Text(stringResource(R.string.add_to_queue)) },
+                    description = { Text(stringResource(R.string.add_to_queue_desc)) },
+                    icon = {
+                        Icon(
+                            painter = painterResource(R.drawable.queue_music),
+                            contentDescription = null,
+                        )
+                    },
+                    onClick = {
+                        onQueue()
+                        onDismiss()
+                    },
+                ),
                 if (songs.isNotEmpty()) {
                     Material3MenuItemData(
                         title = { Text(stringResource(R.string.export_playlist)) },
@@ -504,8 +493,6 @@ fun TopPlaylistMenu(
     onDownload: () -> Unit,
     onDismiss: () -> Unit,
 ) {
-    val listenTogetherManager = LocalListenTogetherManager.current
-    val isGuest = listenTogetherManager?.isInRoom == true && !listenTogetherManager.isHost
 
     val downloadMenuItem =
         when (downloadState) {
@@ -564,24 +551,20 @@ fun TopPlaylistMenu(
     Material3MenuGroup(
         items =
             listOfNotNull(
-                if (!isGuest) {
-                    Material3MenuItemData(
-                        title = { Text(stringResource(R.string.add_to_queue)) },
-                        description = { Text(stringResource(R.string.add_to_queue_desc)) },
-                        icon = {
-                            Icon(
-                                painter = painterResource(R.drawable.queue_music),
-                                contentDescription = null,
-                            )
-                        },
-                        onClick = {
-                            onQueue()
-                            onDismiss()
-                        },
-                    )
-                } else {
-                    null
-                },
+                Material3MenuItemData(
+                    title = { Text(stringResource(R.string.add_to_queue)) },
+                    description = { Text(stringResource(R.string.add_to_queue_desc)) },
+                    icon = {
+                        Icon(
+                            painter = painterResource(R.drawable.queue_music),
+                            contentDescription = null,
+                        )
+                    },
+                    onClick = {
+                        onQueue()
+                        onDismiss()
+                    },
+                ),
                 downloadMenuItem,
             ),
     )
@@ -668,8 +651,6 @@ fun CachePlaylistMenu(
     onDownload: () -> Unit,
     onDismiss: () -> Unit,
 ) {
-    val listenTogetherManager = LocalListenTogetherManager.current
-    val isGuest = listenTogetherManager?.isInRoom == true && !listenTogetherManager.isHost
 
     val downloadMenuItem =
         when (downloadState) {
@@ -728,24 +709,20 @@ fun CachePlaylistMenu(
     Material3MenuGroup(
         items =
             listOfNotNull(
-                if (!isGuest) {
-                    Material3MenuItemData(
-                        title = { Text(stringResource(R.string.add_to_queue)) },
-                        description = { Text(stringResource(R.string.add_to_queue_desc)) },
-                        icon = {
-                            Icon(
-                                painter = painterResource(R.drawable.queue_music),
-                                contentDescription = null,
-                            )
-                        },
-                        onClick = {
-                            onQueue()
-                            onDismiss()
-                        },
-                    )
-                } else {
-                    null
-                },
+                Material3MenuItemData(
+                    title = { Text(stringResource(R.string.add_to_queue)) },
+                    description = { Text(stringResource(R.string.add_to_queue_desc)) },
+                    icon = {
+                        Icon(
+                            painter = painterResource(R.drawable.queue_music),
+                            contentDescription = null,
+                        )
+                    },
+                    onClick = {
+                        onQueue()
+                        onDismiss()
+                    },
+                ),
                 downloadMenuItem,
             ),
     )

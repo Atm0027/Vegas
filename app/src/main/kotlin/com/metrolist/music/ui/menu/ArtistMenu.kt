@@ -30,7 +30,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.metrolist.music.LocalDatabase
-import com.metrolist.music.LocalListenTogetherManager
 import com.metrolist.music.LocalPlayerConnection
 import com.metrolist.music.R
 import com.metrolist.music.constants.ArtistSongSortType
@@ -58,8 +57,6 @@ fun ArtistMenu(
     val context = LocalContext.current
     val database = LocalDatabase.current
     val playerConnection = LocalPlayerConnection.current ?: return
-    val listenTogetherManager = LocalListenTogetherManager.current
-    val isGuest = listenTogetherManager?.isInRoom == true && !listenTogetherManager.isHost
     val artistState = database.artist(originalArtist.id).collectAsStateWithLifecycle(initialValue = originalArtist)
     val artist = artistState.value ?: originalArtist
     val isPinned by database.speedDialDao.isPinned(artist.id).collectAsStateWithLifecycle(initialValue = false)
@@ -88,71 +85,69 @@ fun ArtistMenu(
         item {
             NewActionGrid(
                 actions = buildList {
-                    if (!isGuest) {
-                        if (artist.songCount > 0) {
-                            add(
-                                NewAction(
-                                    icon = {
-                                        Icon(
-                                            painter = painterResource(R.drawable.play),
-                                            contentDescription = null,
-                                            modifier = Modifier.size(28.dp),
-                                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                    },
-                                    text = stringResource(R.string.play),
-                                    onClick = {
-                                        coroutineScope.launch {
-                                            val songs = withContext(Dispatchers.IO) {
-                                                database
-                                                    .artistSongs(artist.id, ArtistSongSortType.CREATE_DATE, true)
-                                                    .first()
-                                                    .map { it.toMediaItem() }
-                                            }
-                                            playerConnection.playQueue(
-                                                ListQueue(
-                                                    title = artist.artist.name,
-                                                    items = songs,
-                                                ),
-                                            )
+                    if (artist.songCount > 0) {
+                        add(
+                            NewAction(
+                                icon = {
+                                    Icon(
+                                        painter = painterResource(R.drawable.play),
+                                        contentDescription = null,
+                                        modifier = Modifier.size(28.dp),
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                },
+                                text = stringResource(R.string.play),
+                                onClick = {
+                                    coroutineScope.launch {
+                                        val songs = withContext(Dispatchers.IO) {
+                                            database
+                                                .artistSongs(artist.id, ArtistSongSortType.CREATE_DATE, true)
+                                                .first()
+                                                .map { it.toMediaItem() }
                                         }
-                                        onDismiss()
+                                        playerConnection.playQueue(
+                                            ListQueue(
+                                                title = artist.artist.name,
+                                                items = songs,
+                                            ),
+                                        )
                                     }
-                                )
+                                    onDismiss()
+                                }
                             )
+                        )
 
-                            add(
-                                NewAction(
-                                    icon = {
-                                        Icon(
-                                            painter = painterResource(R.drawable.shuffle),
-                                            contentDescription = null,
-                                            modifier = Modifier.size(28.dp),
-                                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                    },
-                                    text = stringResource(R.string.shuffle),
-                                    onClick = {
-                                        coroutineScope.launch {
-                                            val songs = withContext(Dispatchers.IO) {
-                                                database
-                                                    .artistSongs(artist.id, ArtistSongSortType.CREATE_DATE, true)
-                                                    .first()
-                                                    .map { it.toMediaItem() }
-                                                    .shuffled()
-                                            }
-                                            playerConnection.playQueue(
-                                                ListQueue(
-                                                    title = artist.artist.name,
-                                                    items = songs,
-                                                ),
-                                            )
+                        add(
+                            NewAction(
+                                icon = {
+                                    Icon(
+                                        painter = painterResource(R.drawable.shuffle),
+                                        contentDescription = null,
+                                        modifier = Modifier.size(28.dp),
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                },
+                                text = stringResource(R.string.shuffle),
+                                onClick = {
+                                    coroutineScope.launch {
+                                        val songs = withContext(Dispatchers.IO) {
+                                            database
+                                                .artistSongs(artist.id, ArtistSongSortType.CREATE_DATE, true)
+                                                .first()
+                                                .map { it.toMediaItem() }
+                                                .shuffled()
                                         }
-                                        onDismiss()
+                                        playerConnection.playQueue(
+                                            ListQueue(
+                                                title = artist.artist.name,
+                                                items = songs,
+                                            ),
+                                        )
                                     }
-                                )
+                                    onDismiss()
+                                }
                             )
-                        }
+                        )
                     }
 
                     add(
@@ -216,7 +211,7 @@ fun ArtistMenu(
                     }
                 },
                 modifier = Modifier.padding(horizontal = 4.dp, vertical = 16.dp),
-                columns = if (isGuest) 1 else 3
+                columns = 3
             )
         }
 

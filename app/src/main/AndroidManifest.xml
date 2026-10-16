@@ -252,11 +252,6 @@
             </intent-filter>
         </service>
 
-        <!-- Receiver for Listen Together notification actions (Approve/Reject) -->
-        <receiver
-            android:name=".listentogether.ListenTogetherActionReceiver"
-            android:exported="false" />
-
         <receiver
             android:name=".playback.alarm.MusicAlarmReceiver"
             android:enabled="true"

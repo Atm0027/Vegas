@@ -46,7 +46,6 @@ import androidx.media3.exoplayer.offline.DownloadService
 import com.metrolist.innertube.YouTube
 import com.metrolist.music.LocalDatabase
 import com.metrolist.music.LocalDownloadUtil
-import com.metrolist.music.LocalListenTogetherManager
 import com.metrolist.music.LocalPlayerConnection
 import com.metrolist.music.R
 import com.metrolist.music.db.entities.Playlist
@@ -87,8 +86,6 @@ fun PlaylistMenu(
     val database = LocalDatabase.current
     val downloadUtil = LocalDownloadUtil.current
     val playerConnection = LocalPlayerConnection.current ?: return
-    val listenTogetherManager = LocalListenTogetherManager.current
-    val isGuest = listenTogetherManager?.isInRoom == true && !listenTogetherManager.isHost
     val dbPlaylist by database.playlist(playlist.id).collectAsStateWithLifecycle(initialValue = playlist)
     var songs by remember {
         mutableStateOf(emptyList<Song>())
@@ -317,54 +314,50 @@ fun PlaylistMenu(
             NewActionGrid(
                 actions =
                     listOfNotNull(
-                        if (!isGuest) {
-                            NewAction(
-                                icon = {
-                                    Icon(
-                                        painter = painterResource(R.drawable.play),
-                                        contentDescription = null,
-                                        modifier = Modifier.size(28.dp),
-                                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        NewAction(
+                            icon = {
+                                Icon(
+                                    painter = painterResource(R.drawable.play),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(28.dp),
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
+                            },
+                            text = stringResource(R.string.play),
+                            onClick = {
+                                onDismiss()
+                                if (songs.isNotEmpty()) {
+                                    playerConnection.playQueue(
+                                        ListQueue(
+                                            title = playlist.playlist.name,
+                                            items = songs.map(Song::toMediaItem),
+                                        ),
                                     )
-                                },
-                                text = stringResource(R.string.play),
-                                onClick = {
-                                    onDismiss()
-                                    if (songs.isNotEmpty()) {
-                                        playerConnection.playQueue(
-                                            ListQueue(
-                                                title = playlist.playlist.name,
-                                                items = songs.map(Song::toMediaItem),
-                                            ),
-                                        )
-                                    }
-                                },
-                            )
-                            NewAction(
-                                icon = {
-                                    Icon(
-                                        painter = painterResource(R.drawable.shuffle),
-                                        contentDescription = null,
-                                        modifier = Modifier.size(28.dp),
-                                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                }
+                            },
+                        ),
+                        NewAction(
+                            icon = {
+                                Icon(
+                                    painter = painterResource(R.drawable.shuffle),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(28.dp),
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
+                            },
+                            text = stringResource(R.string.shuffle),
+                            onClick = {
+                                onDismiss()
+                                if (songs.isNotEmpty()) {
+                                    playerConnection.playQueue(
+                                        ListQueue(
+                                            title = playlist.playlist.name,
+                                            items = songs.shuffled().map(Song::toMediaItem),
+                                        ),
                                     )
-                                },
-                                text = stringResource(R.string.shuffle),
-                                onClick = {
-                                    onDismiss()
-                                    if (songs.isNotEmpty()) {
-                                        playerConnection.playQueue(
-                                            ListQueue(
-                                                title = playlist.playlist.name,
-                                                items = songs.shuffled().map(Song::toMediaItem),
-                                            ),
-                                        )
-                                    }
-                                },
-                            )
-                        } else {
-                            null
-                        },
+                                }
+                            },
+                        ),
                         NewAction(
                             icon = {
                                 Icon(
@@ -391,7 +384,7 @@ fun PlaylistMenu(
                         ),
                     ),
                 modifier = Modifier.padding(horizontal = 4.dp, vertical = 16.dp),
-                columns = if (isGuest) 2 else 3,
+                columns = 3,
             )
         }
 
@@ -399,72 +392,66 @@ fun PlaylistMenu(
             Material3MenuGroup(
                 items =
                     buildList {
-                        if (!isGuest) {
-                            playlist.playlist.browseId?.let { browseId ->
-                                add(
-                                    Material3MenuItemData(
-                                        title = { Text(text = stringResource(R.string.start_radio)) },
-                                        description = { Text(text = stringResource(R.string.start_radio_desc)) },
-                                        icon = {
-                                            Icon(
-                                                painter = painterResource(R.drawable.radio),
-                                                contentDescription = null,
-                                            )
-                                        },
-                                        onClick = {
-                                            coroutineScope.launch(Dispatchers.IO) {
-                                                YouTube.playlist(browseId).getOrNull()?.playlist?.let { playlistItem ->
-                                                    playlistItem.radioEndpoint?.let { radioEndpoint ->
-                                                        withContext(Dispatchers.Main) {
-                                                            playerConnection.playQueue(YouTubeQueue(radioEndpoint))
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            onDismiss()
-                                        },
-                                    ),
-                                )
-                            }
-                        }
-                        if (!isGuest) {
+                        playlist.playlist.browseId?.let { browseId ->
                             add(
                                 Material3MenuItemData(
-                                    title = { Text(text = stringResource(R.string.play_next)) },
-                                    description = { Text(text = stringResource(R.string.play_next_desc)) },
+                                    title = { Text(text = stringResource(R.string.start_radio)) },
+                                    description = { Text(text = stringResource(R.string.start_radio_desc)) },
                                     icon = {
                                         Icon(
-                                            painter = painterResource(R.drawable.playlist_play),
+                                            painter = painterResource(R.drawable.radio),
                                             contentDescription = null,
                                         )
                                     },
                                     onClick = {
-                                        coroutineScope.launch {
-                                            playerConnection.playNext(songs.map { it.toMediaItem() })
+                                        coroutineScope.launch(Dispatchers.IO) {
+                                            YouTube.playlist(browseId).getOrNull()?.playlist?.let { playlistItem ->
+                                                playlistItem.radioEndpoint?.let { radioEndpoint ->
+                                                    withContext(Dispatchers.Main) {
+                                                        playerConnection.playQueue(YouTubeQueue(radioEndpoint))
+                                                    }
+                                                }
+                                            }
                                         }
                                         onDismiss()
                                     },
                                 ),
                             )
                         }
-                        if (!isGuest) {
-                            add(
-                                Material3MenuItemData(
-                                    title = { Text(text = stringResource(R.string.add_to_queue)) },
-                                    description = { Text(text = stringResource(R.string.add_to_queue_desc)) },
-                                    icon = {
-                                        Icon(
-                                            painter = painterResource(R.drawable.queue_music),
-                                            contentDescription = null,
-                                        )
-                                    },
-                                    onClick = {
-                                        onDismiss()
-                                        playerConnection.addToQueue(songs.map { it.toMediaItem() })
-                                    },
-                                ),
-                            )
-                        }
+                        add(
+                            Material3MenuItemData(
+                                title = { Text(text = stringResource(R.string.play_next)) },
+                                description = { Text(text = stringResource(R.string.play_next_desc)) },
+                                icon = {
+                                    Icon(
+                                        painter = painterResource(R.drawable.playlist_play),
+                                        contentDescription = null,
+                                    )
+                                },
+                                onClick = {
+                                    coroutineScope.launch {
+                                        playerConnection.playNext(songs.map { it.toMediaItem() })
+                                    }
+                                    onDismiss()
+                                },
+                            ),
+                        )
+                        add(
+                            Material3MenuItemData(
+                                title = { Text(text = stringResource(R.string.add_to_queue)) },
+                                description = { Text(text = stringResource(R.string.add_to_queue_desc)) },
+                                icon = {
+                                    Icon(
+                                        painter = painterResource(R.drawable.queue_music),
+                                        contentDescription = null,
+                                    )
+                                },
+                                onClick = {
+                                    onDismiss()
+                                    playerConnection.addToQueue(songs.map { it.toMediaItem() })
+                                },
+                            ),
+                        )
                     },
             )
         }
@@ -475,7 +462,7 @@ fun PlaylistMenu(
             Material3MenuGroup(
                 items =
                     buildList {
-                        if (editable && autoPlaylist != true && !isGuest) {
+                        if (editable && autoPlaylist != true) {
                             add(
                                 Material3MenuItemData(
                                     title = { Text(text = stringResource(R.string.edit)) },
@@ -594,7 +581,7 @@ fun PlaylistMenu(
                                 onClick = { showExportDialog = true },
                             ),
                         )
-                        if (autoPlaylist != true && !isGuest) {
+                        if (autoPlaylist != true) {
                             add(
                                 Material3MenuItemData(
                                     title = { Text(text = stringResource(R.string.delete)) },

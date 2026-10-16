@@ -194,13 +194,6 @@ class PlayerConnection(
 
     val waitingForNetworkConnection = service.waitingForNetworkConnection
 
-    // Callback to check if playback changes should be blocked (e.g., Listen Together guest)
-    var shouldBlockPlaybackChanges: (() -> Boolean)? = null
-
-    // Flag to allow internal sync operations to bypass blocking (set by ListenTogetherManager)
-    @Volatile
-    var allowInternalSync: Boolean = false
-
     var onSkipPrevious: (() -> Unit)? = null
     var onSkipNext: (() -> Unit)? = null
 
@@ -240,11 +233,6 @@ class PlayerConnection(
     }
 
     fun playQueue(queue: Queue) {
-        // Block if Listen Together guest (unless internal sync)
-        if (!allowInternalSync && shouldBlockPlaybackChanges?.invoke() == true) {
-            Timber.tag("PlayerConnection").d("playQueue blocked - Listen Together guest")
-            return
-        }
         if (!playerReadinessFlow.value) {
             Timber.tag(TAG).w("playQueue called before player ready; delegating to service")
         }
@@ -269,11 +257,6 @@ class PlayerConnection(
     }
 
     fun startRadioSeamlessly() {
-        // Block if Listen Together guest
-        if (shouldBlockPlaybackChanges?.invoke() == true) {
-            Timber.tag("PlayerConnection").d("startRadioSeamlessly blocked - Listen Together guest")
-            return
-        }
         if (!playerReadinessFlow.value) {
             Timber.tag(TAG).w("startRadioSeamlessly called before player ready; delegating to service")
         }
@@ -288,11 +271,6 @@ class PlayerConnection(
     fun playNext(item: MediaItem) = playNext(listOf(item))
 
     fun playNext(items: List<MediaItem>) {
-        // Block if Listen Together guest (unless internal sync)
-        if (!allowInternalSync && shouldBlockPlaybackChanges?.invoke() == true) {
-            Timber.tag("PlayerConnection").d("playNext blocked - Listen Together guest")
-            return
-        }
         try {
             service.playNext(items)
         } catch (e: Exception) {
@@ -304,11 +282,6 @@ class PlayerConnection(
     fun addToQueue(item: MediaItem) = addToQueue(listOf(item))
 
     fun addToQueue(items: List<MediaItem>) {
-        // Block if Listen Together guest (unless internal sync)
-        if (!allowInternalSync && shouldBlockPlaybackChanges?.invoke() == true) {
-            Timber.tag("PlayerConnection").d("addToQueue blocked - Listen Together guest")
-            return
-        }
         try {
             service.addToQueue(items)
         } catch (e: Exception) {
@@ -345,7 +318,6 @@ class PlayerConnection(
      * Toggle play/pause - handles Cast when active
      */
     fun togglePlayPause() {
-        if (!allowInternalSync && shouldBlockPlaybackChanges?.invoke() == true) return
         try {
             val castHandler = service.castConnectionHandler
             if (castHandler?.isCasting?.value == true) {

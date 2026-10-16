@@ -204,7 +204,6 @@
     <string name="add_to_queue_desc">Voeg toe aan het einde van je wachtrij</string>
     <string name="share_desc">Deel een link naar dit item</string>
     <string name="delete_desc">Dit item permanent verwijderen</string>
-    <string name="permanently_kick_user">Permanent Blokkeren</string>
     <string name="enable">Activeer</string>
     <string name="player_background_solid">Solide</string>
     <string name="restart">Herstart</string>

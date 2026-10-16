@@ -115,7 +115,6 @@ import coil3.request.ImageRequest
 import coil3.request.allowHardware
 import coil3.toBitmap
 import com.metrolist.music.LocalDatabase
-import com.metrolist.music.LocalListenTogetherManager
 import com.metrolist.music.LocalPlayerConnection
 import com.metrolist.music.R
 import com.metrolist.music.constants.AiProviderKey
@@ -201,8 +200,6 @@ fun OriginalLyrics(
     val density = LocalDensity.current
     val context = LocalContext.current
     val configuration = LocalWindowInfo.current
-    val listenTogetherManager = LocalListenTogetherManager.current
-    val isGuest = listenTogetherManager?.isInRoom == true && !listenTogetherManager.isHost
     val shareLyricsStr = stringResource(R.string.share_lyrics)
     val failedToCreateImageTemplate = stringResource(R.string.failed_to_create_image)
 
@@ -911,7 +908,7 @@ fun OriginalLyrics(
                                                     showMaxSelectionToast = true
                                                 }
                                             }
-                                        } else if (isSynced && changeLyrics && !isGuest) {
+                                        } else if (isSynced && changeLyrics) {
                                             // Professional seek action with smooth animation
                                             val lyricsOffset = currentSong?.song?.lyricsOffset ?: 0
                                             playerConnection.seekTo((item.time - lyricsOffset).coerceAtLeast(0))

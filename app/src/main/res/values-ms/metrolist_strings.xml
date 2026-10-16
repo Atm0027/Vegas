@@ -132,10 +132,6 @@
     <string name="error_episode_remove">Gagal untuk membuang episod</string>
     <string name="error_podcast_subscribe">Gagal untuk melanggani podcast tersebut</string>
     <string name="error_podcast_unsubscribe">Gagal untuk nyahlanggan daripada podcast tersebut</string>
-    <string name="listen_together_auto_approval_joins">Sahkan permintaan masuk secara automatik</string>
-    <string name="listen_together_auto_approval_joins_desc">Sahkan permintaan masuk secara automatik tanpa menyemak secara manual</string>
-    <string name="listen_together_auto_approval_suggestions">Sahkan pengesyoran lagu secara automatik</string>
-    <string name="listen_together_auto_approval_suggestions_desc">Sahkan dan bariskan lagu yang disyorkan daripada tetamu secara automatik</string>
     <string name="speed_dial">Dailan cepat</string>
     <string name="pin_to_speed_dial">Sematkan pada dailan pantas</string>
     <string name="unpin_from_speed_dial">Tanggalkan sematan daripada dailan pantas</string>

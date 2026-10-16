@@ -88,7 +88,6 @@ import com.metrolist.innertube.models.SongItem
 import com.metrolist.innertube.models.WatchEndpoint
 import com.metrolist.music.LocalDatabase
 import com.metrolist.music.LocalArtistNameAliases
-import com.metrolist.music.LocalListenTogetherManager
 import com.metrolist.music.LocalPlayerAwareWindowInsets
 import com.metrolist.music.LocalPlayerConnection
 import com.metrolist.music.R
@@ -144,8 +143,6 @@ fun ArtistScreen(
     val haptic = LocalHapticFeedback.current
     val coroutineScope = rememberCoroutineScope()
     val playerConnection = LocalPlayerConnection.current ?: return
-    val listenTogetherManager = LocalListenTogetherManager.current
-    val isGuest = listenTogetherManager?.isInRoom == true && !listenTogetherManager.isHost
     val isPlaying by playerConnection.isEffectivelyPlaying.collectAsStateWithLifecycle()
     val mediaMetadata by playerConnection.mediaMetadata.collectAsStateWithLifecycle()
     val artistPage = viewModel.artistPage
@@ -397,7 +394,7 @@ fun ArtistScreen(
                                         verticalAlignment = Alignment.CenterVertically,
                                     ) {
                                         // Radio Button
-                                        if (!showLocal && !isGuest) {
+                                        if (!showLocal) {
                                             artistPage?.artist?.radioEndpoint?.let { radioEndpoint ->
                                                 OutlinedButton(
                                                     onClick = {
@@ -421,7 +418,7 @@ fun ArtistScreen(
                                         }
 
                                         // Shuffle Button
-                                        if (!showLocal && !isGuest) {
+                                        if (!showLocal) {
                                             artistPage?.artist?.shuffleEndpoint?.let { shuffleEndpoint ->
                                                 IconButton(
                                                     onClick = {
@@ -585,18 +582,16 @@ fun ArtistScreen(
                                         .fillMaxWidth()
                                         .combinedClickable(
                                             onClick = {
-                                                if (!isGuest) {
-                                                    if (song.id == mediaMetadata?.id) {
-                                                        playerConnection.togglePlayPause()
-                                                    } else {
-                                                        playerConnection.playQueue(
-                                                            ListQueue(
-                                                                title = displayArtistName ?: "Unknown Artist",
-                                                                items = librarySongs.map { it.toMediaItem() },
-                                                                startIndex = index,
-                                                            ),
-                                                        )
-                                                    }
+                                                if (song.id == mediaMetadata?.id) {
+                                                    playerConnection.togglePlayPause()
+                                                } else {
+                                                    playerConnection.playQueue(
+                                                        ListQueue(
+                                                            title = displayArtistName ?: "Unknown Artist",
+                                                            items = librarySongs.map { it.toMediaItem() },
+                                                            startIndex = index,
+                                                        ),
+                                                    )
                                                 }
                                             },
                                             onLongClick = {
@@ -713,17 +708,15 @@ fun ArtistScreen(
                                         Modifier
                                             .combinedClickable(
                                                 onClick = {
-                                                    if (!isGuest) {
-                                                        if (song.id == mediaMetadata?.id) {
-                                                            playerConnection.togglePlayPause()
-                                                        } else {
-                                                            playerConnection.playQueue(
-                                                                YouTubeQueue(
-                                                                    WatchEndpoint(videoId = song.id),
-                                                                    song.toMediaMetadata(),
-                                                                ),
-                                                            )
-                                                        }
+                                                    if (song.id == mediaMetadata?.id) {
+                                                        playerConnection.togglePlayPause()
+                                                    } else {
+                                                        playerConnection.playQueue(
+                                                            YouTubeQueue(
+                                                                WatchEndpoint(videoId = song.id),
+                                                                song.toMediaMetadata(),
+                                                            ),
+                                                        )
                                                     }
                                                 },
                                                 onLongClick = {
@@ -764,14 +757,12 @@ fun ArtistScreen(
                                                         onClick = {
                                                             when (item) {
                                                                 is SongItem -> {
-                                                                    if (!isGuest) {
-                                                                        playerConnection.playQueue(
-                                                                            YouTubeQueue(
-                                                                                WatchEndpoint(videoId = item.id),
-                                                                                item.toMediaMetadata(),
-                                                                            ),
-                                                                        )
-                                                                    }
+                                                                    playerConnection.playQueue(
+                                                                        YouTubeQueue(
+                                                                            WatchEndpoint(videoId = item.id),
+                                                                            item.toMediaMetadata(),
+                                                                        ),
+                                                                    )
                                                                 }
 
                                                                 is AlbumItem -> {
@@ -791,14 +782,12 @@ fun ArtistScreen(
                                                                 }
 
                                                                 is EpisodeItem -> {
-                                                                    if (!isGuest) {
-                                                                        playerConnection.playQueue(
-                                                                            YouTubeQueue(
-                                                                                WatchEndpoint(videoId = item.id),
-                                                                                item.toMediaMetadata(),
-                                                                            ),
-                                                                        )
-                                                                    }
+                                                                    playerConnection.playQueue(
+                                                                        YouTubeQueue(
+                                                                            WatchEndpoint(videoId = item.id),
+                                                                            item.toMediaMetadata(),
+                                                                        ),
+                                                                    )
                                                                 }
                                                             }
                                                         },
@@ -879,7 +868,7 @@ fun ArtistScreen(
 
         // Play All FAB (Stacked above Library/Local FAB if visible)
         val canPlayAll =
-            !isGuest && (
+            (
                 (showLocal && librarySongs.isNotEmpty()) ||
                     (
                         !showLocal && artistPage?.sections?.any {
@@ -905,74 +894,72 @@ fun ArtistScreen(
                         .padding(bottom = if (showLocalFab) 64.dp else 0.dp),
             ) {
                 val onPlayAllClick: () -> Unit = {
-                    if (!isGuest) {
-                        if (showLocal) {
-                            if (librarySongs.isNotEmpty()) {
-                                playerConnection.playQueue(
-                                    ListQueue(
-                                        title = displayArtistName ?: "Unknown Artist",
-                                        items = librarySongs.map { it.toMediaItem() },
-                                    ),
-                                )
+                    if (showLocal) {
+                        if (librarySongs.isNotEmpty()) {
+                            playerConnection.playQueue(
+                                ListQueue(
+                                    title = displayArtistName ?: "Unknown Artist",
+                                    items = librarySongs.map { it.toMediaItem() },
+                                ),
+                            )
+                        }
+                    } else if (artistPage != null) {
+                        val songSection =
+                            artistPage.sections.find { section ->
+                                (section.items.firstOrNull() as? SongItem)?.album != null
                             }
-                        } else if (artistPage != null) {
-                            val songSection =
-                                artistPage.sections.find { section ->
-                                    (section.items.firstOrNull() as? SongItem)?.album != null
-                                }
 
-                            val moreEndpoint = songSection?.moreEndpoint
-                            if (moreEndpoint != null) {
-                                coroutineScope.launch(kotlinx.coroutines.Dispatchers.IO) {
-                                    val result = YouTube.artistItems(moreEndpoint).getOrNull()
-                                    withContext(kotlinx.coroutines.Dispatchers.Main) {
-                                        if (result != null && result.items.isNotEmpty()) {
-                                            val songs = result.items.filterIsInstance<SongItem>().map { it.toMediaItem() }
+                        val moreEndpoint = songSection?.moreEndpoint
+                        if (moreEndpoint != null) {
+                            coroutineScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+                                val result = YouTube.artistItems(moreEndpoint).getOrNull()
+                                withContext(kotlinx.coroutines.Dispatchers.Main) {
+                                    if (result != null && result.items.isNotEmpty()) {
+                                        val songs = result.items.filterIsInstance<SongItem>().map { it.toMediaItem() }
+                                        playerConnection.playQueue(
+                                            ListQueue(
+                                                title = displayArtistName ?: artistPage.artist.title,
+                                                items = songs,
+                                            ),
+                                        )
+                                    } else {
+                                        // Fallback to loaded items
+                                        val songs = songSection.items.filterIsInstance<SongItem>().map { it.toMediaItem() }
+                                        if (songs.isNotEmpty()) {
                                             playerConnection.playQueue(
                                                 ListQueue(
                                                     title = displayArtistName ?: artistPage.artist.title,
                                                     items = songs,
                                                 ),
                                             )
-                                        } else {
-                                            // Fallback to loaded items
-                                            val songs = songSection.items.filterIsInstance<SongItem>().map { it.toMediaItem() }
-                                            if (songs.isNotEmpty()) {
-                                                playerConnection.playQueue(
-                                                    ListQueue(
-                                                        title = displayArtistName ?: artistPage.artist.title,
-                                                        items = songs,
-                                                    ),
-                                                )
-                                            }
                                         }
                                     }
                                 }
-                            } else if (songSection != null) {
-                                // Use loaded items if no more endpoint
-                                val songs = songSection.items.filterIsInstance<SongItem>().map { it.toMediaItem() }
-                                playerConnection.playQueue(
-                                    ListQueue(
-                                        title = displayArtistName ?: artistPage.artist.title,
-                                        items = songs,
-                                    ),
-                                )
-                            } else {
-                                // Fallback to shuffle endpoint (stripped) if no song section found
-                                val shuffleEndpoint = artistPage.artist.shuffleEndpoint
-                                if (shuffleEndpoint != null) {
-                                    val endpoint =
-                                        if (shuffleEndpoint.playlistId != null) {
-                                            WatchEndpoint(
-                                                playlistId = shuffleEndpoint.playlistId,
-                                                params = null, // Remove shuffle params to play in order
-                                                videoId = null, // Ensure videoId is null to start from beginning of playlist
-                                            )
-                                        } else {
-                                            shuffleEndpoint
-                                        }
-                                    playerConnection.playQueue(YouTubeQueue(endpoint))
-                                }
+                            }
+                        } else if (songSection != null) {
+                            // Use loaded items if no more endpoint
+                            val songs = songSection.items.filterIsInstance<SongItem>().map { it.toMediaItem() }
+                            playerConnection.playQueue(
+                                ListQueue(
+                                    title = displayArtistName ?: artistPage.artist.title,
+                                    items = songs,
+                                ),
+                            )
+                        } else {
+                            // Fallback to shuffle endpoint (stripped) if no song section found
+                            val shuffleEndpoint = artistPage.artist.shuffleEndpoint
+                            if (shuffleEndpoint != null) {
+                                val endpoint =
+                                    if (shuffleEndpoint.playlistId != null) {
+                                        WatchEndpoint(
+                                            playlistId = shuffleEndpoint.playlistId,
+                                            params = null, // Remove shuffle params to play in order
+                                            videoId = null, // Ensure videoId is null to start from beginning of playlist
+                                        )
+                                    } else {
+                                        shuffleEndpoint
+                                    }
+                                playerConnection.playQueue(YouTubeQueue(endpoint))
                             }
                         }
                     }

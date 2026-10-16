@@ -221,14 +221,6 @@
     <string name="play_pause">Luaj/Ndalo</string>
     <string name="next">Tjetër</string>
     <string name="like">Pëlqej</string>
-    <string name="listen_together_create_room">Krijo dhomë</string>
-    <string name="listen_together_create_room_desc">Krijo një dhomë dhe ndaje kodin me miqtë e tu</string>
-    <string name="listen_together_join_room">Bashkohu në dhomë</string>
-    <string name="listen_together_room_code">Kodi i dhomës</string>
-    <string name="you_label">Ti</string>
-    <string name="connected_users">Përdorues të lidhur</string>
-    <string name="enter_username">Fut një emër përdoruesi</string>
-    <string name="enter_room_code">Fut një kod dhome</string>
     <string name="metrolist">METROLIST</string>
     <string name="android_auto">Android Auto</string>
     <string name="sort_ascending">Rendit në rend rritës</string>
