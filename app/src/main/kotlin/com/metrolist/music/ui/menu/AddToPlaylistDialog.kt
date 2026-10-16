@@ -55,6 +55,7 @@ import androidx.compose.foundation.background
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.NonCancellable
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.heightIn
@@ -126,9 +127,13 @@ fun AddToPlaylistDialog(
     var pendingPlans by remember { mutableStateOf<List<Pair<Playlist, AddPlan>>>(emptyList()) }
     // "playlistId|songId" of probable duplicates the user still wants to add
     val acceptedProbables = remember { mutableStateListOf<String>() }
+    // Set synchronously on tap so a double tap cannot plan and insert the same songs twice.
+    var adding by remember { mutableStateOf(false) }
 
     fun commitPlans(plans: List<Pair<Playlist, AddPlan>>, accepted: Set<String>) {
-        coroutineScope.launch(Dispatchers.IO) {
+        pendingPlans = emptyList()
+        adding = true
+        coroutineScope.launch(Dispatchers.IO + NonCancellable) {
             val summary =
                 plans.map { (target, plan) ->
                     val ids =
@@ -149,8 +154,8 @@ fun AddToPlaylistDialog(
             withContext(Dispatchers.Main) {
                 Toast.makeText(context, summary.joinToString("\n"), Toast.LENGTH_LONG).show()
                 selectedPlaylistIds.clear()
-                pendingPlans = emptyList()
                 acceptedProbables.clear()
+                adding = false
                 onDismiss()
             }
         }
@@ -158,7 +163,8 @@ fun AddToPlaylistDialog(
 
     fun addToSelected() {
         val targets = playlists.filter { it.id in selectedPlaylistIds }
-        if (targets.isEmpty()) return
+        if (targets.isEmpty() || adding) return
+        adding = true
         coroutineScope.launch(Dispatchers.IO) {
             val ids = onGetSong()
             val plans = targets.map { it to database.planPlaylistAdd(it.id, ids) }
@@ -166,6 +172,7 @@ fun AddToPlaylistDialog(
                 if (plans.any { it.second.probable.isNotEmpty() }) {
                     acceptedProbables.clear()
                     pendingPlans = plans
+                    adding = false
                 } else {
                     commitPlans(plans, emptySet())
                 }
@@ -243,6 +250,7 @@ fun AddToPlaylistDialog(
                 item {
                     FilledTonalButton(
                         onClick = ::addToSelected,
+                        enabled = !adding,
                         shape = RoundedCornerShape(50),
                         modifier =
                             Modifier

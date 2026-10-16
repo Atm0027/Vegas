@@ -32,4 +32,7 @@ class DuplicateMatcherTest {
 
     @Test fun normalize_stripsAccentsVersionTagsAndFeat() =
         assertEquals("me quedare", DuplicateMatcher.normalize("Me Quedaré (Remastered 2011) [Lyrics] feat. Fito"))
+
+    @Test fun titleThatNormalizesToEmpty_isNeverProbable() =
+        assertEquals(Match.New, DuplicateMatcher.match(c("I2", "(Intro)", "Toto", 60), listOf(c("I1", "[Interlude]", "Toto", 61))))
 }

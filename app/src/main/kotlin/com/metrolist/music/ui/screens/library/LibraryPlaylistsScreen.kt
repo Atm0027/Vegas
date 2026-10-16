@@ -138,7 +138,10 @@ fun LibraryPlaylistsScreen(
         }
         onSortTypeChange(type)
     }
-    var reordering by rememberSaveable { mutableStateOf(false) }
+    var reordering by remember { mutableStateOf(false) }
+    LaunchedEffect(sortType, viewType) {
+        if (sortType != PlaylistSortType.CUSTOM || viewType != LibraryViewType.LIST) reordering = false
+    }
     val reorderList = remember { mutableStateListOf<Playlist>() }
     LaunchedEffect(playlists, reordering) {
         if (!reordering) {

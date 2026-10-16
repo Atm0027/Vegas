@@ -15,7 +15,7 @@ object PlaylistAddPlanner {
         val probable = mutableListOf<Pair<Candidate, Candidate>>()
 
         candidates.forEach { candidate ->
-            if (candidate.id in ordered) return@forEach
+            if (candidate.id in ordered || candidate.id in alreadyThere) return@forEach
             when (val match = DuplicateMatcher.match(candidate, known)) {
                 is Match.Exact -> alreadyThere += candidate.id
                 is Match.Probable -> {

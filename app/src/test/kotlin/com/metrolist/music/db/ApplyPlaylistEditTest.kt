@@ -81,4 +81,54 @@ class ApplyPlaylistEditTest {
             assertEquals(listOf(0, 1, 2, 3, 4), maps().map { it.position })
             assertEquals("Torre", dao.playlist("p").first()!!.playlist.name)
         }
+
+    @Test
+    fun songAddedWhileEditing_staysOnTop_positionsDense() =
+        runBlocking {
+            val ids = maps().map { it.id }
+            val session = PlaylistEditSession(ids, "Torre", null)
+            session.move(0, 4) // b c d e a
+            dao.insert(SongEntity(id = "new", title = "new"))
+            dao.shiftPlaylistSongPositions("p", 1)
+            dao.insert(PlaylistSongMap(playlistId = "p", songId = "new", position = 0))
+
+            dao.applyPlaylistEdit("p", session.commit())
+
+            assertEquals(listOf("new", "b", "c", "d", "e", "a"), dao.playlistSongIds("p"))
+            assertEquals(listOf(0, 1, 2, 3, 4, 5), maps().map { it.position })
+        }
+
+    @Test
+    fun undo_keepsSongsAddedAfterDone() =
+        runBlocking {
+            val snapshot = dao.playlistSnapshot("p")!!
+            val ids = maps().map { it.id }
+            val session = PlaylistEditSession(ids, "Torre", null)
+            session.toggleRemove(ids[0])
+            dao.applyPlaylistEdit("p", session.commit())
+            dao.insert(SongEntity(id = "late", title = "late"))
+            dao.shiftPlaylistSongPositions("p", 1)
+            dao.insert(PlaylistSongMap(playlistId = "p", songId = "late", position = 0))
+
+            dao.restorePlaylistSnapshot(snapshot)
+
+            assertEquals(listOf("late", "a", "b", "c", "d", "e"), dao.playlistSongIds("p"))
+            assertEquals(listOf(0, 1, 2, 3, 4, 5), maps().map { it.position })
+        }
+
+    @Test
+    fun undo_skipsSongsDeletedMeanwhile() =
+        runBlocking {
+            val snapshot = dao.playlistSnapshot("p")!!
+            val ids = maps().map { it.id }
+            val session = PlaylistEditSession(ids, "Torre", null)
+            session.toggleRemove(ids[2]) // c
+            dao.applyPlaylistEdit("p", session.commit())
+            dao.delete(dao.getSongByIdBlocking("c")!!.song)
+
+            dao.restorePlaylistSnapshot(snapshot)
+
+            assertEquals(listOf("a", "b", "d", "e"), dao.playlistSongIds("p"))
+            assertEquals(listOf(0, 1, 2, 3), maps().map { it.position })
+        }
 }

@@ -46,4 +46,10 @@ class PlaylistAddPlannerTest {
         assertEquals(listOf("X", "V9", "Y"), plan.idsToAdd(acceptedProbables = setOf("V9")))
         assertEquals(listOf("X", "Y"), plan.idsToAdd(acceptedProbables = emptySet()))
     }
+
+    @Test
+    fun repeatedExistingSong_isCountedOnce() {
+        val plan = PlaylistAddPlanner.plan(listOf(c("B"), c("B")), existing = listOf(c("B")))
+        assertEquals(listOf("B"), plan.alreadyThere)
+    }
 }

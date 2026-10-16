@@ -148,6 +148,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.first
 import androidx.compose.foundation.clickable
 import androidx.compose.material3.OutlinedTextField
@@ -268,7 +269,7 @@ fun LocalPlaylistScreen(
             if (result.changed) {
                 coroutineScope.launch {
                     val snapshot =
-                        withContext(Dispatchers.IO) {
+                        withContext(Dispatchers.IO + NonCancellable) {
                             database.playlistSnapshot(viewModel.playlistId)?.also {
                                 database.applyPlaylistEdit(viewModel.playlistId, result)
                             }
@@ -281,7 +282,9 @@ fun LocalPlaylistScreen(
                             duration = SnackbarDuration.Long,
                         )
                     if (action == SnackbarResult.ActionPerformed) {
-                        withContext(Dispatchers.IO) { database.restorePlaylistSnapshot(snapshot) }
+                        withContext(Dispatchers.IO + NonCancellable) {
+                            runCatching { database.restorePlaylistSnapshot(snapshot) }.onFailure(::reportException)
+                        }
                     }
                 }
             }

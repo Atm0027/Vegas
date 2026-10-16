@@ -3,7 +3,7 @@ package com.metrolist.music.playlist
 import com.metrolist.music.db.DatabaseDao
 import com.metrolist.music.db.entities.Song
 
-fun Song.toCandidate() = Candidate(id, song.title, artists.firstOrNull()?.name, song.duration)
+fun Song.toCandidate() = Candidate(id, song.title, orderedArtists.firstOrNull()?.name, song.duration)
 
 /** Plans adding [songIds] (already in the database) to a playlist, comparing against its current songs. */
 suspend fun DatabaseDao.planPlaylistAdd(

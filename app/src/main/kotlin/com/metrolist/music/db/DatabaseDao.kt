@@ -1675,14 +1675,23 @@ interface DatabaseDao {
         result: EditResult,
     ) {
         result.removed.forEach { deletePlaylistSongMap(it) }
-        result.positions.forEach { (mapId, position) -> setPlaylistSongPosition(mapId, position) }
+        // Rows added while the editor was open (player menu, Android Auto) keep their place on top.
+        val current = playlistSongMaps(playlistId, 0)
+        val currentIds = current.map { it.id }.toSet()
+        val added = current.filter { it.id !in result.positions }.map { it.id }
+        val edited = result.positions.entries.sortedBy { it.value }.map { it.key }.filter { it in currentIds }
+        (added + edited).forEachIndexed { index, mapId -> setPlaylistSongPosition(mapId, index) }
         updatePlaylistDetails(playlistId, result.name, result.thumbnailUrl)
     }
 
     @Transaction
     fun restorePlaylistSnapshot(snapshot: PlaylistSnapshot) {
+        val snapshotIds = snapshot.maps.map { it.id }.toSet()
+        // Songs added after the edit survive the undo and stay on top.
+        val addedLater = playlistSongMaps(snapshot.playlistId, 0).filter { it.id !in snapshotIds }
         clearPlaylist(snapshot.playlistId)
-        snapshot.maps.forEach { insert(it) }
+        val restored = snapshot.maps.filter { getSongByIdBlocking(it.songId) != null }
+        (addedLater + restored).forEachIndexed { index, map -> insert(map.copy(position = index)) }
         updatePlaylistDetails(snapshot.playlistId, snapshot.name, snapshot.thumbnailUrl)
     }
 

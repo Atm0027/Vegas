@@ -31,6 +31,7 @@ object DuplicateMatcher {
 
         val title = normalize(candidate.title)
         val artist = normalize(candidate.artist)
+        if (title.isEmpty() || artist.isEmpty()) return Match.New
         val probable =
             existing.firstOrNull {
                 it.durationSec > 0 &&
