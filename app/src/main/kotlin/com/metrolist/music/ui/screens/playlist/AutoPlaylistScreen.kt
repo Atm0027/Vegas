@@ -92,6 +92,9 @@ import com.metrolist.music.LocalDownloadUtil
 import com.metrolist.music.LocalPlayerAwareWindowInsets
 import com.metrolist.music.LocalPlayerConnection
 import com.metrolist.music.R
+import com.metrolist.music.offline.playlistDownloadState
+import com.metrolist.music.offline.RemovePlaylistDownloadDialog
+import com.metrolist.music.constants.DownloadLikedKey
 import com.metrolist.music.constants.HideExplicitKey
 import com.metrolist.music.constants.SongSortDescendingKey
 import com.metrolist.music.constants.SongSortType
@@ -211,10 +214,12 @@ fun AutoPlaylistScreen(
     var downloadState by remember {
         mutableIntStateOf(Download.STATE_STOPPED)
     }
+    // Vega: Liked can be marked as a downloaded playlist, kept downloaded as songs are liked.
+    val (downloadLiked, onDownloadLikedChange) = rememberPreference(DownloadLikedKey, false)
 
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(songs) {
+    LaunchedEffect(songs, downloadLiked) {
         mutableSongs.apply {
             clear()
             songs?.let { addAll(it) }
@@ -222,7 +227,9 @@ fun AutoPlaylistScreen(
         if (songs?.isEmpty() == true) return@LaunchedEffect
         downloadUtil.downloads.collect { downloads ->
             downloadState =
-                if (songs?.all { downloads[it.song.id]?.state == Download.STATE_COMPLETED } == true) {
+                if (playlistType == PlaylistType.LIKE) {
+                    playlistDownloadState(downloadLiked, songs.orEmpty().map { it.song.id }, downloads)
+                } else if (songs?.all { downloads[it.song.id]?.state == Download.STATE_COMPLETED } == true) {
                     Download.STATE_COMPLETED
                 } else if (songs?.all {
                         downloads[it.song.id]?.state == Download.STATE_QUEUED ||
@@ -241,7 +248,16 @@ fun AutoPlaylistScreen(
         mutableStateOf(false)
     }
 
-    if (showRemoveDownloadDialog) {
+    if (showRemoveDownloadDialog && playlistType == PlaylistType.LIKE) {
+        RemovePlaylistDownloadDialog(
+            onDismiss = { showRemoveDownloadDialog = false },
+            onConfirm = { deleteFiles ->
+                showRemoveDownloadDialog = false
+                onDownloadLikedChange(false)
+                downloadUtil.removeLikedDownload(songs.orEmpty().map { it.song.id }, deleteFiles)
+            },
+        )
+    } else if (showRemoveDownloadDialog) {
         DefaultDialog(
             onDismiss = { showRemoveDownloadDialog = false },
             content = {
@@ -324,6 +340,17 @@ fun AutoPlaylistScreen(
                                 likeLength = likeLength,
                                 downloadState = downloadState,
                                 onShowRemoveDownloadDialog = { showRemoveDownloadDialog = true },
+                                onCancelDownloads = {
+                                    if (playlistType == PlaylistType.LIKE) {
+                                        showRemoveDownloadDialog = true
+                                    } else {
+                                        songs!!.forEach { downloadUtil.remove(it.song.id) }
+                                    }
+                                },
+                                onDownloadAll = {
+                                    if (playlistType == PlaylistType.LIKE) onDownloadLikedChange(true)
+                                    songs!!.forEach { downloadUtil.download(it) }
+                                },
                                 menuState = menuState,
                                 modifier = Modifier.animateItem(),
                             )
@@ -594,6 +621,8 @@ private fun AutoPlaylistHeader(
     likeLength: Int,
     downloadState: Int,
     onShowRemoveDownloadDialog: () -> Unit,
+    onCancelDownloads: () -> Unit,
+    onDownloadAll: () -> Unit,
     menuState: com.metrolist.music.ui.component.MenuState,
     modifier: Modifier = Modifier,
 ) {
@@ -740,15 +769,9 @@ private fun AutoPlaylistHeader(
                                         onShowRemoveDownloadDialog()
                                     }
 
-                                    Download.STATE_DOWNLOADING -> {
-                                        songs.forEach { song ->
-                                            downloadUtil.remove(song.song.id)
-                                        }
-                                    }
+                                    Download.STATE_DOWNLOADING -> onCancelDownloads()
 
-                                    else -> {
-                                        songs.forEach { downloadUtil.download(it) }
-                                    }
+                                    else -> onDownloadAll()
                                 }
                             },
                             onDismiss = { menuState.dismiss() },

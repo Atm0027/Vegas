@@ -50,6 +50,14 @@ import com.metrolist.music.LocalDatabase
 import com.metrolist.music.LocalPlayerAwareWindowInsets
 import com.metrolist.music.LocalPlayerConnection
 import com.metrolist.music.R
+import com.metrolist.music.playback.DownloadUtil
+import com.metrolist.music.constants.DownloadOnMobileDataKey
+import com.metrolist.music.constants.DownloadLikedKey
+import com.metrolist.music.LocalDownloadUtil
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.compose.rememberLauncherForActivityResult
+import android.widget.Toast
 import com.metrolist.music.constants.EnableSongCacheKey
 import com.metrolist.music.constants.MaxImageCacheSizeKey
 import com.metrolist.music.constants.MaxSongCacheSizeKey
@@ -79,7 +87,22 @@ fun StorageSettings(
     val database = LocalDatabase.current
     val imageDiskCache = context.imageLoader.diskCache ?: return
     val playerCache = LocalPlayerConnection.current?.service?.playerCache ?: return
-    val downloadCache = LocalPlayerConnection.current?.service?.downloadCache ?: return
+    val downloadUtil = LocalDownloadUtil.current
+    val downloadRows by database.allDownloads().collectAsStateWithLifecycle(initialValue = emptyList())
+    val downloadedSize = downloadRows.sumOf { it.size }
+    val (downloadOnMobileData, onDownloadOnMobileDataChange) = rememberPreference(DownloadOnMobileDataKey, false)
+    val (downloadLiked, onDownloadLikedChange) = rememberPreference(DownloadLikedKey, false)
+    val scanFolder: () -> Unit = {
+        scanVegaFolder(context, downloadUtil)
+    }
+    val readPermissionLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) {
+                scanFolder()
+            } else {
+                Toast.makeText(context, R.string.scan_permission_needed, Toast.LENGTH_LONG).show()
+            }
+        }
 
     val coroutineScope = rememberCoroutineScope()
     val songCacheString = stringResource(R.string.song_cache).lowercase()
@@ -112,9 +135,6 @@ fun StorageSettings(
     }
     var playerCacheSize by remember {
         androidx.compose.runtime.mutableLongStateOf(tryOrNull { playerCache.cacheSpace } ?: 0)
-    }
-    var downloadCacheSize by remember {
-        mutableLongStateOf(tryOrNull { downloadCache.cacheSpace } ?: 0)
     }
     val imageCacheProgress by animateFloatAsState(
         targetValue =
@@ -163,28 +183,18 @@ fun StorageSettings(
             playerCacheSize = tryOrNull { playerCache.cacheSpace } ?: 0
         }
     }
-    LaunchedEffect(downloadCache) {
-        while (isActive) {
-            delay(500)
-            downloadCacheSize = tryOrNull { downloadCache.cacheSpace } ?: 0
-        }
-    }
 
     if (clearDownloads) {
         ActionPromptDialog(
-            title = stringResource(R.string.clear_all_downloads),
+            title = stringResource(R.string.delete_all_downloads),
             onDismiss = { clearDownloads = false },
             onConfirm = {
-                coroutineScope.launch(Dispatchers.IO) {
-                    downloadCache.keys.forEach { key ->
-                        downloadCache.removeResource(key)
-                    }
-                }
+                downloadUtil.removeAll(downloadRows.map { it.songId })
                 clearDownloads = false
             },
             onCancel = { clearDownloads = false },
             content = {
-                Text(text = stringResource(R.string.clear_downloads_dialog))
+                Text(text = stringResource(R.string.delete_all_downloads_confirm))
             },
         )
     }
@@ -297,19 +307,50 @@ fun StorageSettings(
             ),
         )
         Material3SettingsGroup(
-            title = stringResource(R.string.storage),
+            title = stringResource(R.string.offline_downloads),
             items =
                 listOf(
                     Material3SettingsItem(
                         icon = painterResource(R.drawable.storage),
-                        title = { Text(stringResource(R.string.downloaded_songs)) },
+                        title = { Text(stringResource(R.string.downloads_used_space)) },
                         description = {
-                            Text(text = Formatter.formatShortFileSize(context, downloadCacheSize))
+                            Text(text = Formatter.formatShortFileSize(context, downloadedSize))
+                        },
+                    ),
+                    Material3SettingsItem(
+                        icon = painterResource(R.drawable.download),
+                        title = { Text(stringResource(R.string.download_on_mobile_data)) },
+                        description = { Text(stringResource(R.string.download_on_mobile_data_desc)) },
+                        trailingContent = {
+                            Switch(checked = downloadOnMobileData, onCheckedChange = onDownloadOnMobileDataChange)
+                        },
+                        onClick = { onDownloadOnMobileDataChange(!downloadOnMobileData) },
+                    ),
+                    Material3SettingsItem(
+                        icon = painterResource(R.drawable.favorite),
+                        title = { Text(stringResource(R.string.download_liked)) },
+                        description = { Text(stringResource(R.string.download_liked_desc)) },
+                        trailingContent = {
+                            Switch(checked = downloadLiked, onCheckedChange = onDownloadLikedChange)
+                        },
+                        onClick = { onDownloadLikedChange(!downloadLiked) },
+                    ),
+                    Material3SettingsItem(
+                        icon = painterResource(R.drawable.search),
+                        title = { Text(stringResource(R.string.scan_vega_folder)) },
+                        description = { Text(stringResource(R.string.scan_vega_folder_desc)) },
+                        onClick = {
+                            val permission = downloadUtil.readPermission()
+                            if (permission == null || downloadUtil.hasReadPermission()) {
+                                scanFolder()
+                            } else {
+                                readPermissionLauncher.launch(permission)
+                            }
                         },
                     ),
                     Material3SettingsItem(
                         icon = painterResource(R.drawable.clear_all),
-                        title = { Text(stringResource(R.string.clear_all_downloads)) },
+                        title = { Text(stringResource(R.string.delete_all_downloads)) },
                         onClick = {
                             clearDownloads = true
                         },
@@ -489,4 +530,10 @@ fun StorageSettings(
             }
         },
     )
+}
+
+private fun scanVegaFolder(context: android.content.Context, downloadUtil: DownloadUtil) {
+    downloadUtil.scanFolder { report ->
+        Toast.makeText(context, context.getString(R.string.scan_result, report.linked), Toast.LENGTH_LONG).show()
+    }
 }

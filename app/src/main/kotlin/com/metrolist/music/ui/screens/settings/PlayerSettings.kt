@@ -41,7 +41,6 @@ import com.metrolist.music.constants.AudioOffload
 import com.metrolist.music.constants.AudioTrackPlaybackParamsKey
 import com.metrolist.music.constants.AudioQuality
 import com.metrolist.music.constants.AudioQualityKey
-import com.metrolist.music.constants.AutoDownloadOnLikeKey
 import com.metrolist.music.constants.CrossfadeDurationKey
 import com.metrolist.music.constants.CrossfadeEnabledKey
 import com.metrolist.music.constants.CrossfadeGaplessKey
@@ -168,10 +167,6 @@ fun PlayerSettings(
     )
     val (disableLoadMoreWhenRepeatAll, onDisableLoadMoreWhenRepeatAllChange) = rememberPreference(
         DisableLoadMoreWhenRepeatAllKey,
-        defaultValue = false
-    )
-    val (autoDownloadOnLike, onAutoDownloadOnLikeChange) = rememberPreference(
-        AutoDownloadOnLikeKey,
         defaultValue = false
     )
     val (similarContentEnabled, similarContentEnabledChange) = rememberPreference(
@@ -850,27 +845,6 @@ fun PlayerSettings(
                         )
                     },
                     onClick = { onDisableLoadMoreWhenRepeatAllChange(!disableLoadMoreWhenRepeatAll) }
-                ),
-                Material3SettingsItem(
-                    icon = painterResource(R.drawable.download),
-                    title = { Text(stringResource(R.string.auto_download_on_like)) },
-                    description = { Text(stringResource(R.string.auto_download_on_like_desc)) },
-                    trailingContent = {
-                        Switch(
-                            checked = autoDownloadOnLike,
-                            onCheckedChange = onAutoDownloadOnLikeChange,
-                            thumbContent = {
-                                Icon(
-                                    painter = painterResource(
-                                        id = if (autoDownloadOnLike) R.drawable.check else R.drawable.close
-                                    ),
-                                    contentDescription = null,
-                                    modifier = Modifier.size(SwitchDefaults.IconSize)
-                                )
-                            }
-                        )
-                    },
-                    onClick = { onAutoDownloadOnLikeChange(!autoDownloadOnLike) }
                 ),
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.similar),

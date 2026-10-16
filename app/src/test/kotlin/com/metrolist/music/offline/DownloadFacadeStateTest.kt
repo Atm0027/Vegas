@@ -37,4 +37,12 @@ class DownloadFacadeStateTest {
         val map = combineDownloads(files, mapOf("a" to QueueState(running = true, progress = 0.99f)))
         assertEquals(Download.STATE_COMPLETED, map.getValue("a").state)
     }
+
+    @Test
+    fun playlistState_followsTheDownloadedMark() {
+        val done = mapOf("a" to toExoDownload("a", Download.STATE_COMPLETED, 1f, 1), "b" to toExoDownload("b", Download.STATE_COMPLETED, 1f, 1))
+        assertEquals(Download.STATE_STOPPED, playlistDownloadState(marked = false, songIds = listOf("a", "b"), downloads = done))
+        assertEquals(Download.STATE_COMPLETED, playlistDownloadState(marked = true, songIds = listOf("a", "b"), downloads = done))
+        assertEquals(Download.STATE_DOWNLOADING, playlistDownloadState(marked = true, songIds = listOf("a", "c"), downloads = done))
+    }
 }

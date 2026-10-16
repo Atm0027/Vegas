@@ -108,6 +108,8 @@ import com.metrolist.music.LocalNavController
 import com.metrolist.music.LocalPlayerAwareWindowInsets
 import com.metrolist.music.LocalPlayerConnection
 import com.metrolist.music.R
+import com.metrolist.music.offline.playlistDownloadState
+import com.metrolist.music.offline.RemovePlaylistDownloadDialog
 import com.metrolist.music.constants.DarkModeKey
 import com.metrolist.music.constants.PlaylistSongSortDescendingKey
 import com.metrolist.music.constants.PlaylistSongSortType
@@ -320,26 +322,14 @@ fun LocalPlaylistScreen(
         }
     }
 
-    LaunchedEffect(songs) {
+    LaunchedEffect(songs, playlist?.playlist?.downloaded == true) {
         mutableSongs.apply {
             clear()
             addAll(songs)
         }
         if (songs.isEmpty()) return@LaunchedEffect
         downloadUtil.downloads.collect { downloads ->
-            downloadState =
-                if (songs.all { downloads[it.song.id]?.state == Download.STATE_COMPLETED }) {
-                    Download.STATE_COMPLETED
-                } else if (songs.all {
-                        downloads[it.song.id]?.state == Download.STATE_QUEUED ||
-                            downloads[it.song.id]?.state == Download.STATE_DOWNLOADING ||
-                            downloads[it.song.id]?.state == Download.STATE_COMPLETED
-                    }
-                ) {
-                    Download.STATE_DOWNLOADING
-                } else {
-                    Download.STATE_STOPPED
-                }
+            downloadState = playlistDownloadState(playlist?.playlist?.downloaded == true, songs.map { it.song.id }, downloads)
         }
     }
 
@@ -382,40 +372,12 @@ fun LocalPlaylistScreen(
     }
 
     if (showRemoveDownloadDialog) {
-        DefaultDialog(
+        RemovePlaylistDownloadDialog(
             onDismiss = { showRemoveDownloadDialog = false },
-            content = {
-                Text(
-                    text =
-                        stringResource(
-                            R.string.remove_download_playlist_confirm,
-                            playlist?.playlist!!.name,
-                        ),
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(horizontal = 18.dp),
-                )
-            },
-            buttons = {
-                TextButton(
-                    onClick = { showRemoveDownloadDialog = false },
-                ) {
-                    Text(text = stringResource(android.R.string.cancel))
-                }
-
-                TextButton(
-                    onClick = {
-                        showRemoveDownloadDialog = false
-                        if (!editable) {
-                            database.transaction {
-                                playlist?.id?.let { clearPlaylist(it) }
-                            }
-                        }
-                        songs.forEach { song ->
-                            downloadUtil.remove(song.song.id)
-                        }
-                    },
-                ) {
-                    Text(text = stringResource(android.R.string.ok))
+            onConfirm = { deleteFiles ->
+                showRemoveDownloadDialog = false
+                playlist?.id?.let { id ->
+                    downloadUtil.removePlaylistDownload(id, songs.map { it.song.id }, deleteFiles)
                 }
             },
         )
@@ -1065,22 +1027,10 @@ fun LocalPlaylistHeader(
         }
     }
 
-    LaunchedEffect(songs) {
+    LaunchedEffect(songs, playlist.playlist.downloaded) {
         if (songs.isEmpty()) return@LaunchedEffect
         downloadUtil.downloads.collect { downloads ->
-            downloadState =
-                if (songs.all { downloads[it.song.id]?.state == Download.STATE_COMPLETED }) {
-                    Download.STATE_COMPLETED
-                } else if (songs.all {
-                        downloads[it.song.id]?.state == Download.STATE_QUEUED ||
-                            downloads[it.song.id]?.state == Download.STATE_DOWNLOADING ||
-                            downloads[it.song.id]?.state == Download.STATE_COMPLETED
-                    }
-                ) {
-                    Download.STATE_DOWNLOADING
-                } else {
-                    Download.STATE_STOPPED
-                }
+            downloadState = playlistDownloadState(playlist.playlist.downloaded, songs.map { it.song.id }, downloads)
         }
     }
 
@@ -1427,22 +1377,10 @@ fun LocalPlaylistHeader(
                             onEdit = onShowEditDialog,
                             onDelete = onshowDeletePlaylistDialog,
                             onDownload = {
-                                when (downloadState) {
-                                    Download.STATE_COMPLETED -> {
-                                        onShowRemoveDownloadDialog()
-                                    }
-
-                                    Download.STATE_DOWNLOADING -> {
-                                        songs.forEach { song ->
-                                            downloadUtil.remove(song.song.id)
-                                        }
-                                    }
-
-                                    else -> {
-                                        songs.forEach { song ->
-                                            downloadUtil.download(song.song)
-                                        }
-                                    }
+                                if (playlist.playlist.downloaded) {
+                                    onShowRemoveDownloadDialog()
+                                } else {
+                                    downloadUtil.downloadPlaylist(playlist.id, songs.map { it.song })
                                 }
                             },
                             onQueue = {

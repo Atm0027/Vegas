@@ -19,6 +19,7 @@ import androidx.media3.exoplayer.offline.DownloadProgress
 import androidx.media3.exoplayer.offline.DownloadRequest
 import com.metrolist.innertube.models.SongItem
 import com.metrolist.music.R
+import com.metrolist.music.constants.DownloadLikedKey
 import com.metrolist.music.db.MusicDatabase
 import com.metrolist.music.db.entities.AlbumEntity
 import com.metrolist.music.db.entities.DownloadEntity
@@ -26,8 +27,10 @@ import com.metrolist.music.db.entities.Song
 import com.metrolist.music.models.MediaMetadata
 import com.metrolist.music.models.toMediaMetadata
 import com.metrolist.music.offline.DownloadQueue
+import com.metrolist.music.offline.OfflineScanner
 import com.metrolist.music.offline.OfflineStore
 import com.metrolist.music.offline.QueueState
+import com.metrolist.music.utils.dataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,6 +42,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -55,6 +59,7 @@ constructor(
     val database: MusicDatabase,
     private val queue: DownloadQueue,
     private val store: OfflineStore,
+    private val scanner: OfflineScanner,
 ) {
     /** Files Android only lets the user delete after a system confirmation (another install made them). */
     data class PendingDelete(val songIds: List<String>, val intentSender: IntentSender)
@@ -104,6 +109,50 @@ constructor(
         scope.launch {
             if (downloads.value[songId]?.state == Download.STATE_COMPLETED) return@launch
             queue.enqueueManual(songId)
+        }
+    }
+
+    /** Marks the playlist as downloaded (it stays downloaded as songs are added) and queues its songs now. */
+    fun downloadPlaylist(playlistId: String, songs: List<Song>) {
+        scope.launch { database.setPlaylistDownloaded(playlistId, true) }
+        songs.forEach { download(it) }
+    }
+
+    /** Unmarks the playlist; files are only deleted when asked, and never those another marked list keeps. */
+    fun removePlaylistDownload(playlistId: String, songIds: List<String>, deleteFiles: Boolean) {
+        scope.launch {
+            database.setPlaylistDownloaded(playlistId, false)
+            val includeLiked = context.dataStore.data.first()[DownloadLikedKey] ?: false
+            val stillWanted = database.songsToAutoDownload(includeLiked).first().toSet()
+            songIds.filter { it !in stillWanted && downloads.value[it]?.state != Download.STATE_COMPLETED }
+                .forEach(queue::cancel)
+            if (deleteFiles) removeAll(database.songsOnlyInPlaylist(playlistId, includeLiked))
+        }
+    }
+
+    /** Liked stops being a downloaded playlist; files go only when asked and no marked playlist keeps them. */
+    fun removeLikedDownload(songIds: List<String>, deleteFiles: Boolean) {
+        scope.launch {
+            val stillWanted = database.songsToAutoDownload(false).first().toSet()
+            songIds.filter { it !in stillWanted && downloads.value[it]?.state != Download.STATE_COMPLETED }
+                .forEach(queue::cancel)
+            if (deleteFiles) {
+                removeAll(songIds.filter { database.downloadEntity(it) != null && database.trackedPlaylistNames(it).isEmpty() })
+            }
+        }
+    }
+
+    fun readPermission(): String? = store.readPermission()
+
+    fun hasReadPermission(): Boolean = store.hasReadPermission()
+
+    /** Recognises files already in Music/Vega (previous install or restored backup). */
+    fun scanFolder(onDone: (OfflineScanner.ScanReport) -> Unit = {}) {
+        scope.launch {
+            val report = runCatching { scanner.scan() }
+                .onFailure { Timber.tag(TAG).e(it, "Music/Vega scan failed") }
+                .getOrDefault(OfflineScanner.ScanReport(0, 0))
+            withContext(Dispatchers.Main) { onDone(report) }
         }
     }
 

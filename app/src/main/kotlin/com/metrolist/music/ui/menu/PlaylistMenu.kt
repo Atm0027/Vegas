@@ -48,6 +48,8 @@ import com.metrolist.music.LocalDatabase
 import com.metrolist.music.LocalDownloadUtil
 import com.metrolist.music.LocalPlayerConnection
 import com.metrolist.music.R
+import com.metrolist.music.offline.playlistDownloadState
+import com.metrolist.music.offline.RemovePlaylistDownloadDialog
 import com.metrolist.music.db.entities.Playlist
 import com.metrolist.music.db.entities.PlaylistSong
 import com.metrolist.music.db.entities.Song
@@ -112,22 +114,10 @@ fun PlaylistMenu(
 
     var showExportDialog by remember { mutableStateOf(false) }
 
-    LaunchedEffect(songs) {
+    LaunchedEffect(songs, playlist.playlist.downloaded) {
         if (songs.isEmpty()) return@LaunchedEffect
         downloadUtil.downloads.collect { downloads ->
-            downloadState =
-                if (songs.all { downloads[it.id]?.state == Download.STATE_COMPLETED }) {
-                    Download.STATE_COMPLETED
-                } else if (songs.all {
-                        downloads[it.id]?.state == Download.STATE_QUEUED ||
-                            downloads[it.id]?.state == Download.STATE_DOWNLOADING ||
-                            downloads[it.id]?.state == Download.STATE_COMPLETED
-                    }
-                ) {
-                    Download.STATE_DOWNLOADING
-                } else {
-                    Download.STATE_STOPPED
-                }
+            downloadState = playlistDownloadState(playlist.playlist.downloaded, songs.map { it.id }, downloads)
         }
     }
 
@@ -164,38 +154,11 @@ fun PlaylistMenu(
     }
 
     if (showRemoveDownloadDialog) {
-        DefaultDialog(
+        RemovePlaylistDownloadDialog(
             onDismiss = { showRemoveDownloadDialog = false },
-            content = {
-                Text(
-                    text =
-                        stringResource(
-                            R.string.remove_download_playlist_confirm,
-                            playlist.playlist.name,
-                        ),
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(horizontal = 18.dp),
-                )
-            },
-            buttons = {
-                TextButton(
-                    onClick = {
-                        showRemoveDownloadDialog = false
-                    },
-                ) {
-                    Text(text = stringResource(android.R.string.cancel))
-                }
-
-                TextButton(
-                    onClick = {
-                        showRemoveDownloadDialog = false
-                        songs.forEach { song ->
-                            downloadUtil.remove(song.id)
-                        }
-                    },
-                ) {
-                    Text(text = stringResource(android.R.string.ok))
-                }
+            onConfirm = { deleteFiles ->
+                showRemoveDownloadDialog = false
+                downloadUtil.removePlaylistDownload(playlist.id, songs.map { it.id }, deleteFiles)
             },
         )
     }
@@ -570,7 +533,7 @@ fun PlaylistMenu(
                                                 )
                                             },
                                             onClick = {
-                                                songs.forEach { downloadUtil.download(it) }
+                                                downloadUtil.downloadPlaylist(playlist.id, songs)
                                             },
                                         )
                                     }

@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import com.metrolist.music.R
+import com.metrolist.music.offline.OfflineScanner
 import com.metrolist.music.constants.VisitorDataKey
 import com.metrolist.music.db.InternalDatabase
 import com.metrolist.music.db.MusicDatabase
@@ -249,6 +250,7 @@ class BackupRestoreViewModel @Inject constructor(
                         tempSettings.delete()
                     }
 
+                    File(context.filesDir, OfflineScanner.PENDING_SCAN_FILE).createNewFile()
                     context.filesDir.resolve(PERSISTENT_QUEUE_FILE).delete()
                     context.filesDir.resolve(PERSISTENT_AUTOMIX_FILE).delete()
                     context.filesDir.resolve(PERSISTENT_PLAYER_STATE_FILE).delete()

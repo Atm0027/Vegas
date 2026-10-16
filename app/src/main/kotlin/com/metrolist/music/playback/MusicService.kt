@@ -154,7 +154,6 @@ import com.metrolist.music.db.entities.LyricsEntity
 import com.metrolist.music.db.entities.PlaylistEntity
 import com.metrolist.music.db.entities.RelatedSongMap
 import com.metrolist.music.db.entities.Song
-import com.metrolist.music.di.DownloadCache
 import com.metrolist.music.di.PlayerCache
 import com.metrolist.music.eq.EqualizerService
 import com.metrolist.music.eq.audio.CustomEqualizerAudioProcessor
@@ -367,10 +366,6 @@ class MusicService :
     @Inject
     @PlayerCache
     lateinit var playerCache: Cache
-
-    @Inject
-    @DownloadCache
-    lateinit var downloadCache: Cache
 
     @Inject
     lateinit var offlineStore: OfflineStore
