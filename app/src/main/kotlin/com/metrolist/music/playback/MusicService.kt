@@ -4489,11 +4489,12 @@ class MusicService :
         // Do not persist the retired player's temporary repeat-off state.
         fadingPlayer?.removeListener(this)
         sleepTimer?.let { timer -> fadingPlayer?.removeListener(timer) }
-        fadingPlayer?.repeatMode = Player.REPEAT_MODE_OFF
         fadingPlayer?.let {
-            val currentIndex = it.currentMediaItemIndex
-            if (currentIndex < it.mediaItemCount - 1) {
-                it.removeMediaItems(currentIndex + 1, it.mediaItemCount)
+            it.repeatMode = Player.REPEAT_MODE_OFF
+            it.shuffleModeEnabled = false
+            it.pauseAtEndOfMediaItems = true
+            FadingPlayerIsolation.rangesToRemove(it.currentMediaItemIndex, it.mediaItemCount).forEach { range ->
+                it.removeMediaItems(range.first, range.last + 1)
             }
         }
 
