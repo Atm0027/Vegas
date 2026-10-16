@@ -873,4 +873,5 @@
     <string name="offline_no_more_downloaded">Offline: no more downloaded songs in the queue</string>
     <string name="offline_downloads">Offline downloads</string>
     <string name="scan_permission_needed">Vega needs access to your music to find earlier downloads</string>
+    <string name="remove_from_list">Remove from list</string>
 </resources>

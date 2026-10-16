@@ -754,4 +754,5 @@
     <string name="offline_no_more_downloaded">Sin conexión: no hay más canciones descargadas en la cola</string>
     <string name="offline_downloads">Descargas sin conexión</string>
     <string name="scan_permission_needed">Vega necesita acceso a tu música para encontrar descargas anteriores</string>
+    <string name="remove_from_list">Quitar de la lista</string>
 </resources>

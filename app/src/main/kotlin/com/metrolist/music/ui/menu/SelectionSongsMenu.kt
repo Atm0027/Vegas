@@ -571,7 +571,7 @@ fun SelectionSongMenu(
                         if (songPosition?.isNotEmpty() == true) {
                             add(
                                 Material3MenuItemData(
-                                    title = { Text(text = stringResource(R.string.delete)) },
+                                    title = { Text(text = stringResource(R.string.remove_from_list)) },
                                     icon = {
                                         Icon(
                                             painter = painterResource(R.drawable.delete),
