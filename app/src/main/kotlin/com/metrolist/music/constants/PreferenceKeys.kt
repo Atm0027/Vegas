@@ -101,7 +101,6 @@ val ProxyUrlKey = stringPreferencesKey("proxyUrl")
 val ProxyTypeKey = stringPreferencesKey("proxyType")
 val ProxyUsernameKey = stringPreferencesKey("proxyUsername")
 val ProxyPasswordKey = stringPreferencesKey("proxyPassword")
-val YtmSyncKey = booleanPreferencesKey("ytmSync")
 val CheckForUpdatesKey = booleanPreferencesKey("checkForUpdates")
 val DismissedStandaloneUpdateKey = stringPreferencesKey("dismissedStandaloneUpdate")
 val DismissedKmpUpdateKey = stringPreferencesKey("dismissedKmpUpdate")
@@ -203,7 +202,6 @@ val ArtistFilterKey = stringPreferencesKey("artistFilter")
 val AlbumFilterKey = stringPreferencesKey("albumFilter")
 val PodcastFilterKey = stringPreferencesKey("podcastFilter")
 
-val LastFullSyncKey = longPreferencesKey("last_full_sync")
 val LastWeeklyMostPlaylistSyncKey = longPreferencesKey("last_weekly_most_playlist_sync")
 val LastMonthlyMostPlaylistSyncKey = longPreferencesKey("last_monthly_most_playlist_sync")
 val ShowMostStatsPlaylistsKey = booleanPreferencesKey("show_most_stats_playlists")
@@ -481,17 +479,10 @@ enum class SearchSource {
 }
 
 val VisitorDataKey = stringPreferencesKey("visitorData")
-val DataSyncIdKey = stringPreferencesKey("dataSyncId")
-val InnerTubeAuthUserKey = stringPreferencesKey("innerTubeAuthUser")
 val AndroidAutoYouTubePlaylistsKey = booleanPreferencesKey("androidAutoYoutubePlaylists")
 val AndroidAutoSectionsOrderKey = stringPreferencesKey("androidAutoSectionsOrder")
 val AndroidAutoTargetPlaylistKey = stringPreferencesKey("androidAutoTargetPlaylist")
 val AndroidAutoSearchLocalLimitKey = intPreferencesKey("androidAutoSearchLocalLimit")
-val InnerTubeCookieKey = stringPreferencesKey("innerTubeCookie")
-val AccountNameKey = stringPreferencesKey("accountName")
-val AccountEmailKey = stringPreferencesKey("accountEmail")
-val AccountChannelHandleKey = stringPreferencesKey("accountChannelHandle")
-val UseLoginForBrowse = booleanPreferencesKey("useLoginForBrowse")
 
 val LanguageCodeToName =
     mapOf(

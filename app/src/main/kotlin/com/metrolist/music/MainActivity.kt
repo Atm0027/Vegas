@@ -201,7 +201,6 @@ import com.metrolist.music.ui.utils.appBarScrollBehavior
 import com.metrolist.music.ui.utils.resetHeightOffset
 import com.metrolist.music.utils.ReleaseInfo
 import com.metrolist.music.utils.SearchRoutes
-import com.metrolist.music.utils.SyncUtils
 import com.metrolist.music.utils.ArtistNameAliases
 import com.metrolist.music.utils.Updater
 import com.metrolist.music.utils.dataStore
@@ -253,8 +252,6 @@ class MainActivity : FragmentActivity() {
     @Inject
     lateinit var downloadUtil: DownloadUtil
 
-    @Inject
-    lateinit var syncUtils: SyncUtils
 
     private lateinit var navController: NavHostController
     private var pendingIntent: Intent? = null
@@ -460,7 +457,6 @@ class MainActivity : FragmentActivity() {
                 playerConnection = playerConnectionSnapshot,
                 database = database,
                 downloadUtil = downloadUtil,
-                syncUtils = syncUtils,
             )
         }
     }
@@ -474,7 +470,6 @@ class MainActivity : FragmentActivity() {
         playerConnection: PlayerConnection?,
         database: MusicDatabase,
         downloadUtil: DownloadUtil,
-        syncUtils: SyncUtils,
     ) {
         val checkForUpdates by rememberPreference(CheckForUpdatesKey, defaultValue = true)
         var availableUpdate by remember { mutableStateOf<AvailableUpdate?>(null) }
@@ -1012,7 +1007,6 @@ class MainActivity : FragmentActivity() {
                     LocalPlayerAwareWindowInsets provides playerAwareWindowInsets,
                     LocalDownloadUtil provides downloadUtil,
                     LocalShimmerTheme provides ShimmerTheme,
-                    LocalSyncUtils provides syncUtils,
                     LocalChangelogState provides showChangelog,
                     LocalArtistNameAliases provides artistNameAliases,
                 ) {
@@ -1671,7 +1665,6 @@ val LocalNavController = staticCompositionLocalOf<NavController> { error("No Nav
 val LocalPlayerConnection = staticCompositionLocalOf<PlayerConnection?> { error("No PlayerConnection provided") }
 val LocalPlayerAwareWindowInsets = compositionLocalOf<WindowInsets> { error("No WindowInsets provided") }
 val LocalDownloadUtil = staticCompositionLocalOf<DownloadUtil> { error("No DownloadUtil provided") }
-val LocalSyncUtils = staticCompositionLocalOf<SyncUtils> { error("No SyncUtils provided") }
 val LocalChangelogState = staticCompositionLocalOf<MutableState<Boolean>> { error("No LocalChangelogState provided") }
 val LocalArtistNameAliases = staticCompositionLocalOf<Map<String, String>> { emptyMap() }
 val LocalIsPlayerExpanded = compositionLocalOf { false }

@@ -93,7 +93,6 @@ import androidx.compose.material3.FilterChipDefaults
 @Composable
 fun AddToPlaylistDialogOnline(
     isVisible: Boolean,
-    allowSyncing: Boolean = true,
     initialTextFieldValue: String? = null,
     songs: SnapshotStateList<Song>,
     onDismiss: () -> Unit,
@@ -451,7 +450,6 @@ fun AddToPlaylistDialogOnline(
         CreatePlaylistDialog(
             onDismiss = { showCreatePlaylistDialog = false },
             initialTextFieldValue = initialTextFieldValue,
-            allowSyncing = allowSyncing
         )
     }
 

@@ -72,7 +72,6 @@ import com.metrolist.music.constants.SongFilterKey
 import com.metrolist.music.constants.SongSortDescendingKey
 import com.metrolist.music.constants.SongSortType
 import com.metrolist.music.constants.SongSortTypeKey
-import com.metrolist.music.constants.YtmSyncKey
 import com.metrolist.music.extensions.fileNameAndSize
 import com.metrolist.music.extensions.matchesNormalizedQuery
 import com.metrolist.music.extensions.normalizeForSearch
@@ -124,7 +123,6 @@ fun LibrarySongsScreen(
         )
     val (sortDescending, onSortDescendingChange) = rememberPreference(SongSortDescendingKey, true)
 
-    val (ytmSync) = rememberPreference(YtmSyncKey, true)
     val hideExplicit by rememberPreference(key = HideExplicitKey, defaultValue = false)
 
     val songs by viewModel.allSongs.collectAsStateWithLifecycle()
@@ -239,14 +237,6 @@ fun LibrarySongsScreen(
         }
 
     LaunchedEffect(Unit) {
-        if (ytmSync) {
-            when (filter) {
-                SongFilter.LIKED -> viewModel.syncLikedSongs()
-                SongFilter.LIBRARY -> viewModel.syncLibrarySongs()
-                SongFilter.UPLOADED -> viewModel.syncUploadedSongs()
-                else -> return@LaunchedEffect
-            }
-        }
     }
 
     val lazyListState = rememberLazyListState()

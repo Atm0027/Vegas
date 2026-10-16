@@ -8,7 +8,6 @@ import com.metrolist.innertube.models.EpisodeItem
 import com.metrolist.innertube.models.PodcastItem
 import com.metrolist.music.db.MusicDatabase
 import com.metrolist.music.db.entities.PodcastEntity
-import com.metrolist.music.utils.SyncUtils
 import com.metrolist.music.utils.reportException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +28,6 @@ import javax.inject.Inject
 class OnlinePodcastViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     val database: MusicDatabase,
-    private val syncUtils: SyncUtils,
 ) : ViewModel() {
     private val podcastId = savedStateHandle.get<String>("podcastId")!!
 
@@ -107,9 +105,7 @@ class OnlinePodcastViewModel @Inject constructor(
                 database.insert(newEntity)
             }
 
-            Timber.d("[PODCAST_TOGGLE] Database updated, calling syncUtils.savePodcast(${currentPodcast.id}, $shouldBeSaved)")
             // Sync with YouTube (handles login check internally)
-            syncUtils.savePodcast(currentPodcast.id, shouldBeSaved)
         }
     }
 

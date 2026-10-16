@@ -59,7 +59,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.metrolist.music.LocalNavController
 import com.metrolist.music.R
-import com.metrolist.music.ui.screens.settings.AccountSettings
+import com.metrolist.music.ui.component.Material3SettingsGroup
+import com.metrolist.music.ui.component.Material3SettingsItem
 import kotlinx.coroutines.delay
 
 @Composable
@@ -171,11 +172,34 @@ fun AccountSettingsDialog(
                 color = MaterialTheme.colorScheme.surface,
                 tonalElevation = 8.dp,
             ) {
-                AccountSettings(
-                    navController = navController,
-                    onClose = onDismiss,
-                    latestVersionName = latestVersionName,
-                )
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        text = stringResource(R.string.app_name),
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier.padding(start = 8.dp, bottom = 12.dp),
+                    )
+                    Material3SettingsGroup(
+                        items =
+                            listOf(
+                                Material3SettingsItem(
+                                    title = { Text(stringResource(R.string.integrations)) },
+                                    icon = painterResource(R.drawable.integration),
+                                    onClick = {
+                                        onDismiss()
+                                        navController.navigate("settings/integrations")
+                                    },
+                                ),
+                                Material3SettingsItem(
+                                    title = { Text(stringResource(R.string.settings)) },
+                                    icon = painterResource(R.drawable.settings),
+                                    onClick = {
+                                        onDismiss()
+                                        navController.navigate("settings")
+                                    },
+                                ),
+                            ),
+                    )
+                }
             }
         }
     }

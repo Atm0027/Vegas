@@ -61,7 +61,6 @@ import com.metrolist.music.LocalDatabase
 import com.metrolist.music.LocalArtistNameAliases
 import com.metrolist.music.LocalDownloadUtil
 import com.metrolist.music.LocalPlayerConnection
-import com.metrolist.music.LocalSyncUtils
 import com.metrolist.music.R
 import com.metrolist.music.constants.ListItemHeight
 import com.metrolist.music.constants.ListThumbnailSize
@@ -106,7 +105,6 @@ fun YouTubeSongMenu(
     val librarySong by database.song(song.id).collectAsStateWithLifecycle(initialValue = null)
     val download by downloadUtil.getDownload(song.id).collectAsStateWithLifecycle(initialValue = null)
     val coroutineScope = rememberCoroutineScope()
-    val syncUtils = LocalSyncUtils.current
     val isPinned by database.speedDialDao.isPinned(song.id).collectAsStateWithLifecycle(initialValue = false)
     val artistNameAliases = LocalArtistNameAliases.current
     val artists = remember(song.artists, artistNameAliases) {
@@ -242,7 +240,6 @@ fun YouTubeSongMenu(
                         // Sync with YouTube (handles login check internally)
                         coroutineScope.launch(Dispatchers.IO) {
                             val setVideoId = if (isCurrentlySaved) song.setVideoId ?: database.getSetVideoId(song.id)?.setVideoId else null
-                            syncUtils.saveEpisode(song.id, shouldBeSaved, setVideoId)
                         }
                     } else {
                         // Regular song: toggle like
@@ -256,7 +253,6 @@ fun YouTubeSongMenu(
                                     s = librarySong.song.toggleLike()
                                     update(s)
                                 }
-                                syncUtils.likeSong(s)
                             }
                         }
                     }
@@ -405,7 +401,6 @@ fun YouTubeSongMenu(
                                             librarySong?.song?.let { update(it.copy(inLibrary = null)) }
                                         }
                                         // Sync with YouTube (handles login check internally)
-                                        syncUtils.saveEpisode(song.id, false, song.setVideoId)
                                         onDismiss()
                                     }
                                 )
@@ -432,7 +427,6 @@ fun YouTubeSongMenu(
                                             }
                                         }
                                         // Sync with YouTube (handles login check internally)
-                                        syncUtils.saveEpisode(song.id, true, null)
                                         onDismiss()
                                     }
                                 )

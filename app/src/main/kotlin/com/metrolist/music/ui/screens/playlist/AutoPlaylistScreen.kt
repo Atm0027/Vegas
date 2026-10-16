@@ -99,7 +99,6 @@ import com.metrolist.music.constants.HideExplicitKey
 import com.metrolist.music.constants.SongSortDescendingKey
 import com.metrolist.music.constants.SongSortType
 import com.metrolist.music.constants.SongSortTypeKey
-import com.metrolist.music.constants.YtmSyncKey
 import com.metrolist.music.db.entities.Song
 import com.metrolist.music.extensions.fileNameAndSize
 import com.metrolist.music.extensions.toMediaItem
@@ -169,7 +168,6 @@ fun AutoPlaylistScreen(
 
     val hideExplicit by rememberPreference(key = HideExplicitKey, defaultValue = false)
 
-    val (ytmSync) = rememberPreference(YtmSyncKey, true)
 
     val likeLength =
         remember(songs) {
@@ -326,24 +324,6 @@ fun AutoPlaylistScreen(
                     }
             }
         }
-
-    LaunchedEffect(Unit) {
-        println("[UPLOAD_DEBUG] AutoPlaylistScreen LaunchedEffect: playlistId=$playlistId, playlistType=$playlistType, ytmSync=$ytmSync")
-        if (ytmSync) {
-            withContext(Dispatchers.IO) {
-                if (playlistType == PlaylistType.LIKE) {
-                    println("[UPLOAD_DEBUG] AutoPlaylistScreen: Calling syncLikedSongs()")
-                    viewModel.syncLikedSongs()
-                }
-                if (playlistType == PlaylistType.UPLOADED) {
-                    println("[UPLOAD_DEBUG] AutoPlaylistScreen: Calling syncUploadedSongs()")
-                    viewModel.syncUploadedSongs()
-                }
-            }
-        } else {
-            println("[UPLOAD_DEBUG] AutoPlaylistScreen: ytmSync is false, not syncing")
-        }
-    }
 
     LaunchedEffect(songs) {
         mutableSongs.apply {

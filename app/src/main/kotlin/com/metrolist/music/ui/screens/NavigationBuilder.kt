@@ -109,10 +109,6 @@ fun NavGraphBuilder.navigationBuilder(
         MoodAndGenresScreen(navController)
     }
 
-    composable("account") {
-        AccountScreen(navController)
-    }
-
     composable("new_release") {
         NewReleaseScreen(navController)
     }
@@ -388,16 +384,6 @@ fun NavGraphBuilder.navigationBuilder(
         AboutScreen(navController)
     }
 
-    composable("login") {
-        LoginScreen(navController)
-    }
-
-    composable("switch_channel") {
-        LoginScreen(
-            navController = navController,
-            isSwitchingChannel = true,
-        )
-    }
 
     composable("wrapped") {
         WrappedScreen()

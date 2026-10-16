@@ -39,7 +39,6 @@ import com.metrolist.innertube.models.SongItem
 import com.metrolist.music.LocalDatabase
 import com.metrolist.music.LocalDownloadUtil
 import com.metrolist.music.LocalPlayerConnection
-import com.metrolist.music.LocalSyncUtils
 import com.metrolist.music.R
 import com.metrolist.music.extensions.toMediaItem
 import com.metrolist.music.models.toMediaMetadata
@@ -62,7 +61,6 @@ fun YouTubeSelectionSongMenu(
     val downloadUtil = LocalDownloadUtil.current
     val playerConnection = LocalPlayerConnection.current ?: return
     val coroutineScope = rememberCoroutineScope()
-    val syncUtils = LocalSyncUtils.current
 
     var showChoosePlaylistDialog by rememberSaveable {
         mutableStateOf(false)
@@ -411,7 +409,6 @@ fun YouTubeSelectionSongMenu(
                                                 libraryRemoveToken = metadata.libraryRemoveToken,
                                             )
                                         update(songEntity)
-                                        syncUtils.likeSong(songEntity)
                                     }
                                 }
                             }

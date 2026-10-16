@@ -64,7 +64,6 @@ import coil3.compose.AsyncImage
 import com.metrolist.music.LocalDatabase
 import com.metrolist.music.LocalPlayerAwareWindowInsets
 import com.metrolist.music.LocalPlayerConnection
-import com.metrolist.music.LocalSyncUtils
 import com.metrolist.music.R
 import com.metrolist.music.constants.CONTENT_TYPE_HEADER
 import com.metrolist.music.constants.CONTENT_TYPE_SONG
@@ -643,7 +642,6 @@ private fun PodcastEpisodePlaylistMenu(
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val syncUtils = LocalSyncUtils.current
     val isPinned by database.speedDialDao.isPinned(podcast.id).collectAsStateWithLifecycle(initialValue = false)
 
     val playlistId = podcast.id.removePrefix("MPSP")
@@ -668,7 +666,6 @@ private fun PodcastEpisodePlaylistMenu(
                                 update(podcast.copy(bookmarkedAt = null))
                             }
                             // Sync with YouTube (unsave podcast only, don't unsubscribe channel)
-                            syncUtils.savePodcast(podcast.id, false)
                         }
                         onDismiss()
                     },

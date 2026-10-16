@@ -114,7 +114,6 @@ import com.metrolist.music.constants.AutoRadioQueueKey
 import com.metrolist.music.constants.GridItemSize
 import com.metrolist.music.constants.GridItemsSizeKey
 import com.metrolist.music.constants.GridThumbnailHeight
-import com.metrolist.music.constants.InnerTubeCookieKey
 import com.metrolist.music.constants.ListItemHeight
 import com.metrolist.music.constants.ListThumbnailSize
 import com.metrolist.music.constants.RandomizeHomeOrderKey
@@ -682,7 +681,6 @@ fun HomeScreen(
 
     val accountName by viewModel.accountName.collectAsStateWithLifecycle()
     val accountImageUrl by viewModel.accountImageUrl.collectAsStateWithLifecycle()
-    val innerTubeCookie by rememberPreference(InnerTubeCookieKey, "")
     val (randomizeHomeOrder) = rememberPreference(RandomizeHomeOrderKey, true)
     val autoRadioQueue by rememberPreference(AutoRadioQueueKey, defaultValue = true)
 
@@ -692,11 +690,7 @@ fun HomeScreen(
     val wrappedState by viewModel.wrappedManager.state.collectAsStateWithLifecycle()
     val isWrappedDataReady = wrappedState.isDataReady
 
-    val isLoggedIn =
-        remember(innerTubeCookie) {
-            "SAPISID" in parseCookieString(innerTubeCookie)
-        }
-    val url = if (isLoggedIn) accountImageUrl else null
+    val url = null
 
     // Extract unique podcasts from episodes for "Podcast Channels" row
     // Cache the podcasts to prevent them from disappearing during refresh

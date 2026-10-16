@@ -48,7 +48,6 @@ import com.metrolist.innertube.YouTube
 import com.metrolist.music.LocalDatabase
 import com.metrolist.music.LocalDownloadUtil
 import com.metrolist.music.LocalPlayerConnection
-import com.metrolist.music.LocalSyncUtils
 import com.metrolist.music.R
 import com.metrolist.music.db.entities.PlaylistSongMap
 import com.metrolist.music.db.entities.Song
@@ -82,7 +81,6 @@ fun SelectionSongMenu(
     val downloadUtil = LocalDownloadUtil.current
     val coroutineScope = rememberCoroutineScope()
     val playerConnection = LocalPlayerConnection.current ?: return
-    val syncUtils = LocalSyncUtils.current
     val deletedNSongsTemplate = stringResource(R.string.deleted_n_songs)
 
     val allInLibrary by remember {
@@ -589,7 +587,6 @@ fun SelectionSongMenu(
                                             if ((!allLiked && !song.song.liked) || allLiked) {
                                                 val s = song.song.toggleLike()
                                                 update(s)
-                                                syncUtils.likeSong(s)
                                             }
                                         }
                                     }

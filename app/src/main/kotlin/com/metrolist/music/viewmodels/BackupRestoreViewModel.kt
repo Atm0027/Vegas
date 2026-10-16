@@ -24,9 +24,6 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import com.metrolist.music.constants.DataSyncIdKey
-import com.metrolist.music.constants.InnerTubeAuthUserKey
-import com.metrolist.music.constants.InnerTubeCookieKey
 import com.metrolist.music.constants.VisitorDataKey
 import com.metrolist.music.db.InternalDatabase
 import com.metrolist.music.db.MusicDatabase
@@ -41,6 +38,7 @@ import com.metrolist.music.playback.MusicService
 import com.metrolist.music.playback.MusicService.Companion.PERSISTENT_AUTOMIX_FILE
 import com.metrolist.music.playback.MusicService.Companion.PERSISTENT_PLAYER_STATE_FILE
 import com.metrolist.music.playback.MusicService.Companion.PERSISTENT_QUEUE_FILE
+import com.metrolist.music.utils.LegacyAccountCleanup
 import com.metrolist.music.utils.reportException
 import com.metrolist.music.utils.ArtistNameAliases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -123,7 +121,7 @@ class BackupRestoreViewModel @Inject constructor(
         }
     }
 
-    fun restore(context: Context, uri: Uri, clearAuthData: Boolean = false) {
+    fun restore(context: Context, uri: Uri, clearAuthData: Boolean = true) {
         // Run in viewModelScope to allow suspending
         viewModelScope.launch(Dispatchers.IO) {
             val restoreDbName = "restored_${InternalDatabase.DB_NAME}"
@@ -287,10 +285,7 @@ class BackupRestoreViewModel @Inject constructor(
                                     }
                                 kotlinx.coroutines.runBlocking {
                                     stageDataStore.edit { prefs ->
-                                        prefs.remove(InnerTubeCookieKey)
-                                        prefs.remove(VisitorDataKey)
-                                        prefs.remove(DataSyncIdKey)
-                                        prefs.remove(InnerTubeAuthUserKey)
+                                        LegacyAccountCleanup.keysToRemove(prefs).forEach { prefs.remove(it) }
                                     }
                                 }
 

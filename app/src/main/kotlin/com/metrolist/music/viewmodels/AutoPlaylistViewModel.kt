@@ -18,7 +18,6 @@ import com.metrolist.music.db.MusicDatabase
 import com.metrolist.music.extensions.filterExplicit
 import com.metrolist.music.extensions.filterVideoSongs
 import com.metrolist.music.extensions.toEnum
-import com.metrolist.music.utils.SyncUtils
 import com.metrolist.music.utils.dataStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -41,7 +40,6 @@ constructor(
     @ApplicationContext context: Context,
     private val database: MusicDatabase,
     savedStateHandle: SavedStateHandle,
-    private val syncUtils: SyncUtils,
 ) : ViewModel() {
     val playlist = savedStateHandle.get<String>("playlist")!!
 
@@ -78,19 +76,17 @@ constructor(
             .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Lazily, emptyList())
 
     fun syncLikedSongs() {
-        viewModelScope.launch(Dispatchers.IO) { syncUtils.syncLikedSongs() }
     }
 
     fun syncUploadedSongs() {
-        viewModelScope.launch(Dispatchers.IO) { syncUtils.syncUploadedSongs() }
     }
 
     fun refresh() {
         viewModelScope.launch(Dispatchers.IO) {
             _isRefreshing.value = true
             when (playlist) {
-                "liked" -> syncUtils.syncLikedSongsSuspend()
-                "uploaded" -> syncUtils.syncUploadedSongsSuspend()
+                "liked" -> Unit
+                "uploaded" -> Unit
             }
             _isRefreshing.value = false
         }

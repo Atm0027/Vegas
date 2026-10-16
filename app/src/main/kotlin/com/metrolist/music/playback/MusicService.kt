@@ -190,7 +190,6 @@ import com.metrolist.music.constants.LoudnessLevelKey
 import com.metrolist.music.utils.CoilBitmapLoader
 import com.metrolist.music.utils.NetworkConnectivityObserver
 import com.metrolist.music.utils.ScrobbleManager
-import com.metrolist.music.utils.SyncUtils
 import com.metrolist.music.utils.getArtistSeparator
 import com.metrolist.music.utils.joinToArtistString
 import com.metrolist.music.utils.InnerTubeXPlayer
@@ -254,8 +253,6 @@ class MusicService :
     @Inject
     lateinit var lyricsHelper: LyricsHelper
 
-    @Inject
-    lateinit var syncUtils: SyncUtils
 
     @Inject
     lateinit var downloadUtil: DownloadUtil
@@ -2040,7 +2037,6 @@ class MusicService :
 
                 database.query {
                     update(song)
-                    syncUtils.likeSong(song)
 
                     if (dataStore.get(AutoDownloadOnLikeKey, false) && song.liked) {
                         downloadUtil.download(song.id)
@@ -2104,7 +2100,6 @@ class MusicService :
 
         // Sync with YouTube (handles login check internally)
         val setVideoId = if (isCurrentlySaved) database.getSetVideoId(songEntity.id)?.setVideoId else null
-        syncUtils.saveEpisode(songEntity.id, shouldBeSaved, setVideoId)
     }
 
     fun toggleStartRadio() {

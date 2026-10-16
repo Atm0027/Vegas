@@ -107,7 +107,6 @@ import com.metrolist.music.LocalDownloadUtil
 import com.metrolist.music.LocalNavController
 import com.metrolist.music.LocalPlayerAwareWindowInsets
 import com.metrolist.music.LocalPlayerConnection
-import com.metrolist.music.LocalSyncUtils
 import com.metrolist.music.R
 import com.metrolist.music.constants.DarkModeKey
 import com.metrolist.music.constants.PlaylistEditLockKey
@@ -190,7 +189,6 @@ fun LocalPlaylistScreen(
     var locked by rememberPreference(PlaylistEditLockKey, defaultValue = true)
 
     val coroutineScope = rememberCoroutineScope()
-    val syncUtils = LocalSyncUtils.current
     val snackbarHostState = remember { SnackbarHostState() }
 
     var isSearching by rememberSaveable { mutableStateOf(false) }
@@ -567,16 +565,6 @@ fun LocalPlaylistScreen(
                             move(playlistId, currentItem.map.position, Int.MAX_VALUE)
                             delete(currentItem.map.copy(position = Int.MAX_VALUE))
                         }
-
-                        if (browseId != null) {
-                            syncUtils.scheduleRemoveFromPlaylist(
-                                browseId,
-                                songId,
-                                playlistId
-                            ) {
-                                setVideoId
-                            }
-                        }
                     }
 
                     val swipeRemoveEnabled by rememberPreference(SwipeToRemoveSongKey, defaultValue = false)
@@ -873,7 +861,6 @@ fun LocalPlaylistHeader(
     val context = LocalContext.current
     val database = LocalDatabase.current
     val menuState = LocalMenuState.current
-    val syncUtils = LocalSyncUtils.current
     val scope = rememberCoroutineScope()
     val editPlaylistCoverStr = stringResource(R.string.edit_playlist_cover)
     val playlistSyncedStr = stringResource(R.string.playlist_synced)
@@ -1383,17 +1370,7 @@ fun LocalPlaylistHeader(
                             context = context,
                             downloadState = downloadState,
                             onEdit = onShowEditDialog,
-                            onSync = {
-                                scope.launch(Dispatchers.IO) {
-                                    syncUtils.syncPlaylistSuspend(
-                                        playlist.playlist.browseId!!,
-                                        playlist.id,
-                                    )
-                                    withContext(Dispatchers.Main) {
-                                        snackbarHostState.showSnackbar(playlistSyncedStr)
-                                    }
-                                }
-                            },
+                            onSync = {},
                             onDelete = onshowDeletePlaylistDialog,
                             onDownload = {
                                 when (downloadState) {

@@ -24,11 +24,9 @@ import com.metrolist.innertube.models.filterYoutubeShorts
 import com.metrolist.innertube.pages.ExplorePage
 import com.metrolist.innertube.pages.HomePage
 import com.metrolist.innertube.utils.completed
-import com.metrolist.music.constants.AccountNameKey
 import com.metrolist.music.constants.HideExplicitKey
 import com.metrolist.music.constants.HideVideoSongsKey
 import com.metrolist.music.constants.HideYoutubeShortsKey
-import com.metrolist.music.constants.InnerTubeCookieKey
 import com.metrolist.music.constants.QuickPicks
 import com.metrolist.music.constants.QuickPicksKey
 import com.metrolist.music.constants.ShowWrappedCardKey
@@ -44,7 +42,6 @@ import com.metrolist.music.models.SimilarRecommendation
 import com.metrolist.music.ui.screens.wrapped.WrappedAudioService
 import com.metrolist.music.ui.screens.wrapped.WrappedManager
 import com.metrolist.music.utils.NetworkConnectivityObserver
-import com.metrolist.music.utils.SyncUtils
 import com.metrolist.music.utils.dataStore
 import com.metrolist.music.utils.safeDataStoreEdit
 import com.metrolist.music.utils.get
@@ -92,7 +89,6 @@ internal fun buildSpeedDialItems(
 class HomeViewModel @Inject constructor(
     @ApplicationContext val context: Context,
     val database: MusicDatabase,
-    val syncUtils: SyncUtils,
     val wrappedManager: WrappedManager,
     private val wrappedAudioService: WrappedAudioService,
     private val networkConnectivity: NetworkConnectivityObserver,
@@ -708,7 +704,6 @@ class HomeViewModel @Inject constructor(
         }
         // Run sync when user manually refreshes
         viewModelScope.launch(Dispatchers.IO) {
-            syncUtils.tryAutoSync()
         }
     }
 
@@ -720,7 +715,6 @@ class HomeViewModel @Inject constructor(
     init {
         // Run sync in separate coroutine with cooldown to avoid blocking UI
         viewModelScope.launch(Dispatchers.IO) {
-            syncUtils.tryAutoSync()
         }
 
         var wasOffline = !networkConnectivity.networkStatus.value
@@ -754,24 +748,6 @@ class HomeViewModel @Inject constructor(
             }
         }
 
-        // Listen for cookie changes and reload account data
-        viewModelScope.launch(Dispatchers.IO) {
-            context.dataStore.data
-                .map { it[InnerTubeCookieKey] to it[AccountNameKey] }
-                .distinctUntilChanged()
-                .collect { (cookie, savedAccountName) ->
-                    if (!cookie.isNullOrEmpty()) {
-                        YouTube.cookie = cookie
-                        accountName.value = savedAccountName.orEmpty().ifBlank { "Guest" }
-                        loadAccountInfo()
-                    } else {
-                        accountName.value = "Guest"
-                        accountImageUrl.value = null
-                        accountPlaylists.value = null
-                    }
-                }
-        }
-
         // Listen for HideYoutubeShorts preference changes and reload account playlists instantly
         viewModelScope.launch(Dispatchers.IO) {
             context.dataStore.data
@@ -791,15 +767,6 @@ class HomeViewModel @Inject constructor(
         if (isHomeDataLoaded) return
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val cookie = context.dataStore.data
-                    .map { it[InnerTubeCookieKey] }
-                    .distinctUntilChanged()
-                    .first()
-
-                if (!cookie.isNullOrEmpty()) {
-                    YouTube.cookie = cookie
-                }
-
                 isHomeDataLoaded = true
                 load()
             } catch (e: Exception) {

@@ -234,7 +234,6 @@ fun BackupAndRestore(
 
     AddToPlaylistDialogOnline(
         isVisible = showChoosePlaylistDialogOnline,
-        allowSyncing = false,
         initialTextFieldValue = importedTitle,
         songs = importedSongs,
         onDismiss = { showChoosePlaylistDialogOnline = false },
@@ -332,7 +331,7 @@ fun BackupAndRestore(
                     onClick = {
                         showRestoreConfirmDialog = false
                         pendingRestoreUri?.let { uri ->
-                            viewModel.restore(context, uri, clearAuthData = false)
+                            viewModel.restore(context, uri)
                         }
                         pendingRestoreUri = null
                         backupPreviewInfo = null

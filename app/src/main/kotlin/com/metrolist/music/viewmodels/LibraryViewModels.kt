@@ -49,7 +49,6 @@ import com.metrolist.music.extensions.normalizeForSearch
 import com.metrolist.music.extensions.toEnum
 import com.metrolist.music.playback.DownloadUtil
 import com.metrolist.music.utils.PodcastRefreshTrigger
-import com.metrolist.music.utils.SyncUtils
 import com.metrolist.music.utils.dataStore
 import com.metrolist.music.utils.reportException
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -78,7 +77,6 @@ constructor(
     @ApplicationContext context: Context,
     database: MusicDatabase,
     downloadUtil: DownloadUtil,
-    private val syncUtils: SyncUtils,
 ) : ViewModel() {
     private val _searchQuery = MutableStateFlow("")
     val searchQuery = _searchQuery.asStateFlow()
@@ -114,15 +112,12 @@ constructor(
             }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     fun syncLikedSongs() {
-        viewModelScope.launch(Dispatchers.IO) { syncUtils.syncLikedSongs() }
     }
 
     fun syncLibrarySongs() {
-        viewModelScope.launch(Dispatchers.IO) { syncUtils.syncLibrarySongs() }
     }
 
     fun syncUploadedSongs() {
-        viewModelScope.launch(Dispatchers.IO) { syncUtils.syncUploadedSongs() }
     }
 }
 
@@ -132,7 +127,6 @@ class LibraryArtistsViewModel
 constructor(
     @ApplicationContext context: Context,
     database: MusicDatabase,
-    private val syncUtils: SyncUtils,
 ) : ViewModel() {
     private val _searchQuery = MutableStateFlow("")
     val searchQuery = _searchQuery.asStateFlow()
@@ -171,7 +165,6 @@ constructor(
         }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     fun sync() {
-        viewModelScope.launch(Dispatchers.IO) { syncUtils.syncArtistsSubscriptions() }
     }
 
     init {
@@ -203,7 +196,6 @@ class LibraryAlbumsViewModel
 constructor(
     @ApplicationContext context: Context,
     database: MusicDatabase,
-    private val syncUtils: SyncUtils,
 ) : ViewModel() {
     private val _searchQuery = MutableStateFlow("")
     val searchQuery = _searchQuery.asStateFlow()
@@ -237,7 +229,6 @@ constructor(
             }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     fun sync() {
-        viewModelScope.launch(Dispatchers.IO) { syncUtils.syncLikedAlbums() }
     }
 
     init {
@@ -269,7 +260,6 @@ class LibraryPlaylistsViewModel
 constructor(
     @ApplicationContext context: Context,
     database: MusicDatabase,
-    private val syncUtils: SyncUtils,
 ) : ViewModel() {
     private val _searchQuery = MutableStateFlow("")
     val searchQuery = _searchQuery.asStateFlow()
@@ -295,7 +285,6 @@ constructor(
             }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     fun sync() {
-        viewModelScope.launch(Dispatchers.IO) { syncUtils.syncSavedPlaylists() }
     }
 
     val topValue =
@@ -340,7 +329,6 @@ class LibraryMixViewModel
 constructor(
     @ApplicationContext context: Context,
     database: MusicDatabase,
-    private val syncUtils: SyncUtils,
 ) : ViewModel() {
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
@@ -357,14 +345,12 @@ constructor(
 
     val syncAllLibrary = {
          viewModelScope.launch(Dispatchers.IO) {
-             syncUtils.tryAutoSync()
          }
     }
 
     fun refresh() {
         viewModelScope.launch(Dispatchers.IO) {
             _isRefreshing.value = true
-            syncUtils.performFullSyncSuspend()
             _isRefreshing.value = false
         }
     }
@@ -455,7 +441,6 @@ class LibraryPodcastsViewModel
 constructor(
     @ApplicationContext context: Context,
     private val database: MusicDatabase,
-    private val syncUtils: SyncUtils,
 ) : ViewModel() {
     // Subscribed podcast channels synced from YT Music
     val subscribedChannels = database.subscribedPodcasts()
@@ -563,7 +548,6 @@ constructor(
             fetchRdpnPlaylist()
         }
         viewModelScope.launch(Dispatchers.IO) {
-            syncUtils.syncPodcastSubscriptionsSuspend()
         }
         // Observe refresh trigger for auto-refresh after subscribe/unsubscribe
         viewModelScope.launch(Dispatchers.IO) {
@@ -577,7 +561,6 @@ constructor(
 
     fun clearPodcastData() {
         viewModelScope.launch(Dispatchers.IO) {
-            syncUtils.clearPodcastData()
         }
     }
 
@@ -585,8 +568,6 @@ constructor(
         fetchSePlaylist()
         fetchPodcastChannels()
         fetchRdpnPlaylist()
-        syncUtils.syncPodcastSubscriptionsSuspend()
-        syncUtils.syncEpisodesForLaterSuspend()
     }
 
     /**

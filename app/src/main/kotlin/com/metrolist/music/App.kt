@@ -5,6 +5,7 @@
 
 package com.metrolist.music
 
+import android.webkit.CookieManager
 import android.app.ActivityManager
 import android.app.Application
 import android.app.NotificationChannel
@@ -35,6 +36,7 @@ import com.metrolist.music.extensions.toInetSocketAddress
 import com.metrolist.music.utils.CrashHandler
 import com.metrolist.music.utils.ArtistNameAliases
 import com.metrolist.music.utils.InnerTubeXPlayer
+import com.metrolist.music.utils.LegacyAccountCleanup
 import com.metrolist.music.utils.dataStore
 import com.metrolist.music.utils.safeDataStoreEdit
 import com.metrolist.music.utils.reportException
@@ -179,7 +181,7 @@ class App :
             }
         }
 
-        YouTube.useLoginForBrowse = settings[UseLoginForBrowse] ?: true
+        YouTube.useLoginForBrowse = false
 
         val channel =
             NotificationChannel(
@@ -213,41 +215,13 @@ class App :
                 }
         }
 
+        // Vega has no YouTube account: drop any account data left by older installs or restored backups.
         applicationScope.launch(Dispatchers.IO) {
-            dataStore.data
-                .map { it[DataSyncIdKey] }
-                .distinctUntilChanged()
-                .collect { dataSyncId ->
-                    YouTube.dataSyncId =
-                        dataSyncId?.let {
-                            it.takeIf { !it.contains("||") }
-                                ?: it.takeIf { it.endsWith("||") }?.substringBefore("||")
-                                ?: it.substringAfter("||")
-                        }
-                }
-        }
-
-        applicationScope.launch(Dispatchers.IO) {
-            dataStore.data
-                .map { it[InnerTubeAuthUserKey] ?: "0" }
-                .distinctUntilChanged()
-                .collect { authUser ->
-                    YouTube.authUser = authUser
-                }
-        }
-
-        applicationScope.launch(Dispatchers.IO) {
-            dataStore.data
-                .map { it[InnerTubeCookieKey] }
-                .distinctUntilChanged()
-                .collect { cookie ->
-                    try {
-                        YouTube.cookie = cookie
-                    } catch (e: Exception) {
-                        Timber.e(e, "Could not parse cookie. Clearing existing cookie.")
-                        forgetAccount(this@App)
-                    }
-                }
+            val stale = LegacyAccountCleanup.keysToRemove(dataStore.data.first())
+            if (stale.isNotEmpty()) {
+                safeDataStoreEdit { prefs -> stale.forEach { prefs.remove(it) } }
+                withContext(Dispatchers.Main) { CookieManager.getInstance().removeAllCookies(null) }
+            }
         }
 
         applicationScope.launch(Dispatchers.IO) {
@@ -325,49 +299,6 @@ class App :
                     networkCachePolicy(CachePolicy.ENABLED)
                 }
             }.build()
-    }
-
-    companion object {
-        suspend fun forgetAccount(context: Context) {
-            Timber.d("forgetAccount: Starting logout process")
-
-            // Clear DataStore preferences
-            Timber.d("forgetAccount: Clearing DataStore preferences")
-            val cleared = context.safeDataStoreEdit { settings ->
-                settings.remove(InnerTubeCookieKey)
-                settings.remove(VisitorDataKey)
-                settings.remove(DataSyncIdKey)
-                settings.remove(InnerTubeAuthUserKey)
-                settings.remove(AccountNameKey)
-                settings.remove(AccountEmailKey)
-                settings.remove(AccountChannelHandleKey)
-            }
-            if (!cleared) {
-                Timber.e("forgetAccount: Failed to clear DataStore preferences — proceeding with in-memory cleanup only")
-            } else {
-                Timber.d("forgetAccount: DataStore preferences cleared")
-            }
-
-            // Immediately clear YouTube object's auth state
-            Timber.d("forgetAccount: Clearing YouTube object auth state")
-            YouTube.cookie = null
-            YouTube.visitorData = null
-            YouTube.dataSyncId = null
-            YouTube.authUser = "0"
-            Timber.d("forgetAccount: YouTube object auth state cleared")
-
-            // Clear WebView cookies to prevent auto-relogin
-            Timber.d("forgetAccount: Clearing WebView CookieManager")
-            withContext(Dispatchers.Main) {
-                android.webkit.CookieManager.getInstance().apply {
-                    removeAllCookies { removed ->
-                        Timber.d("forgetAccount: CookieManager.removeAllCookies callback: removed=$removed")
-                    }
-                    flush()
-                }
-            }
-            Timber.d("forgetAccount: Logout process complete")
-        }
     }
 
     private fun isMainProcess(): Boolean {

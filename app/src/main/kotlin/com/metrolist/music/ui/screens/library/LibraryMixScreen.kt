@@ -74,7 +74,6 @@ import com.metrolist.music.constants.ShowDownloadedPlaylistKey
 import com.metrolist.music.constants.ShowLikedPlaylistKey
 import com.metrolist.music.constants.ShowTopPlaylistKey
 import com.metrolist.music.constants.ShowUploadedPlaylistKey
-import com.metrolist.music.constants.YtmSyncKey
 import com.metrolist.music.db.entities.Album
 import com.metrolist.music.db.entities.Artist
 import com.metrolist.music.db.entities.Playlist
@@ -136,7 +135,6 @@ fun LibraryMixScreen(
     val (sortDescending, onSortDescendingChange) = rememberPreference(MixSortDescendingKey, true)
     val gridItemSize by rememberEnumPreference(GridItemsSizeKey, GridItemSize.BIG)
 
-    val (ytmSync) = rememberPreference(YtmSyncKey, true)
 
     var isSearchActive by rememberSaveable { mutableStateOf(false) }
     val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
@@ -366,11 +364,6 @@ fun LibraryMixScreen(
     }
 
     LaunchedEffect(Unit) {
-        if (ytmSync) {
-            withContext(Dispatchers.IO) {
-                viewModel.syncAllLibrary()
-            }
-        }
     }
 
     val headerContent = @Composable {
