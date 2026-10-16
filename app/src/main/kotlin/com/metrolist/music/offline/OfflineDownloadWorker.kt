@@ -40,16 +40,18 @@ class OfflineDownloadWorker(
         val songId = inputData.getString(KEY_SONG_ID) ?: return Result.failure()
         val entry = EntryPointAccessors.fromApplication(applicationContext, OfflineWorkerEntryPoint::class.java)
         val title = entry.database().getSongById(songId)?.song?.title
-        runCatching { setForeground(foregroundInfo(title, 0f)) }
-            .onFailure { Timber.tag(TAG).w(it, "Download of $songId runs without a foreground notification") }
+        val outcome = DownloadSlots.shared.withSlot {
+            runCatching { setForeground(foregroundInfo(title, 0f)) }
+                .onFailure { Timber.tag(TAG).w(it, "Download of $songId runs without a foreground notification") }
 
-        var lastPercent = -1
-        val outcome = entry.songDownloader().download(songId) { progress ->
-            setProgressAsync(workDataOf(KEY_PROGRESS to progress))
-            val percent = (progress * 100).toInt()
-            if (percent / 5 != lastPercent / 5) {
-                lastPercent = percent
-                runCatching { setForegroundAsync(foregroundInfo(title, progress)) }
+            var lastPercent = -1
+            entry.songDownloader().download(songId) { progress ->
+                val percent = (progress * 100).toInt()
+                if (percent / 5 != lastPercent / 5) {
+                    lastPercent = percent
+                    setProgressAsync(workDataOf(KEY_PROGRESS to progress))
+                    runCatching { setForegroundAsync(foregroundInfo(title, progress)) }
+                }
             }
         }
         return when (outcome) {
