@@ -35,6 +35,7 @@ En la duda, quedarse con lo de Vega y anotar el commit como "pendiente de decisi
 | Canciones atascadas | Recuperación a los 6–8 s, también a mitad de canción, sin actuar sin red | `StallRecovery.kt`, `updateInitialBufferRecovery` | `StallRecoveryTest` |
 | Resolución del stream | Tiempo máximo de 20 s | `StreamResolveTimeout.kt` | `StreamResolveTimeoutTest` |
 | URLs caducadas | 403/410 no se reintentan contra la misma URL | `FastFailLoadErrorPolicy.kt` | `FastFailLoadErrorPolicyTest` |
+| Cortes cada ~9 s | La reproducción pide el rango hasta el final del archivo; googlevideo limita las peticiones abiertas a velocidad de reproducción (Metrolist solo lo arregló en descargas, #4369) | `withResolvedStream(..., contentLength)` en `StreamUrlCache.kt` | `ResolvedStreamRangeTest` |
 | Menús | Acción "Reproducir" visible en menús de álbum/playlist | `ui/menu/*Menu.kt` | — |
 | Versionado | Estilo JARVIS, independiente de Metrolist | `buildSrc/` | `VersionSemanticaTest` |
 

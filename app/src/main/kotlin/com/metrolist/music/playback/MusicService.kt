@@ -3836,7 +3836,7 @@ class MusicService :
                 songUrlCache[mediaId]?.let { cachedStream ->
                     recoverSongDeduped(mediaId)
                     currentStreamClient.value = cachedStream.clientName
-                    return@Factory dataSpec.withResolvedStream(cachedStream)
+                    return@Factory dataSpec.withResolvedStream(cachedStream, contentLength)
                 }
             } else {
                 Timber.tag(TAG).i("BYPASSING CACHE for $mediaId due to quality change")
@@ -3970,6 +3970,7 @@ class MusicService :
                         rangeChunkSizeBytes = nonNullPlayback.rangeChunkSizeBytes,
                         useRangeChunks = nonNullPlayback.useRangeChunks,
                     ),
+                    nonNullPlayback.format.contentLength,
                 )
             }
         }

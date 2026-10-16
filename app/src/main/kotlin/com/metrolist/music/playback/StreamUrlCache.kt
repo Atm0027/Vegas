@@ -18,12 +18,20 @@ internal data class CachedStreamUrl(
     val useRangeChunks: Boolean = false,
 )
 
-internal fun DataSpec.withResolvedStream(stream: CachedStreamUrl): DataSpec {
+/**
+ * [contentLength]: total size of the stream, when known. googlevideo throttles open-ended requests
+ * to roughly playback speed, so an open-ended read is bounded to the end of the file (Vega).
+ */
+internal fun DataSpec.withResolvedStream(
+    stream: CachedStreamUrl,
+    contentLength: Long? = null,
+): DataSpec {
     val resolved =
         withUri(stream.url.toUri())
             .withRequestHeaders(httpRequestHeaders + stream.requestHeaders)
     if ((!stream.requireBoundedRange && !stream.useRangeChunks) || stream.rangeChunkSizeBytes <= 0L) {
-        return resolved
+        val remaining = contentLength?.minus(position) ?: 0L
+        return if (length == C.LENGTH_UNSET.toLong() && remaining > 0L) resolved.subrange(0, remaining) else resolved
     }
     val boundedLength =
         if (length == C.LENGTH_UNSET.toLong()) {
