@@ -154,7 +154,7 @@
     <string name="scrobble_delay_minutes">Retraso del scrobble (minutos)</string>
     <string name="swipe_song_to_remove">Deslizar la canción para quitarla de la lista de reproducción</string>
     <string name="last_fm_send_likes">Sincronizar «Me gusta» y «No me gusta»</string>
-    <string name="last_fm_send_likes_description">Marcar canciones como «Me gusta» o «No me gusta» en Last.fm cuando las marques así en Metrolist</string>
+    <string name="last_fm_send_likes_description">Marcar canciones como «Me gusta» o «No me gusta» en Last.fm cuando las marques así en Vega</string>
     <string name="primary_color_style">Color primario</string>
     <string name="tertiary_color_style">Color terciario</string>
     <string name="auto_scroll">Re-sincronizar</string>
@@ -236,8 +236,8 @@
     <string name="failed_to_parse_proxy">Error al analizar la URL del proxy</string>
     <string name="lyrics_glow_effect">Habilitar efecto de brillo de la letra</string>
     <string name="lyrics_glow_effect_desc">Añadir animación de brillo y efecto de rebote a la letra activa</string>
-    <string name="wrapped_intro_title">METROLIST</string>
-    <string name="wrapped_logo_content_description">Logo de Metrolist</string>
+    <string name="wrapped_intro_title">VEGA</string>
+    <string name="wrapped_logo_content_description">Logo de Vega</string>
     <string name="wrapped_year">2025</string>
     <string name="show_artist_description">Mostrar descripción del artista</string>
     <string name="show_artist_subscriber_count">Ver número de suscriptores</string>
@@ -266,7 +266,7 @@
     <string name="import_error_title">Error de importación</string>
     <string name="album_art">Portada del álbum</string>
     <string name="no_song_playing">Ninguna canción reproduciéndose</string>
-    <string name="tap_to_open">Toca para abrir Metrolist</string>
+    <string name="tap_to_open">Toca para abrir Vega</string>
     <string name="previous">Anterior</string>
     <string name="play_pause">Reproducir/Pausar</string>
     <string name="next">Siguiente</string>
@@ -294,7 +294,7 @@
     <string name="crash_description">Ocurrió un error inesperado. Por favor comparte el informe de fallos para ayudarnos a solucionar el problema</string>
     <string name="crash_share_logs">Compartir registros</string>
     <string name="crash_share_title">Compartir informe de fallos</string>
-    <string name="crash_report_subject">Informe de fallos de Metrolist</string>
+    <string name="crash_report_subject">Informe de fallos de Vega</string>
     <string name="crash_close">Cerrar</string>
     <string name="crash_no_log">No hay registro de fallos disponible</string>
     <string name="palette_dynamic">Dinámico</string>
@@ -324,7 +324,7 @@
     <string name="cd_system_mode">Modo del sistema</string>
     <string name="cd_palette_item">Paleta %1$s</string>
     <string name="not_playing">No hay canción en reproducción</string>
-    <string name="tap_to_play">Toca para abrir Metrolist</string>
+    <string name="tap_to_play">Toca para abrir Vega</string>
     <string name="widget_music_player">Reproductor de música</string>
     <string name="widget_turntable">Tocadiscos</string>
     <string name="ai_lyrics_translation">Traducción de letras con IA</string>
@@ -368,7 +368,7 @@
     <string name="song_title_column">Columna de título de la canción</string>
     <string name="recently_converted">Convertidos recientemente</string>
     <string name="importing_csv">Importando CSV…</string>
-    <string name="play_on_app">Reproducir en Metrolist</string>
+    <string name="play_on_app">Reproducir en Vega</string>
     <string name="listening">Escuchando…</string>
     <string name="continue_action">Continuar</string>
     <string name="enable">Habilitar</string>
@@ -426,9 +426,6 @@
     <string name="lyrics_provider_priority_desc">Arrastra para reordenar los proveedores por preferencia. Una posición más alta indica una mayor prioridad</string>
     <string name="changelog">Registro de cambios</string>
     <string name="changelog_empty">No hay registros de cambios disponibles</string>
-    <string name="github_releases_url">https://github.com/MetrolistGroup/Metrolist/releases</string>
-    <string name="list_bullet">•</string>
-    <string name="view_on_github">Ver en GitHub</string>
     <string name="current_version">Versión actual</string>
     <string name="version_format">Versión: %s</string>
     <string name="update_settings">Ajustes de actualización</string>
@@ -446,19 +443,8 @@
     <string name="error_podcast_subscribe">Error al suscribirse al pódcast</string>
     <string name="error_podcast_unsubscribe">Error al cancelar la suscripción al pódcast</string>
     <string name="importing_playlist">Importando lista de reproducción…</string>
-    <string name="credits_lead_developer">Desarrollador principal</string>
-    <string name="credits_collaborator">Colaborador</string>
-    <string name="credits_collaborators_section">Colaboradores</string>
     <string name="credits_license_name">GNU General Licencia pública v3.0</string>
     <string name="credits_license_desc">Software libre y de código abierto. Puedes usarlo, estudiarlo, compartirlo y mejorarlo</string>
-    <string name="credits_telegram">Canal de Telegram</string>
-    <string name="credits_view_repo">Ver repositorio</string>
-    <string name="buy_mo_a_coffee">¡Invítame un café!</string>
-    <string name="community_and_info">Comunidad e información</string>
-    <string name="metrolist">METROLIST</string>
-    <string name="wanna_play_favorite_song">¿Quieres reproducir su canción favorita?</string>
-    <string name="yeah">¡Sí!</string>
-    <string name="stands_with_palestine">Este proyecto apoya a Palestina 🇵🇸</string>
     <string name="filter_podcasts">Podcasts</string>
     <string name="view_podcast">Ver podcast</string>
     <string name="podcast_channels">Canales de podcast</string>
@@ -649,7 +635,7 @@
     <string name="recognition_notification_processing">Identificando…</string>
     <string name="recognition_notification_no_match">Sin coincidencias</string>
     <string name="recognition_notification_failed">Reconocimiento fallido</string>
-    <string name="listen_on_metrolist">Escuchar en Metrolist</string>
+    <string name="listen_on_metrolist">Escuchar en Vega</string>
     <string name="android_auto">Android Auto</string>
     <string name="android_auto_visible_sections">Secciones visibles</string>
     <string name="android_auto_reorder_hint">Toca una sección para habilitarla o deshabilitarla\nMantén presionado el control de arrastre para reordenar. La primera sección se mostrará por defecto</string>
@@ -709,8 +695,8 @@
     <string name="enable_landscape_scaling_desc">Escala la interfaz en modo horizontal para pantallas grandes</string>
     <string name="enable_dynamic_icon">Colores dinámicos del icono</string>
     <string name="enable_dynamic_icon_desc">Usa los colores dinámicos del tema para el icono de la app. Cuando está desactivado, el icono utiliza colores sólidos.</string>
-    <string name="kmp_upgrade_title">Metrolist KMP %s está disponible</string>
-    <string name="kmp_upgrade_warning">Metrolist KMP aún está en desarrollo. Es posible que encuentres fallos o funciones incompletas.</string>
+    <string name="kmp_upgrade_title">Vega KMP %s está disponible</string>
+    <string name="kmp_upgrade_warning">Vega KMP aún está en desarrollo. Es posible que encuentres fallos o funciones incompletas.</string>
     <string name="kmp_upgrade_action">Prueba KMP</string>
     <string name="android_auto_search_options">Opciones de búsqueda</string>
     <string name="android_auto_search_local_songs_limit">Límite de búsqueda de canciones</string>
@@ -728,7 +714,7 @@
     <string name="enable_zemer">Activar Zemer</string>
     <string name="enable_zemer_desc">Letras para música judía</string>
     <string name="ai_provider_inception_help">Visit https://platform.inceptionlabs.ai para claves API</string>
-    <string name="update_available_message">Metrolist %s está listo para descargar.</string>
+    <string name="update_available_message">Vega %s está listo para descargar.</string>
     <string name="update_action">Actualizar</string>
     <string name="playlist_edit_done">Hecho</string>
     <string name="playlist_updated">Lista actualizada</string>
@@ -745,4 +731,8 @@
     <string name="pin_playlist_to_top">Fijar arriba</string>
     <string name="unpin_playlist">Desfijar</string>
     <string name="reorder_playlists">Ordenar listas</string>
+    <string name="about_vega_description">Reproductor de música personal, solo audio. Sin cuenta y sin rastreo.</string>
+    <string name="about_based_on">Vega es una versión modificada de Metrolist, de Mo Agamy y colaboradores, distribuida bajo la licencia GPL-3.0.</string>
+    <string name="about_source_code">Código fuente de Vega</string>
+    <string name="about_original_project">Proyecto original: Metrolist</string>
 </resources>

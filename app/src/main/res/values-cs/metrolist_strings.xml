@@ -156,7 +156,7 @@
     <string name="scrobble_delay_minutes">Zpoždění scrobblování (minuty)</string>
     <string name="swipe_song_to_remove">Posuňte pro odstranění skladby z playlistu</string>
     <string name="last_fm_send_likes">Synchronizovat oblíbené</string>
-    <string name="last_fm_send_likes_description">Přidat/odebrat srdíčko u skladby v Last.fm, když ji přidáte/odeberete z oblíbených v Metrolistu</string>
+    <string name="last_fm_send_likes_description">Přidat/odebrat srdíčko u skladby v Last.fm, když ji přidáte/odeberete z oblíbených v Vegau</string>
     <string name="google_cast">Google Cast</string>
     <string name="google_cast_description">Streamovat zvuk do Chromecastu a dalších zařízení kompatibilních s protokolem Cast</string>
     <string name="hide_video_songs">Skrýt videoklipy</string>
@@ -220,10 +220,10 @@
     <string name="wrapped_total_artists_subtitle">různých umělců!</string>
     <string name="wrapped_total_songs_title">Poslouchali jste</string>
     <string name="wrapped_total_songs_subtitle">různých skladeb!</string>
-    <string name="wrapped_intro_title">METROLIST</string>
+    <string name="wrapped_intro_title">VEGA</string>
     <string name="wrapped_intro_subtitle">je čas podívat se, co jsi tento rok poslouchal/a…</string>
     <string name="wrapped_intro_button">jdeme na to!</string>
-    <string name="wrapped_logo_content_description">Logo Metrolist</string>
+    <string name="wrapped_logo_content_description">Logo Vega</string>
     <string name="wrapped_year">2025</string>
     <string name="wrapped_ready_title">TVŮJ WRAPPED JE READY!</string>
     <string name="wrapped_ready_subtitle">Je čas podívat se, co se ti tento rok líbilo…</string>
@@ -261,7 +261,7 @@
     <string name="system_equalizer">Systémový ekvalizér</string>
     <string name="album_art">Obal alba</string>
     <string name="no_song_playing">Nehraje žádná skladba</string>
-    <string name="tap_to_open">Klepnutím otevřete Metrolist</string>
+    <string name="tap_to_open">Klepnutím otevřete Vega</string>
     <string name="previous">Předchozí</string>
     <string name="play_pause">Přehrát/pozastavit</string>
     <string name="next">Další</string>
@@ -297,7 +297,7 @@
     <string name="crash_description">Došlo k neočekávané chybě. Pošlete nám hlášení o chybě, abyste nám pomohli problém opravit</string>
     <string name="crash_share_logs">Sdílet protokoly</string>
     <string name="crash_share_title">Sdílet hlášení o chybě</string>
-    <string name="crash_report_subject">Hlášení o chybě Metrolist</string>
+    <string name="crash_report_subject">Hlášení o chybě Vega</string>
     <string name="crash_close">Zavřít</string>
     <string name="crash_no_log">Není k dispozici žádný záznam o chybě</string>
     <string name="palette_dynamic">Dynamická</string>
@@ -327,7 +327,7 @@
     <string name="cd_system_mode">Systémový režim</string>
     <string name="cd_palette_item">%1$s paleta</string>
     <string name="not_playing">Nehraje žádná skladba</string>
-    <string name="tap_to_play">Klepněte pro otevření Metrolistu</string>
+    <string name="tap_to_play">Klepněte pro otevření Vegau</string>
     <string name="widget_music_player">Hudební přehrávač</string>
     <string name="widget_turntable">Gramofon</string>
     <string name="recognize_music">Rozpoznat hudbu</string>
@@ -368,7 +368,7 @@
     <string name="song_title_column">Sloupec názvu skladby</string>
     <string name="recently_converted">Nedávno převedeno</string>
     <string name="importing_csv">Importuji CSV…</string>
-    <string name="play_on_app">Přehrát v Metrolistu</string>
+    <string name="play_on_app">Přehrát v Vegau</string>
     <string name="listening">Poslouchám…</string>
     <string name="ai_api_key_required">Vyžadován klíč API</string>
     <string name="continue_action">Pokračovat</string>
@@ -422,9 +422,6 @@
     <string name="enable_kugou_desc">Získává texty z KuGou, populární čínské hudební platformy</string>
     <string name="changelog">Seznam změn</string>
     <string name="changelog_empty">Seznam změn není k dispozici</string>
-    <string name="github_releases_url">https://github.com/MetrolistGroup/Metrolist/releases</string>
-    <string name="list_bullet">•</string>
-    <string name="view_on_github">Zobrazit na GitHubu</string>
     <string name="current_version">Aktuální verze</string>
     <string name="version_format">Verze: %s</string>
     <string name="update_settings">Nastavení aktualizací</string>
@@ -437,19 +434,8 @@
     <string name="failed_to_check_updates">Nepodařilo se zkontrolovat aktualizace: %s</string>
     <string name="set_as_default">Nastavit jako výchozí</string>
     <string name="sleep_timer_default_set">Výchozí časovač spánku nastaven na %d minut</string>
-    <string name="credits_lead_developer">Hlavní vývojář</string>
-    <string name="credits_collaborator">Přispěvatel</string>
-    <string name="credits_collaborators_section">Přispěvatelé</string>
     <string name="credits_license_name">GNU General Public License verze 3.0</string>
     <string name="credits_license_desc">Volně dostupný open-source software. Můžete jej používat, studovat, sdílet a vylepšovat</string>
-    <string name="credits_telegram">Kanál na Telegramu</string>
-    <string name="credits_view_repo">Zobrazit repozitář</string>
-    <string name="buy_mo_a_coffee">Kupte mi kávu!</string>
-    <string name="community_and_info">Komunita a informace</string>
-    <string name="metrolist">METROLIST</string>
-    <string name="wanna_play_favorite_song">Chcete přehrát autorovu oblíbenou skladbu?</string>
-    <string name="yeah">Jasně!</string>
-    <string name="stands_with_palestine">Tento projekt podporuje Palestinu 🇵🇸</string>
     <string name="filter_podcasts">Podcasty</string>
     <string name="view_podcast">Zobrazit podcast</string>
     <string name="podcast_channels">Podcastové kanály</string>
@@ -617,7 +603,7 @@
     <string name="recognition_notification_processing">Identifikuji…</string>
     <string name="recognition_notification_no_match">Nenalezena žádná shoda</string>
     <string name="recognition_notification_failed">Rozpoznávání selhalo</string>
-    <string name="listen_on_metrolist">Přehrát v Metrolistu</string>
+    <string name="listen_on_metrolist">Přehrát v Vegau</string>
     <string name="android_auto">Android Auto</string>
     <string name="android_auto_visible_sections">Viditelné sekce</string>
     <string name="android_auto_reorder_hint">Klepněte na sekci pro její povolení nebo zakázání.\nPodržte posuvník pro změnu pořadí. První sekce bude ve výchozím nastavení zobrazena</string>
@@ -715,8 +701,8 @@
     <string name="enable_landscape_scaling_desc">Nastavit rozhraní do režimu na šířku pro větší obrazovky</string>
     <string name="enable_dynamic_icon">Dynamické barvy ikon</string>
     <string name="enable_dynamic_icon_desc">Použít barvy dynamického motivu pro ikonu aplikace. Pokud je vypnuto, budou použity jednobarevné odstíny.</string>
-    <string name="kmp_upgrade_title">Je dostupný Metrolist KMP %s</string>
-    <string name="kmp_upgrade_warning">Metrolist KMP je stále ve vývoji. Můžete narazit na chyby nebo nedokončené funkce.</string>
+    <string name="kmp_upgrade_title">Je dostupný Vega KMP %s</string>
+    <string name="kmp_upgrade_warning">Vega KMP je stále ve vývoji. Můžete narazit na chyby nebo nedokončené funkce.</string>
     <string name="kmp_upgrade_action">Vyzkoušet KMP</string>
     <string name="kmp_upgrade_later">Nezobrazovat</string>
     <string name="android_auto_search_options">Vyhledat možnosti</string>
@@ -734,6 +720,6 @@
     <string name="ai_provider_inception_help">Navštivte https://platform.inceptionlabs.ai pro klíče API</string>
     <string name="enable_zemer">Povolit Zemer</string>
     <string name="enable_zemer_desc">Texty pro židovskou hudbu</string>
-    <string name="update_available_message">Metrolist %s je připraven ke stažení.</string>
+    <string name="update_available_message">Vega %s je připraven ke stažení.</string>
     <string name="update_action">Aktualizovat</string>
 </resources>

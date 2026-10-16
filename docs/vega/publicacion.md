@@ -41,7 +41,7 @@ Usar YouTube sin la API oficial va contra sus Condiciones de servicio. Es un rie
 
 - [ ] Repo público (o código fuente enlazado en cada release).
 - [ ] README de Vega: qué es, «basado en Metrolist (GPL-3.0)», cambios, descargo de responsabilidad.
-- [ ] Quitar la marca Metrolist de los textos visibles (dejar créditos).
-- [ ] Informes de fallo y enlaces de versiones → repo de Vega.
+- [x] Quitar la marca Metrolist de los textos visibles (quedan solo los créditos). Hecho 2026-10-16.
+- [x] Informes de fallo, User-Agent y enlaces → repo de Vega. «Acerca de» simplificado con atribución y licencia; «Novedades» (notas de Metrolist) eliminado. Hecho 2026-10-16.
 - [ ] Firmar los APK de release con una clave propia (no la de depuración).
 - [ ] Publicar solo flavors sin servicios de Google, o declarar Cast como propietario.

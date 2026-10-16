@@ -190,7 +190,6 @@ import com.metrolist.music.ui.menu.YouTubeSongMenu
 import com.metrolist.music.ui.player.BottomSheetPlayer
 import com.metrolist.music.ui.screens.Screens
 import com.metrolist.music.ui.screens.navigationBuilder
-import com.metrolist.music.ui.screens.settings.ChangelogScreen
 import com.metrolist.music.ui.screens.settings.DarkMode
 import com.metrolist.music.ui.screens.settings.NavigationTab
 import com.metrolist.music.ui.theme.ColorSaver
@@ -599,7 +598,6 @@ class MainActivity : FragmentActivity() {
         val (selectedThemeColorInt) = rememberPreference(SelectedThemeColorKey, defaultValue = DefaultThemeColor.toArgb())
         val selectedThemeColor = Color(selectedThemeColorInt)
 
-        val showChangelog = rememberSaveable { mutableStateOf(false) }
 
         var themeColor by rememberSaveable(stateSaver = ColorSaver) {
             mutableStateOf(selectedThemeColor)
@@ -705,13 +703,6 @@ class MainActivity : FragmentActivity() {
 
                 val navController = rememberNavController()
 
-                LaunchedEffect(Unit) {
-                    val lastSeenVersion = dataStore.data.first()[LastSeenVersionKey] ?: ""
-                    val currentVersion = BuildConfig.BASE_VERSION_NAME
-                    if (lastSeenVersion != currentVersion) {
-                        showChangelog.value = true
-                    }
-                }
 
                 val homeViewModel: HomeViewModel = hiltViewModel()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -1006,13 +997,8 @@ class MainActivity : FragmentActivity() {
                     LocalPlayerAwareWindowInsets provides playerAwareWindowInsets,
                     LocalDownloadUtil provides downloadUtil,
                     LocalShimmerTheme provides ShimmerTheme,
-                    LocalChangelogState provides showChangelog,
                     LocalArtistNameAliases provides artistNameAliases,
                 ) {
-                    if (showChangelog.value) {
-                        ChangelogScreen(onDismiss = { showChangelog.value = false })
-                    }
-
                     Scaffold(
                         snackbarHost = { SnackbarHost(snackbarHostState) },
                         topBar = {
@@ -1391,7 +1377,7 @@ class MainActivity : FragmentActivity() {
                         }
                     }
 
-                    if (!showChangelog.value) {
+                    run {
                         availableUpdate?.let { update ->
                             val dismissUpdate: () -> Unit = {
                                 availableUpdate = null
@@ -1653,6 +1639,5 @@ val LocalNavController = staticCompositionLocalOf<NavController> { error("No Nav
 val LocalPlayerConnection = staticCompositionLocalOf<PlayerConnection?> { error("No PlayerConnection provided") }
 val LocalPlayerAwareWindowInsets = compositionLocalOf<WindowInsets> { error("No WindowInsets provided") }
 val LocalDownloadUtil = staticCompositionLocalOf<DownloadUtil> { error("No DownloadUtil provided") }
-val LocalChangelogState = staticCompositionLocalOf<MutableState<Boolean>> { error("No LocalChangelogState provided") }
 val LocalArtistNameAliases = staticCompositionLocalOf<Map<String, String>> { emptyMap() }
 val LocalIsPlayerExpanded = compositionLocalOf { false }

@@ -71,8 +71,8 @@ object OpenRouterService {
                             .apply {
                                 if (apiKey.isNotBlank()) addHeader("Authorization", "Bearer ${apiKey.trim()}")
                             }.addHeader("Content-Type", "application/json")
-                            .addHeader("HTTP-Referer", "https://github.com/MetrolistGroup/Metrolist")
-                            .addHeader("X-Title", "Metrolist")
+                            .addHeader("HTTP-Referer", "https://github.com/Atm0027/vega")
+                            .addHeader("X-Title", "Vega")
                             .post(body.toString().toRequestBody(jsonMediaType))
                             .build()
 

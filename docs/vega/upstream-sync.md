@@ -50,7 +50,7 @@ Cada vez que Vega mejore algo nuevo, se añade una fila aquí.
 |---|---|---|
 | **Adoptar** | arreglos de reproducción, InnerTube/InnerTubeX, cifrado/PoToken, cierres, batería, descargas, letras, base de datos, Android Auto, rendimiento | Adaptar e implementar |
 | **Valorar** | funciones nuevas de UI, ajustes nuevos, refactors grandes | Implementar solo si encaja con Vega y no choca con lo anterior |
-| **Descartar** | Listen Together, Discord, login/cuenta/sync YouTube (incl. cambios en `SyncUtils`, `LoginScreen`, `AccountSettings`), vídeo, Cast, updater, Firebase/telemetría, subidas de versión de Metrolist, CI/workflows, traducciones de textos que Vega ya no tiene | No implementar; anotar el motivo |
+| **Descartar** | Listen Together, Discord, login/cuenta/sync YouTube (incl. cambios en `SyncUtils`, `LoginScreen`, `AccountSettings`), vídeo, Cast, updater, Firebase/telemetría, subidas de versión de Metrolist, CI/workflows, traducciones de textos que Vega ya no tiene, cambios en «Acerca de», «Novedades» (ChangelogScreen) y textos de marca Metrolist | No implementar; anotar el motivo |
 
 Las traducciones: solo se adoptan cadenas que Vega usa.
 

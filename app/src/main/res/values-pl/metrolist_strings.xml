@@ -158,7 +158,7 @@
     <string name="google_cast">Google Cast</string>
     <string name="google_cast_description">Włącz przesyłanie dźwięku do Chromecasta i innych urządzeń obsługujących Cast</string>
     <string name="last_fm_send_likes">Wyślij polubienia/niepolubienia</string>
-    <string name="last_fm_send_likes_description">Polub/niepolub piosenki w Last.fm, gdy są polubione/niepolubione w Metrolist</string>
+    <string name="last_fm_send_likes_description">Polub/niepolub piosenki w Last.fm, gdy są polubione/niepolubione w Vega</string>
     <string name="logging_in">Logowanie…</string>
     <string name="hide_video_songs">Ukryj utwory wideo</string>
     <string name="details_desc">Wyświetl informacje o utworze</string>
@@ -221,10 +221,10 @@
     <string name="wrapped_total_artists_subtitle">unikalni artyści!</string>
     <string name="wrapped_total_songs_title">Słuchałeś/aś</string>
     <string name="wrapped_total_songs_subtitle">unikalnie piosenki!</string>
-    <string name="wrapped_intro_title">METROLIST</string>
+    <string name="wrapped_intro_title">VEGA</string>
     <string name="wrapped_intro_subtitle">Czas sprawdzić, czego słuchałeś/aś w tym roku…</string>
     <string name="wrapped_intro_button">Zaczynamy!</string>
-    <string name="wrapped_logo_content_description">Logo Metrolist</string>
+    <string name="wrapped_logo_content_description">Logo Vega</string>
     <string name="wrapped_year">2025</string>
     <string name="wrapped_ready_title">­TWOJE WRAPPED JEST GOTOWE!</string>
     <string name="wrapped_ready_subtitle">Czas sprawdzić, co pokochałeś/aś w tym roku…</string>
@@ -284,7 +284,7 @@
     <string name="error_playback_failed">Nie udało się odtworzyć utworu</string>
     <string name="album_art">Okładka albumu</string>
     <string name="no_song_playing">Nic nie jest odtwarzane</string>
-    <string name="tap_to_open">Dotknij, aby otworzyć Metrolist</string>
+    <string name="tap_to_open">Dotknij, aby otworzyć Vega</string>
     <string name="previous">Poprzedni</string>
     <string name="play_pause">Odtwórz/Wstrzymaj</string>
     <string name="next">Następny</string>
@@ -323,8 +323,6 @@
     <string name="lyrics_provider_priority">Kolejność dostawców tekstów utworów</string>
     <string name="changelog">Lista zmian</string>
     <string name="changelog_empty">Brak dostępnych dzienników zmian</string>
-    <string name="github_releases_url">https://github.com/MetrolistGroup/Metrolist/releases</string>
-    <string name="view_on_github">Zobacz na GitHubie</string>
     <string name="current_version">Obecna wersja</string>
     <string name="version_format">Wersja: %s</string>
     <string name="update_settings">Zaktualizuj ustawienia</string>
@@ -366,7 +364,6 @@
     <string name="export_failed">Nie udało się wyeksportować playlisty</string>
     <string name="export_option_share">Udostępnij</string>
     <string name="export_option_save">Zapisz w Dokumentach</string>
-    <string name="list_bullet">•</string>
     <string name="latest_version_format">Najnowsza: %s</string>
     <string name="sleeptimer_description">Automatycznie włącza wyłącznik czasowy z domyślną wartością o niestandardowym czasie</string>
     <string name="sleep_timer_repeat_description">Ustaw niestandardową godzinę, o której wyłącznik czasowy powinien się automatycznie aktywować</string>
@@ -380,7 +377,7 @@
     <string name="error_podcast_unsubscribe">Nie udało się odsubskrybować od podcastu</string>
     <string name="view_channel">Pokaż Kanał</string>
     <string name="not_playing">Brak odtwarzanego utworu</string>
-    <string name="tap_to_play">Dotknij, aby otworzyć Metrolist</string>
+    <string name="tap_to_play">Dotknij, aby otworzyć Vega</string>
     <string name="widget_music_player">Odtwarzacz muzyki</string>
     <string name="widget_turntable">Obrotnica</string>
     <string name="widget_recognizer_name">Rozpoznawanie Muzyki</string>
@@ -438,7 +435,7 @@
     <string name="crash_description">Wystąpił nieoczekiwany błąd. Udostępnij raport o awarii, aby pomóc nam rozwiązać problem</string>
     <string name="crash_share_logs">Udostępnij dzienniki</string>
     <string name="crash_share_title">Udostępnij raport o awarii</string>
-    <string name="crash_report_subject">Raport o awarii Metrolist</string>
+    <string name="crash_report_subject">Raport o awarii Vega</string>
     <string name="crash_close">Zamknij</string>
     <string name="crash_no_log">Brak dostępnego dziennika awarii</string>
     <string name="palette_dynamic">Dynamiczna</string>
@@ -482,7 +479,7 @@
     <string name="clear_recognition_history_confirm">Czy na pewno chcesz wyczyścić całą historię rozpoznawania?</string>
     <string name="delete_from_history">Usuń z historii</string>
     <string name="re_listen">Posłuchaj ponownie</string>
-    <string name="play_on_app">Odtwórz w Metrolist</string>
+    <string name="play_on_app">Odtwórz w Vega</string>
     <string name="qs_tile_music_recognizer">Rozpoznawaj muzykę</string>
     <string name="map_csv_columns">Mapuj kolumny CSV</string>
     <string name="first_row_is_header">Pierwszy wiersz to nagłówek</string>
@@ -505,19 +502,8 @@
     <string name="daily_discover_based_on">Na podstawie %1$s</string>
     <string name="daily_discover_for_fans_of">Dla fanów %1$s</string>
     <string name="from_the_community">Ze społeczności</string>
-    <string name="credits_lead_developer">Główny Deweloper</string>
-    <string name="credits_collaborator">Współpracownik</string>
-    <string name="credits_collaborators_section">Współpracownicy</string>
     <string name="credits_license_name">GNU General Public License v3.0</string>
     <string name="credits_license_desc">Darmowe oprogramowanie o otwartym kodzie źródłowym. Możesz z niego korzystać, studiować je, udostępniać i ulepszać</string>
-    <string name="credits_telegram">Kanał na Telegramie</string>
-    <string name="credits_view_repo">Pokaż Repozytorium</string>
-    <string name="buy_mo_a_coffee">Kup mi kawę!</string>
-    <string name="community_and_info">Społeczność i informacje</string>
-    <string name="metrolist">METROLIST</string>
-    <string name="wanna_play_favorite_song">Chcesz zagrać ich ulubioną piosenkę?</string>
-    <string name="yeah">Spoko!</string>
-    <string name="stands_with_palestine">Ten projekt wspiera Palestynę 🇵🇸</string>
     <string name="filter_podcasts">Podcasty</string>
     <string name="view_podcast">Pokaż podcast</string>
     <string name="podcast_channels">Kanały z podcastami</string>
@@ -610,7 +596,7 @@
     <string name="recognition_notification_processing">Rozpoznawanie…</string>
     <string name="recognition_notification_no_match">Nie znaleziono dopasowania</string>
     <string name="recognition_notification_failed">Rozpoznawanie nie powiodło się</string>
-    <string name="listen_on_metrolist">Słuchaj na Metrolist</string>
+    <string name="listen_on_metrolist">Słuchaj na Vega</string>
     <string name="android_auto">Android Auto</string>
     <string name="android_auto_visible_sections">Widoczne sekcje</string>
     <string name="android_auto_reorder_hint">Dotknij sekcji aby ją włączyć lub wyłączyć\nPrzytrzymaj ikonę przeciągania aby zmienić kolejność. Domyślnie wyświetlana będzie pierwsza sekcja</string>
