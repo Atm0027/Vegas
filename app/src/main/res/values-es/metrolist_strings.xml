@@ -735,4 +735,23 @@
     <string name="about_based_on">Vega es una versión modificada de Metrolist, de Mo Agamy y colaboradores, distribuida bajo la licencia GPL-3.0.</string>
     <string name="about_source_code">Código fuente de Vega</string>
     <string name="about_original_project">Proyecto original: Metrolist</string>
+    <!-- Vega: modo sin conexión -->
+    <string name="download_playlist">Descargar playlist</string>
+    <string name="remove_playlist_download">Quitar descarga</string>
+    <string name="remove_playlist_download_desc">Las canciones nuevas de esta playlist ya no se descargarán.</string>
+    <string name="also_delete_files">Borrar también los archivos</string>
+    <string name="download_on_mobile_data">Descargar con datos móviles</string>
+    <string name="download_on_mobile_data_desc">Si está desactivado, las descargas automáticas usan solo Wi-Fi</string>
+    <string name="download_liked">Descargar Me gusta</string>
+    <string name="download_liked_desc">Mantener descargadas todas las canciones que te gustan</string>
+    <string name="scan_vega_folder">Buscar descargas en Música/Vega</string>
+    <string name="scan_vega_folder_desc">Reconocer los archivos de una instalación anterior</string>
+    <string name="scan_result">%1$d descargas encontradas</string>
+    <string name="delete_all_downloads">Borrar todas las descargas</string>
+    <string name="delete_all_downloads_confirm">¿Borrar todos los archivos descargados de Música/Vega?</string>
+    <string name="downloads_used_space">Espacio usado por las descargas</string>
+    <string name="download_will_return">Se volverá a descargar porque está en «%1$s»</string>
+    <string name="offline_no_more_downloaded">Sin conexión: no hay más canciones descargadas en la cola</string>
+    <string name="offline_downloads">Descargas sin conexión</string>
+    <string name="scan_permission_needed">Vega necesita acceso a tu música para encontrar descargas anteriores</string>
 </resources>

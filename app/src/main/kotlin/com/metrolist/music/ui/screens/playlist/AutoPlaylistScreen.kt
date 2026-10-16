@@ -99,7 +99,6 @@ import com.metrolist.music.constants.SongSortTypeKey
 import com.metrolist.music.db.entities.Song
 import com.metrolist.music.extensions.fileNameAndSize
 import com.metrolist.music.extensions.toMediaItem
-import com.metrolist.music.playback.ExoDownloadService
 import com.metrolist.music.playback.queues.ListQueue
 import com.metrolist.music.ui.component.DefaultDialog
 import com.metrolist.music.ui.component.DraggableScrollbar
@@ -263,12 +262,7 @@ fun AutoPlaylistScreen(
                     onClick = {
                         showRemoveDownloadDialog = false
                         songs!!.forEach { song ->
-                            DownloadService.sendRemoveDownload(
-                                context,
-                                ExoDownloadService::class.java,
-                                song.song.id,
-                                false,
-                            )
+                            downloadUtil.remove(song.song.id)
                         }
                     },
                 ) {
@@ -748,12 +742,7 @@ private fun AutoPlaylistHeader(
 
                                     Download.STATE_DOWNLOADING -> {
                                         songs.forEach { song ->
-                                            DownloadService.sendRemoveDownload(
-                                                context,
-                                                ExoDownloadService::class.java,
-                                                song.song.id,
-                                                false,
-                                            )
+                                            downloadUtil.remove(song.song.id)
                                         }
                                     }
 

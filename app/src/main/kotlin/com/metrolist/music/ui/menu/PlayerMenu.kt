@@ -84,7 +84,6 @@ import com.metrolist.music.R
 import com.metrolist.music.constants.ListItemHeight
 import com.metrolist.music.constants.VarispeedKey
 import com.metrolist.music.models.MediaMetadata
-import com.metrolist.music.playback.ExoDownloadService
 import com.metrolist.music.db.entities.Song
 import com.metrolist.music.db.entities.SpeedDialItem
 import com.metrolist.music.ui.component.BottomSheetState
@@ -515,12 +514,7 @@ fun PlayerMenu(
                                         )
                                     },
                                     onClick = {
-                                        DownloadService.sendRemoveDownload(
-                                            context,
-                                            ExoDownloadService::class.java,
-                                            mediaMetadata.id,
-                                            false,
-                                        )
+                                        downloadUtil.remove(mediaMetadata.id)
                                     },
                                 )
                             }
@@ -535,12 +529,7 @@ fun PlayerMenu(
                                         )
                                     },
                                     onClick = {
-                                        DownloadService.sendRemoveDownload(
-                                            context,
-                                            ExoDownloadService::class.java,
-                                            mediaMetadata.id,
-                                            false,
-                                        )
+                                        downloadUtil.remove(mediaMetadata.id)
                                     },
                                 )
                             }

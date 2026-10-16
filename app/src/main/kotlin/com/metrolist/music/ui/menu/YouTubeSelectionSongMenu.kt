@@ -42,7 +42,6 @@ import com.metrolist.music.LocalPlayerConnection
 import com.metrolist.music.R
 import com.metrolist.music.extensions.toMediaItem
 import com.metrolist.music.models.toMediaMetadata
-import com.metrolist.music.playback.ExoDownloadService
 import com.metrolist.music.playback.queues.ListQueue
 import com.metrolist.music.ui.component.DefaultDialog
 import com.metrolist.music.ui.component.Material3MenuGroup
@@ -190,12 +189,7 @@ fun YouTubeSelectionSongMenu(
                     onClick = {
                         showRemoveDownloadDialog = false
                         songSelection.forEach { song ->
-                            DownloadService.sendRemoveDownload(
-                                context,
-                                ExoDownloadService::class.java,
-                                song.id,
-                                false,
-                            )
+                            downloadUtil.remove(song.id)
                         }
                     },
                 ) {

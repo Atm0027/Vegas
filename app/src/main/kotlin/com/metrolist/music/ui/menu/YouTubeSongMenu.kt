@@ -70,7 +70,6 @@ import com.metrolist.music.db.entities.SongEntity
 import com.metrolist.music.extensions.toMediaItem
 import com.metrolist.music.models.MediaMetadata
 import com.metrolist.music.models.toMediaMetadata
-import com.metrolist.music.playback.ExoDownloadService
 import com.metrolist.music.playback.queues.YouTubeQueue
 import com.metrolist.music.ui.component.ListDialog
 import com.metrolist.music.ui.component.LocalBottomSheetPageState
@@ -515,12 +514,7 @@ fun YouTubeSongMenu(
                                     )
                                 },
                                 onClick = {
-                                    DownloadService.sendRemoveDownload(
-                                        context,
-                                        ExoDownloadService::class.java,
-                                        song.id,
-                                        false,
-                                    )
+                                    downloadUtil.remove(song.id)
                                 }
                             )
                         }
@@ -534,12 +528,7 @@ fun YouTubeSongMenu(
                                     )
                                 },
                                 onClick = {
-                                    DownloadService.sendRemoveDownload(
-                                        context,
-                                        ExoDownloadService::class.java,
-                                        song.id,
-                                        false,
-                                    )
+                                    downloadUtil.remove(song.id)
                                 }
                             )
                         }

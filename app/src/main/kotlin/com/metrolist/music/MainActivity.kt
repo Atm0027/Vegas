@@ -172,6 +172,7 @@ import com.metrolist.music.db.entities.SearchHistory
 import com.metrolist.music.extensions.toEnum
 import com.metrolist.music.lyrics.LyricsProviderRegistry
 import com.metrolist.music.models.toMediaMetadata
+import com.metrolist.music.offline.OfflineDeleteRequests
 import com.metrolist.music.playback.DownloadUtil
 import com.metrolist.music.playback.MusicService
 import com.metrolist.music.playback.MusicService.MusicBinder
@@ -470,6 +471,7 @@ class MainActivity : FragmentActivity() {
         database: MusicDatabase,
         downloadUtil: DownloadUtil,
     ) {
+        OfflineDeleteRequests(downloadUtil)
         val checkForUpdates by rememberPreference(CheckForUpdatesKey, defaultValue = true)
         var availableUpdate by remember { mutableStateOf<AvailableUpdate?>(null) }
 

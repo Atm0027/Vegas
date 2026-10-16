@@ -65,7 +65,6 @@ import com.metrolist.music.constants.ListThumbnailSize
 import com.metrolist.music.extensions.toMediaItem
 import com.metrolist.music.models.MediaMetadata
 import com.metrolist.music.models.toMediaMetadata
-import com.metrolist.music.playback.ExoDownloadService
 import com.metrolist.music.playback.queues.YouTubeQueue
 import com.metrolist.music.ui.component.BottomSheetState
 import com.metrolist.music.ui.component.ListDialog
@@ -368,12 +367,7 @@ fun QueueMenu(
                                     )
                                 },
                                 onClick = {
-                                    DownloadService.sendRemoveDownload(
-                                        context,
-                                        ExoDownloadService::class.java,
-                                        mediaMetadata.id,
-                                        false,
-                                    )
+                                    downloadUtil.remove(mediaMetadata.id)
                                 }
                             )
                         }
@@ -388,12 +382,7 @@ fun QueueMenu(
                                     )
                                 },
                                 onClick = {
-                                    DownloadService.sendRemoveDownload(
-                                        context,
-                                        ExoDownloadService::class.java,
-                                        mediaMetadata.id,
-                                        false,
-                                    )
+                                    downloadUtil.remove(mediaMetadata.id)
                                 }
                             )
                         }

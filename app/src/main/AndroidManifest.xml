@@ -234,15 +234,6 @@
             android:foregroundServiceType="dataSync"
             tools:node="merge" />
 
-        <service
-            android:name=".playback.ExoDownloadService"
-            android:exported="false"
-            android:foregroundServiceType="dataSync">
-            <intent-filter>
-                <action android:name="androidx.media3.exoplayer.downloadService.action.RESTART" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </service>
 
         <receiver
             android:name=".playback.alarm.MusicAlarmReceiver"

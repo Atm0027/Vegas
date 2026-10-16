@@ -54,7 +54,6 @@ import com.metrolist.music.db.entities.Song
 import com.metrolist.music.extensions.toMediaItem
 import com.metrolist.music.models.MediaMetadata
 import com.metrolist.music.models.toMediaMetadata
-import com.metrolist.music.playback.ExoDownloadService
 import com.metrolist.music.playback.queues.ListQueue
 import com.metrolist.music.ui.component.DefaultDialog
 import com.metrolist.music.ui.component.Material3MenuGroup
@@ -174,12 +173,7 @@ fun SelectionSongMenu(
                     onClick = {
                         showRemoveDownloadDialog = false
                         songSelection.forEach { song ->
-                            DownloadService.sendRemoveDownload(
-                                context,
-                                ExoDownloadService::class.java,
-                                song.song.id,
-                                false,
-                            )
+                            downloadUtil.remove(song.song.id)
                         }
                     },
                 ) {
@@ -710,12 +704,7 @@ fun SelectionMediaMetadataMenu(
                     onClick = {
                         showRemoveDownloadDialog = false
                         songSelection.forEach { song ->
-                            DownloadService.sendRemoveDownload(
-                                context,
-                                ExoDownloadService::class.java,
-                                song.id,
-                                false,
-                            )
+                            downloadUtil.remove(song.id)
                         }
                     },
                 ) {

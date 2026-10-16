@@ -854,4 +854,23 @@
     <string name="about_based_on">Vega is a modified version of Metrolist by Mo Agamy and contributors, distributed under the GPL-3.0 licence.</string>
     <string name="about_source_code">Vega source code</string>
     <string name="about_original_project">Original project: Metrolist</string>
+    <!-- Vega offline mode -->
+    <string name="download_playlist">Download playlist</string>
+    <string name="remove_playlist_download">Remove download</string>
+    <string name="remove_playlist_download_desc">New songs in this playlist will no longer be downloaded.</string>
+    <string name="also_delete_files">Also delete the files</string>
+    <string name="download_on_mobile_data">Download on mobile data</string>
+    <string name="download_on_mobile_data_desc">When off, automatic downloads only use Wi-Fi</string>
+    <string name="download_liked">Download Liked songs</string>
+    <string name="download_liked_desc">Keep every liked song downloaded</string>
+    <string name="scan_vega_folder">Find downloads in Music/Vega</string>
+    <string name="scan_vega_folder_desc">Recognise files from a previous install</string>
+    <string name="scan_result">%1$d downloads found</string>
+    <string name="delete_all_downloads">Delete all downloads</string>
+    <string name="delete_all_downloads_confirm">Delete every downloaded file from Music/Vega?</string>
+    <string name="downloads_used_space">Space used by downloads</string>
+    <string name="download_will_return">It will download again because it is in “%1$s”</string>
+    <string name="offline_no_more_downloaded">Offline: no more downloaded songs in the queue</string>
+    <string name="offline_downloads">Offline downloads</string>
+    <string name="scan_permission_needed">Vega needs access to your music to find earlier downloads</string>
 </resources>

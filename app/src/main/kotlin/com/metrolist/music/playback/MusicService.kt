@@ -108,7 +108,6 @@ import com.metrolist.music.constants.AudioNormalizationKey
 import com.metrolist.music.constants.AudioOffload
 import com.metrolist.music.constants.AudioQualityKey
 import com.metrolist.music.constants.AudioTrackPlaybackParamsKey
-import com.metrolist.music.constants.AutoDownloadOnLikeKey
 import com.metrolist.music.constants.AutoLoadMoreKey
 import com.metrolist.music.constants.AutoSkipNextOnErrorKey
 import com.metrolist.music.constants.AutoplayKey
@@ -2030,10 +2029,6 @@ class MusicService :
 
                 database.query {
                     update(song)
-
-                    if (dataStore.get(AutoDownloadOnLikeKey, false) && song.liked) {
-                        downloadUtil.download(song.id)
-                    }
                 }
                 currentMediaMetadata.value = player.currentMetadata
             }

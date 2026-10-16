@@ -82,7 +82,6 @@ import com.metrolist.music.R
 import com.metrolist.music.constants.MyTopFilter
 import com.metrolist.music.db.entities.Song
 import com.metrolist.music.extensions.toMediaItem
-import com.metrolist.music.playback.ExoDownloadService
 import com.metrolist.music.playback.queues.ListQueue
 import com.metrolist.music.ui.component.DefaultDialog
 import com.metrolist.music.ui.component.DraggableScrollbar
@@ -225,12 +224,7 @@ fun TopPlaylistScreen(
                     onClick = {
                         showRemoveDownloadDialog = false
                         songs!!.forEach { song ->
-                            DownloadService.sendRemoveDownload(
-                                context,
-                                ExoDownloadService::class.java,
-                                song.song.id,
-                                false,
-                            )
+                            downloadUtil.remove(song.song.id)
                         }
                     },
                 ) {
@@ -668,12 +662,7 @@ private fun TopPlaylistHeader(
                                     Download.STATE_COMPLETED -> onShowRemoveDownloadDialog()
                                     Download.STATE_DOWNLOADING -> {
                                         songs.forEach { song ->
-                                            DownloadService.sendRemoveDownload(
-                                                context,
-                                                ExoDownloadService::class.java,
-                                                song.id,
-                                                false,
-                                            )
+                                            downloadUtil.remove(song.id)
                                         }
                                     }
                                     else -> {
