@@ -38,6 +38,9 @@ En la duda, quedarse con lo de Vega y anotar el commit como "pendiente de decisi
 | Cortes cada ~9 s | La reproducción pide el rango hasta el final del archivo; googlevideo limita las peticiones abiertas a velocidad de reproducción (Metrolist solo lo arregló en descargas, #4369) | `withResolvedStream(..., contentLength)` en `StreamUrlCache.kt` | `ResolvedStreamRangeTest` |
 | Menús | Acción "Reproducir" visible en menús de álbum/playlist | `ui/menu/*Menu.kt` | — |
 | Versionado | Estilo JARVIS, independiente de Metrolist | `buildSrc/` | `VersionSemanticaTest` |
+| Editor de listas | Reordenar, quitar, renombrar y portada se aplican en una sola transacción al pulsar "Hecho", con Deshacer; sin escrituras por cada arrastre | `PlaylistEditSession.kt`, `applyPlaylistEdit`/`restorePlaylistSnapshot` en `DatabaseDao.kt`, `LocalPlaylistScreen.kt` | `PlaylistEditSessionTest`, `ApplyPlaylistEditTest` |
+| Añadir a listas | Varias listas a la vez, nuevas arriba, sin duplicados exactos y preguntando por los probables (mismo título/artista, ±3 s) | `DuplicateMatcher.kt`, `PlaylistAddPlanner.kt`, `AddToPlaylistDialog.kt` | `DuplicateMatcherTest`, `PlaylistAddPlannerTest`, `AddSongsToPlaylistTest` |
+| Organizar biblioteca | Orden personalizado (arrastrar) y listas fijadas arriba con cualquier orden; BD 39 (`customOrder`, `pinned`) | `DatabaseDao.playlists`, `LibraryPlaylistsScreen.kt`, `PlaylistMenu.kt` | `PlaylistOrganizeTest` |
 
 Cada vez que Vega mejore algo nuevo, se añade una fila aquí.
 
