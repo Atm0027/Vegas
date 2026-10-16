@@ -60,6 +60,7 @@ object InnerTubeXPlayer {
         connectivityManager: ConnectivityManager,
         contentHints: ContentHints = ContentHints(),
         allowBoundedRange: Boolean = true,
+        qualityOverride: InnerTubeXAudioQuality? = null,
     ): Result<PlaybackData> =
         try {
             val hints =
@@ -80,7 +81,7 @@ object InnerTubeXPlayer {
                         videoId = videoId,
                         hints = hints,
                         excludedClients = excludedClients,
-                        audioQuality = audioQuality.toInnerTubeX(connectivityManager),
+                        audioQuality = qualityOverride ?: audioQuality.toInnerTubeX(connectivityManager),
                         clientPlaybackNonce = generateClientPlaybackNonce(),
                     ),
                 ) { "InnerTubeX returned no playable stream" }
