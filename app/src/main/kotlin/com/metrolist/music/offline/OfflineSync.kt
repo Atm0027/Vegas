@@ -53,6 +53,7 @@ class OfflineSync @Inject constructor(
                 verifyFiles()
             }.onFailure { Timber.tag(TAG).e(it, "Offline start-up checks failed") }
 
+            val pending = PendingDiff()
             val settings = context.dataStore.data
                 .map { (it[DownloadLikedKey] ?: false) to (it[DownloadOnMobileDataKey] ?: false) }
                 .distinctUntilChanged()
@@ -69,7 +70,8 @@ class OfflineSync @Inject constructor(
                 }
                 .debounce(1_000)
                 .collect { (ids, mobile) ->
-                    runCatching { if (ids.isNotEmpty()) queue.enqueueAutomatic(ids, mobile) }
+                    val fresh = pending.fresh(ids)
+                    runCatching { if (fresh.isNotEmpty()) queue.enqueueAutomatic(fresh, mobile) }
                         .onFailure { Timber.tag(TAG).e(it, "Could not queue automatic downloads") }
                 }
         }
