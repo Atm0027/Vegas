@@ -306,6 +306,7 @@ dependencies {
 
     implementation(libs.timber)
     implementation(libs.work.runtime)
+    implementation(libs.jaudiotagger)
 
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)
