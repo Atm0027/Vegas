@@ -177,6 +177,7 @@ import com.metrolist.music.models.toMediaMetadata
 import com.metrolist.music.playback.alarm.MusicAlarmScheduler
 import com.metrolist.music.playback.alarm.MusicAlarmStore
 import com.metrolist.music.playback.audio.SilenceDetectorAudioProcessor
+import com.metrolist.music.offline.DownloadSlots
 import com.metrolist.music.offline.NetworkFailure
 import com.metrolist.music.offline.OfflineSkip
 import com.metrolist.music.offline.OfflineStore
@@ -3389,6 +3390,7 @@ class MusicService :
     /** Weak coverage: a song that is not downloaded and makes no progress for a few seconds is skipped. */
     private fun updateOfflineStallWatch(@Player.State playbackState: Int) {
         val mediaId = player.currentMediaItem?.mediaId
+        DownloadSlots.shared.setStreaming(player.playWhenReady && mediaId != null && mediaId !in downloadedIds.value)
         val shouldWatch = playbackState == Player.STATE_BUFFERING && player.playWhenReady &&
             mediaId != null && !isPlayableOffline(mediaId)
         if (!shouldWatch) {

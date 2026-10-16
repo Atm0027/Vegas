@@ -25,4 +25,26 @@ class DownloadSlotsTest {
         }.awaitAll()
         assertEquals(3, peak.get())
     }
+
+    @Test
+    fun whileStreaming_onlyOneDownloadStarts_andTheRestResumeAfter() = runBlocking {
+        val slots = DownloadSlots(3)
+        slots.setLimit(1)
+        val running = AtomicInteger()
+        val peak = AtomicInteger()
+        val jobs = (1..6).map {
+            async {
+                slots.withSlot {
+                    peak.accumulateAndGet(running.incrementAndGet(), ::maxOf)
+                    delay(100)
+                    running.decrementAndGet()
+                }
+            }
+        }
+        delay(250)
+        assertEquals(1, peak.get())
+        slots.setLimit(3)
+        jobs.awaitAll()
+        assertEquals(3, peak.get())
+    }
 }
