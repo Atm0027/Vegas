@@ -54,4 +54,17 @@ class LegacyDownloadMigrationTest {
         cache.release()
         internal.close()
     }
+
+    @Test
+    fun completeSongThatFailedToCopy_keepsItsCachedAudio_andMigrationRunsAgain() {
+        val plan = LegacyDownloadMigration.cleanup(
+            mapOf(
+                "a" to LegacyDownloadMigration.Copy.COPIED,
+                "b" to LegacyDownloadMigration.Copy.INCOMPLETE,
+                "c" to LegacyDownloadMigration.Copy.FAILED,
+            ),
+        )
+        assertEquals(setOf("a", "b"), plan.remove)
+        assertEquals(false, plan.done)
+    }
 }

@@ -2,6 +2,7 @@ package com.metrolist.music.offline
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
@@ -37,5 +38,22 @@ class SongDownloaderTest {
     fun `extension follows the mime type`() {
         assertEquals("m4a", extFor("audio/mp4"))
         assertEquals("webm", extFor("audio/webm"))
+    }
+
+    @Test
+    fun partFile_isTiedToFormatAndLength() {
+        assertEquals("abc-audio_mp4-1000.part", partName("abc", "audio/mp4", 1000))
+        assertNotEquals(partName("abc", "audio/mp4", 1000), partName("abc", "audio/webm", 1000))
+        assertNotEquals(partName("abc", "audio/mp4", 1000), partName("abc", "audio/mp4", 1200))
+    }
+
+    @Test
+    fun resume_appendsOnlyWhenTheServerContinuesWhereThePartEnds() {
+        assertEquals(Resume.APPEND, resumeMode(206, existing = 400, contentRange = "bytes 400-999/1000", contentLength = 600, length = 1000))
+        assertEquals(Resume.APPEND, resumeMode(200, existing = 400, contentRange = null, contentLength = 600, length = 1000))
+        assertEquals(Resume.RESTART, resumeMode(200, existing = 400, contentRange = null, contentLength = 1000, length = 1000))
+        assertEquals(Resume.RESTART, resumeMode(200, existing = 0, contentRange = null, contentLength = 1000, length = 1000))
+        assertEquals(Resume.MISMATCH, resumeMode(206, existing = 400, contentRange = "bytes 0-999/1000", contentLength = 1000, length = 1000))
+        assertEquals(Resume.MISMATCH, resumeMode(200, existing = 400, contentRange = null, contentLength = 700, length = 1000))
     }
 }

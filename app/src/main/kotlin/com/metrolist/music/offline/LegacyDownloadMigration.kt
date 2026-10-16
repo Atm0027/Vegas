@@ -42,6 +42,10 @@ class LegacyDownloadMigration @Inject constructor(
 ) {
     data class MigrationReport(val copied: Int, val requeued: Int)
 
+    enum class Copy { COPIED, INCOMPLETE, FAILED }
+
+    data class Cleanup(val remove: Set<String>, val done: Boolean)
+
     suspend fun isDone(): Boolean = context.dataStore.data.first()[OfflineMigrationDoneKey] == true
 
     suspend fun run(): MigrationReport = withContext(Dispatchers.IO) {
@@ -49,22 +53,24 @@ class LegacyDownloadMigration @Inject constructor(
         val legacy = buildList {
             index.getDownloads().use { cursor -> while (cursor.moveToNext()) add(cursor.download) }
         }
-        var copied = 0
-        val requeue = mutableListOf<String>()
-        legacy.forEach { download ->
+        val results = legacy.associate { download ->
             val songId = download.request.id
-            val ok = download.state == Download.STATE_COMPLETED &&
-                runCatching { copyOut(songId) }
+            songId to when {
+                download.state != Download.STATE_COMPLETED -> Copy.INCOMPLETE
+                else -> runCatching { if (copyOut(songId)) Copy.COPIED else Copy.INCOMPLETE }
                     .onFailure { Timber.tag(TAG).w(it, "Could not migrate $songId") }
-                    .getOrDefault(false)
-            if (ok) copied++ else requeue += songId
+                    .getOrDefault(Copy.FAILED)
+            }
         }
+        val copied = results.count { it.value == Copy.COPIED }
+        val requeue = results.filterValues { it != Copy.COPIED }.keys.toList()
         if (requeue.isNotEmpty()) queue.enqueueAutomatic(requeue, allowMobileData = false)
-        legacy.forEach { download ->
-            runCatching { downloadCache.removeResource(download.request.id) }
-            runCatching { index.removeDownload(download.request.id) }
+        val plan = cleanup(results)
+        plan.remove.forEach { songId ->
+            runCatching { downloadCache.removeResource(songId) }
+            runCatching { index.removeDownload(songId) }
         }
-        context.safeDataStoreEdit { it[OfflineMigrationDoneKey] = true }
+        if (plan.done) context.safeDataStoreEdit { it[OfflineMigrationDoneKey] = true }
         MigrationReport(copied, requeue.size)
     }
 
@@ -94,8 +100,15 @@ class LegacyDownloadMigration @Inject constructor(
         return true
     }
 
-    private companion object {
-        const val TAG = "LegacyMigration"
+    companion object {
+        private const val TAG = "LegacyMigration"
+
+        /** Cached audio is dropped only once it is copied or was never complete; failures retry next start. */
+        fun cleanup(results: Map<String, Copy>): Cleanup =
+            Cleanup(
+                remove = results.filterValues { it != Copy.FAILED }.keys,
+                done = results.values.none { it == Copy.FAILED },
+            )
     }
 }
 

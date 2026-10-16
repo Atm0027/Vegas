@@ -113,7 +113,10 @@ class SongDownloader @Inject constructor(
             )
         }
 
-        val part = File(context.cacheDir, "offline/$songId.part").apply { parentFile?.mkdirs() }
+        val dir = File(context.cacheDir, "offline").apply { mkdirs() }
+        val partName = partName(songId, mimeType, length)
+        dir.listFiles { file -> file.name.startsWith("$songId-") && file.name != partName }?.forEach { it.delete() }
+        val part = File(dir, partName)
         fetch(playback.streamUrl, playback.streamHeaders, length, part, onProgress)
         if (!verifySize(part, length)) throw IOException("Incomplete download of $songId")
 
@@ -172,7 +175,18 @@ class SongDownloader @Inject constructor(
             .build()
         http.newCall(request).execute().use { response ->
             if (!response.isSuccessful) throw IOException("HTTP ${response.code}")
-            val append = response.code == 206 && existing > 0
+            val mode = resumeMode(
+                code = response.code,
+                existing = existing,
+                contentRange = response.header("Content-Range"),
+                contentLength = response.header("Content-Length")?.toLongOrNull(),
+                length = length,
+            )
+            if (mode == Resume.MISMATCH) {
+                part.delete()
+                throw IOException("Resume of ${part.name} did not continue at byte $existing")
+            }
+            val append = mode == Resume.APPEND
             var written = if (append) existing else 0L
             val body = response.body
             FileOutputStream(part, append).use { out ->
@@ -228,6 +242,26 @@ internal fun rangedUrl(url: String, length: Long, from: Long = 0L): String =
     if ("&range=" in url || "?range=" in url) url else "$url&range=$from-${length - 1}"
 
 internal fun resumeHeader(existing: Long): String = "bytes=$existing-"
+
+/** A partial file only resumes into the same format and length; another stream starts its own. */
+internal fun partName(songId: String, mimeType: String, length: Long): String =
+    "$songId-${mimeType.replace('/', '_')}-$length.part"
+
+internal enum class Resume { APPEND, RESTART, MISMATCH }
+
+/**
+ * Appends only when the response provably starts where the part ends: a 206 whose Content-Range
+ * begins at [existing], or a 200 (googlevideo honours the range parameter) carrying exactly the
+ * missing bytes. A full body restarts the file; anything else would splice unrelated bytes.
+ */
+internal fun resumeMode(code: Int, existing: Long, contentRange: String?, contentLength: Long?, length: Long): Resume =
+    when {
+        existing <= 0 -> Resume.RESTART
+        code == 206 -> if (contentRange?.startsWith("bytes $existing-") == true) Resume.APPEND else Resume.MISMATCH
+        contentLength == length - existing -> Resume.APPEND
+        contentLength == length || contentLength == null -> Resume.RESTART
+        else -> Resume.MISMATCH
+    }
 
 /** Keeps [part] only when it has exactly [expected] bytes; otherwise deletes it. */
 internal fun verifySize(part: File, expected: Long): Boolean {
