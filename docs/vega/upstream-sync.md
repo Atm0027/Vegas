@@ -16,6 +16,30 @@ a Vega y se implementa solo si conviene**. Este documento son las reglas; el est
   `playback/FastFailLoadErrorPolicy.kt`, el uso de `extendShuffleOrder`/`userAddedMediaIds`
   en `MusicService.kt`, `buildSrc/` (versionado) y la identidad en `app/build.gradle.kts`.
 
+## Mejoras propias de Vega (comparar antes de adoptar)
+
+Si un commit de upstream toca algo de esta tabla, **no se adopta por defecto**. Se comparan las
+dos soluciones y gana la mejor para el usuario:
+
+- **La de Vega es mejor o igual** → descartar el commit (motivo: "Vega ya lo resuelve mejor").
+- **Upstream aporta algo que Vega no tiene** (caso que no cubríamos, arreglo de un fallo nuestro,
+  mejor rendimiento) → integrar **solo esa parte** encima de la solución de Vega, sin sustituirla.
+- **Upstream es claramente mejor en conjunto** → adoptarlo, pero conservando los tests de Vega
+  (deben seguir en verde) y anotarlo en el registro para que Alex lo sepa.
+
+En la duda, quedarse con lo de Vega y anotar el commit como "pendiente de decisión humana".
+
+| Área | Mejora de Vega | Dónde | Garantía |
+|---|---|---|---|
+| Aleatorio / anterior | El historial de "anterior" sobrevive a cargar más canciones, añadir a la cola y activar el aleatorio; "primero la playlist" respeta lo añadido por el usuario | `ShuffleOrders.kt`, `extendShuffleOrder`/`userAddedMediaIds` en `MusicService.kt` | `ShuffleOrdersTest` |
+| Canciones atascadas | Recuperación a los 6–8 s, también a mitad de canción, sin actuar sin red | `StallRecovery.kt`, `updateInitialBufferRecovery` | `StallRecoveryTest` |
+| Resolución del stream | Tiempo máximo de 20 s | `StreamResolveTimeout.kt` | `StreamResolveTimeoutTest` |
+| URLs caducadas | 403/410 no se reintentan contra la misma URL | `FastFailLoadErrorPolicy.kt` | `FastFailLoadErrorPolicyTest` |
+| Menús | Acción "Reproducir" visible en menús de álbum/playlist | `ui/menu/*Menu.kt` | — |
+| Versionado | Estilo JARVIS, independiente de Metrolist | `buildSrc/` | `VersionSemanticaTest` |
+
+Cada vez que Vega mejore algo nuevo, se añade una fila aquí.
+
 ## Clasificación de cada commit de upstream
 
 | Tipo | Ejemplos | Decisión |
