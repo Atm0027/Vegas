@@ -16,6 +16,7 @@ import com.metrolist.innertube.models.SongItem
 import com.metrolist.innertube.models.WatchEndpoint
 import com.metrolist.innertube.models.YTItem
 import com.metrolist.innertube.models.filterExplicit
+import com.metrolist.innertube.models.filterPodcasts
 import com.metrolist.innertube.models.filterVideoSongs
 import com.metrolist.innertube.utils.YouTubeUrlParser
 import com.metrolist.music.constants.HideExplicitKey
@@ -96,7 +97,7 @@ class OnlineSearchSuggestionViewModel
                                                     ?.recommendedItems
                                                     ?.distinctBy { it.id }
                                                     ?.filterExplicit(hideExplicit)
-                                                    ?.filterVideoSongs(hideVideoSongs)
+                                                    ?.filterVideoSongs(hideVideoSongs)?.filterPodcasts()
                                                     .orEmpty(),
                                         )
                                     }

@@ -86,10 +86,8 @@ import com.metrolist.music.constants.PlayerButtonsStyleKey
 import com.metrolist.music.constants.PureBlackMiniPlayerKey
 import com.metrolist.music.constants.RespectAgentPositioningKey
 import com.metrolist.music.constants.SelectedThemeColorKey
-import com.metrolist.music.constants.ShowCachedPlaylistKey
 import com.metrolist.music.constants.ShowDownloadedPlaylistKey
 import com.metrolist.music.constants.ShowLikedPlaylistKey
-import com.metrolist.music.constants.ShowTopPlaylistKey
 import com.metrolist.music.constants.ShowUploadedPlaylistKey
 import com.metrolist.music.constants.SliderStyle
 import com.metrolist.music.constants.SliderStyleKey
@@ -300,16 +298,6 @@ fun AppearanceSettings(
     val (showDownloadedPlaylist, onShowDownloadedPlaylistChange) =
         rememberPreference(
             ShowDownloadedPlaylistKey,
-            defaultValue = true,
-        )
-    val (showTopPlaylist, onShowTopPlaylistChange) =
-        rememberPreference(
-            ShowTopPlaylistKey,
-            defaultValue = true,
-        )
-    val (showCachedPlaylist, onShowCachedPlaylistChange) =
-        rememberPreference(
-            ShowCachedPlaylistKey,
             defaultValue = true,
         )
     val (showUploadedPlaylist, onShowUploadedPlaylistChange) =
@@ -613,7 +601,7 @@ fun AppearanceSettings(
             },
             title = stringResource(R.string.default_lib_chips),
             current = defaultChip,
-            values = LibraryFilter.values().toList(),
+            values = LibraryFilter.values().filter { it != LibraryFilter.PODCASTS },
             valueText = {
                 when (it) {
                     LibraryFilter.SONGS -> stringResource(R.string.songs)
@@ -1739,48 +1727,6 @@ fun AppearanceSettings(
                             )
                         },
                         onClick = { onShowDownloadedPlaylistChange(!showDownloadedPlaylist) },
-                    ),
-                    Material3SettingsItem(
-                        icon = painterResource(R.drawable.trending_up),
-                        title = { Text(stringResource(R.string.show_top_playlist)) },
-                        trailingContent = {
-                            Switch(
-                                checked = showTopPlaylist,
-                                onCheckedChange = onShowTopPlaylistChange,
-                                thumbContent = {
-                                    Icon(
-                                        painter =
-                                            painterResource(
-                                                id = if (showTopPlaylist) R.drawable.check else R.drawable.close,
-                                            ),
-                                        contentDescription = null,
-                                        modifier = Modifier.size(SwitchDefaults.IconSize),
-                                    )
-                                },
-                            )
-                        },
-                        onClick = { onShowTopPlaylistChange(!showTopPlaylist) },
-                    ),
-                    Material3SettingsItem(
-                        icon = painterResource(R.drawable.cached),
-                        title = { Text(stringResource(R.string.show_cached_playlist)) },
-                        trailingContent = {
-                            Switch(
-                                checked = showCachedPlaylist,
-                                onCheckedChange = onShowCachedPlaylistChange,
-                                thumbContent = {
-                                    Icon(
-                                        painter =
-                                            painterResource(
-                                                id = if (showCachedPlaylist) R.drawable.check else R.drawable.close,
-                                            ),
-                                        contentDescription = null,
-                                        modifier = Modifier.size(SwitchDefaults.IconSize),
-                                    )
-                                },
-                            )
-                        },
-                        onClick = { onShowCachedPlaylistChange(!showCachedPlaylist) },
                     ),
                     Material3SettingsItem(
                         icon = painterResource(R.drawable.backup),

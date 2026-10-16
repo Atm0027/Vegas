@@ -19,6 +19,7 @@ import com.metrolist.innertube.models.WatchEndpoint
 import com.metrolist.innertube.models.BrowseEndpoint
 import com.metrolist.innertube.models.YTItem
 import com.metrolist.innertube.models.filterExplicit
+import com.metrolist.innertube.models.filterPodcasts
 import com.metrolist.innertube.models.filterVideoSongs
 import com.metrolist.innertube.models.filterYoutubeShorts
 import com.metrolist.innertube.pages.ExplorePage
@@ -460,7 +461,7 @@ class HomeViewModel @Inject constructor(
                             val filtered = section.items
                                 .filterOutNulls()
                                 .filterExplicit(hideExplicit)
-                                .filterVideoSongs(hideVideoSongs)
+                                .filterVideoSongs(hideVideoSongs).filterPodcasts()
                                 .filterYoutubeShorts(hideYoutubeShorts)
                             if (filtered.isEmpty()) null else section.copy(items = filtered)
                         }
@@ -501,7 +502,7 @@ class HomeViewModel @Inject constructor(
                         items = items
                             .distinctBy { item -> item.id }
                             .filterExplicit(hideExplicit)
-                            .filterVideoSongs(hideVideoSongs)
+                            .filterVideoSongs(hideVideoSongs).filterPodcasts()
                             .shuffled().take(12)
                             .ifEmpty { return@mapNotNull null }
                     )
@@ -522,7 +523,7 @@ class HomeViewModel @Inject constructor(
                                 page.playlists.shuffled().take(3))
                             .distinctBy { it.id }
                             .filterExplicit(hideExplicit)
-                            .filterVideoSongs(hideVideoSongs)
+                            .filterVideoSongs(hideVideoSongs).filterPodcasts()
                             .shuffled()
                             .ifEmpty { return@mapNotNull null }
                     )
@@ -546,7 +547,7 @@ class HomeViewModel @Inject constructor(
                         items = items
                             .distinctBy { it.id }
                             .filterExplicit(hideExplicit)
-                            .filterVideoSongs(hideVideoSongs)
+                            .filterVideoSongs(hideVideoSongs).filterPodcasts()
                             .shuffled().take(10)
                             .ifEmpty { return@mapNotNull null }
                     )
@@ -578,7 +579,7 @@ class HomeViewModel @Inject constructor(
                     val filteredItems = section.items
                         .filterOutNulls()
                         .filterExplicit(hideExplicit)
-                        .filterVideoSongs(hideVideoSongs)
+                        .filterVideoSongs(hideVideoSongs).filterPodcasts()
                         .filterYoutubeShorts(hideYoutubeShorts)
                     if (filteredItems.isEmpty()) null else section.copy(items = filteredItems)
                 }
@@ -608,7 +609,7 @@ class HomeViewModel @Inject constructor(
             homePage.value = nextSections.copy(
                 chips = homePage.value?.chips,
                 sections = nextSections.sections.mapNotNull { section ->
-                    section.copy(items = section.items.filterOutNulls().filterExplicit(hideExplicit).filterVideoSongs(hideVideoSongs).filterYoutubeShorts(hideYoutubeShorts))
+                    section.copy(items = section.items.filterOutNulls().filterExplicit(hideExplicit).filterVideoSongs(hideVideoSongs).filterPodcasts().filterYoutubeShorts(hideYoutubeShorts))
                 }
             )
             selectedChip.value = chip
@@ -638,7 +639,7 @@ class HomeViewModel @Inject constructor(
                     homePage.value = nextSections.copy(
                         chips = homePage.value?.chips,
                         sections = nextSections.sections.mapNotNull { section ->
-                            section.copy(items = section.items.filterOutNulls().filterExplicit(hideExplicit).filterVideoSongs(hideVideoSongs).filterYoutubeShorts(hideYoutubeShorts))
+                            section.copy(items = section.items.filterOutNulls().filterExplicit(hideExplicit).filterVideoSongs(hideVideoSongs).filterPodcasts().filterYoutubeShorts(hideYoutubeShorts))
                         }
                     )
                 }

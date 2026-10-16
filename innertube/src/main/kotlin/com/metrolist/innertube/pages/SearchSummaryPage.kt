@@ -9,6 +9,7 @@ import com.metrolist.innertube.models.PodcastItem
 import com.metrolist.innertube.models.SongItem
 import com.metrolist.innertube.models.YTItem
 import com.metrolist.innertube.models.filterExplicit
+import com.metrolist.innertube.models.filterPodcasts
 import com.metrolist.innertube.models.filterVideoSongs
 import com.metrolist.innertube.models.filterYoutubeShorts
 import com.metrolist.innertube.models.splitBySeparator
@@ -38,6 +39,17 @@ data class SearchSummaryPage(
         } else {
             this
         }
+
+    /** Vega: drops podcasts and episodes, and any summary left empty. */
+    fun filterPodcasts() =
+        SearchSummaryPage(
+            summaries.mapNotNull { s ->
+                SearchSummary(
+                    title = s.title,
+                    items = s.items.filterPodcasts().ifEmpty { return@mapNotNull null },
+                )
+            },
+        )
 
     fun filterVideoSongs(disableVideos: Boolean) =
         if (disableVideos) {

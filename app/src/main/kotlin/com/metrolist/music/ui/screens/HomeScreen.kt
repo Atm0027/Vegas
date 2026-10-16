@@ -1155,7 +1155,7 @@ fun HomeScreen(
             ) {
                 item {
                     ChipsRow(
-                        chips = homePage?.chips?.map { it to it.title } ?: emptyList(),
+                        chips = homePage?.chips?.filterNot { it.title.contains("podcast", ignoreCase = true) || it.title.contains("pódcast", ignoreCase = true) }?.map { it to it.title } ?: emptyList(),
                         currentValue = selectedChip,
                         onValueUpdate = {
                             viewModel.toggleChip(it)

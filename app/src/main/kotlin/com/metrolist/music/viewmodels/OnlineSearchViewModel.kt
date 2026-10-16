@@ -17,6 +17,7 @@ import com.metrolist.innertube.YouTube
 import com.metrolist.innertube.models.SongItem
 import com.metrolist.innertube.models.YTItem
 import com.metrolist.innertube.models.filterExplicit
+import com.metrolist.innertube.models.filterPodcasts
 import com.metrolist.innertube.models.filterVideoSongs
 import com.metrolist.innertube.models.filterYoutubeShorts
 import com.metrolist.innertube.pages.SearchSummaryPage
@@ -109,6 +110,7 @@ constructor(
                             .filterExplicit(hideExplicit)
                             .filterVideoSongs(hideVideoSongs)
                             .filterYoutubeShorts(hideYoutubeShorts)
+                            .filterPodcasts()
                 }.onFailure {
                     reportException(it)
                 }
@@ -151,7 +153,7 @@ constructor(
                                         resolvedItems
                                             .distinctBy { it.id }
                                             .filterExplicit(hideExplicit)
-                                            .filterVideoSongs(hideVideoSongs)
+                                            .filterVideoSongs(hideVideoSongs).filterPodcasts()
                                             .filterYoutubeShorts(hideYoutubeShorts),
                                         result.continuation,
                                     )
@@ -181,7 +183,7 @@ constructor(
             val hideYoutubeShorts = context.dataStore.get(HideYoutubeShortsKey, false)
             val newItems = resolvedItems
                 .filterExplicit(hideExplicit)
-                .filterVideoSongs(hideVideoSongs)
+                .filterVideoSongs(hideVideoSongs).filterPodcasts()
                 .filterYoutubeShorts(hideYoutubeShorts)
             viewStateMap[filterValue] = ItemsPage(
                 (viewState.items + newItems).distinctBy { it.id },

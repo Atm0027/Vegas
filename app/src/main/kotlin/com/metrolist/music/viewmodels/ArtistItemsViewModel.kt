@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import com.metrolist.innertube.YouTube
 import com.metrolist.innertube.models.BrowseEndpoint
 import com.metrolist.innertube.models.filterExplicit
+import com.metrolist.innertube.models.filterPodcasts
 import com.metrolist.innertube.models.filterVideoSongs
 import com.metrolist.music.constants.HideExplicitKey
 import com.metrolist.music.constants.HideVideoSongsKey
@@ -57,7 +58,7 @@ constructor(
                             items = resolvedItems
                                 .distinctBy { it.id }
                                 .filterExplicit(hideExplicit)
-                                .filterVideoSongs(hideVideoSongs),
+                                .filterVideoSongs(hideVideoSongs).filterPodcasts(),
                             continuation = artistItemsPage.continuation,
                         )
                 }.onFailure {
@@ -82,7 +83,7 @@ constructor(
                             (oldItemsPage.items + resolvedItems)
                                 .distinctBy { it.id }
                                 .filterExplicit(hideExplicit)
-                                .filterVideoSongs(hideVideoSongs),
+                                .filterVideoSongs(hideVideoSongs).filterPodcasts(),
                             continuation = artistItemsContinuationPage.continuation,
                         )
                     }

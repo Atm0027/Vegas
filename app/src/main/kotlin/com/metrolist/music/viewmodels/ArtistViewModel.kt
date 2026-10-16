@@ -19,6 +19,7 @@ import com.metrolist.innertube.models.PlaylistItem
 import com.metrolist.innertube.models.PodcastItem
 import com.metrolist.innertube.models.SongItem
 import com.metrolist.innertube.models.filterExplicit
+import com.metrolist.innertube.models.filterPodcasts
 import com.metrolist.innertube.models.filterVideoSongs
 import com.metrolist.innertube.models.filterYoutubeShorts
 import com.metrolist.innertube.pages.ArtistPage
@@ -126,7 +127,7 @@ class ArtistViewModel @Inject constructor(
 
                 val filteredSections = page.sections
                     .map { section ->
-                        section.copy(items = section.items.filterExplicit(hideExplicit).filterVideoSongs(hideVideoSongs).filterYoutubeShorts(hideYoutubeShorts))
+                        section.copy(items = section.items.filterExplicit(hideExplicit).filterVideoSongs(hideVideoSongs).filterPodcasts().filterYoutubeShorts(hideYoutubeShorts))
                     }
                     .filter { section -> section.items.isNotEmpty() }
 
@@ -208,7 +209,7 @@ class ArtistViewModel @Inject constructor(
                     val resolvedPage = page.copy(sections = sectionsWithDurations)
                     val filteredSections = resolvedPage.sections
                         .map { section ->
-                            section.copy(items = section.items.filterExplicit(hideExplicit).filterVideoSongs(hideVideoSongs).filterYoutubeShorts(hideYoutubeShorts))
+                            section.copy(items = section.items.filterExplicit(hideExplicit).filterVideoSongs(hideVideoSongs).filterPodcasts().filterYoutubeShorts(hideYoutubeShorts))
                         }
                         .filter { section -> section.items.isNotEmpty() }
 
