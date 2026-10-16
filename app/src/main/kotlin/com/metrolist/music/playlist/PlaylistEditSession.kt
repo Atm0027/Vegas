@@ -6,6 +6,8 @@
 
 package com.metrolist.music.playlist
 
+import com.metrolist.music.db.entities.PlaylistSongMap
+
 class PlaylistEditSession(
     initialMapIds: List<Int>,
     private val initialName: String,
@@ -72,4 +74,11 @@ data class EditResult(
     val name: String,
     val thumbnailUrl: String?,
     val changed: Boolean,
+)
+
+data class PlaylistSnapshot(
+    val playlistId: String,
+    val name: String,
+    val thumbnailUrl: String?,
+    val maps: List<PlaylistSongMap>,
 )

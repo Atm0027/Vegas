@@ -41,6 +41,8 @@ import com.metrolist.music.db.entities.Playlist
 import com.metrolist.music.db.entities.PlaylistEntity
 import com.metrolist.music.db.entities.PlaylistSong
 import com.metrolist.music.db.entities.PlaylistSongMap
+import com.metrolist.music.playlist.EditResult
+import com.metrolist.music.playlist.PlaylistSnapshot
 import com.metrolist.music.db.entities.PodcastEntity
 import com.metrolist.music.db.entities.RecognitionHistory
 import com.metrolist.music.db.entities.RelatedSongMap
@@ -1626,6 +1628,47 @@ interface DatabaseDao {
     @Transaction
     @Query("DELETE FROM playlist_song_map WHERE playlistId = :playlistId")
     fun clearPlaylist(playlistId: String)
+
+    @Query("SELECT * FROM playlist WHERE id = :playlistId")
+    fun playlistEntity(playlistId: String): PlaylistEntity?
+
+    @Query("UPDATE playlist_song_map SET position = :position WHERE id = :mapId")
+    fun setPlaylistSongPosition(mapId: Int, position: Int)
+
+    @Query("DELETE FROM playlist_song_map WHERE id = :mapId")
+    fun deletePlaylistSongMap(mapId: Int)
+
+    @Query("UPDATE playlist SET name = :name, thumbnailUrl = :thumbnailUrl, lastUpdateTime = :now WHERE id = :playlistId")
+    fun updatePlaylistDetails(
+        playlistId: String,
+        name: String,
+        thumbnailUrl: String?,
+        now: LocalDateTime = LocalDateTime.now(),
+    )
+
+    /** Everything an edit can change, so it can be undone. */
+    @Transaction
+    fun playlistSnapshot(playlistId: String): PlaylistSnapshot? {
+        val entity = playlistEntity(playlistId) ?: return null
+        return PlaylistSnapshot(playlistId, entity.name, entity.thumbnailUrl, playlistSongMaps(playlistId, 0))
+    }
+
+    @Transaction
+    fun applyPlaylistEdit(
+        playlistId: String,
+        result: EditResult,
+    ) {
+        result.removed.forEach { deletePlaylistSongMap(it) }
+        result.positions.forEach { (mapId, position) -> setPlaylistSongPosition(mapId, position) }
+        updatePlaylistDetails(playlistId, result.name, result.thumbnailUrl)
+    }
+
+    @Transaction
+    fun restorePlaylistSnapshot(snapshot: PlaylistSnapshot) {
+        clearPlaylist(snapshot.playlistId)
+        snapshot.maps.forEach { insert(it) }
+        updatePlaylistDetails(snapshot.playlistId, snapshot.name, snapshot.thumbnailUrl)
+    }
 
     @Transaction
     @Query("SELECT * FROM artist WHERE name = :name")
