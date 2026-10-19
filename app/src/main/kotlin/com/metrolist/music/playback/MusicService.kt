@@ -656,7 +656,6 @@ class MusicService :
             service = this@MusicService
             toggleLike = ::toggleLike
             toggleStartRadio = ::toggleStartRadio
-            toggleLibrary = ::toggleLibrary
             addToTargetPlaylist = ::addToTargetPlaylist
         }
         mediaSession =
@@ -2010,18 +2009,6 @@ class MusicService :
             extendShuffleOrder((start until player.mediaItemCount).toSet(), shufflePlaylistFirst)
         }
         player.prepare()
-    }
-
-    fun toggleLibrary() {
-        scope.launch {
-            val songToToggle = currentSong.first()
-            songToToggle?.let {
-                database.query {
-                    update(it.song.toggleLibrary())
-                }
-                currentMediaMetadata.value = player.currentMetadata
-            }
-        }
     }
 
     fun toggleLike() {

@@ -71,7 +71,6 @@ import com.metrolist.innertube.YouTube.SearchFilter.Companion.FILTER_ARTIST
 import com.metrolist.innertube.YouTube.SearchFilter.Companion.FILTER_COMMUNITY_PLAYLIST
 import com.metrolist.innertube.YouTube.SearchFilter.Companion.FILTER_EPISODE
 import com.metrolist.innertube.YouTube.SearchFilter.Companion.FILTER_FEATURED_PLAYLIST
-import com.metrolist.innertube.YouTube.SearchFilter.Companion.FILTER_PODCAST
 import com.metrolist.innertube.YouTube.SearchFilter.Companion.FILTER_PROFILE
 import com.metrolist.innertube.YouTube.SearchFilter.Companion.FILTER_SONG
 import com.metrolist.innertube.YouTube.SearchFilter.Companion.FILTER_VIDEO

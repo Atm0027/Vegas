@@ -65,7 +65,9 @@ constructor(
     /** Files Android only lets the user delete after a system confirmation (another install made them). */
     data class PendingDelete(val songIds: List<String>, val intentSender: IntentSender)
 
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    // Enqueueing blocks on WorkManager futures; marking a big playlist must not exhaust Dispatchers.IO,
+    // which the player's stream resolver also needs.
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO.limitedParallelism(4))
 
     val downloads: StateFlow<Map<String, Download>> =
         combine(database.allDownloads(), queue.states(), ::combineDownloads)

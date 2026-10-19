@@ -205,7 +205,6 @@ val MixSortDescendingKey = booleanPreferencesKey("albumSortDescending")
 val SongFilterKey = stringPreferencesKey("songFilter")
 val ArtistFilterKey = stringPreferencesKey("artistFilter")
 val AlbumFilterKey = stringPreferencesKey("albumFilter")
-val PodcastFilterKey = stringPreferencesKey("podcastFilter")
 
 val LastWeeklyMostPlaylistSyncKey = longPreferencesKey("last_weekly_most_playlist_sync")
 val LastMonthlyMostPlaylistSyncKey = longPreferencesKey("last_monthly_most_playlist_sync")
@@ -231,8 +230,6 @@ val RandomizeHomeOrderKey = booleanPreferencesKey("randomizeHomeOrder")
 
 val ShowLikedPlaylistKey = booleanPreferencesKey("show_liked_playlist")
 val ShowDownloadedPlaylistKey = booleanPreferencesKey("show_downloaded_playlist")
-val ShowTopPlaylistKey = booleanPreferencesKey("show_top_playlist")
-val ShowCachedPlaylistKey = booleanPreferencesKey("show_cached_playlist")
 val ShowUploadedPlaylistKey = booleanPreferencesKey("show_uploaded_playlist")
 
 enum class LibraryViewType {
@@ -263,12 +260,6 @@ enum class AlbumFilter {
     LIBRARY,
     LIKED,
     UPLOADED,
-}
-
-enum class PodcastFilter {
-    EPISODES,
-    CHANNELS,
-    DOWNLOADED,
 }
 
 enum class SongSortType {

@@ -306,14 +306,6 @@ class PlayerConnection(
         service.setMuted(muted)
     }
 
-    fun toggleLibrary() {
-        try {
-            service.toggleLibrary()
-        } catch (e: Exception) {
-            Timber.tag(TAG).e(e, "Error in toggleLibrary")
-        }
-    }
-
     /**
      * Toggle play/pause - handles Cast when active
      */
