@@ -186,7 +186,7 @@
     kotlinx.serialization.KSerializer serializer(...);
 }
 
-# Vega: jaudiotagger references desktop-only image classes it never uses on Android
+# Vegas: jaudiotagger references desktop-only image classes it never uses on Android
 -dontwarn java.awt.**
 -dontwarn javax.imageio.**
 -dontwarn javax.swing.**

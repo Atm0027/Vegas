@@ -1,5 +1,5 @@
 /**
- * Vega: downloaded songs are real files (content:// or file://). They open through [local] and never
+ * Vegas: downloaded songs are real files (content:// or file://). They open through [local] and never
  * touch the network or the stream cache; everything else goes through the [remote] cache chain.
  * Licensed under GPL-3.0
  */

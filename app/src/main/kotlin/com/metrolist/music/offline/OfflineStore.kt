@@ -1,7 +1,7 @@
 /**
- * Vega: downloaded songs are real files. On Android 10+ they go to Music/Vega through MediaStore
- * (no permission needed to write, and they survive reinstalling Vega); on Android 8-9 they go to
- * the app's private Music/Vega folder. Reading files a previous install wrote needs the audio read
+ * Vegas: downloaded songs are real files. On Android 10+ they go to Music/Vegas through MediaStore
+ * (no permission needed to write, and they survive reinstalling Vegas); on Android 8-9 they go to
+ * the app's private Music/Vegas folder. Reading files a previous install wrote needs the audio read
  * permission, so "no access" is kept apart from "missing": a row must not be dropped just because
  * this install cannot see the file yet.
  * Licensed under GPL-3.0
@@ -152,6 +152,43 @@ class OfflineStore @Inject constructor(
             null
         }
 
+    /** Downloads still in the folder of the app's old name, Music/Vega. */
+    fun legacyFiles(): List<Uri> {
+        if (!usesMediaStore) return emptyList()
+        val collection = MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+        val result = mutableListOf<Uri>()
+        resolver.query(
+            collection,
+            arrayOf(MediaStore.MediaColumns._ID, MediaStore.MediaColumns.DISPLAY_NAME),
+            "${MediaStore.MediaColumns.RELATIVE_PATH} = ?",
+            arrayOf(LEGACY_RELATIVE_PATH),
+            null,
+        )?.use { c ->
+            while (c.moveToNext()) {
+                if (OfflineFileName.videoIdOf(c.getString(1) ?: continue) != null) {
+                    result += ContentUris.withAppendedId(collection, c.getLong(0))
+                }
+            }
+        }
+        return result
+    }
+
+    /** One system confirmation to modify files the old app created (Android 11+). */
+    fun moveRequest(uris: List<Uri>): IntentSender? =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && uris.isNotEmpty()) {
+            MediaStore.createWriteRequest(resolver, uris).intentSender
+        } else {
+            null
+        }
+
+    /** Moves the files into Music/Vegas; MediaStore ids stay the same, so download rows stay valid. */
+    fun moveToCurrentFolder(uris: List<Uri>): Int =
+        uris.count { uri ->
+            runCatching {
+                resolver.update(uri, ContentValues().apply { put(MediaStore.MediaColumns.RELATIVE_PATH, RELATIVE_PATH) }, null, null) > 0
+            }.getOrDefault(false)
+        }
+
     fun scan(): List<ScannedFile> {
         if (!usesMediaStore) {
             return privateDir().listFiles().orEmpty().mapNotNull { file ->
@@ -170,8 +207,8 @@ class OfflineStore @Inject constructor(
                 MediaStore.MediaColumns.MIME_TYPE,
                 MediaStore.Audio.AudioColumns.DURATION,
             ),
-            "${MediaStore.MediaColumns.RELATIVE_PATH} = ?",
-            arrayOf(RELATIVE_PATH),
+            "${MediaStore.MediaColumns.RELATIVE_PATH} IN (?, ?)",
+            arrayOf(RELATIVE_PATH, LEGACY_RELATIVE_PATH),
             null,
         )?.use { c ->
             while (c.moveToNext()) {
@@ -211,7 +248,10 @@ class OfflineStore @Inject constructor(
     private fun mimeOf(name: String) = if (name.endsWith(".webm")) "audio/webm" else "audio/mp4"
 
     companion object {
-        const val FOLDER = "Vega"
-        const val RELATIVE_PATH = "Music/Vega/"
+        const val FOLDER = "Vegas"
+        const val RELATIVE_PATH = "Music/Vegas/"
+
+        /** Folder used before the app was renamed from Vega to Vegas. */
+        const val LEGACY_RELATIVE_PATH = "Music/Vega/"
     }
 }

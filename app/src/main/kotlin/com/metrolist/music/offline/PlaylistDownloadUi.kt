@@ -1,5 +1,5 @@
 /**
- * Vega: a playlist counts as downloaded when the user marked it (it then stays downloaded as songs
+ * Vegas: a playlist counts as downloaded when the user marked it (it then stays downloaded as songs
  * are added). Removing the mark asks whether to delete the files too, "no" by default.
  * Licensed under GPL-3.0
  */

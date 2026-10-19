@@ -1,7 +1,7 @@
 /**
  * Metrolist Project (C) 2026
  * Licensed under GPL-3.0 | See git history for contributors
- * Vega: simplified About screen. Keeps the attribution to Metrolist required by GPL-3.0.
+ * Vegas: simplified About screen. Keeps the attribution to Metrolist required by GPL-3.0.
  */
 
 package com.metrolist.music.ui.screens.settings
@@ -49,7 +49,7 @@ import com.metrolist.music.ui.component.Material3SettingsGroup
 import com.metrolist.music.ui.component.Material3SettingsItem
 import com.metrolist.music.ui.utils.backToMain
 
-private const val VEGA_REPO_URL = "https://github.com/Atm0027/vega"
+private const val VEGAS_REPO_URL = "https://github.com/Atm0027/vegas"
 private const val LICENSE_URL = "https://www.gnu.org/licenses/gpl-3.0.html"
 private const val METROLIST_REPO_URL = "https://github.com/MetrolistGroup/Metrolist"
 
@@ -85,13 +85,13 @@ fun AboutScreen(
                         .padding(24.dp),
             ) {
                 Image(
-                    painter = painterResource(R.drawable.ic_vega_foreground),
+                    painter = painterResource(R.drawable.ic_vegas_foreground),
                     contentDescription = null,
                     modifier =
                         Modifier
                             .size(64.dp)
                             .clip(RoundedCornerShape(16.dp))
-                            .background(colorResource(R.color.vega_icon_background)),
+                            .background(colorResource(R.color.vegas_icon_background)),
                 )
                 Spacer(Modifier.width(20.dp))
                 Column {
@@ -120,7 +120,7 @@ fun AboutScreen(
         Spacer(Modifier.height(16.dp))
 
         Text(
-            text = stringResource(R.string.about_vega_description),
+            text = stringResource(R.string.about_vegas_description),
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
         )
@@ -140,7 +140,7 @@ fun AboutScreen(
                     Material3SettingsItem(
                         icon = painterResource(R.drawable.github),
                         title = { Text(stringResource(R.string.about_source_code), fontWeight = FontWeight.SemiBold) },
-                        onClick = { uriHandler.openUri(VEGA_REPO_URL) },
+                        onClick = { uriHandler.openUri(VEGAS_REPO_URL) },
                     ),
                     Material3SettingsItem(
                         icon = painterResource(R.drawable.info),

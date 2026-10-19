@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
-    <background android:drawable="@color/vega_icon_background" />
-    <foreground android:drawable="@drawable/ic_vega_foreground" />
-    <monochrome android:drawable="@drawable/ic_vega_monochrome" />
+    <background android:drawable="@color/vegas_icon_background" />
+    <foreground android:drawable="@drawable/ic_vegas_foreground" />
+    <monochrome android:drawable="@drawable/ic_vegas_monochrome" />
 </adaptive-icon>

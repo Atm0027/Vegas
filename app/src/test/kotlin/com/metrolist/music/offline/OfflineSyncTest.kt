@@ -57,7 +57,7 @@ class OfflineSyncTest {
     }
 
     @Test
-    fun fileDeletedOutsideVega_isDownloadedAgain() = runBlocking {
+    fun fileDeletedOutsideVegas_isDownloadedAgain() = runBlocking {
         trackedPlaylistWith("A")
         val file = File.createTempFile("songA", ".m4a", context.cacheDir)
         download("A", Uri.fromFile(file))
@@ -72,9 +72,9 @@ class OfflineSyncTest {
 
     @Test
     fun fileWithoutReadPermission_isKeptAndNotQueued() = runBlocking {
-        Robolectric.setupContentProvider(com.metrolist.music.offline.OfflineStoreTest.DenyingProvider::class.java, "vega.denied")
+        Robolectric.setupContentProvider(com.metrolist.music.offline.OfflineStoreTest.DenyingProvider::class.java, "vegas.denied")
         trackedPlaylistWith("A")
-        download("A", Uri.parse("content://vega.denied/audio/1"))
+        download("A", Uri.parse("content://vegas.denied/audio/1"))
 
         assertEquals(OfflineSync.VerifyReport(missing = 0, noAccess = 1), sync.verifyFiles())
         assertNotNull(database.downloadEntity("A"))

@@ -345,6 +345,6 @@
     <string name="enable_scrobbling">Уключыць скробблінг</string>
     <string name="lastfm_now_playing">Адпраўляць статус \"Зараз іграе\"</string>
     <string name="last_fm_send_likes">Сінхранізаваць адзнакі «Падабаецца»</string>
-    <string name="last_fm_send_likes_description">Дадаваць ці прыбіраць адзнаку «Любімае» на Last.fm, калі ставіцца ці здымаецца адзнака «Падабаецца» ў Vega</string>
+    <string name="last_fm_send_likes_description">Дадаваць ці прыбіраць адзнаку «Любімае» на Last.fm, калі ставіцца ці здымаецца адзнака «Падабаецца» ў Vegas</string>
     <string name="logging_in">Выконваецца ўваход…</string>
 </resources>

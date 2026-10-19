@@ -1147,7 +1147,7 @@ interface DatabaseDao {
     @Query("UPDATE playlist SET pinned = :pinned WHERE id = :playlistId")
     fun setPlaylistPinned(playlistId: String, pinned: Boolean)
 
-    // Vega offline: downloads are real files tracked in the download table.
+    // Vegas offline: downloads are real files tracked in the download table.
     @Query("SELECT songId FROM download")
     fun downloadedIdList(): Flow<List<String>>
 

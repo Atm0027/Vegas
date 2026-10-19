@@ -1,5 +1,5 @@
 /**
- * Vega: one downloaded song, stored as a real file (Music/Vega on Android 10+). A song counts as
+ * Vegas: one downloaded song, stored as a real file (Music/Vegas on Android 10+). A song counts as
  * downloaded while it has a row here and the file at [uri] still exists.
  * Licensed under GPL-3.0
  */

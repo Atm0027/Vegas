@@ -1,7 +1,7 @@
 /**
  * Metrolist Project (C) 2026
  * Licensed under GPL-3.0 | See git history for contributors
- * Vega: facade over the offline download system (real files in Music/Vega, WorkManager queue).
+ * Vegas: facade over the offline download system (real files in Music/Vegas, WorkManager queue).
  * It keeps the old `downloads` map of Media3 [Download]s so the existing screens keep working.
  */
 
@@ -76,6 +76,9 @@ constructor(
     private val _deleteRequests = MutableSharedFlow<PendingDelete>(extraBufferCapacity = 4)
     val deleteRequests: SharedFlow<PendingDelete> = _deleteRequests
 
+    private val _moveRequests = MutableSharedFlow<IntentSender>(extraBufferCapacity = 1)
+    val moveRequests: SharedFlow<IntentSender> = _moveRequests
+
     fun getDownload(songId: String): Flow<Download?> = downloads.map { it[songId] }
 
     fun download(song: Song) = download(song.toMediaMetadata())
@@ -149,19 +152,28 @@ constructor(
 
     fun hasReadPermission(): Boolean = store.hasReadPermission()
 
-    /** Recognises files already in Music/Vega (previous install or restored backup). */
+    /** Recognises files already in Music/Vegas (previous install or restored backup). */
     fun scanFolder(onDone: (OfflineScanner.ScanReport) -> Unit = {}) {
         scope.launch {
             val report = runCatching { scanner.scan() }
-                .onFailure { Timber.tag(TAG).e(it, "Music/Vega scan failed") }
+                .onFailure { Timber.tag(TAG).e(it, "Music/Vegas scan failed") }
                 .getOrDefault(OfflineScanner.ScanReport(0, 0))
+            runCatching { store.moveRequest(store.legacyFiles())?.let(_moveRequests::tryEmit) }
+                .onFailure { Timber.tag(TAG).w(it, "Could not ask to move Music/Vega") }
             withContext(Dispatchers.Main) { onDone(report) }
+        }
+    }
+
+    /** Called once the user allows modifying the old app's files: moves them to Music/Vegas. */
+    fun moveLegacyFolder() {
+        scope.launch {
+            val moved = store.moveToCurrentFolder(store.legacyFiles())
+            Timber.tag(TAG).i("Moved $moved downloads from Music/Vega to Music/Vegas")
         }
     }
 
     fun remove(songId: String) = removeAll(listOf(songId))
 
-    /** Cancels queued work and deletes the files; asks once for files another install created. */
     /** Deletes every download and unmarks the tracked lists, so nothing is downloaded again. */
     fun removeEverything(songIds: List<String>) {
         scope.launch {
@@ -171,6 +183,7 @@ constructor(
         }
     }
 
+    /** Cancels queued work and deletes the files; asks once for files another install created. */
     fun removeAll(songIds: List<String>) {
         if (songIds.isEmpty()) return
         scope.launch {

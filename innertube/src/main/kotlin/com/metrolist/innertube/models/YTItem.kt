@@ -174,7 +174,7 @@ fun <T : YTItem> List<T>.filterVideoSongs(disableVideos: Boolean = false) =
         this
     }
 
-/** Vega: podcasts are not part of the app; shows and episodes are dropped from every list. */
+/** Vegas: podcasts are not part of the app; shows and episodes are dropped from every list. */
 fun <T : YTItem> List<T>.filterPodcasts() =
     filterNot { it is PodcastItem || it is EpisodeItem || (it is SongItem && it.isEpisode) }
 

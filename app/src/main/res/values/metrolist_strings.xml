@@ -360,12 +360,12 @@
     <string name="check_for_updates">Automatically check for updates</string>
     <string name="update_notifications">Enable update notifications</string>
     <string name="update_available_title">New update available</string>
-    <string name="update_available_message">Vega %s is ready to download.</string>
+    <string name="update_available_message">Vegas %s is ready to download.</string>
     <string name="update_action">Update</string>
     <string name="update_channel_name">App updates</string>
     <string name="update_channel_desc">Notifications about new app versions</string>
-    <string name="kmp_upgrade_title">Vega KMP %s is available</string>
-    <string name="kmp_upgrade_warning">Vega KMP is still in development. You may encounter bugs or incomplete features.</string>
+    <string name="kmp_upgrade_title">Vegas KMP %s is available</string>
+    <string name="kmp_upgrade_warning">Vegas KMP is still in development. You may encounter bugs or incomplete features.</string>
     <string name="kmp_upgrade_action">Try KMP</string>
     <string name="kmp_upgrade_later">Not now</string>
 
@@ -398,7 +398,7 @@
     <string name="enable_scrobbling">Enable scrobbling</string>
     <string name="lastfm_now_playing">Send Now Playing status</string>
     <string name="last_fm_send_likes">Sync Loved and Unloved</string>
-    <string name="last_fm_send_likes_description">Love or unlove songs in Last.fm when you like or unlike them in Vega</string>
+    <string name="last_fm_send_likes_description">Love or unlove songs in Last.fm when you like or unlike them in Vegas</string>
     <string name="logging_in">Logging in…</string>
 
     <string name="scrobbling_configuration">Scrobbling configuration</string>
@@ -453,10 +453,10 @@
     <string name="wrapped_total_artists_subtitle">unique artists!</string>
     <string name="wrapped_total_songs_title">You\'ve listened to</string>
     <string name="wrapped_total_songs_subtitle">unique songs!</string>
-    <string name="wrapped_intro_title">VEGA</string>
+    <string name="wrapped_intro_title">VEGAS</string>
     <string name="wrapped_intro_subtitle">it\'s time to see what you\'ve been listening to all this year…</string>
     <string name="wrapped_intro_button">let\'s go!</string>
-    <string name="wrapped_logo_content_description">Vega Logo</string>
+    <string name="wrapped_logo_content_description">Vegas Logo</string>
     <string name="wrapped_year">2025</string>
     <string name="wrapped_ready_title">YOUR WRAPPED IS READY!</string>
     <string name="wrapped_ready_subtitle">Time to see what you loved all this year…</string>
@@ -529,14 +529,14 @@
     <!-- Widget strings -->
     <string name="album_art">Album art</string>
     <string name="no_song_playing">No song playing</string>
-    <string name="tap_to_open">Tap to open Vega</string>
+    <string name="tap_to_open">Tap to open Vegas</string>
     <string name="previous">Previous</string>
     <string name="play_pause">Play/Pause</string>
     <string name="player_pause">Pause</string>
     <string name="next">Next</string>
     <string name="like">Like</string>
     <string name="not_playing">No song playing</string>
-    <string name="tap_to_play">Tap to open Vega</string>
+    <string name="tap_to_play">Tap to open Vegas</string>
     <string name="widget_description">Music player widget with playback controls</string>
     <string name="turntable_widget_description">Circular music widget with play and like controls</string>
     <string name="widget_music_player">Music Player</string>
@@ -614,7 +614,7 @@
     <string name="crash_description">An unexpected error occurred. Please share the crash report to help us fix the issue</string>
     <string name="crash_share_logs">Share logs</string>
     <string name="crash_share_title">Share crash report</string>
-    <string name="crash_report_subject">Vega crash report</string>
+    <string name="crash_report_subject">Vegas crash report</string>
     <string name="crash_close">Close</string>
     <string name="crash_no_log">No crash log available</string>
 
@@ -666,7 +666,7 @@
     <string name="clear_recognition_history_confirm">Are you sure you want to clear all recognition history?</string>
     <string name="delete_from_history">Delete from history</string>
     <string name="re_listen">Re-listen</string>
-    <string name="play_on_app">Play on Vega</string>
+    <string name="play_on_app">Play on Vegas</string>
     <string name="qs_tile_music_recognizer">Recognize music</string>
     <string name="recognition_notification_channel_name">Music recognition</string>
     <string name="recognition_notification_channel_desc">Shows a notification while identifying a song from quick settings</string>
@@ -674,7 +674,7 @@
     <string name="recognition_notification_processing">Identifying…</string>
     <string name="recognition_notification_no_match">No match found</string>
     <string name="recognition_notification_failed">Recognition failed</string>
-    <string name="listen_on_metrolist">Listen on Vega</string>
+    <string name="listen_on_metrolist">Listen on Vegas</string>
 
     <!-- CSV Import Strings -->
     <string name="map_csv_columns">Map CSV columns</string>
@@ -850,11 +850,11 @@
     <string name="pin_playlist_to_top">Pin to top</string>
     <string name="unpin_playlist">Unpin</string>
     <string name="reorder_playlists">Reorder playlists</string>
-    <string name="about_vega_description">Personal, audio-only music player. No account, no tracking.</string>
-    <string name="about_based_on">Vega is a modified version of Metrolist by Mo Agamy and contributors, distributed under the GPL-3.0 licence.</string>
-    <string name="about_source_code">Vega source code</string>
+    <string name="about_vegas_description">Personal, audio-only music player. No account, no tracking.</string>
+    <string name="about_based_on">Vegas is a modified version of Metrolist by Mo Agamy and contributors, distributed under the GPL-3.0 licence.</string>
+    <string name="about_source_code">Vegas source code</string>
     <string name="about_original_project">Original project: Metrolist</string>
-    <!-- Vega offline mode -->
+    <!-- Vegas offline mode -->
     <string name="download_playlist">Download playlist</string>
     <string name="remove_playlist_download">Remove download</string>
     <string name="remove_playlist_download_desc">New songs in this playlist will no longer be downloaded.</string>
@@ -863,15 +863,15 @@
     <string name="download_on_mobile_data_desc">When off, automatic downloads only use Wi-Fi</string>
     <string name="download_liked">Download Liked songs</string>
     <string name="download_liked_desc">Keep every liked song downloaded</string>
-    <string name="scan_vega_folder">Find downloads in Music/Vega</string>
-    <string name="scan_vega_folder_desc">Recognise files from a previous install</string>
+    <string name="scan_vegas_folder">Find downloads in Music/Vegas</string>
+    <string name="scan_vegas_folder_desc">Recognise files from a previous install</string>
     <string name="scan_result">%1$d downloads found</string>
     <string name="delete_all_downloads">Delete all downloads</string>
-    <string name="delete_all_downloads_confirm">Delete every downloaded file from Music/Vega?</string>
+    <string name="delete_all_downloads_confirm">Delete every downloaded file from Music/Vegas?</string>
     <string name="downloads_used_space">Space used by downloads</string>
     <string name="download_will_return">It will download again because it is in “%1$s”</string>
     <string name="offline_no_more_downloaded">Offline: no more downloaded songs in the queue</string>
     <string name="offline_downloads">Offline downloads</string>
-    <string name="scan_permission_needed">Vega needs access to your music to find earlier downloads</string>
+    <string name="scan_permission_needed">Vegas needs access to your music to find earlier downloads</string>
     <string name="remove_from_list">Remove from list</string>
 </resources>

@@ -1,6 +1,6 @@
 /**
- * Vega: after a backup restore, asks once for the audio read permission and recognises the files
- * already in Music/Vega, so restored downloaded playlists play offline without downloading again.
+ * Vegas: after a backup restore, asks once for the audio read permission and recognises the files
+ * already in Music/Vegas, so restored downloaded playlists play offline without downloading again.
  * Licensed under GPL-3.0
  */
 

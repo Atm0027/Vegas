@@ -1,6 +1,6 @@
 /**
- * Vega: one-time move of downloads made by the old system (opaque chunks in the private ExoPlayer
- * download cache) into real files in Music/Vega, without using the network. Downloads the old
+ * Vegas: one-time move of downloads made by the old system (opaque chunks in the private ExoPlayer
+ * download cache) into real files in Music/Vegas, without using the network. Downloads the old
  * cache holds only partly are queued again through the new system. The cache space is freed after.
  * Licensed under GPL-3.0
  */

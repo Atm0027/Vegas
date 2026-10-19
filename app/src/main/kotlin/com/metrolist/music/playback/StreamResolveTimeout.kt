@@ -1,5 +1,5 @@
 /**
- * Vega: bound stream resolution time.
+ * Vegas: bound stream resolution time.
  * Licensed under GPL-3.0
  */
 

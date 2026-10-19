@@ -229,7 +229,7 @@ class App :
                 }
         }
 
-        // Vega has no YouTube account or Discord: drop data left by older installs or restored backups.
+        // Vegas has no YouTube account or Discord: drop data left by older installs or restored backups.
         applicationScope.launch(Dispatchers.IO) {
             deleteSharedPreferences(LegacyAccountCleanup.DISCORD_TOKEN_PREFS)
             val stale = LegacyAccountCleanup.keysToRemove(dataStore.data.first())

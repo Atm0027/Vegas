@@ -194,10 +194,10 @@
     <string name="wrapped_total_artists_subtitle">artis unik!</string>
     <string name="wrapped_total_songs_title">Anda telah mendengarkan</string>
     <string name="wrapped_total_songs_subtitle">lagu unik!</string>
-    <string name="wrapped_intro_title">VEGA</string>
+    <string name="wrapped_intro_title">VEGAS</string>
     <string name="wrapped_intro_subtitle">saatnya melihat apa yang telah Anda dengarkan sepanjang tahun ini…</string>
     <string name="wrapped_intro_button">ayo mulai!</string>
-    <string name="wrapped_logo_content_description">Logo Vega</string>
+    <string name="wrapped_logo_content_description">Logo Vegas</string>
     <string name="wrapped_year">2025</string>
     <string name="wrapped_ready_title">WRAPPED ANDA SUDAH SIAP!</string>
     <string name="wrapped_ready_subtitle">Saatnya melihat apa yang Anda sukai sepanjang tahun ini…</string>
@@ -219,7 +219,7 @@
     <string name="google_cast">Google Cast</string>
     <string name="google_cast_description">Kirim audio ke Chromecast dan perangkat berkemampuan Cast lainnya</string>
     <string name="last_fm_send_likes">Sinkronkan Loved dan Unloved</string>
-    <string name="last_fm_send_likes_description">Love atau unlove lagu di Last.fm saat Anda menyukai atau tidak menyukai lagu di Vega</string>
+    <string name="last_fm_send_likes_description">Love atau unlove lagu di Last.fm saat Anda menyukai atau tidak menyukai lagu di Vegas</string>
     <string name="logging_in">Sedang login…</string>
     <string name="hide_video_songs">Sembunyikan video musik</string>
     <string name="details_desc">Lihat detail lagu</string>
@@ -251,7 +251,7 @@
     <string name="pause_music_when_media_is_muted">Jeda musik saat media dibisukan</string>
     <string name="album_art">Sampul album</string>
     <string name="no_song_playing">Tidak ada lagu yang sedang diputar</string>
-    <string name="tap_to_open">Ketuk untuk membuka Vega</string>
+    <string name="tap_to_open">Ketuk untuk membuka Vegas</string>
     <string name="previous">Sebelumnya</string>
     <string name="play_pause">Putar/Jeda</string>
     <string name="next">Selanjutnya</string>
@@ -288,7 +288,7 @@
     <string name="crash_description">Terjadi kesalahan tak terduga. Harap bagikan laporan crash untuk membantu kami memperbaiki masalah ini</string>
     <string name="crash_share_logs">Bagikan log</string>
     <string name="crash_share_title">Bagikan laporan crash</string>
-    <string name="crash_report_subject">Laporan crash Vega</string>
+    <string name="crash_report_subject">Laporan crash Vegas</string>
     <string name="crash_close">Tutup</string>
     <string name="crash_no_log">Tidak ada log crash yang tersedia</string>
     <string name="palette_dynamic">Dinamis</string>
@@ -318,7 +318,7 @@
     <string name="cd_system_mode">Mode sistem</string>
     <string name="cd_palette_item">palet %1$s</string>
     <string name="not_playing">Tidak ada lagu yang diputar</string>
-    <string name="tap_to_play">Ketuk untuk membuka Vega</string>
+    <string name="tap_to_play">Ketuk untuk membuka Vegas</string>
     <string name="widget_music_player">Pemutar Musik</string>
     <string name="widget_turntable">Meja putar</string>
     <string name="ai_lyrics_translation">Terjemahan lirik AI</string>
@@ -376,7 +376,7 @@
     <string name="clear_recognition_history_confirm">Apakah Anda yakin ingin menghapus semua riwayat pengenalan?</string>
     <string name="delete_from_history">Hapus dari riwayat</string>
     <string name="re_listen">Dengarkan ulang</string>
-    <string name="play_on_app">Putar di Vega</string>
+    <string name="play_on_app">Putar di Vegas</string>
     <string name="map_csv_columns">Petakan kolom CSV</string>
     <string name="first_row_is_header">Baris pertama adalah header</string>
     <string name="artist_name_column">Kolom nama artis</string>
@@ -605,7 +605,7 @@
     <string name="recognition_notification_processing">Mengidentifikasi…</string>
     <string name="recognition_notification_no_match">Tidak ditemukan kecocokan</string>
     <string name="recognition_notification_failed">Pengenalan gagal</string>
-    <string name="listen_on_metrolist">Dengarkan di Vega</string>
+    <string name="listen_on_metrolist">Dengarkan di Vegas</string>
     <string name="android_auto">Android Auto</string>
     <string name="android_auto_visible_sections">Bagian yang terlihat</string>
     <string name="android_auto_reorder_hint">Ketuk bagian untuk mengaktifkan atau menonaktifkannya.\nTekan lama gagang seret untuk mengurutkan ulang. Bagian pertama akan ditampilkan secara default</string>
@@ -683,8 +683,8 @@
     <string name="enable_dynamic_icon_desc">Gunakan tema dinamis untuk ikon app. Saat dimatikan, ikon menggunakan warna polos.</string>
     <string name="enable_landscape_scaling">Pengukuran landscape</string>
     <string name="enable_dynamic_icon">Warna ikon dinamis</string>
-    <string name="kmp_upgrade_title">Vega KMP %s sudah tersedia</string>
-    <string name="kmp_upgrade_warning">Vega KMP masih dalam pengembangan. Anda mungkin menemui bug atau fitur yang belum lengkap.</string>
+    <string name="kmp_upgrade_title">Vegas KMP %s sudah tersedia</string>
+    <string name="kmp_upgrade_warning">Vegas KMP masih dalam pengembangan. Anda mungkin menemui bug atau fitur yang belum lengkap.</string>
     <string name="kmp_upgrade_later">Jangan sekarang</string>
     <string name="kmp_upgrade_action">Coba KMP</string>
     <string name="android_auto_search_options">Opsi Pencarian</string>
@@ -698,7 +698,7 @@
     <string name="playlist_position_beginning_desc">Lagu yang baru ditambahkan muncul sebelum lagu yang sudah ada</string>
     <string name="playlist_position_end">Akhir daftar putar</string>
     <string name="playlist_position_end_desc">Lagu yang baru ditambahkan muncul setelah lagu yang sudah ada</string>
-    <string name="update_available_message">Vega %s siap diunduh.</string>
+    <string name="update_available_message">Vegas %s siap diunduh.</string>
     <string name="update_action">Perbarui</string>
     <string name="error_no_internet_connection">Tidak ada koneksi internet</string>
     <string name="error_offline_playback">Anda sedang offline. Hubungkan ke internet, atau putar trek yang telah diunduh untuk penggunaan offline.</string>

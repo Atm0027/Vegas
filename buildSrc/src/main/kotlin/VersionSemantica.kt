@@ -1,5 +1,5 @@
 /**
- * Qué nombre le toca a la siguiente versión de Vega, deducido de los commits.
+ * Qué nombre le toca a la siguiente versión de Vegas, deducido de los commits.
  *
  * Mismo sistema que JARVIS (`core/shell/version_semantica.py`): el nombre sale de
  * los mensajes en formato Conventional Commits desde la última publicación —`feat:`
@@ -8,7 +8,7 @@
  *
  * Esto es lógica pura y se prueba sin repositorio. Quien llama a git es la cáscara
  * de `app/build.gradle.kts`, que además deja fuera los commits que vienen de
- * Metrolist: la versión de Vega solo cuenta el trabajo de Vega.
+ * Metrolist: la versión de Vegas solo cuenta el trabajo de Vegas.
  */
 enum class Salto { NINGUNO, PARCHE, MENOR, MAYOR }
 

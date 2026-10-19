@@ -1,6 +1,6 @@
 /**
- * Vega: writes title, artists, album and cover into a downloaded m4a, so the file looks right in
- * the Music/Vega folder and in other players.
+ * Vegas: writes title, artists, album and cover into a downloaded m4a, so the file looks right in
+ * the Music/Vegas folder and in other players.
  * Licensed under GPL-3.0
  */
 

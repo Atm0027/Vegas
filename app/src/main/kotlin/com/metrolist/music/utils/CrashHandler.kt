@@ -50,7 +50,7 @@ class CrashHandler private constructor(
         }.toString()
 
         return buildString {
-            appendLine("Vega Crash Report")
+            appendLine("Vegas Crash Report")
             appendLine("=".repeat(50))
             appendLine()
             appendLine("Manufacturer: ${Build.MANUFACTURER}")

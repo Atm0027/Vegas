@@ -195,7 +195,7 @@ fun PlaybackError(
             OutlinedButton(
                 onClick = {
                     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    clipboard.setPrimaryClip(ClipData.newPlainText("Vega Playback Error", errorReport))
+                    clipboard.setPrimaryClip(ClipData.newPlainText("Vegas Playback Error", errorReport))
                 },
                 shape = RoundedCornerShape(20.dp),
             ) {
@@ -229,7 +229,7 @@ private fun buildPlaybackErrorReport(
     reportedAt: Instant,
 ): String =
     buildString {
-        appendLine("Vega Playback Error Report")
+        appendLine("Vegas Playback Error Report")
         appendLine("================================")
         appendLine("Time: $reportedAt")
         appendLine("App version: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})")

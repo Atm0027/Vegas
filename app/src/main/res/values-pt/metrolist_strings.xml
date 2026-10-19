@@ -171,10 +171,10 @@
     <string name="wrapped_total_artists_subtitle">artistas únicos</string>
     <string name="wrapped_total_songs_title">Tu ouviste a</string>
     <string name="wrapped_total_songs_subtitle">músicas únicas!</string>
-    <string name="wrapped_intro_title">VEGA</string>
+    <string name="wrapped_intro_title">VEGAS</string>
     <string name="wrapped_intro_subtitle">está na hora de ver o que andaste a ouvir</string>
     <string name="wrapped_intro_button">vamos lá!</string>
-    <string name="wrapped_logo_content_description">Logo do Vega</string>
+    <string name="wrapped_logo_content_description">Logo do Vegas</string>
     <string name="wrapped_year">2025</string>
     <string name="wrapped_ready_title">O TEU WRAPPED ESTÁ PRONTO!</string>
     <string name="wrapped_ready_subtitle">Está na hora de ver o que amaste este ano.</string>
@@ -203,7 +203,7 @@
     <string name="enable_scrobbling">Habilitar \"scrobbling\"</string>
     <string name="lastfm_now_playing">Enviar informação sobre a música atual</string>
     <string name="last_fm_send_likes">Sincronizar Gostos/Não Gostos</string>
-    <string name="last_fm_send_likes_description">Sincronizar com o Last.fm musicas curtidas ou Não curtidas quando o fazes no Vega</string>
+    <string name="last_fm_send_likes_description">Sincronizar com o Last.fm musicas curtidas ou Não curtidas quando o fazes no Vegas</string>
     <string name="logging_in">A iniciar sessão…</string>
     <string name="scrobbling_configuration">Configuração do \"Scrobbling\"</string>
     <string name="scrobble_min_track_duration">\"Scrobblar\" músicas com duração superior a (segundos)</string>
@@ -275,7 +275,7 @@
     <string name="error_playback_failed">Erro na reprodução</string>
     <string name="album_art">Arte do álbum</string>
     <string name="no_song_playing">Sem música a tocar</string>
-    <string name="tap_to_open">Toca para abrir o Vega</string>
+    <string name="tap_to_open">Toca para abrir o Vegas</string>
     <string name="previous">Retroceder</string>
     <string name="play_pause">Reproduzir/Pausar</string>
     <string name="next">Próximo</string>
@@ -417,8 +417,8 @@
     <string name="system_equalizer_desc">Abrir equalizador embutido do Android</string>
     <string name="eq_wizard">Programa de ajuste de equalizador (AutoEQ)</string>
     <string name="playlist_unavailable">Lista de Reprodução indisponível</string>
-    <string name="kmp_upgrade_title">Vega KMP %s está disponível</string>
-    <string name="kmp_upgrade_warning">Vega KMP está em acesso antecipado. Funcionalidades poderão não funcionar como desejado ou e estar incompletas.</string>
+    <string name="kmp_upgrade_title">Vegas KMP %s está disponível</string>
+    <string name="kmp_upgrade_warning">Vegas KMP está em acesso antecipado. Funcionalidades poderão não funcionar como desejado ou e estar incompletas.</string>
     <string name="kmp_upgrade_action">Testar KMP</string>
     <string name="kmp_upgrade_later">Agora não</string>
     <string name="audio_track_playback_params">Usar processamento de áudio via hardware</string>
@@ -444,7 +444,7 @@
     <string name="error_podcast_unsubscribe">Falha a remover subscrição do podcast</string>
     <string name="view_channel">Ver canal</string>
     <string name="not_playing">Sem música a tocar</string>
-    <string name="tap_to_play">Toca para abrir o Vega</string>
+    <string name="tap_to_play">Toca para abrir o Vegas</string>
     <string name="widget_music_player">Reprodutor de Música</string>
     <string name="widget_recognizer_name">Reconhecedor de Música</string>
     <string name="widget_recognizer_description">Identica músicas tocando ao teu redor diretamente do teu ecrã inicial</string>
@@ -476,7 +476,7 @@
     <string name="auto_radio_queue">Fila do automatica do rádio</string>
     <string name="auto_radio_queue_desc">Criar uma lista de rádio automaticamente quando uma música e selecionada no menu inicial ou na pesquisa</string>
     <string name="lyrics_offset">Delay de Compensação (letras musicais)</string>
-    <string name="update_available_message">Vega %s, está preparado para fazer Download.</string>
+    <string name="update_available_message">Vegas %s, está preparado para fazer Download.</string>
     <string name="update_action">Atualizar</string>
     <string name="varispeed">Habilitar velocidade variável</string>
     <string name="varispeed_description">Junta o Tom e velocidade de reprodução, do que resulta num efeito parecido com o Fast forward de um leitor VHS</string>
@@ -531,7 +531,7 @@
     <string name="crash_description">Um erro desconhecido ocorreu. Por favor partilhe o relatório de erro com a equipa de desenvolvedores para nós ajudar a corrigir-lo</string>
     <string name="crash_share_logs">Partilhar Relatórios</string>
     <string name="crash_share_title">Partilhar relatórios de paragens inesperadas</string>
-    <string name="crash_report_subject">Relatório de paragem inesperada do Vega</string>
+    <string name="crash_report_subject">Relatório de paragem inesperada do Vegas</string>
     <string name="crash_close">Fechar</string>
     <string name="crash_no_log">Relatório de paragem inesperada não está disponível</string>
     <string name="palette_dynamic">Nomes das paletes de temas</string>
@@ -577,7 +577,7 @@
     <string name="clear_recognition_history_confirm">Tens a certeza que queres limpar o histórico de reconhecimento</string>
     <string name="delete_from_history">Eliminar do histórico</string>
     <string name="re_listen">Ouvir novamente</string>
-    <string name="play_on_app">Reproduzir no Vega</string>
+    <string name="play_on_app">Reproduzir no Vegas</string>
     <string name="qs_tile_music_recognizer">Reconhecer música</string>
     <string name="recognition_notification_channel_name">Reconhecimento de música</string>
     <string name="recognition_notification_channel_desc">Mostra uma notificação enquanto a indetificar uma música dentro das definições rápidas</string>
@@ -585,7 +585,7 @@
     <string name="recognition_notification_processing">A identificar…</string>
     <string name="recognition_notification_no_match">A música não foi encontrada...</string>
     <string name="recognition_notification_failed">Reconhecimento falhou</string>
-    <string name="listen_on_metrolist">Ouvir no Vega</string>
+    <string name="listen_on_metrolist">Ouvir no Vegas</string>
     <string name="map_csv_columns">Mapear colunas de CSV</string>
     <string name="first_row_is_header">Primeiro linha como cabeçalho</string>
     <string name="artist_name_column">Coluna do nome de artista</string>

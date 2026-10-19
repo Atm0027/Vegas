@@ -154,7 +154,7 @@
     <string name="lastfm_integration">Integrazione con Last.fm</string>
     <string name="swipe_song_to_remove">Scorri per rimuovere il brano dalla playlist</string>
     <string name="last_fm_send_likes">Sincronizza Mi piace e Non mi piace</string>
-    <string name="last_fm_send_likes_description">Mi piace o non mi piace di brani Last.fm quando ti piacciono o non ti piacciono in Vega</string>
+    <string name="last_fm_send_likes_description">Mi piace o non mi piace di brani Last.fm quando ti piacciono o non ti piacciono in Vegas</string>
     <string name="google_cast">Google Cast</string>
     <string name="google_cast_description">Trasmetti audio a Chromecast e ad altri dispositivi abilitati per il Cast</string>
     <string name="hide_video_songs">Nascondi brani video</string>
@@ -216,10 +216,10 @@
     <string name="wrapped_total_artists_subtitle">artisti unici!</string>
     <string name="wrapped_total_songs_title">Hai ascoltato</string>
     <string name="wrapped_total_songs_subtitle">Brani unici!</string>
-    <string name="wrapped_intro_title">VEGA</string>
+    <string name="wrapped_intro_title">VEGAS</string>
     <string name="wrapped_intro_subtitle">è ora di vedere cosa hai ascoltato per quest\'anno…</string>
     <string name="wrapped_intro_button">cominciamo!</string>
-    <string name="wrapped_logo_content_description">Logo di Vega</string>
+    <string name="wrapped_logo_content_description">Logo di Vegas</string>
     <string name="wrapped_year">2025</string>
     <string name="wrapped_ready_title">IL TUO WRAPPED È PRONTO!</string>
     <string name="wrapped_ready_subtitle">È ora di vedere cosa hai amato quest\'anno…</string>
@@ -258,7 +258,7 @@
     <string name="system_equalizer">Equalizzatore di sistema</string>
     <string name="album_art">Copertina</string>
     <string name="no_song_playing">Nessun brano in riproduzione</string>
-    <string name="tap_to_open">Premi per aprire Vega</string>
+    <string name="tap_to_open">Premi per aprire Vegas</string>
     <string name="previous">Precedente</string>
     <string name="play_pause">Play/Pausa</string>
     <string name="next">Prossimo</string>
@@ -294,7 +294,7 @@
     <string name="crash_description">Si è verificato un errore inaspettato. Condividi il rapporto sugli arresti anomali per aiutarci a risolvere il problema</string>
     <string name="crash_share_logs">Condividi i registri</string>
     <string name="crash_share_title">Condividi rapporto di errore</string>
-    <string name="crash_report_subject">Rapporto di errore Vega</string>
+    <string name="crash_report_subject">Rapporto di errore Vegas</string>
     <string name="crash_close">Chiudi</string>
     <string name="crash_no_log">Nessun log di errore disponibile</string>
     <string name="palette_dynamic">Dinamico</string>
@@ -324,7 +324,7 @@
     <string name="cd_palette_item">Tavolozza %1$s</string>
     <string name="cd_system_mode">Modalità di sistema</string>
     <string name="not_playing">Nessun brano in riproduzione</string>
-    <string name="tap_to_play">Premi per aprire Vega</string>
+    <string name="tap_to_play">Premi per aprire Vegas</string>
     <string name="widget_music_player">Riproduttore Musicale</string>
     <string name="widget_turntable">Giradischi</string>
     <string name="ai_lyrics_translation">Traduzione testi AI</string>
@@ -368,7 +368,7 @@
     <string name="first_row_is_header">La prima riga è l\'intestazione</string>
     <string name="tap_to_recognize">Tocca per riconoscere</string>
     <string name="enable_high_refresh_rate">Abilita frequenza di aggiornamento elevata</string>
-    <string name="play_on_app">Riproduci su Vega</string>
+    <string name="play_on_app">Riproduci su Vegas</string>
     <string name="listening">In ascolto…</string>
     <string name="continue_action">Continua</string>
     <string name="enable">Attiva</string>
@@ -574,7 +574,7 @@
     <string name="alarm_battery_optimization_title">Ottimizzazione della batteria</string>
     <string name="change">Modifica</string>
     <string name="ai_system_prompt">Prompt di sistema</string>
-    <string name="listen_on_metrolist">Ascolta su Vega</string>
+    <string name="listen_on_metrolist">Ascolta su Vegas</string>
     <string name="android_auto">Android Auto</string>
     <string name="android_auto_visible_sections">Sezioni visibili</string>
     <string name="android_auto_youtube_playlists">Mostra le playlist suggerite da YouTube</string>
@@ -699,8 +699,8 @@
     <string name="android_auto_search_local_songs_limit_desc">Limita il numero di brani locali mostrati nei risultati di ricerca. Si consiglia di non impostare illimitato per evitare arresti anomali per un alto consumo della memoria</string>
     <string name="android_auto_search_local_songs_limit">Limite di ricerca dei brani</string>
     <string name="android_auto_search_options">Opzioni di ricerca</string>
-    <string name="kmp_upgrade_title">Vega KMP %s è disponibile</string>
-    <string name="kmp_upgrade_warning">Vega KMP è ancora in sviluppo. Potresti riscontrare bug o funzionalità incomplete.</string>
+    <string name="kmp_upgrade_title">Vegas KMP %s è disponibile</string>
+    <string name="kmp_upgrade_warning">Vegas KMP è ancora in sviluppo. Potresti riscontrare bug o funzionalità incomplete.</string>
     <string name="kmp_upgrade_action">Prova la versione KMP</string>
     <string name="kmp_upgrade_later">Non ora</string>
     <string name="playlist_position_beginning">Inizio della playlist</string>
@@ -713,7 +713,7 @@
     <string name="error_no_internet_connection">Nessuna connessione a internet</string>
     <string name="enable_zemer">Attiva Zemer</string>
     <string name="enable_zemer_desc">Testi per musica in ebraico</string>
-    <string name="update_available_message">Vega %s è pronto per essere scaricato.</string>
+    <string name="update_available_message">Vegas %s è pronto per essere scaricato.</string>
     <string name="update_action">Aggiorna</string>
     <string name="ai_provider_inception_help">Visita https://platform.inceptionlabs.ai per ottenere le chiavi API</string>
     <string name="force_bottom_navbar">Forza la barra di navigazione in basso</string>

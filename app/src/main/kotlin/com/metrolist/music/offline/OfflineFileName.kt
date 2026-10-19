@@ -1,5 +1,5 @@
 /**
- * Vega: names of downloaded files in Music/Vega, "Artist - Title [videoId].ext". The trailing
+ * Vegas: names of downloaded files in Music/Vegas, "Artist - Title [videoId].ext". The trailing
  * [videoId] lets a fresh install recognise its files without reading tags.
  * Licensed under GPL-3.0
  */

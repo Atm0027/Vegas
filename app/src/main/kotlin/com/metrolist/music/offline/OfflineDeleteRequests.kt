@@ -1,6 +1,7 @@
 /**
- * Vega: shows the system confirmation Android requires before deleting files that another
- * install of Vega created, and forgets those downloads once the user accepts.
+ * Vegas: shows the system confirmation Android requires before deleting files that another
+ * install of Vegas created, and forgets those downloads once the user accepts. It also asks once to
+ * move the downloads the app made under its old name (Music/Vega) into Music/Vegas.
  * Licensed under GPL-3.0
  */
 
@@ -24,6 +25,12 @@ fun OfflineDeleteRequests(downloadUtil: DownloadUtil) {
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
         pending?.let { if (result.resultCode == Activity.RESULT_OK) downloadUtil.confirmDeleted(it.songIds) }
         pending = null
+    }
+    val moveLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) downloadUtil.moveLegacyFolder()
+    }
+    LaunchedEffect(downloadUtil) {
+        downloadUtil.moveRequests.collect { moveLauncher.launch(IntentSenderRequest.Builder(it).build()) }
     }
     LaunchedEffect(downloadUtil) {
         downloadUtil.deleteRequests.collect { request ->

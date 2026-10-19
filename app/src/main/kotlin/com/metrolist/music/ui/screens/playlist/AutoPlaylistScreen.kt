@@ -214,7 +214,7 @@ fun AutoPlaylistScreen(
     var downloadState by remember {
         mutableIntStateOf(Download.STATE_STOPPED)
     }
-    // Vega: Liked can be marked as a downloaded playlist, kept downloaded as songs are liked.
+    // Vegas: Liked can be marked as a downloaded playlist, kept downloaded as songs are liked.
     val (downloadLiked, onDownloadLikedChange) = rememberPreference(DownloadLikedKey, false)
 
     val scope = rememberCoroutineScope()

@@ -1,5 +1,5 @@
 /**
- * Vega: no YouTube account and no Discord. Removes the data that older installs or restored
+ * Vegas: no YouTube account and no Discord. Removes the data that older installs or restored
  * Metrolist backups may still carry. The anonymous visitorData is kept on purpose: account-less
  * playback depends on it. Only a visitorData minted next to a signed-in cookie is dropped, since it
  * may be tied to that session; a fresh anonymous one is generated on demand.

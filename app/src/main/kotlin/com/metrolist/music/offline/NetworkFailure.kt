@@ -1,5 +1,5 @@
 /**
- * Vega: recognises a lost connection however deep ExoPlayer wraps it, and tracks connectivity from
+ * Vegas: recognises a lost connection however deep ExoPlayer wraps it, and tracks connectivity from
  * the callbacks themselves (asking the system inside onLost can still report the lost network).
  * Licensed under GPL-3.0
  */

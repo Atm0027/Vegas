@@ -40,7 +40,7 @@ data class SearchSummaryPage(
             this
         }
 
-    /** Vega: drops podcasts and episodes, and any summary left empty. */
+    /** Vegas: drops podcasts and episodes, and any summary left empty. */
     fun filterPodcasts() =
         SearchSummaryPage(
             summaries.mapNotNull { s ->

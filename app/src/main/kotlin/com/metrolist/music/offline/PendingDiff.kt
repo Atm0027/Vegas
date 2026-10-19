@@ -1,5 +1,5 @@
 /**
- * Vega: the pending list shrinks by one at every finished download; queueing the whole list again
+ * Vegas: the pending list shrinks by one at every finished download; queueing the whole list again
  * each time costs O(n²) WorkManager writes over a large sync. Only songs new to the list are queued.
  * Licensed under GPL-3.0
  */

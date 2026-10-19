@@ -20,7 +20,7 @@ internal data class CachedStreamUrl(
 
 /**
  * [contentLength]: total size of the stream, when known. googlevideo throttles open-ended requests
- * to roughly playback speed, so an open-ended read is bounded to the end of the file (Vega).
+ * to roughly playback speed, so an open-ended read is bounded to the end of the file (Vegas).
  */
 internal fun DataSpec.withResolvedStream(
     stream: CachedStreamUrl,

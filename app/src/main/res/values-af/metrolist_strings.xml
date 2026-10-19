@@ -311,8 +311,8 @@
     <string name="update_available_title">Opdatering beskikbaar</string>
     <string name="update_channel_name">Toep-opdaterings</string>
     <string name="update_channel_desc">Kennisgewings oor nuwe toep-weergawes</string>
-    <string name="kmp_upgrade_title">Vega KMP %s is beskikbaar</string>
-    <string name="kmp_upgrade_warning">Vega KMP is in vroeë toegang. Kenmerke kan stukkend, onvolledig wees, of sonder kennisgewing verander.</string>
+    <string name="kmp_upgrade_title">Vegas KMP %s is beskikbaar</string>
+    <string name="kmp_upgrade_warning">Vegas KMP is in vroeë toegang. Kenmerke kan stukkend, onvolledig wees, of sonder kennisgewing verander.</string>
     <string name="kmp_upgrade_action">Gradeer op na KMP</string>
     <string name="kmp_upgrade_later">Nie nou nie</string>
     <string name="audio_offload">Aktiveer oudiodeling</string>
@@ -333,7 +333,7 @@
     <string name="enable_scrobbling">Aktiveer skrobbeling</string>
     <string name="lastfm_now_playing">Stuur Speel nou-status</string>
     <string name="last_fm_send_likes">Sinkroniseer Gunstelinge en Nie-gunstelinge</string>
-    <string name="last_fm_send_likes_description">Merk liedjies as gunstelinge of verwyder gunsteling-status in Last.fm wanneer jy daarvan hou of nie meer daarvan hou nie in Vega</string>
+    <string name="last_fm_send_likes_description">Merk liedjies as gunstelinge of verwyder gunsteling-status in Last.fm wanneer jy daarvan hou of nie meer daarvan hou nie in Vegas</string>
     <string name="logging_in">Meld tans aan…</string>
     <string name="scrobbling_configuration">Skrobbeling-opstelling</string>
     <string name="scrobble_min_track_duration">Skrobbel liedjies langer as (sekondes)</string>
@@ -420,7 +420,7 @@
     <string name="crash_description">’n Onverwagte fout het voorgekom. Deel asseblief die ineenstortingsverslag om ons te help om die probleem op te los</string>
     <string name="crash_share_logs">Deel logs</string>
     <string name="crash_share_title">Deel ineenstortingsverslag</string>
-    <string name="crash_report_subject">Vega-ineenstortingsverslag</string>
+    <string name="crash_report_subject">Vegas-ineenstortingsverslag</string>
     <string name="crash_close">Sluit</string>
     <string name="crash_no_log">Geen ineenstortingslog beskikbaar nie</string>
     <string name="palette_dynamic">Dinamies</string>
@@ -466,7 +466,7 @@
     <string name="clear_recognition_history_confirm">Is jy seker jy wil alle herkenninggeskiedenis uitvee?</string>
     <string name="delete_from_history">Vee uit geskiedenis</string>
     <string name="re_listen">Luister weer</string>
-    <string name="play_on_app">Speel op Vega</string>
+    <string name="play_on_app">Speel op Vegas</string>
     <string name="qs_tile_music_recognizer">Herken musiek</string>
     <string name="recognition_notification_channel_name">Musiekherkenning</string>
     <string name="recognition_notification_channel_desc">Wys \'n kennisgewing terwyl \'n liedjie vanuit die vinnige instellings geïdentifiseer word</string>
@@ -474,7 +474,7 @@
     <string name="recognition_notification_processing">Besig om te identifiseer…</string>
     <string name="recognition_notification_no_match">Geen passing gevind nie</string>
     <string name="recognition_notification_failed">Herkenning het misluk</string>
-    <string name="listen_on_metrolist">Luister op Vega</string>
+    <string name="listen_on_metrolist">Luister op Vegas</string>
     <string name="map_csv_columns">Karteer CSV-kolomme</string>
     <string name="first_row_is_header">Eerste ry is koptekst</string>
     <string name="artist_name_column">Kunstenaarnaam-kolom</string>
@@ -508,10 +508,10 @@
     <string name="wrapped_total_artists_subtitle">unieke kunstenaars!</string>
     <string name="wrapped_total_songs_title">Jy het geluister na</string>
     <string name="wrapped_total_songs_subtitle">unieke liedjies!</string>
-    <string name="wrapped_intro_title">VEGA</string>
+    <string name="wrapped_intro_title">VEGAS</string>
     <string name="wrapped_intro_subtitle">dit is tyd om te sien waarna jy die hele jaar geluister het…</string>
     <string name="wrapped_intro_button">kom ons gaan!</string>
-    <string name="wrapped_logo_content_description">Vega-logo</string>
+    <string name="wrapped_logo_content_description">Vegas-logo</string>
     <string name="wrapped_year">2025</string>
     <string name="wrapped_ready_title">JOUN WRAPPED IS GEREED!</string>
     <string name="wrapped_ready_subtitle">Tyd om te sien wat jy die hele jaar geliefhet het…</string>
@@ -676,13 +676,13 @@
     <string name="view_channel">Bekyk kanaal</string>
     <string name="album_art">Albumkuns</string>
     <string name="no_song_playing">Geen liedjie speel nie</string>
-    <string name="tap_to_open">Tik om Vega oop te maak</string>
+    <string name="tap_to_open">Tik om Vegas oop te maak</string>
     <string name="previous">Vorige</string>
     <string name="play_pause">Speel/Pauseer</string>
     <string name="next">Volgende</string>
     <string name="like">Hou van</string>
     <string name="not_playing">Geen liedjie speel nie</string>
-    <string name="tap_to_play">Tik om Vega oop te maak</string>
+    <string name="tap_to_play">Tik om Vegas oop te maak</string>
     <string name="widget_description">Musiekspeler-widget met afspeelbeheer</string>
     <string name="turntable_widget_description">Sirkelvormige musiek-widget met speel- en hou-van-beheer</string>
     <string name="widget_music_player">Musiekspeler</string>

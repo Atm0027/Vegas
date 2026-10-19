@@ -156,7 +156,7 @@
     <string name="scrobble_delay_minutes">Zpoždění scrobblování (minuty)</string>
     <string name="swipe_song_to_remove">Posuňte pro odstranění skladby z playlistu</string>
     <string name="last_fm_send_likes">Synchronizovat oblíbené</string>
-    <string name="last_fm_send_likes_description">Přidat/odebrat srdíčko u skladby v Last.fm, když ji přidáte/odeberete z oblíbených v Vegau</string>
+    <string name="last_fm_send_likes_description">Přidat/odebrat srdíčko u skladby v Last.fm, když ji přidáte/odeberete z oblíbených v Vegasu</string>
     <string name="google_cast">Google Cast</string>
     <string name="google_cast_description">Streamovat zvuk do Chromecastu a dalších zařízení kompatibilních s protokolem Cast</string>
     <string name="hide_video_songs">Skrýt videoklipy</string>
@@ -220,10 +220,10 @@
     <string name="wrapped_total_artists_subtitle">různých umělců!</string>
     <string name="wrapped_total_songs_title">Poslouchali jste</string>
     <string name="wrapped_total_songs_subtitle">různých skladeb!</string>
-    <string name="wrapped_intro_title">VEGA</string>
+    <string name="wrapped_intro_title">VEGAS</string>
     <string name="wrapped_intro_subtitle">je čas podívat se, co jsi tento rok poslouchal/a…</string>
     <string name="wrapped_intro_button">jdeme na to!</string>
-    <string name="wrapped_logo_content_description">Logo Vega</string>
+    <string name="wrapped_logo_content_description">Logo Vegas</string>
     <string name="wrapped_year">2025</string>
     <string name="wrapped_ready_title">TVŮJ WRAPPED JE READY!</string>
     <string name="wrapped_ready_subtitle">Je čas podívat se, co se ti tento rok líbilo…</string>
@@ -261,7 +261,7 @@
     <string name="system_equalizer">Systémový ekvalizér</string>
     <string name="album_art">Obal alba</string>
     <string name="no_song_playing">Nehraje žádná skladba</string>
-    <string name="tap_to_open">Klepnutím otevřete Vega</string>
+    <string name="tap_to_open">Klepnutím otevřete Vegas</string>
     <string name="previous">Předchozí</string>
     <string name="play_pause">Přehrát/pozastavit</string>
     <string name="next">Další</string>
@@ -297,7 +297,7 @@
     <string name="crash_description">Došlo k neočekávané chybě. Pošlete nám hlášení o chybě, abyste nám pomohli problém opravit</string>
     <string name="crash_share_logs">Sdílet protokoly</string>
     <string name="crash_share_title">Sdílet hlášení o chybě</string>
-    <string name="crash_report_subject">Hlášení o chybě Vega</string>
+    <string name="crash_report_subject">Hlášení o chybě Vegas</string>
     <string name="crash_close">Zavřít</string>
     <string name="crash_no_log">Není k dispozici žádný záznam o chybě</string>
     <string name="palette_dynamic">Dynamická</string>
@@ -327,7 +327,7 @@
     <string name="cd_system_mode">Systémový režim</string>
     <string name="cd_palette_item">%1$s paleta</string>
     <string name="not_playing">Nehraje žádná skladba</string>
-    <string name="tap_to_play">Klepněte pro otevření Vegau</string>
+    <string name="tap_to_play">Klepněte pro otevření Vegasu</string>
     <string name="widget_music_player">Hudební přehrávač</string>
     <string name="widget_turntable">Gramofon</string>
     <string name="recognize_music">Rozpoznat hudbu</string>
@@ -368,7 +368,7 @@
     <string name="song_title_column">Sloupec názvu skladby</string>
     <string name="recently_converted">Nedávno převedeno</string>
     <string name="importing_csv">Importuji CSV…</string>
-    <string name="play_on_app">Přehrát v Vegau</string>
+    <string name="play_on_app">Přehrát v Vegasu</string>
     <string name="listening">Poslouchám…</string>
     <string name="ai_api_key_required">Vyžadován klíč API</string>
     <string name="continue_action">Pokračovat</string>
@@ -603,7 +603,7 @@
     <string name="recognition_notification_processing">Identifikuji…</string>
     <string name="recognition_notification_no_match">Nenalezena žádná shoda</string>
     <string name="recognition_notification_failed">Rozpoznávání selhalo</string>
-    <string name="listen_on_metrolist">Přehrát v Vegau</string>
+    <string name="listen_on_metrolist">Přehrát v Vegasu</string>
     <string name="android_auto">Android Auto</string>
     <string name="android_auto_visible_sections">Viditelné sekce</string>
     <string name="android_auto_reorder_hint">Klepněte na sekci pro její povolení nebo zakázání.\nPodržte posuvník pro změnu pořadí. První sekce bude ve výchozím nastavení zobrazena</string>
@@ -701,8 +701,8 @@
     <string name="enable_landscape_scaling_desc">Nastavit rozhraní do režimu na šířku pro větší obrazovky</string>
     <string name="enable_dynamic_icon">Dynamické barvy ikon</string>
     <string name="enable_dynamic_icon_desc">Použít barvy dynamického motivu pro ikonu aplikace. Pokud je vypnuto, budou použity jednobarevné odstíny.</string>
-    <string name="kmp_upgrade_title">Je dostupný Vega KMP %s</string>
-    <string name="kmp_upgrade_warning">Vega KMP je stále ve vývoji. Můžete narazit na chyby nebo nedokončené funkce.</string>
+    <string name="kmp_upgrade_title">Je dostupný Vegas KMP %s</string>
+    <string name="kmp_upgrade_warning">Vegas KMP je stále ve vývoji. Můžete narazit na chyby nebo nedokončené funkce.</string>
     <string name="kmp_upgrade_action">Vyzkoušet KMP</string>
     <string name="kmp_upgrade_later">Nezobrazovat</string>
     <string name="android_auto_search_options">Vyhledat možnosti</string>
@@ -720,6 +720,6 @@
     <string name="ai_provider_inception_help">Navštivte https://platform.inceptionlabs.ai pro klíče API</string>
     <string name="enable_zemer">Povolit Zemer</string>
     <string name="enable_zemer_desc">Texty pro židovskou hudbu</string>
-    <string name="update_available_message">Vega %s je připraven ke stažení.</string>
+    <string name="update_available_message">Vegas %s je připraven ke stažení.</string>
     <string name="update_action">Aktualizovat</string>
 </resources>

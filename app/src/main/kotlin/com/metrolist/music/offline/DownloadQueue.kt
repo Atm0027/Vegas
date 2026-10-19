@@ -1,5 +1,5 @@
 /**
- * Vega: download queue on WorkManager, so downloads survive closing Vega and rebooting. One unique
+ * Vegas: download queue on WorkManager, so downloads survive closing Vegas and rebooting. One unique
  * work per song ("offline-<id>"). Automatic downloads respect the Wi-Fi only setting; downloads the
  * user starts by hand take over a waiting automatic one and use any network.
  * Licensed under GPL-3.0

@@ -1,5 +1,5 @@
 /**
- * Vega: stall recovery timing.
+ * Vegas: stall recovery timing.
  * Licensed under GPL-3.0
  */
 

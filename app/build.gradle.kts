@@ -7,7 +7,7 @@ if (localPropertiesFile.exists()) {
     localProperties.load(localPropertiesFile.inputStream())
 }
 
-val baseApplicationId = "dev.alextorres.vega"
+val baseApplicationId = "dev.alextorres.vegas"
 val applicationIdOverride = System.getenv("METROLIST_APPLICATION_ID")?.takeIf { it.isNotBlank() }
 val appNameOverride = System.getenv("METROLIST_APP_NAME")?.takeIf { it.isNotBlank() }
 val buildCommit =
@@ -22,10 +22,10 @@ val debugKeyAlias = System.getenv("METROLIST_DEBUG_KEY_ALIAS")?.takeIf { it.isNo
 val debugKeyPassword = System.getenv("METROLIST_DEBUG_KEY_PASSWORD")?.takeIf { it.isNotBlank() } ?: "android"
 val persistentDebugKeystoreFile = file("persistent-debug.keystore")
 
-// Versión de Vega al estilo JARVIS: nombre semántico deducido de los commits
+// Versión de Vegas al estilo JARVIS: nombre semántico deducido de los commits
 // (Conventional Commits) desde la última etiqueta `vX.Y.Z-N`, y código = número
-// de commits propios de Vega. Ver buildSrc/src/main/kotlin/VersionSemantica.kt.
-val versionVega = providers.versionVega(providers.gradleProperty("vega.forkBase").get())
+// de commits propios de Vegas. Ver buildSrc/src/main/kotlin/VersionSemantica.kt.
+val versionVegas = providers.versionVegas(providers.gradleProperty("vegas.forkBase").get())
 val workflowDebugKeystoreFile = debugKeystorePathOverride?.let(::file)
 
 plugins {
@@ -44,12 +44,12 @@ android {
         applicationId = applicationIdOverride ?: baseApplicationId
         minSdk = 26
         targetSdk = 36
-        versionCode = versionVega.codigo
-        versionName = versionVega.nombre
+        versionCode = versionVegas.codigo
+        versionName = versionVegas.nombre
         val baseVersionName = requireNotNull(versionName)
         buildConfigField("String", "BASE_VERSION_NAME", "\"$baseVersionName\"")
         buildCommit?.let { versionName = "$baseVersionName+$it" }
-        resValue("string", "app_name", appNameOverride ?: "Vega")
+        resValue("string", "app_name", appNameOverride ?: "Vegas")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -90,7 +90,7 @@ android {
             buildConfigField("Boolean", "UPDATER_AVAILABLE", "false")
         }
 
-        // Vega personal build - no gcast, no updater
+        // Vegas personal build - no gcast, no updater
         create("personal") {
             dimension = "variant"
             isDefault = true
@@ -150,7 +150,7 @@ android {
             }
             isDebuggable = true
             if (appNameOverride == null) {
-                resValue("string", "app_name", "Vega Debug")
+                resValue("string", "app_name", "Vegas Debug")
             }
             signingConfig =
                 if (workflowDebugKeystoreFile != null) {
@@ -320,14 +320,14 @@ androidComponents {
         variant.outputs.forEach { output ->
             (output as? com.android.build.api.variant.impl.VariantOutputImpl)
                 ?.outputFileName
-                ?.set("vega-${versionVega.nombre}-${versionVega.codigo}-${variant.name}.apk")
+                ?.set("vegas-${versionVegas.nombre}-${versionVegas.codigo}-${variant.name}.apk")
         }
     }
 }
 
 // Publicar = dejar la etiqueta de esta versión; la siguiente compilación parte de ella.
 tasks.register<Exec>("publicarVersion") {
-    group = "vega"
-    description = "Crea la etiqueta git ${versionVega.etiqueta} para la versión actual."
-    commandLine("git", "tag", versionVega.etiqueta)
+    group = "vegas"
+    description = "Crea la etiqueta git ${versionVegas.etiqueta} para la versión actual."
+    commandLine("git", "tag", versionVegas.etiqueta)
 }

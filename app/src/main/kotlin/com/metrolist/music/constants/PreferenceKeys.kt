@@ -143,7 +143,7 @@ val AutoRadioQueueKey = booleanPreferencesKey("autoRadioQueue")
 val DisableLoadMoreWhenRepeatAllKey = booleanPreferencesKey("disableLoadMoreWhenRepeatAll")
 val AutoDownloadOnLikeKey = booleanPreferencesKey("autoDownloadOnLike")
 
-// Vega offline mode
+// Vegas offline mode
 val DownloadOnMobileDataKey = booleanPreferencesKey("downloadOnMobileData")
 val DownloadLikedKey = booleanPreferencesKey("downloadLiked")
 val OfflineMigrationDoneKey = booleanPreferencesKey("offlineMigrationDone")

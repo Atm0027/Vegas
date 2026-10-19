@@ -1,5 +1,5 @@
 /**
- * Vega: splits the songs being added to one playlist into new ones, exact duplicates (skipped) and
+ * Vegas: splits the songs being added to one playlist into new ones, exact duplicates (skipped) and
  * probable duplicates (the user decides). Songs earlier in the same batch count as already present.
  * Licensed under GPL-3.0
  */

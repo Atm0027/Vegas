@@ -1,7 +1,7 @@
 /**
- * Vega: keeps downloaded playlists (and Liked, when marked) downloaded. Any song in a marked
+ * Vegas: keeps downloaded playlists (and Liked, when marked) downloaded. Any song in a marked
  * playlist without a file is queued, which also covers songs added later and files deleted by
- * hand or outside Vega. Files this install cannot read yet (another install, no permission) are
+ * hand or outside Vegas. Files this install cannot read yet (another install, no permission) are
  * kept, never treated as deleted.
  * Licensed under GPL-3.0
  */

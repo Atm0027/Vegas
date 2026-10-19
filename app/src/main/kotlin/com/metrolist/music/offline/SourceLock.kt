@@ -1,5 +1,5 @@
 /**
- * Vega: a song that started from the stream keeps the stream until the player leaves it. Its
+ * Vegas: a song that started from the stream keeps the stream until the player leaves it. Its
  * download may finish mid-song, and the file's byte layout differs from the stream's, so switching
  * on a seek or the next range request would break the container. Preloaded items lock too.
  * Licensed under GPL-3.0

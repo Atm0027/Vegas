@@ -159,7 +159,7 @@
     <string name="google_cast">Transmitir via Google Cast</string>
     <string name="google_cast_description">Transmitir áudio para o Chromecast e outros dispositivos compatíveis</string>
     <string name="last_fm_send_likes">Sincronizar Amado e Desamado</string>
-    <string name="last_fm_send_likes_description">Amar ou desamar músicas no Last.fm quanto você as curte ou descurte no Vega</string>
+    <string name="last_fm_send_likes_description">Amar ou desamar músicas no Last.fm quanto você as curte ou descurte no Vegas</string>
     <string name="logging_in">Fazendo login…</string>
     <string name="hide_video_songs">Ocultar videoclipes</string>
     <string name="details_desc">Ver os detalhes da música</string>
@@ -217,10 +217,10 @@
     <string name="wrapped_total_artists_subtitle">Artistas únicos!</string>
     <string name="wrapped_total_songs_title">Você escutou a</string>
     <string name="wrapped_total_songs_subtitle">Músicas únicas!</string>
-    <string name="wrapped_intro_title">VEGA</string>
+    <string name="wrapped_intro_title">VEGAS</string>
     <string name="wrapped_intro_subtitle">É hora de checar o que você tem ouvido por todo esse ano…</string>
     <string name="wrapped_intro_button">vamos lá!</string>
-    <string name="wrapped_logo_content_description">Vega Logo</string>
+    <string name="wrapped_logo_content_description">Vegas Logo</string>
     <string name="wrapped_year">2025</string>
     <string name="wrapped_ready_title">SUA RETROSPECTIVA ESTÁ PRONTA!</string>
     <string name="wrapped_ready_subtitle">Hora de checar o que você adorou em todo esse ano…</string>
@@ -260,7 +260,7 @@
     <string name="system_equalizer">Equalizador do Sistema</string>
     <string name="album_art">Capa do Álbum</string>
     <string name="no_song_playing">Nenhuma música tocando</string>
-    <string name="tap_to_open">Clique para abrir o Vega</string>
+    <string name="tap_to_open">Clique para abrir o Vegas</string>
     <string name="previous">Anterior</string>
     <string name="play_pause">Tocar/Pausar</string>
     <string name="next">Próximo</string>
@@ -294,7 +294,7 @@
     <string name="error_eq_apply_failed">Falhou a aplicar o perfil do equalizador: %1$s</string>
     <string name="error_playback_failed">Falha na reprodução</string>
     <string name="not_playing">Nenhuma música tocando</string>
-    <string name="tap_to_play">Clique para abrir o Vega</string>
+    <string name="tap_to_play">Clique para abrir o Vegas</string>
     <string name="widget_music_player">Reprodutor de música</string>
     <string name="widget_turntable">Toca-discos</string>
     <string name="enable_high_refresh_rate">Ativar alta taxa de atualização</string>
@@ -308,7 +308,7 @@
     <string name="clear_recognition_history_confirm">Tem certeza que quer limpar todo o histórico de reconhecimento?</string>
     <string name="delete_from_history">Apagar do histórico</string>
     <string name="re_listen">Ouvir novamente</string>
-    <string name="play_on_app">Tocar no Vega</string>
+    <string name="play_on_app">Tocar no Vegas</string>
     <string name="hide_youtube_shorts">Ocultar Shorts do YouTube</string>
     <string name="clear">Limpar</string>
     <string name="copy">Copiar</string>
@@ -337,7 +337,7 @@
     <string name="crash_description">Ocorreu um erro inesperado. Por favor, compartilhe o relatório de falha para nos ajudar a corrigir o problema</string>
     <string name="crash_share_logs">Compartilhar registros</string>
     <string name="crash_share_title">Compartilhar relatório de falha</string>
-    <string name="crash_report_subject">Relatório de acidente da Vega</string>
+    <string name="crash_report_subject">Relatório de acidente da Vegas</string>
     <string name="crash_close">Fechar</string>
     <string name="crash_no_log">Nenhum registro de falha disponível</string>
     <string name="palette_dynamic">Dinâmico</string>
@@ -697,8 +697,8 @@
     <string name="kmp_upgrade_later">Agora não</string>
     <string name="android_auto_search_options">Opções de pesquisa</string>
     <string name="android_auto_search_local_songs_limit">limite de pesquisa de músicas</string>
-    <string name="kmp_upgrade_title">Vega KMP %s está disponível</string>
-    <string name="kmp_upgrade_warning">Vega KMP ainda está em desenvolvimento. Você pode encontrar bugs ou recursos incompletos.</string>
+    <string name="kmp_upgrade_title">Vegas KMP %s está disponível</string>
+    <string name="kmp_upgrade_warning">Vegas KMP ainda está em desenvolvimento. Você pode encontrar bugs ou recursos incompletos.</string>
     <string name="kmp_upgrade_action">Tentar KMP</string>
     <string name="android_auto_search_local_songs_limit_desc">Limite o número de músicas locais exibidas nos resultados da pesquisa. Recomenda-se não definir como ilimitado para evitar travamentos de memória</string>
     <string name="stream_source_visionos_desc">Apple Vision. Sem limitação de velocidade; muito confiável.</string>
@@ -715,5 +715,5 @@
     <string name="ai_provider_inception_help">Visite https://platform.inceptionlabs.ai para chave API</string>
     <string name="enable_zemer">Ativar Zemer</string>
     <string name="enable_zemer_desc">Letras por Jewish music</string>
-    <string name="update_available_message">Vega %s está pronto para download.</string>
+    <string name="update_available_message">Vegas %s está pronto para download.</string>
 </resources>

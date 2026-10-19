@@ -1,5 +1,5 @@
 /**
- * Vega: decides whether a song being added to a playlist is already there.
+ * Vegas: decides whether a song being added to a playlist is already there.
  * Exact = same YouTube id. Probable = another upload of the same recording (same normalized title and
  * main artist, duration within a few seconds). Songs that merely share a title stay New, and anything
  * with unknown duration or artist is never treated as probable.

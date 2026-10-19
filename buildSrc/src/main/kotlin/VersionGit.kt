@@ -3,18 +3,18 @@ import org.gradle.api.provider.ProviderFactory
 /**
  * Cáscara de [VersionSemantica]: aquí sí se ejecuta git.
  *
- * Solo cuenta commits de Vega: se excluye todo lo alcanzable desde [baseFork] (el
- * commit de Metrolist del que partió Vega) y desde `upstream/main` si existe, así
+ * Solo cuenta commits de Vegas: se excluye todo lo alcanzable desde [baseFork] (el
+ * commit de Metrolist del que partió Vegas) y desde `upstream/main` si existe, así
  * que traer arreglos de Metrolist no infla el código ni mueve el nombre.
  */
-data class VersionVega(
+data class VersionVegas(
     val nombre: String,
     val codigo: Int,
 ) {
     val etiqueta: String get() = VersionSemantica.etiqueta(nombre, codigo)
 }
 
-fun ProviderFactory.versionVega(baseFork: String): VersionVega {
+fun ProviderFactory.versionVegas(baseFork: String): VersionVegas {
     fun git(vararg argumentos: String): String? {
         val salida =
             exec {
@@ -25,7 +25,7 @@ fun ProviderFactory.versionVega(baseFork: String): VersionVega {
     }
 
     // Sin git (código descargado como zip) no hay historia que leer.
-    git("rev-parse", "--verify", "--quiet", "HEAD") ?: return VersionVega("0.0.0-local", 1)
+    git("rev-parse", "--verify", "--quiet", "HEAD") ?: return VersionVegas("0.0.0-local", 1)
 
     val excluidos =
         buildList {
@@ -49,5 +49,5 @@ fun ProviderFactory.versionVega(baseFork: String): VersionVega {
     val rango = listOfNotNull("HEAD", etiquetaPrevia?.let { "^$it" }) + excluidos
     val mensajes = VersionSemantica.mensajesDelLog(git("log", "--format=%B%x00", *rango.toTypedArray()).orEmpty())
 
-    return VersionVega(VersionSemantica.siguiente(etiquetaPrevia, mensajes), codigo)
+    return VersionVegas(VersionSemantica.siguiente(etiquetaPrevia, mensajes), codigo)
 }

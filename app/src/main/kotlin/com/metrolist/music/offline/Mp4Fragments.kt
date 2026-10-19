@@ -1,5 +1,5 @@
 /**
- * Vega: YouTube's m4a streams are fragmented MP4 (moov + sidx + moof/mdat pairs). Tagging only grows
+ * Vegas: YouTube's m4a streams are fragmented MP4 (moov + sidx + moof/mdat pairs). Tagging only grows
  * moov; the fragments use offsets relative to themselves, so moving them is harmless as long as
  * their bytes stay identical. jaudiotagger's own offset check does not understand this layout and
  * reports a false error, so the tagged copy is checked here instead.

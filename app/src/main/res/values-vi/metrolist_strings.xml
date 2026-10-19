@@ -168,11 +168,11 @@
     <string name="show_artist_description">Hiển thị mô tả nghệ sĩ</string>
     <string name="show_artist_subscriber_count">Hiện số lượng người đăng ký</string>
     <string name="show_artist_monthly_listeners">Hiển thị số lượt nghe hằng tháng</string>
-    <string name="wrapped_logo_content_description">Vega Logo</string>
+    <string name="wrapped_logo_content_description">Vegas Logo</string>
     <string name="wrapped_year">2025</string>
     <string name="album_art">Cài đặt widget</string>
     <string name="no_song_playing">Không có bài hát đang phát</string>
-    <string name="tap_to_open">Chạm để mở Vega</string>
+    <string name="tap_to_open">Chạm để mở Vegas</string>
     <string name="previous">Bài trước</string>
     <string name="play_pause">Phát/Tạm dừng</string>
     <string name="next">Bài tiếp</string>
@@ -186,7 +186,7 @@
     <string name="crash_description">Đã xảy ra lỗi không mong muốn. Vui lòng chia sẻ báo cáo sự cố để giúp chúng tôi khắc phục lỗi</string>
     <string name="crash_share_logs">Chia sẻ nhật ký</string>
     <string name="crash_share_title">Chia sẻ báo cáo sự cố</string>
-    <string name="crash_report_subject">Báo cáo sự cố Vega</string>
+    <string name="crash_report_subject">Báo cáo sự cố Vegas</string>
     <string name="crash_close">Đóng</string>
     <string name="crash_no_log">Không có nhật ký sự cố</string>
     <string name="palette_crimson">Đỏ thẫm</string>
@@ -223,7 +223,7 @@
     <string name="remember_shuffle_and_repeat_desc">Ghi nhớ các cài đặt phát xáo trộn và phát lại khi khởi động lại ứng dụng</string>
     <string name="pause_music_when_media_is_muted">Tạm dừng nhạc khi tắt tiếng media</string>
     <string name="keep_screen_on_when_player_is_expanded">Giữ màn hình bật khi mở trình phát</string>
-    <string name="last_fm_send_likes_description">Tự động Yêu thích hoặc Bỏ yêu thích bài hát trên Last.fm khi bạn thích hoặc bỏ thích chúng trên Vega</string>
+    <string name="last_fm_send_likes_description">Tự động Yêu thích hoặc Bỏ yêu thích bài hát trên Last.fm khi bạn thích hoặc bỏ thích chúng trên Vegas</string>
     <string name="logging_in">Đang đăng nhập…</string>
     <string name="hide_video_songs">Ẩn bài hát video</string>
     <string name="details_desc">Xem thông tin chi tiết của bài hát</string>
@@ -379,7 +379,7 @@
     <string name="wrapped_total_artists_subtitle">nghệ sĩ độc bản!</string>
     <string name="wrapped_total_songs_title">Bạn đã được nghe</string>
     <string name="wrapped_total_songs_subtitle">các bài hát độc đáo!</string>
-    <string name="wrapped_intro_title">VEGA</string>
+    <string name="wrapped_intro_title">VEGAS</string>
     <string name="wrapped_intro_subtitle">đã đến lúc xem bạn đã nghe những gì trong suốt năm qua…</string>
     <string name="wrapped_intro_button">đi nào!</string>
     <string name="wrapped_ready_title">WRAPPED CỦA BẠN ĐÃ SẴN SÀNG!</string>
@@ -455,7 +455,7 @@
     <string name="error_podcast_unsubscribe">Không thể hủy đăng ký podcast</string>
     <string name="view_channel">Xem kênh</string>
     <string name="not_playing">Không có bài hát đang phát</string>
-    <string name="tap_to_play">Ấn để mở Vega</string>
+    <string name="tap_to_play">Ấn để mở Vegas</string>
     <string name="widget_music_player">Máy phát Nhạc</string>
     <string name="widget_turntable">Bàn xoay</string>
     <string name="widget_recognizer_name">Nhận dạng âm nhạc</string>
@@ -559,7 +559,7 @@
     <string name="clear_recognition_history_confirm">Bạn có chắc chắn muốn xóa toàn bộ lịch sử nhận dạng nhạc không?</string>
     <string name="delete_from_history">Xoá khỏi lịch sử</string>
     <string name="re_listen">Nghe lại</string>
-    <string name="play_on_app">Phát trên Vega</string>
+    <string name="play_on_app">Phát trên Vegas</string>
     <string name="qs_tile_music_recognizer">Nhận dạng bài hát</string>
     <string name="recognition_notification_channel_name">Nhận dạng bài hát</string>
     <string name="recognition_notification_channel_desc">Hiển thị thông báo trong khi nhận dạng bài hát từ menu cài đặt nhanh</string>
@@ -567,7 +567,7 @@
     <string name="recognition_notification_processing">Đang xác định…</string>
     <string name="recognition_notification_no_match">Không tìm thấy kết quả phù hợp</string>
     <string name="recognition_notification_failed">Không nhận dạng được</string>
-    <string name="listen_on_metrolist">Nghe trên Vega</string>
+    <string name="listen_on_metrolist">Nghe trên Vegas</string>
     <string name="map_csv_columns">Ánh xạ các cột CSV</string>
     <string name="first_row_is_header">Dòng đầu tiên là tiêu đề</string>
     <string name="artist_name_column">Cột Tên nghệ sĩ</string>
@@ -684,8 +684,8 @@
     <string name="enable_dynamic_icon">Biểu tượng theo chủ đề</string>
     <string name="enable_dynamic_icon_desc">Sử dụng biểu tượng theo chủ đề. Khi tắt, biểu tượng sẽ sử dụng màu đơn sắc.</string>
     <string name="playlist_unavailable">Không tìm thấy danh sách phát</string>
-    <string name="kmp_upgrade_title">Đã có phiên bản Vega KMP %s</string>
-    <string name="kmp_upgrade_warning">Ứng dụng Vega KMP vẫn đang trong quá trình phát triển. Bạn có thể gặp phải lỗi hoặc các tính năng chưa hoàn thiện.</string>
+    <string name="kmp_upgrade_title">Đã có phiên bản Vegas KMP %s</string>
+    <string name="kmp_upgrade_warning">Ứng dụng Vegas KMP vẫn đang trong quá trình phát triển. Bạn có thể gặp phải lỗi hoặc các tính năng chưa hoàn thiện.</string>
     <string name="kmp_upgrade_action">Thử KMP</string>
     <string name="kmp_upgrade_later">Để sau</string>
     <string name="android_auto_search_options">Tùy chọn tìm kiếm</string>
@@ -702,7 +702,7 @@
     <string name="ai_provider_inception_help">Truy cập https://platform.inceptionlabs.ai để lấy khóa API</string>
     <string name="enable_zemer">Bật nhà cung cấp lời bài hát Zemer</string>
     <string name="enable_zemer_desc">Lời bài hát cho âm nhạc Do Thái</string>
-    <string name="update_available_message">Vega %s đã sẵn sàng để tải xuống.</string>
+    <string name="update_available_message">Vegas %s đã sẵn sàng để tải xuống.</string>
     <string name="update_action">Cập nhật</string>
     <string name="force_bottom_navbar">Buộc thanh điều hướng phía dưới</string>
 </resources>

@@ -168,7 +168,7 @@
     <string name="google_cast">Google Cast</string>
     <string name="google_cast_description">向 Chromecast 和其他支持投屏功能的设备投屏音频</string>
     <string name="last_fm_send_likes">同步喜欢和取消喜欢</string>
-    <string name="last_fm_send_likes_description">在 Vega 中对歌曲点赞或取消点赞时，Last.fm 中的喜欢或取消喜欢歌曲会同步更新</string>
+    <string name="last_fm_send_likes_description">在 Vegas 中对歌曲点赞或取消点赞时，Last.fm 中的喜欢或取消喜欢歌曲会同步更新</string>
     <string name="logging_in">正在登录…</string>
     <string name="hide_video_songs">隐藏带视频歌曲</string>
     <string name="details_desc">查看歌曲详情</string>
@@ -214,10 +214,10 @@
     <string name="wrapped_total_artists_subtitle">独特的音乐人！</string>
     <string name="wrapped_total_songs_title">您已听了</string>
     <string name="wrapped_total_songs_subtitle">独特的歌曲！</string>
-    <string name="wrapped_intro_title">VEGA</string>
+    <string name="wrapped_intro_title">VEGAS</string>
     <string name="wrapped_intro_subtitle">是时候回顾这一年都在听什么了…</string>
     <string name="wrapped_intro_button">让我们开始吧！</string>
-    <string name="wrapped_logo_content_description">Vega 徽标</string>
+    <string name="wrapped_logo_content_description">Vegas 徽标</string>
     <string name="wrapped_year">2025</string>
     <string name="wrapped_ready_title">您的年度总结已准备好！</string>
     <string name="wrapped_ready_subtitle">是时候回顾这一年最喜欢什么了…</string>
@@ -252,7 +252,7 @@
     <string name="system_equalizer">系统均衡器</string>
     <string name="album_art">专辑封面</string>
     <string name="no_song_playing">没有音乐正在播放</string>
-    <string name="tap_to_open">点击打开 Vega</string>
+    <string name="tap_to_open">点击打开 Vegas</string>
     <string name="previous">上一曲</string>
     <string name="play_pause">播放/暂停</string>
     <string name="next">下一曲</string>
@@ -288,7 +288,7 @@
     <string name="crash_share_logs">分享日志</string>
     <string name="crash_description">发生意外错误，请分享崩溃报告以帮助我们解决问题</string>
     <string name="crash_share_title">分享崩溃报告</string>
-    <string name="crash_report_subject">Vega 崩溃报告</string>
+    <string name="crash_report_subject">Vegas 崩溃报告</string>
     <string name="crash_close">关闭</string>
     <string name="crash_no_log">没有可用的崩溃日志</string>
     <string name="palette_dynamic">灵动</string>
@@ -318,7 +318,7 @@
     <string name="cd_light_mode">浅色模式</string>
     <string name="cd_palette_item">样式 %1$s</string>
     <string name="not_playing">未在播放歌曲</string>
-    <string name="tap_to_play">点击打开 Vega</string>
+    <string name="tap_to_play">点击打开 Vegas</string>
     <string name="widget_music_player">播放器</string>
     <string name="widget_turntable">虚拟打碟台</string>
     <string name="ai_lyrics_translation">AI 歌词翻译</string>
@@ -362,7 +362,7 @@
     <string name="song_title_column">歌曲标题列</string>
     <string name="recently_converted">最近转换</string>
     <string name="importing_csv">正在导入 CSV…</string>
-    <string name="play_on_app">在 Vega 上播放</string>
+    <string name="play_on_app">在 Vegas 上播放</string>
     <string name="listening">正在听…</string>
     <string name="continue_action">继续</string>
     <string name="enable">启用</string>
@@ -578,7 +578,7 @@
     <string name="recognition_notification_processing">正在识别…</string>
     <string name="recognition_notification_no_match">未找到匹配</string>
     <string name="recognition_notification_failed">识别失败</string>
-    <string name="listen_on_metrolist">在 Vega 上听</string>
+    <string name="listen_on_metrolist">在 Vegas 上听</string>
     <string name="android_auto">Android Auto</string>
     <string name="android_auto_visible_sections">可见板块</string>
     <string name="android_auto_reorder_hint">点击某个板块即可启用或禁用。\n长按拖动手柄可重新排序。默认情况下将显示第一个板块</string>
@@ -683,8 +683,8 @@
     <string name="enable_landscape_scaling">横屏缩放</string>
     <string name="enable_dynamic_icon">动态图标颜色</string>
     <string name="enable_dynamic_icon_desc">为应用图标使用动态主题颜色。禁用后，图标将使用纯色。</string>
-    <string name="kmp_upgrade_title">Vega KMP %s 现已推出</string>
-    <string name="kmp_upgrade_warning">Vega KMP 目前处于抢先体验阶段。功能可能存在缺陷、不完整或变更，恕不另行通知。</string>
+    <string name="kmp_upgrade_title">Vegas KMP %s 现已推出</string>
+    <string name="kmp_upgrade_warning">Vegas KMP 目前处于抢先体验阶段。功能可能存在缺陷、不完整或变更，恕不另行通知。</string>
     <string name="kmp_upgrade_action">升级到 KMP</string>
     <string name="kmp_upgrade_later">暂不升级</string>
     <string name="android_auto_search_options">搜索选项</string>

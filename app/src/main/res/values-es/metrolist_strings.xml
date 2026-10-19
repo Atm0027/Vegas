@@ -154,7 +154,7 @@
     <string name="scrobble_delay_minutes">Retraso del scrobble (minutos)</string>
     <string name="swipe_song_to_remove">Deslizar la canción para quitarla de la lista de reproducción</string>
     <string name="last_fm_send_likes">Sincronizar «Me gusta» y «No me gusta»</string>
-    <string name="last_fm_send_likes_description">Marcar canciones como «Me gusta» o «No me gusta» en Last.fm cuando las marques así en Vega</string>
+    <string name="last_fm_send_likes_description">Marcar canciones como «Me gusta» o «No me gusta» en Last.fm cuando las marques así en Vegas</string>
     <string name="primary_color_style">Color primario</string>
     <string name="tertiary_color_style">Color terciario</string>
     <string name="auto_scroll">Re-sincronizar</string>
@@ -236,8 +236,8 @@
     <string name="failed_to_parse_proxy">Error al analizar la URL del proxy</string>
     <string name="lyrics_glow_effect">Habilitar efecto de brillo de la letra</string>
     <string name="lyrics_glow_effect_desc">Añadir animación de brillo y efecto de rebote a la letra activa</string>
-    <string name="wrapped_intro_title">VEGA</string>
-    <string name="wrapped_logo_content_description">Logo de Vega</string>
+    <string name="wrapped_intro_title">VEGAS</string>
+    <string name="wrapped_logo_content_description">Logo de Vegas</string>
     <string name="wrapped_year">2025</string>
     <string name="show_artist_description">Mostrar descripción del artista</string>
     <string name="show_artist_subscriber_count">Ver número de suscriptores</string>
@@ -266,7 +266,7 @@
     <string name="import_error_title">Error de importación</string>
     <string name="album_art">Portada del álbum</string>
     <string name="no_song_playing">Ninguna canción reproduciéndose</string>
-    <string name="tap_to_open">Toca para abrir Vega</string>
+    <string name="tap_to_open">Toca para abrir Vegas</string>
     <string name="previous">Anterior</string>
     <string name="play_pause">Reproducir/Pausar</string>
     <string name="next">Siguiente</string>
@@ -294,7 +294,7 @@
     <string name="crash_description">Ocurrió un error inesperado. Por favor comparte el informe de fallos para ayudarnos a solucionar el problema</string>
     <string name="crash_share_logs">Compartir registros</string>
     <string name="crash_share_title">Compartir informe de fallos</string>
-    <string name="crash_report_subject">Informe de fallos de Vega</string>
+    <string name="crash_report_subject">Informe de fallos de Vegas</string>
     <string name="crash_close">Cerrar</string>
     <string name="crash_no_log">No hay registro de fallos disponible</string>
     <string name="palette_dynamic">Dinámico</string>
@@ -324,7 +324,7 @@
     <string name="cd_system_mode">Modo del sistema</string>
     <string name="cd_palette_item">Paleta %1$s</string>
     <string name="not_playing">No hay canción en reproducción</string>
-    <string name="tap_to_play">Toca para abrir Vega</string>
+    <string name="tap_to_play">Toca para abrir Vegas</string>
     <string name="widget_music_player">Reproductor de música</string>
     <string name="widget_turntable">Tocadiscos</string>
     <string name="ai_lyrics_translation">Traducción de letras con IA</string>
@@ -368,7 +368,7 @@
     <string name="song_title_column">Columna de título de la canción</string>
     <string name="recently_converted">Convertidos recientemente</string>
     <string name="importing_csv">Importando CSV…</string>
-    <string name="play_on_app">Reproducir en Vega</string>
+    <string name="play_on_app">Reproducir en Vegas</string>
     <string name="listening">Escuchando…</string>
     <string name="continue_action">Continuar</string>
     <string name="enable">Habilitar</string>
@@ -635,7 +635,7 @@
     <string name="recognition_notification_processing">Identificando…</string>
     <string name="recognition_notification_no_match">Sin coincidencias</string>
     <string name="recognition_notification_failed">Reconocimiento fallido</string>
-    <string name="listen_on_metrolist">Escuchar en Vega</string>
+    <string name="listen_on_metrolist">Escuchar en Vegas</string>
     <string name="android_auto">Android Auto</string>
     <string name="android_auto_visible_sections">Secciones visibles</string>
     <string name="android_auto_reorder_hint">Toca una sección para habilitarla o deshabilitarla\nMantén presionado el control de arrastre para reordenar. La primera sección se mostrará por defecto</string>
@@ -695,8 +695,8 @@
     <string name="enable_landscape_scaling_desc">Escala la interfaz en modo horizontal para pantallas grandes</string>
     <string name="enable_dynamic_icon">Colores dinámicos del icono</string>
     <string name="enable_dynamic_icon_desc">Usa los colores dinámicos del tema para el icono de la app. Cuando está desactivado, el icono utiliza colores sólidos.</string>
-    <string name="kmp_upgrade_title">Vega KMP %s está disponible</string>
-    <string name="kmp_upgrade_warning">Vega KMP aún está en desarrollo. Es posible que encuentres fallos o funciones incompletas.</string>
+    <string name="kmp_upgrade_title">Vegas KMP %s está disponible</string>
+    <string name="kmp_upgrade_warning">Vegas KMP aún está en desarrollo. Es posible que encuentres fallos o funciones incompletas.</string>
     <string name="kmp_upgrade_action">Prueba KMP</string>
     <string name="android_auto_search_options">Opciones de búsqueda</string>
     <string name="android_auto_search_local_songs_limit">Límite de búsqueda de canciones</string>
@@ -714,7 +714,7 @@
     <string name="enable_zemer">Activar Zemer</string>
     <string name="enable_zemer_desc">Letras para música judía</string>
     <string name="ai_provider_inception_help">Visit https://platform.inceptionlabs.ai para claves API</string>
-    <string name="update_available_message">Vega %s está listo para descargar.</string>
+    <string name="update_available_message">Vegas %s está listo para descargar.</string>
     <string name="update_action">Actualizar</string>
     <string name="playlist_edit_done">Hecho</string>
     <string name="playlist_updated">Lista actualizada</string>
@@ -731,11 +731,11 @@
     <string name="pin_playlist_to_top">Fijar arriba</string>
     <string name="unpin_playlist">Desfijar</string>
     <string name="reorder_playlists">Ordenar listas</string>
-    <string name="about_vega_description">Reproductor de música personal, solo audio. Sin cuenta y sin rastreo.</string>
-    <string name="about_based_on">Vega es una versión modificada de Metrolist, de Mo Agamy y colaboradores, distribuida bajo la licencia GPL-3.0.</string>
-    <string name="about_source_code">Código fuente de Vega</string>
+    <string name="about_vegas_description">Reproductor de música personal, solo audio. Sin cuenta y sin rastreo.</string>
+    <string name="about_based_on">Vegas es una versión modificada de Metrolist, de Mo Agamy y colaboradores, distribuida bajo la licencia GPL-3.0.</string>
+    <string name="about_source_code">Código fuente de Vegas</string>
     <string name="about_original_project">Proyecto original: Metrolist</string>
-    <!-- Vega: modo sin conexión -->
+    <!-- Vegas: modo sin conexión -->
     <string name="download_playlist">Descargar playlist</string>
     <string name="remove_playlist_download">Quitar descarga</string>
     <string name="remove_playlist_download_desc">Las canciones nuevas de esta playlist ya no se descargarán.</string>
@@ -744,15 +744,15 @@
     <string name="download_on_mobile_data_desc">Si está desactivado, las descargas automáticas usan solo Wi-Fi</string>
     <string name="download_liked">Descargar Me gusta</string>
     <string name="download_liked_desc">Mantener descargadas todas las canciones que te gustan</string>
-    <string name="scan_vega_folder">Buscar descargas en Música/Vega</string>
-    <string name="scan_vega_folder_desc">Reconocer los archivos de una instalación anterior</string>
+    <string name="scan_vegas_folder">Buscar descargas en Música/Vegas</string>
+    <string name="scan_vegas_folder_desc">Reconocer los archivos de una instalación anterior</string>
     <string name="scan_result">%1$d descargas encontradas</string>
     <string name="delete_all_downloads">Borrar todas las descargas</string>
-    <string name="delete_all_downloads_confirm">¿Borrar todos los archivos descargados de Música/Vega?</string>
+    <string name="delete_all_downloads_confirm">¿Borrar todos los archivos descargados de Música/Vegas?</string>
     <string name="downloads_used_space">Espacio usado por las descargas</string>
     <string name="download_will_return">Se volverá a descargar porque está en «%1$s»</string>
     <string name="offline_no_more_downloaded">Sin conexión: no hay más canciones descargadas en la cola</string>
     <string name="offline_downloads">Descargas sin conexión</string>
-    <string name="scan_permission_needed">Vega necesita acceso a tu música para encontrar descargas anteriores</string>
+    <string name="scan_permission_needed">Vegas necesita acceso a tu música para encontrar descargas anteriores</string>
     <string name="remove_from_list">Quitar de la lista</string>
 </resources>

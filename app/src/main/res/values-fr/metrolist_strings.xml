@@ -154,7 +154,7 @@
     <string name="scrobble_delay_minutes">Délai de scrobble (en minutes)</string>
     <string name="swipe_song_to_remove">Faites glisser pour supprimer le titre de la playlist</string>
     <string name="last_fm_send_likes">Synchroniser les favoris et les éléments non favoris</string>
-    <string name="last_fm_send_likes_description">Ajoutez ou retirez des titres de vos favoris sur Last.fm lorsque vous les ajoutez ou les retirez de vos favoris dans Vega</string>
+    <string name="last_fm_send_likes_description">Ajoutez ou retirez des titres de vos favoris sur Last.fm lorsque vous les ajoutez ou les retirez de vos favoris dans Vegas</string>
     <string name="google_cast">Google Cast</string>
     <string name="google_cast_description">Diffusez du contenu audio sur Chromecast et d\'autres appareils compatibles avec Cast</string>
     <string name="hide_video_songs">Masquer les chansons vidéo</string>
@@ -216,10 +216,10 @@
     <string name="wrapped_total_artists_subtitle">artistes uniques !</string>
     <string name="wrapped_total_songs_title">Vous avez écouté</string>
     <string name="wrapped_total_songs_subtitle">titres uniques !</string>
-    <string name="wrapped_intro_title">VEGA</string>
+    <string name="wrapped_intro_title">VEGAS</string>
     <string name="wrapped_intro_subtitle">Il est temps de découvrir ce que vous avez écouté tout au long de cette année…</string>
     <string name="wrapped_intro_button">allons-y !</string>
-    <string name="wrapped_logo_content_description">Logo Vega</string>
+    <string name="wrapped_logo_content_description">Logo Vegas</string>
     <string name="wrapped_year">2025</string>
     <string name="wrapped_ready_title">VOTRE CADEAU EST PRÊT À ÊTRE DÉVOILÉ !</string>
     <string name="wrapped_ready_subtitle">C\'est le moment de découvrir ce que vous avez aimé tout au long de cette année…</string>
@@ -258,7 +258,7 @@
     <string name="system_equalizer">Égaliseur système</string>
     <string name="album_art">Pochette d\'album</string>
     <string name="no_song_playing">Aucun titre en cours de lecture</string>
-    <string name="tap_to_open">Appuyez pour ouvrir Vega</string>
+    <string name="tap_to_open">Appuyez pour ouvrir Vegas</string>
     <string name="previous">Précédent</string>
     <string name="play_pause">Lecture/Pause</string>
     <string name="next">Suivant</string>
@@ -294,7 +294,7 @@
     <string name="crash_description">Une erreur inattendue s\'est produite. Veuillez partager le rapport d\'erreur afin de nous aider à résoudre le problème</string>
     <string name="crash_share_logs">Partager les journaux</string>
     <string name="crash_share_title">Partager le rapport d\'incident</string>
-    <string name="crash_report_subject">Rapport d\'incident Vega</string>
+    <string name="crash_report_subject">Rapport d\'incident Vegas</string>
     <string name="crash_close">Fermer</string>
     <string name="crash_no_log">Aucun rapport d\'incident disponible</string>
     <string name="palette_dynamic">Dynamique</string>
@@ -324,7 +324,7 @@
     <string name="cd_system_mode">Mode Système</string>
     <string name="cd_palette_item">Palette %1$s</string>
     <string name="not_playing">Aucun titre en cours de lecture</string>
-    <string name="tap_to_play">Appuyez pour ouvrir Vega</string>
+    <string name="tap_to_play">Appuyez pour ouvrir Vegas</string>
     <string name="widget_music_player">Lecteur de Musique</string>
     <string name="widget_turntable">Platine vinyle</string>
     <string name="ai_lyrics_translation">Traduction des paroles par IA</string>
@@ -368,7 +368,7 @@
     <string name="song_title_column">Colonne « Titre de la chanson »</string>
     <string name="recently_converted">Récemment converti</string>
     <string name="importing_csv">Importation du fichier CSV…</string>
-    <string name="play_on_app">Jouer sur Vega</string>
+    <string name="play_on_app">Jouer sur Vegas</string>
     <string name="listening">Écoute…</string>
     <string name="continue_action">Continuer</string>
     <string name="enable">Activer</string>
@@ -593,7 +593,7 @@
     <string name="recognition_notification_processing">Identification en cours…</string>
     <string name="recognition_notification_no_match">Aucun résultat trouvé</string>
     <string name="recognition_notification_failed">Échec de la reconnaissance</string>
-    <string name="listen_on_metrolist">Écoutez sur Vega</string>
+    <string name="listen_on_metrolist">Écoutez sur Vegas</string>
     <string name="android_auto">Android Auto</string>
     <string name="android_auto_visible_sections">Sections visibles</string>
     <string name="android_auto_reorder_hint">Appuyez sur une section pour l\'activer ou la désactiver.\nAppuyez longuement sur la poignée de déplacement pour modifier l\'ordre. La première section s\'affichera par défaut</string>
@@ -695,8 +695,8 @@
     <string name="enable_landscape_scaling_desc">Adapter l\'interface utilisateur au mode paysage pour les écrans plus grands</string>
     <string name="enable_dynamic_icon">Couleurs dynamiques des icônes</string>
     <string name="enable_dynamic_icon_desc">Utilisez les couleurs dynamiques du thème pour l\'icône de l\'application. Lorsque cette option est désactivée, l\'icône affiche des couleurs unies.</string>
-    <string name="kmp_upgrade_title">Vega KMP %s est disponible</string>
-    <string name="kmp_upgrade_warning">Vega KMP est encore en cours de développement. Vous pourriez rencontrer des bugs ou des fonctionnalités incomplètes.</string>
+    <string name="kmp_upgrade_title">Vegas KMP %s est disponible</string>
+    <string name="kmp_upgrade_warning">Vegas KMP est encore en cours de développement. Vous pourriez rencontrer des bugs ou des fonctionnalités incomplètes.</string>
     <string name="kmp_upgrade_action">Essayez KMP</string>
     <string name="kmp_upgrade_later">Pas maintenant</string>
     <string name="android_auto_search_options">Options de recherche</string>
@@ -714,7 +714,7 @@
     <string name="ai_provider_inception_help">Rendez-vous sur https://platform.inceptionlabs.ai pour obtenir des clés API</string>
     <string name="enable_zemer">Activer Zemer</string>
     <string name="enable_zemer_desc">Paroles de musique juive</string>
-    <string name="update_available_message">Vega %s est prêt à être téléchargé.</string>
+    <string name="update_available_message">Vegas %s est prêt à être téléchargé.</string>
     <string name="update_action">Mettre à jour</string>
     <string name="force_bottom_navbar">Forcer l\'affichage de la barre de navigation inférieure</string>
 </resources>

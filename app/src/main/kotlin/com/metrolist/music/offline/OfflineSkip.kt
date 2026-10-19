@@ -1,5 +1,5 @@
 /**
- * Vega: without a usable connection the player skips ahead, in play order (shuffle and repeat
+ * Vegas: without a usable connection the player skips ahead, in play order (shuffle and repeat
  * included), to the next song that can play offline.
  * Licensed under GPL-3.0
  */

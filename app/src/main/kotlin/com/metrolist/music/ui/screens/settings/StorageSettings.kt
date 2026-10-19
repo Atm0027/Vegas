@@ -93,7 +93,7 @@ fun StorageSettings(
     val (downloadOnMobileData, onDownloadOnMobileDataChange) = rememberPreference(DownloadOnMobileDataKey, false)
     val (downloadLiked, onDownloadLikedChange) = rememberPreference(DownloadLikedKey, false)
     val scanFolder: () -> Unit = {
-        scanVegaFolder(context, downloadUtil)
+        scanVegasFolder(context, downloadUtil)
     }
     val readPermissionLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -337,8 +337,8 @@ fun StorageSettings(
                     ),
                     Material3SettingsItem(
                         icon = painterResource(R.drawable.search),
-                        title = { Text(stringResource(R.string.scan_vega_folder)) },
-                        description = { Text(stringResource(R.string.scan_vega_folder_desc)) },
+                        title = { Text(stringResource(R.string.scan_vegas_folder)) },
+                        description = { Text(stringResource(R.string.scan_vegas_folder_desc)) },
                         onClick = {
                             val permission = downloadUtil.readPermission()
                             if (permission == null || downloadUtil.hasReadPermission()) {
@@ -532,7 +532,7 @@ fun StorageSettings(
     )
 }
 
-private fun scanVegaFolder(context: android.content.Context, downloadUtil: DownloadUtil) {
+private fun scanVegasFolder(context: android.content.Context, downloadUtil: DownloadUtil) {
     downloadUtil.scanFolder { report ->
         Toast.makeText(context, context.getString(R.string.scan_result, report.linked), Toast.LENGTH_LONG).show()
     }

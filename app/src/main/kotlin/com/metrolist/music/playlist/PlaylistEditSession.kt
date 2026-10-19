@@ -1,5 +1,5 @@
 /**
- * Vega: in-memory edit of a local playlist. Nothing touches the database until [commit], which
+ * Vegas: in-memory edit of a local playlist. Nothing touches the database until [commit], which
  * yields dense positions 0..n-1 for the kept rows, so one transaction can apply the whole edit.
  * Licensed under GPL-3.0
  */

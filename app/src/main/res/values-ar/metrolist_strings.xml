@@ -159,7 +159,7 @@
     <string name="scrobble_delay_percent">نسبة تأخير Scrobble</string>
     <string name="scrobble_delay_minutes">تأخير Scrobble (دقائق)</string>
     <string name="swipe_song_to_remove">اسحب الأغنية لإزالتها من قائمة التشغيل</string>
-    <string name="last_fm_send_likes_description">عندما تعجبك أغنية أو تلغي إعجابك بها في Vega سيتم تلقائيًا وضع علامة (أحببت) أو (غير محبوب) على نفس الأغنية في Last.fm</string>
+    <string name="last_fm_send_likes_description">عندما تعجبك أغنية أو تلغي إعجابك بها في Vegas سيتم تلقائيًا وضع علامة (أحببت) أو (غير محبوب) على نفس الأغنية في Last.fm</string>
     <string name="last_fm_send_likes">مزامنة الإعجابات و عدم الإعجابات</string>
     <string name="hide_video_songs">إخفاء أغاني الفيديو</string>
     <string name="google_cast">جوجل كاست</string>
@@ -231,7 +231,7 @@
     <string name="wrapped_top_artist_listening_time">لقد إستمعت إليهم لمدة %d دقيقة!</string>
     <string name="wrapped_top_song_title">أغنيتك الأكثر استماعاً هي</string>
     <string name="wrapped_top_song_listening_time">لقد استمعت لمدة %d دقيقة!</string>
-    <string name="wrapped_intro_title">VEGA</string>
+    <string name="wrapped_intro_title">VEGAS</string>
     <string name="wrapped_playlist_title">ملخصك السنوي لـ %s</string>
     <string name="wrapped_create_playlist">إنشاء قائمة تشغيل</string>
     <string name="wrapped_playlist_saved">تم حفظ قائمة التشغيل</string>
@@ -303,7 +303,7 @@
     <string name="crash_description">حدث خطأ غير متوقع يرجى مشاركة تقرير العطل لمساعدتنا في حل المشكلة.</string>
     <string name="crash_share_logs">مشاركة السجلات</string>
     <string name="crash_share_title">مشاركة تقرير التعطل</string>
-    <string name="crash_report_subject">تقرير تعطل تطبيق Vega</string>
+    <string name="crash_report_subject">تقرير تعطل تطبيق Vegas</string>
     <string name="crash_close">إغلاق</string>
     <string name="crash_no_log">لا يوجد سجل أعطال متاح</string>
     <string name="palette_dynamic">ديناميكي</string>
@@ -333,7 +333,7 @@
     <string name="cd_system_mode">وضع النظام</string>
     <string name="cd_palette_item">لوحة ألوان %1$s</string>
     <string name="not_playing">لا يتم تشغيل أي أغنية</string>
-    <string name="tap_to_play">اضغط لفتح Vega</string>
+    <string name="tap_to_play">اضغط لفتح Vegas</string>
     <string name="widget_music_player">مشغل موسيقى</string>
     <string name="widget_turntable">القرص الدوار</string>
     <string name="recognize_music">التعرف على الموسيقى</string>
@@ -374,7 +374,7 @@
     <string name="song_title_column">خانة عنوان الأغنية</string>
     <string name="recently_converted">تم تحويله مؤخرًا</string>
     <string name="importing_csv">استيراد ملف CSV</string>
-    <string name="play_on_app">تشغيل على Vega</string>
+    <string name="play_on_app">تشغيل على Vegas</string>
     <string name="listening">الاستماع…</string>
     <string name="ai_api_key_required">مفتاح API مطلوب</string>
     <string name="continue_action">متابعة</string>

@@ -373,7 +373,7 @@ class MusicService :
     @Inject
     lateinit var offlineStore: OfflineStore
 
-    // Vega offline: ids of songs with a downloaded file, kept in memory for the playback thread.
+    // Vegas offline: ids of songs with a downloaded file, kept in memory for the playback thread.
     private val downloadedIds = MutableStateFlow<Set<String>>(emptySet())
     private var offlineEndNotified = false
     private var offlineStallJob: Job? = null
@@ -3323,7 +3323,7 @@ class MusicService :
                 ),
             ).setFlags(FLAG_IGNORE_CACHE_ON_ERROR)
 
-    /** Downloaded file of [mediaId], if it is there; a file deleted outside Vega drops its row. */
+    /** Downloaded file of [mediaId], if it is there; a file deleted outside Vegas drops its row. */
     private val sourceLock = SourceLock()
 
     private fun localFileUri(mediaId: String): Uri? {

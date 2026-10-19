@@ -1,5 +1,5 @@
 /**
- * Vega: caps how many downloads run at once. WorkManager starts every eligible CoroutineWorker
+ * Vegas: caps how many downloads run at once. WorkManager starts every eligible CoroutineWorker
  * together, and hundreds of parallel stream resolves exhaust memory and get throttled by YouTube.
  * While a song streams the cap drops to one, so playback is not starved by downloads.
  * Licensed under GPL-3.0

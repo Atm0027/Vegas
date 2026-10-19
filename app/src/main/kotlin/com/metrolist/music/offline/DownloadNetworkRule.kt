@@ -1,5 +1,5 @@
 /**
- * Vega: automatic downloads (tracked playlists, liked songs) wait for Wi-Fi unless the user allows
+ * Vegas: automatic downloads (tracked playlists, liked songs) wait for Wi-Fi unless the user allows
  * mobile data; downloads the user starts by hand use any connection.
  * Licensed under GPL-3.0
  */

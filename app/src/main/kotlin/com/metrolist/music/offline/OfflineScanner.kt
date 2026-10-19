@@ -1,5 +1,5 @@
 /**
- * Vega: after reinstalling or restoring a backup, recognises the files already in Music/Vega by the
+ * Vegas: after reinstalling or restoring a backup, recognises the files already in Music/Vegas by the
  * [videoId] in their names, so they play offline without downloading them again. Songs the database
  * does not know yet are created from the file name; their details are completed when online.
  * Licensed under GPL-3.0
@@ -22,7 +22,7 @@ class OfflineScanner @Inject constructor(
     data class ScanReport(val linked: Int, val newSongs: Int)
 
     companion object {
-        /** Left by a backup restore: the next start scans Music/Vega once. */
+        /** Left by a backup restore: the next start scans Music/Vegas once. */
         const val PENDING_SCAN_FILE = "offline_pending_scan"
     }
 

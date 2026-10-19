@@ -1,7 +1,7 @@
 /**
- * Vega: downloads one song to a real, tagged audio file. Always asks YouTube for the m4a stream
+ * Vegas: downloads one song to a real, tagged audio file. Always asks YouTube for the m4a stream
  * whatever the playback quality setting, saves it to a private .part file (resumable), checks the
- * size, writes title/artists/album/cover and only then publishes it to Music/Vega, so an
+ * size, writes title/artists/album/cover and only then publishes it to Music/Vegas, so an
  * interrupted download never leaves a broken file behind.
  * Licensed under GPL-3.0
  */
@@ -132,7 +132,7 @@ class SongDownloader @Inject constructor(
         return DownloadOutcome.Done(entity)
     }
 
-    /** Tags a complete audio file, publishes it to Music/Vega and records it as downloaded. */
+    /** Tags a complete audio file, publishes it to Music/Vegas and records it as downloaded. */
     suspend fun publishFile(
         songId: String,
         part: File,

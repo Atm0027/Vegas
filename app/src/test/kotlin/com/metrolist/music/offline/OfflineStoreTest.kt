@@ -33,8 +33,8 @@ class OfflineStoreTest {
 
     @Test
     fun fileFromAnotherInstall_withoutPermission_isNoAccess() {
-        Robolectric.setupContentProvider(DenyingProvider::class.java, "vega.denied")
-        assertEquals(OfflineStore.Existence.NO_ACCESS, store.exists(Uri.parse("content://vega.denied/audio/5")))
+        Robolectric.setupContentProvider(DenyingProvider::class.java, "vegas.denied")
+        assertEquals(OfflineStore.Existence.NO_ACCESS, store.exists(Uri.parse("content://vegas.denied/audio/5")))
     }
 
     @Test
@@ -45,15 +45,15 @@ class OfflineStoreTest {
         assertEquals("file", uri.scheme)
         val published = File(uri.path!!)
         assertEquals("A - B [abc123DEF_-].m4a", published.name)
-        assertEquals("Vega", published.parentFile!!.name)
+        assertEquals("Vegas", published.parentFile!!.name)
         assertEquals(10L, published.length())
         assertTrue(!temp.exists())
     }
 
     @Test
     fun storedIdNowPointingToAnotherSong_isMissing() {
-        Robolectric.setupContentProvider(NamedProvider::class.java, "vega.named")
-        val uri = Uri.parse("content://vega.named/audio/7")
+        Robolectric.setupContentProvider(NamedProvider::class.java, "vegas.named")
+        val uri = Uri.parse("content://vegas.named/audio/7")
         assertEquals(OfflineStore.Existence.PRESENT, store.exists(uri, videoId = "UYUUb6Dl5D8"))
         assertEquals(OfflineStore.Existence.MISSING, store.exists(uri, videoId = "imJSUk0Z3Vg"))
     }

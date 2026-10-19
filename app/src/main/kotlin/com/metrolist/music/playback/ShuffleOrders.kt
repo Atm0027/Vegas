@@ -1,5 +1,5 @@
 /**
- * Vega: history-preserving shuffle orders.
+ * Vegas: history-preserving shuffle orders.
  * Licensed under GPL-3.0
  */
 

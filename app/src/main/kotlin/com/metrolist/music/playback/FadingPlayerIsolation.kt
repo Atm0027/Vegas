@@ -1,5 +1,5 @@
 /**
- * Vega: the player fading out during a crossfade must only hold the track it is fading. Trimming
+ * Vegas: the player fading out during a crossfade must only hold the track it is fading. Trimming
  * just the items after the current index is not enough with shuffle on, where the next song in
  * play order can sit at a lower index; the old player then started that song too and its intro
  * played twice at once.

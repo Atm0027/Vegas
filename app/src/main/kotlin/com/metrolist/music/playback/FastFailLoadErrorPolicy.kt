@@ -1,5 +1,5 @@
 /**
- * Vega: don't hammer a dead stream URL.
+ * Vegas: don't hammer a dead stream URL.
  * Licensed under GPL-3.0
  */
 

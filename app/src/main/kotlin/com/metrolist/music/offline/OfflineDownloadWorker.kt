@@ -1,5 +1,5 @@
 /**
- * Vega: runs one queued download as a data sync foreground job, with progress shown in the
+ * Vegas: runs one queued download as a data sync foreground job, with progress shown in the
  * notification and in the song lists.
  * Licensed under GPL-3.0
  */
