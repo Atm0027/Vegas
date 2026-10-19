@@ -87,8 +87,6 @@
     <string name="likes">点赞</string>
     <string name="dislikes">倒赞</string>
     <string name="now_playing">正在播放</string>
-    <string name="new_player_design">新播放器设计</string>
-    <string name="new_mini_player_design">新迷你播放器设计</string>
     <string name="lyrics_auto_scroll">自动滚动歌词</string>
     <string name="import_online">导入 M3U 格式的播放列表</string>
     <string name="import_csv">导入 CSV 格式的播放列表</string>
@@ -592,7 +590,6 @@
     <string name="ai_system_prompt_reset">重置为默认</string>
     <string name="mini_player_background_style">迷你播放器背景样式</string>
     <string name="transparent">透明</string>
-    <string name="mini_player_background_not_available">当新迷你播放器设计被禁用时不可用</string>
     <string name="your_daily_discover">您的每日发现</string>
     <string name="lyrics_animation_none">无</string>
     <string name="lyrics_from_provider">来自 %s 的歌词</string>

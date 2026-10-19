@@ -90,7 +90,6 @@
     <string name="likes">喜歡</string>
     <string name="information">資訊</string>
     <string name="dislikes">不喜歡</string>
-    <string name="new_player_design">新播放器設計</string>
     <string name="swipe_sensitivity">迷你播放器滑動靈敏度</string>
     <string name="sensitivity_percentage">%1$d%%</string>
     <string name="clear_image_cache_dialog">確定要清除所有快取的圖片嗎?</string>
@@ -106,7 +105,6 @@
     <string name="seek_backward_dynamic">後退%1$d秒</string>
     <string name="seek_seconds_addup">漸進式時間跳躍</string>
     <string name="seek_seconds_addup_description">啟用此選項後，每次快進轉或倒轉時將遞增 5 秒的跳轉長度</string>
-    <string name="new_mini_player_design">使用全新迷你播放器設計</string>
     <string name="edit_playlist_cover">更改播放清單圖片</string>
     <string name="edit_playlist_cover_note">注意：你的帳戶必須連結到電話號碼並在 YouTube Music 上進行驗證才能更改播放清單封面</string>
     <string name="edit_playlist_cover_note_wait">選擇圖片後，請等待片刻，新的封面就會出現在你的播放清單中</string>
@@ -535,7 +533,6 @@
     <string name="alarm_battery_optimization_desc">停用電池優化功能，以提高鬧鐘在背景執行的穩定性</string>
     <string name="mini_player_background_style">迷你播放器背景樣式</string>
     <string name="transparent">透明的</string>
-    <string name="mini_player_background_not_available">停用新迷你播放器後，此功能無法使用</string>
     <string name="your_daily_discover">你的每天新發現</string>
     <string name="change">更改</string>
     <string name="ai_system_prompt">系統提示</string>

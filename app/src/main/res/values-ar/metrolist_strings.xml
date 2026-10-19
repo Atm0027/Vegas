@@ -100,14 +100,12 @@
     <string name="playlist_add_local_to_synced_note">ملاحظة: إن خاصية إضافة الأغاني المحلية إلى قوائم التشغيل المتزامنة / قوائم التشغيل عن بعد هي غير مدعومة. يمكن استخدام أي نوع آخر من القوائم</string>
     <string name="import_csv">استيراد قوائم تشغيل CSV</string>
     <string name="import_online">إستيراد قوائم التشغيل من نوع \"M3U\"</string>
-    <string name="new_player_design">تصميم المشغل الجديد</string>
     <string name="swipe_sensitivity">حساسية السحب الخاص بالمشغل الصغير</string>
     <string name="clear_image_cache_dialog">هل أنت متأكد أنك تريد مسح كافة الصور المخزنة مؤقتًا؟</string>
     <string name="disable">تعطيل</string>
     <string name="sensitivity_percentage">%1$d%%</string>
     <string name="subscribe">اشتراك</string>
     <string name="subscribed">مشترك</string>
-    <string name="new_mini_player_design">تصميم المشغل المصغر الجديد</string>
     <string name="now_playing">المُشغل الأن</string>
     <string name="seek_forward_dynamic">تقديم %1$d ثوانٍ</string>
     <string name="seek_backward_dynamic">تأخير %1$d ثوانٍ</string>
@@ -621,5 +619,4 @@
     <string name="varispeed">تفعيل خاصية تغيير السرعة</string>
     <string name="mini_player_background_style">نمط خلفية المشغل المصغر</string>
     <string name="transparent">شفاف</string>
-    <string name="mini_player_background_not_available">غير متاح عند تعطيل تصميم المشغل المصغر الجديد</string>
 </resources>

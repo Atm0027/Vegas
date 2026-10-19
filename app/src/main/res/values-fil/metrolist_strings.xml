@@ -76,8 +76,6 @@
     <string name="player_background_solid">Matatag</string>
     <string name="follow_theme">Sundan ang theme</string>
     <string name="gradient">Gradient</string>
-    <string name="new_player_design">Bagong design ng player</string>
-    <string name="new_mini_player_design">Bagong design ng mini-player</string>
     <string name="player_background_blur">Labo</string>
     <string name="player_buttons_style">Mga kulay ng button ng player</string>
     <string name="default_style">Default</string>

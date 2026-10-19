@@ -102,8 +102,6 @@
     <string name="seek_backward_dynamic">-%1$d segundos hacia atrás</string>
     <string name="seek_seconds_addup">Búsqueda progresiva</string>
     <string name="seek_seconds_addup_description">Al activarlo, añade 5 segundos adicionales de forma incremental en cada búsqueda</string>
-    <string name="new_player_design">Nuevo diseño del reproductor</string>
-    <string name="new_mini_player_design">Nuevo diseño del minirreproductor</string>
     <string name="swipe_sensitivity">Sensibilidad del deslizamiento del mini-reproductor</string>
     <string name="clear_image_cache_dialog">¿Estás seguro de querer limpiar todas las imágenes en caché?</string>
     <string name="disable">Desactivar</string>
@@ -527,7 +525,6 @@
     <string name="varispeed_description">Sincronizar el tono con la velocidad de reproducción para lograr efectos tipo cinta (más agudo al acelerar y más grave al ralentizar)</string>
     <string name="mini_player_background_style">Estilo de fondo del mini reproductor</string>
     <string name="transparent">Transparente</string>
-    <string name="mini_player_background_not_available">No disponible cuando el diseño nuevo del mini reproductor esta deshabilitado</string>
     <string name="lyrics_animation_style_title">Estilo de animación letra por letra</string>
     <string name="system_equalizer_desc">Abrir el ecualizador por defecto de Android</string>
     <string name="eq_wizard">Asistente de AutoEQ</string>

@@ -94,14 +94,12 @@
     <string name="import_online">Importar uma playlist M3U</string>
     <string name="import_csv">Importar uma playlist CSV</string>
     <string name="playlist_add_local_to_synced_note">OBSERVAÇÃO: Adicionar músicas locais as playlist sincronizadas ou remotas não é suportado. Qualquer outra combinação é valida</string>
-    <string name="new_player_design">Novo design do tocador</string>
     <string name="swipe_sensitivity">Sensibilidade ao deslizar no mini tocador</string>
     <string name="clear_image_cache_dialog">Tem certeza que quer apagar todas as imagens no cache?</string>
     <string name="disable">Desativar</string>
     <string name="sensitivity_percentage">%1$d%%</string>
     <string name="subscribe">Inscrever-se</string>
     <string name="subscribed">Inscrito</string>
-    <string name="new_mini_player_design">Novo design do mini-reprodutor</string>
     <string name="now_playing">Tocando agora</string>
     <string name="close">Fechar</string>
     <string name="hide_player_thumbnail">Ocultar miniatura do reprodutor</string>
@@ -604,7 +602,6 @@
     <string name="song_dropdown_more_results">Continue digitando para reduzir os resultados (%d mais)</string>
     <string name="mini_player_background_style">Estilo do plano de fundo do mini reprodutor</string>
     <string name="transparent">Transparente</string>
-    <string name="mini_player_background_not_available">Indisponível quando o novo design do mini reprodutor está desativado</string>
     <string name="your_daily_discover">Sua descoberta diária</string>
     <string name="lyrics_from_provider">Letras de %s</string>
     <string name="hide_status_bar_fullscreen">Ocultar barra de status em tela cheia</string>

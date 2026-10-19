@@ -98,10 +98,8 @@
     <string name="playlist_add_local_to_synced_note">Uwaga: Dodawanie lokalnej muzyki do synchronizowanej/zewnętrznej listy odtworzeń nie jest wspierane. Inne kombinacje są poprawne</string>
     <string name="swipe_sensitivity">Czułość przesunięcia mini-odtwarzacza</string>
     <string name="clear_image_cache_dialog">Czy na pewno chcesz wyczyścić wszystkie obrazy z pamięci podręcznej?</string>
-    <string name="new_player_design">Nowy wygląd odtwarzacza</string>
     <string name="sensitivity_percentage">%1$d%%</string>
     <string name="disable">Wyłączyć</string>
-    <string name="new_mini_player_design">Nowy wygląd małego odwarzacza</string>
     <string name="subscribe">Subskrybuj</string>
     <string name="subscribed">Zasubskrybowano</string>
     <string name="now_playing">Teraz odtwarzane</string>
@@ -584,7 +582,6 @@
     <string name="alarm_battery_optimization_desc">Wyłącz optymalizację baterii dla lepszej niezawodności w tle</string>
     <string name="mini_player_background_style">Styl tła miniodtwarzacza</string>
     <string name="transparent">Przezroczystość</string>
-    <string name="mini_player_background_not_available">Niedostępne gdy nowy miniodtwarzacz jest wyłączony</string>
     <string name="your_daily_discover">Twoje Codzienne Odkrycia</string>
     <string name="change">Zmień</string>
     <string name="ai_system_prompt">Komunikat systemowy</string>

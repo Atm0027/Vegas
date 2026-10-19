@@ -96,14 +96,12 @@
     <string name="import_csv">Importovat playlist CSV</string>
     <string name="import_online">Importovat playlist M3U</string>
     <string name="playlist_add_local_to_synced_note">UPOZORNĚNÍ: Přidávání místních skladeb do synchronizovaných nebo vzdálených playlistů není podporováno. Jakákoli jiná kombinace je platná</string>
-    <string name="new_player_design">Nový vzhled přehrávače</string>
     <string name="swipe_sensitivity">Citlivost posunutí v mini přehrávači</string>
     <string name="clear_image_cache_dialog">Opravdu chcete vymazat všechny obrázky v mezipaměti?</string>
     <string name="disable">Zakázat</string>
     <string name="sensitivity_percentage">%1$d%%</string>
     <string name="subscribe">Odebírat</string>
     <string name="subscribed">Odebíráno</string>
-    <string name="new_mini_player_design">Nový vzhled mini přehrávače</string>
     <string name="now_playing">Právě hraje</string>
     <string name="seek_forward_dynamic">+%1$d sekund vpřed</string>
     <string name="seek_backward_dynamic">-%1$d sekund zpět</string>
@@ -591,7 +589,6 @@
     <string name="alarm_battery_optimization_desc">Zakažte optimalizaci baterie pro spolehlivější chování budíků na pozadí</string>
     <string name="mini_player_background_style">Styl pozadí mini přehrávače</string>
     <string name="transparent">Průhledné</string>
-    <string name="mini_player_background_not_available">Nedostupné při zakázaném novém stylu mini přehrávače</string>
     <string name="your_daily_discover">Vaše denní objevování</string>
     <string name="change">Změnit</string>
     <string name="ai_system_prompt">Systémový dotaz</string>

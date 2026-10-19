@@ -44,8 +44,6 @@
     <string name="player_background_style">Estilo do fundo do reprodutor</string>
     <string name="follow_theme">Seguir o tema</string>
     <string name="gradient">Gradiente</string>
-    <string name="new_player_design">Novo desenho do reprodutor</string>
-    <string name="new_mini_player_design">Novo design do Reprodutor Minimizado</string>
     <string name="player_background_blur">Desfocado</string>
     <string name="player_buttons_style">Cores dos botões do reprodutor</string>
     <string name="default_style">Predefinição</string>
@@ -422,7 +420,6 @@
     <string name="kmp_upgrade_action">Testar KMP</string>
     <string name="kmp_upgrade_later">Agora não</string>
     <string name="audio_track_playback_params">Usar processamento de áudio via hardware</string>
-    <string name="mini_player_background_not_available">Indisponível quando o novo mini-reprodutor está desativado</string>
     <string name="eq_download_db">Transferir base de dados do AutoEQ (17 MB)</string>
     <string name="eq_downloading">A transferir…</string>
     <string name="import_from_file">Importar pelo ficheiro</string>

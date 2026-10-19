@@ -76,8 +76,6 @@
     <string name="player_background_solid">Solied</string>
     <string name="follow_theme">Volg tema</string>
     <string name="gradient">Gradiënt</string>
-    <string name="new_player_design">Nuwe spelerontwerp</string>
-    <string name="new_mini_player_design">Nuwe minispeler-ontwerp</string>
     <string name="player_background_blur">Vervaag</string>
     <string name="player_buttons_style">Spelerknoppiekleure</string>
     <string name="default_style">Verstek</string>
@@ -357,7 +355,6 @@
     <string name="mini_player">Minispeler</string>
     <string name="mini_player_background_style">Minispeler-agtergrondstyl</string>
     <string name="transparent">Deursigtig</string>
-    <string name="mini_player_background_not_available">Onbeskikbaar wanneer die nuwe minispeler-ontwerp gedeaktiveer is</string>
     <string name="cache_size_warning_title">Wag \'n bietjie!</string>
     <string name="cache_size_warning_message">Die limiet wat jy gekies het (%1$s) is kleiner as wat die toep tans gebruik. As jy voortgaan, kan dit veroorsaak dat sommige gekaste %2$s verwyder word. Gaan in elk geval voort?</string>
     <string name="cache_size_warning_confirm">Gaan voort</string>

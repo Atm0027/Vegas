@@ -94,13 +94,11 @@
     <string name="import_csv">Importar una lista de reproducción CSV</string>
     <string name="import_online">Importar una lista de reproducción M3U</string>
     <string name="playlist_add_local_to_synced_note">NOTA: No es posible añadir canciones locales a listas de reproducción sincronizadas o remotas. Cualquier otra combinación es válida.</string>
-    <string name="new_player_design">Nuevo diseño del reproductor</string>
     <string name="swipe_sensitivity">Sensibilidad al deslizar el mini reproductor</string>
     <string name="clear_image_cache_dialog">¿Estás seguro de que deseas borrar todas las imágenes almacenadas en caché?</string>
     <string name="disable">Deshabilitar</string>
     <string name="subscribe">Suscribirme</string>
     <string name="subscribed">Suscrito</string>
-    <string name="new_mini_player_design">Nuevo diseño del mini reproductor</string>
     <string name="sensitivity_percentage">%1$d%%</string>
     <string name="now_playing">Reproduciendo</string>
     <string name="seek_forward_dynamic">+%1$d segundos hacia adelante</string>
@@ -608,7 +606,6 @@
     <string name="varispeed_description">Vincular el tono con la velocidad de reproducción para lograr efectos tipo cinta al acelerar o ralentizar</string>
     <string name="mini_player_background_style">Estilo de fondo del mini reproductor</string>
     <string name="transparent">Transparente</string>
-    <string name="mini_player_background_not_available">No disponible cuando el mini reproductor está deshabilitado</string>
     <string name="lyrics_animation_style_title">Estilo de animación letra por letra</string>
     <string name="system_equalizer_desc">Abrir el ecualizador por defecto de android</string>
     <string name="eq_wizard">Asistente de AutoEQ</string>

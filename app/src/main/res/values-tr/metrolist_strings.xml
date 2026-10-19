@@ -85,7 +85,6 @@
     <string name="text_color">Metin rengi</string>
     <string name="secondary_text_color">İkincil metin rengi</string>
     <string name="background_color">Arka plan rengi</string>
-    <string name="new_player_design">Yeni oynatıcı tasarımı</string>
     <string name="lyrics_auto_scroll">Şarkı sözlerini otomatik kaydır</string>
     <string name="import_online">Bir M3U listesi içe aktar</string>
     <string name="import_csv">Bir CSV listesi içe aktar</string>
@@ -100,7 +99,6 @@
     <string name="subscribed">Abone olundu</string>
     <string name="generating_image">Görsel oluşturuluyor…</string>
     <string name="now_playing">Şimdi Oynatılıyor</string>
-    <string name="new_mini_player_design">Yeni mini oynatıcı tasarımı</string>
     <string name="close">Kapat</string>
     <string name="seek_forward_dynamic">+%1$d saniye ileri</string>
     <string name="seek_backward_dynamic">-%1$d saniye geri</string>
@@ -598,7 +596,6 @@
     <string name="alarm">Alarm</string>
     <string name="mini_player_background_style">Mini oynatıcı arka plan stili</string>
     <string name="transparent">Şeffaf</string>
-    <string name="mini_player_background_not_available">Yeni mini oynatıcı tasarımı devre dışıyken kullanılamaz</string>
     <string name="your_daily_discover">Günlük Keşfin</string>
     <string name="more_options">Diğer seçenekler</string>
     <string name="switch_to_grid_view">Izgara görünümüne geç</string>

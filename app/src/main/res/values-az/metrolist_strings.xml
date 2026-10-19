@@ -65,8 +65,6 @@
     <string name="player_background_style">Albom şəklini pleyerdə tətbiq loqosu ilə əvəz edin</string>
     <string name="follow_theme">Temanı izlə</string>
     <string name="gradient">Qradient</string>
-    <string name="new_player_design">Təzə pleyer dizaynı</string>
-    <string name="new_mini_player_design">Təzə mini pleyer dizaynı</string>
     <string name="player_background_blur">Bulanti</string>
     <string name="player_buttons_style">Pleyer düymələrinin rəngləri</string>
     <string name="default_style">Standart</string>
@@ -352,7 +350,6 @@
     <string name="mini_player">Mini pleyer</string>
     <string name="mini_player_background_style">Mini-pleyerin fon üslubu</string>
     <string name="transparent">Şəffaf</string>
-    <string name="mini_player_background_not_available">Yeni mini-pleyer dizaynı deaktiv edildikdə əlçatan deyil</string>
     <string name="cache_size_warning_title">Bir dəqiqə!</string>
     <string name="cache_size_warning_message">Seçdiyiniz limit (%1$s) tətbiqin hazırda istifadə etdiyi həcmdən azdır. Davam etmək bəzi keşlənmiş %2$s məlumatlarının silinməsinə səbəb ola bilər. Yenə də davam edilsin?</string>
     <string name="cache_size_warning_confirm">Davam edin</string>

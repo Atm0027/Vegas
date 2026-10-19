@@ -86,13 +86,11 @@
     <string name="description">Omschrijving</string>
     <string name="views">Weergaven</string>
     <string name="lyrics_auto_scroll">Automatisch songtekst scrollen</string>
-    <string name="new_player_design">Nieuw speler ontwerp</string>
     <string name="swipe_sensitivity">Mini speler swipe gevoeligheid</string>
     <string name="clear_image_cache_dialog">Weet je zeker dat je gecached afbeeldingen wilt wissen?</string>
     <string name="disable">Uitschakelen</string>
     <string name="subscribe">Abonneer</string>
     <string name="subscribed">Geabonneerd</string>
-    <string name="new_mini_player_design">Nieuw mini-speler ontwerp</string>
     <string name="now_playing">Nu afspelen</string>
     <string name="seek_forward_dynamic">+%1$d seconden vooruit</string>
     <string name="seek_backward_dynamic">-%1$d seconden achteruit</string>

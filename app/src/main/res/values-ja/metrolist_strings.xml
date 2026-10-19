@@ -70,8 +70,6 @@
         <item quantity="other">%d回</item>
     </plurals>
     <string name="gradient">グラデーション</string>
-    <string name="new_player_design">新しいプレーヤーのデザイン</string>
-    <string name="new_mini_player_design">新しいミニプレーヤーのデザイン</string>
     <string name="swipe_song_to_add">曲を右にスワイプして次に再生、左にスワイプしてキューに追加</string>
     <string name="lyrics_auto_scroll">歌詞を自動でスクロール</string>
     <string name="default_lib_chips">デフォルトのライブラリタブを変更</string>
@@ -612,7 +610,6 @@
     <string name="experimental_lyrics_beta_message">新しい歌詞コンポーネントは現在開発中のため、不具合が含まれている場合があります。本当に使用しますか？</string>
     <string name="mini_player_background_style">ミニプレーヤーの背景</string>
     <string name="transparent">透明</string>
-    <string name="mini_player_background_not_available">新しいミニプレーヤーのデザインを使用していない場合は変更できません</string>
     <string name="lyrics_animation_style_title">単語ごとのアニメーションスタイル</string>
     <string name="your_daily_discover">今日のイチオシ</string>
     <string name="back">戻る</string>
