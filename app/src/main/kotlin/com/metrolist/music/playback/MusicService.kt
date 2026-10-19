@@ -2618,6 +2618,10 @@ class MusicService :
             currentMediaMetadata.value = player.currentMetadata
         }
 
+        if (events.containsAny(Player.EVENT_IS_PLAYING_CHANGED, Player.EVENT_MEDIA_ITEM_TRANSITION) && player.isPlaying) {
+            scheduleNextStreamPrefetch()
+        }
+
         if (events.containsAny(Player.EVENT_IS_PLAYING_CHANGED)) {
             updateWidgetUI(player.isPlaying)
             if (player.isPlaying) {
@@ -3324,6 +3328,84 @@ class MusicService :
             ).setFlags(FLAG_IGNORE_CACHE_ON_ERROR)
 
     /** Downloaded file of [mediaId], if it is there; a file deleted outside Vegas drops its row. */
+    private fun storeFormat(mediaId: String, playback: InnerTubeXPlayer.PlaybackData) {
+        val format = playback.format
+        val loudnessDb = playback.audioConfig?.loudnessDb
+        val perceptualLoudnessDb = playback.audioConfig?.perceptualLoudnessDb
+        format.contentLength?.let { contentLength ->
+            database.query {
+                upsert(
+                    FormatEntity(
+                        id = mediaId,
+                        itag = format.itag,
+                        mimeType = format.mimeType.substringBefore(";"),
+                        codecs =
+                            format.mimeType
+                                .substringAfter("codecs=", missingDelimiterValue = "")
+                                .substringBefore(";")
+                                .trim()
+                                .removeSurrounding("\""),
+                        bitrate = format.bitrate,
+                        sampleRate = format.audioSampleRate,
+                        contentLength = contentLength,
+                        loudnessDb = loudnessDb,
+                        perceptualLoudnessDb = perceptualLoudnessDb,
+                        playbackUrl = playback.playbackTracking?.videostatsPlaybackUrl?.baseUrl,
+                    ),
+                )
+            }
+        } ?: Timber.tag(TAG).w("Skipping format persistence without content length for $mediaId")
+    }
+
+    private var nextStreamPrefetchJob: Job? = null
+
+    /** Resolves the next song's stream once the current one plays; see [NextStreamPrefetch]. */
+    private fun scheduleNextStreamPrefetch() {
+        nextStreamPrefetchJob?.cancel()
+        nextStreamPrefetchJob = scope.launch {
+            delay(NextStreamPrefetch.DELAY_MS)
+            val nextIndex = player.nextMediaItemIndex
+            val nextId = if (nextIndex == C.INDEX_UNSET) null else player.getMediaItemAt(nextIndex).mediaId
+            val target = withContext(Dispatchers.IO) {
+                NextStreamPrefetch.target(
+                    nextId = nextId,
+                    online = isNetworkConnected.value,
+                    isLocal = { it in downloadedIds.value },
+                    isUrlCached = { songUrlCache[it] != null },
+                    isAudioCached = { runCatching { isFullyInPlayerCache(it) }.getOrDefault(false) },
+                )
+            } ?: return@launch
+            withContext(Dispatchers.IO) {
+                val generation = songUrlCache.generation(target)
+                val song = database.songEntity(target)
+                val playback = resolveWithTimeout(STREAM_RESOLVE_TIMEOUT_MS, target) {
+                    InnerTubeXPlayer.playerResponseForPlayback(
+                        target,
+                        audioQuality = audioQuality,
+                        connectivityManager = connectivityManager,
+                        contentHints = ContentHints(isExplicit = song?.explicit, isUploaded = song?.isUploaded),
+                    )
+                }.getOrElse {
+                    Timber.tag(TAG).d("Prefetch of $target skipped: ${it.message}")
+                    return@withContext
+                }
+                storeFormat(target, playback)
+                songUrlCache.put(
+                    mediaId = target,
+                    url = playback.streamUrl,
+                    requestHeaders = playback.streamHeaders,
+                    clientName = playback.streamClient,
+                    expiresInSeconds = playback.streamExpiresInSeconds,
+                    requireBoundedRange = playback.requireBoundedRange,
+                    rangeChunkSizeBytes = playback.rangeChunkSizeBytes,
+                    useRangeChunks = playback.useRangeChunks,
+                    expectedGeneration = generation,
+                )
+                Timber.tag(TAG).i("PREFETCHED STREAM: $target")
+            }
+        }
+    }
+
     private val sourceLock = SourceLock()
 
     private fun localFileUri(mediaId: String): Uri? {
@@ -3578,29 +3660,7 @@ class MusicService :
                     perceptualLoudnessDb = perceptualLoudnessDb,
                 )
 
-                format.contentLength?.let { contentLength ->
-                    database.query {
-                        upsert(
-                            FormatEntity(
-                                id = mediaId,
-                                itag = format.itag,
-                                mimeType = format.mimeType.substringBefore(";"),
-                                codecs =
-                                    format.mimeType
-                                        .substringAfter("codecs=", missingDelimiterValue = "")
-                                        .substringBefore(";")
-                                        .trim()
-                                        .removeSurrounding("\""),
-                                bitrate = format.bitrate,
-                                sampleRate = format.audioSampleRate,
-                                contentLength = contentLength,
-                                loudnessDb = loudnessDb,
-                                perceptualLoudnessDb = perceptualLoudnessDb,
-                                playbackUrl = nonNullPlayback.playbackTracking?.videostatsPlaybackUrl?.baseUrl,
-                            ),
-                        )
-                    }
-                } ?: Timber.tag(TAG).w("Skipping format persistence without content length for $mediaId")
+                storeFormat(mediaId, nonNullPlayback)
                 recoverSongDeduped(mediaId, nonNullPlayback)
 
                 if (bypassCacheForQualityChange.remove(mediaId)) {
