@@ -8,7 +8,7 @@ a Vegas y se implementa solo si conviene**. Este documento son las reglas; el es
 
 - App personal, solo audio, sin cuenta ni sincronización con YouTube, biblioteca local.
 - `applicationId = dev.alextorres.vegas`, flavor `personal` (sin Cast, sin actualizador).
-- **Eliminado a propósito, no reintroducir:** Escuchar juntos (Listen Together) y protobuf, Discord, login/cuenta de YouTube y sincronización de biblioteca (`SyncUtils`). Al arrancar se borran datos de cuenta y Discord (`LegacyAccountCleanup`); `visitorData` anónimo se conserva. Tampoco: subir canciones a YouTube, historial remoto, podcasts de cuenta.
+- **Eliminado a propósito, no reintroducir:** Escuchar juntos (Listen Together) y protobuf, Discord, login/cuenta de YouTube y sincronización de biblioteca (`SyncUtils`). Al arrancar se borran datos de cuenta y Discord (`LegacyAccountCleanup`); `visitorData` anónimo se conserva. Tampoco: subir canciones a YouTube, historial remoto, podcasts de cuenta. Tampoco (quitado por decisión de Alex): podcasts en toda la app (biblioteca, inicio, búsqueda, páginas de artista; se filtran con `filterPodcasts()`), las listas automáticas «En caché» y «Top 50» de la biblioteca (el widget sigue usando `top_playlist`), y «Añadir/Quitar de la biblioteca» para canciones.
 - **No ampliar:** vídeo (Metrolist ya no tiene reproductor de vídeo), Google Cast.
 - **Se mantiene:** Android Auto.
 - Lógica propia de Vegas que un cambio de upstream no debe pisar:
@@ -41,6 +41,7 @@ En la duda, quedarse con lo de Vegas y anotar el commit como "pendiente de decis
 | Editor de listas | Reordenar, quitar, renombrar y portada se aplican en una sola transacción al pulsar "Hecho", con Deshacer; sin escrituras por cada arrastre | `PlaylistEditSession.kt`, `applyPlaylistEdit`/`restorePlaylistSnapshot` en `DatabaseDao.kt`, `LocalPlaylistScreen.kt` | `PlaylistEditSessionTest`, `ApplyPlaylistEditTest` |
 | Añadir a listas | Varias listas a la vez, nuevas arriba, sin duplicados exactos y preguntando por los probables (mismo título/artista, ±3 s) | `DuplicateMatcher.kt`, `PlaylistAddPlanner.kt`, `AddToPlaylistDialog.kt` | `DuplicateMatcherTest`, `PlaylistAddPlannerTest`, `AddSongsToPlaylistTest` |
 | Organizar biblioteca | Orden personalizado (arrastrar) y listas fijadas arriba con cualquier orden; BD 39 (`customOrder`, `pinned`) | `DatabaseDao.playlists`, `LibraryPlaylistsScreen.kt`, `PlaylistMenu.kt` | `PlaylistOrganizeTest` |
+| Modo sin conexión | Descargas como archivos reales en `Música/Vegas` (MediaStore), cola con WorkManager (máx. 3 a la vez, 1 mientras suena una canción no descargada), playlists marcadas que descargan solas lo nuevo, el archivo local se reproduce primero, sin red salta a la siguiente canción reproducible y pausa al final, detección de red fiable con VPN, reanudación segura de descargas | `offline/`, `DownloadUtil.kt`, `LocalFirstDataSource.kt`, resolutor y `onPlayerError` de `MusicService.kt`, `NetworkConnectivityObserver.kt` | `OfflineDaoTest`, `SongDownloaderTest`, `OfflineSyncTest`, `OfflineStoreTest`, `SourceLockTest`, `DownloadSlotsTest`, `NetworkFailureTest`, `Mp4FragmentsTest`, `PendingDiffTest` |
 
 Cada vez que Vegas mejore algo nuevo, se añade una fila aquí.
 
@@ -53,6 +54,8 @@ Cada vez que Vegas mejore algo nuevo, se añade una fila aquí.
 | **Descartar** | Listen Together, Discord, login/cuenta/sync YouTube (incl. cambios en `SyncUtils`, `LoginScreen`, `AccountSettings`), vídeo, Cast, updater, Firebase/telemetría, subidas de versión de Metrolist, CI/workflows, traducciones de textos que Vegas ya no tiene, cambios en «Acerca de», «Novedades» (ChangelogScreen) y textos de marca Metrolist | No implementar; anotar el motivo |
 
 Las traducciones: solo se adoptan cadenas que Vegas usa.
+
+Descargas: Vegas sustituyó el sistema de descargas de Metrolist (`ExoDownloadService`, `DownloadManager` y la caché de descargas) por el suyo propio. Los commits de upstream sobre ese sistema se descartan ("Vegas ya lo resuelve mejor"); si arreglan algo útil (p. ej. cómo pedir el stream a googlevideo), se aplica solo esa idea dentro de `offline/SongDownloader.kt`.
 
 ## Cómo se implementa
 
