@@ -50,6 +50,8 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -317,8 +319,7 @@ fun LibraryPlaylistsScreen(
                 },
             )
 
-            Spacer(Modifier.weight(1f))
-
+            // The count gives way first, so the reorder and view buttons always fit on screen.
             Text(
                 text = pluralStringResource(
                     R.plurals.n_playlist,
@@ -327,6 +328,10 @@ fun LibraryPlaylistsScreen(
                 ),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.secondary,
+                textAlign = TextAlign.End,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f),
             )
 
             if (sortType == PlaylistSortType.CUSTOM && viewType == LibraryViewType.LIST && searchQuery.isBlank()) {

@@ -72,6 +72,7 @@ import com.metrolist.music.constants.ShowUploadedPlaylistKey
 import com.metrolist.music.db.entities.Album
 import com.metrolist.music.db.entities.Artist
 import com.metrolist.music.db.entities.Playlist
+import com.metrolist.music.playlist.pinnedFirst
 import com.metrolist.music.db.entities.PlaylistEntity
 import com.metrolist.music.db.entities.Song
 import com.metrolist.music.extensions.matchesNormalizedQuery
@@ -247,7 +248,7 @@ fun LibraryMixScreen(
                     }
                 }
             }
-        }.reversed(sortDescending)
+        }.reversed(sortDescending).let(::pinnedFirst)
 
     val searchableItems = if (normalizedQuery.isBlank()) allItems else allItems + songs.value
 
