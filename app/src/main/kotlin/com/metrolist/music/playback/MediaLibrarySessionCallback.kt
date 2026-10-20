@@ -126,14 +126,28 @@ constructor(
         return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
     }
 
-    @Suppress("OVERRIDE_DEPRECATION")
+    // Play from the car (Android Auto or a Bluetooth button) on an empty player: hand back the saved queue.
     override fun onPlaybackResumption(
         mediaSession: MediaSession,
-        controller: MediaSession.ControllerInfo
+        controller: MediaSession.ControllerInfo,
+        isForPlayback: Boolean,
     ): ListenableFuture<MediaItemsWithStartPosition> =
-        Futures.immediateFuture(
-            MediaItemsWithStartPosition(emptyList(), 0, C.TIME_UNSET),
-        )
+        scope.future {
+            val player = service.player
+            val hasQueue = PlaybackResumption.awaitQueue(
+                restorePending = { service.queueRestorePending },
+                hasItems = { player.mediaItemCount > 0 },
+            )
+            if (!hasQueue) {
+                MediaItemsWithStartPosition(emptyList(), 0, C.TIME_UNSET)
+            } else {
+                MediaItemsWithStartPosition(
+                    List(player.mediaItemCount, player::getMediaItemAt),
+                    player.currentMediaItemIndex,
+                    player.currentPosition,
+                )
+            }
+        }
 
     override fun onGetLibraryRoot(
         session: MediaLibrarySession,

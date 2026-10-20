@@ -390,6 +390,11 @@ class MusicService :
     private var controllerFuture: com.google.common.util.concurrent.ListenableFuture<MediaController>? = null
 
     private val playerInitialized = MutableStateFlow(false)
+
+    /** A saved queue is being put back into the player; see [PlaybackResumption]. */
+    @Volatile
+    var queueRestorePending = false
+        private set
     val isPlayerReady: kotlinx.coroutines.flow.StateFlow<Boolean> = playerInitialized.asStateFlow()
 
     // Single batch-read of all DataStore preferences needed during onCreate().
@@ -1042,6 +1047,7 @@ class MusicService :
         if (startupPrefs!![PersistentQueueKey] ?: true) {
             val queueFile = filesDir.resolve(PERSISTENT_QUEUE_FILE)
             if (queueFile.exists()) {
+                queueRestorePending = true
                 runCatching {
                     queueFile.inputStream().use { fis ->
                         ObjectInputStream(fis).use { oos ->
@@ -1063,10 +1069,12 @@ class MusicService :
                         }
                     }.onFailure { error ->
                         Timber.tag(TAG).w(error, "Failed to restore persisted queue, clearing data")
+                        queueRestorePending = false
                         clearPersistedQueueFiles()
                     }
                 }.onFailure { error ->
                     Timber.tag(TAG).w(error, "Failed to read persisted queue, clearing data")
+                    queueRestorePending = false
                     clearPersistedQueueFiles()
                 }
             }
