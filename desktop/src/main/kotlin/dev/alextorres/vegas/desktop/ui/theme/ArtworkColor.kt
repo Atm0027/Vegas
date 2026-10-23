@@ -32,12 +32,15 @@ fun rememberArtworkSeed(url: String?, enabled: Boolean, loader: ImageLoader): Co
     return seed
 }
 
-private suspend fun artworkSeed(url: String, loader: ImageLoader): Color? =
+internal suspend fun artworkSeed(url: String, loader: ImageLoader): Color? =
     withContext(Dispatchers.Default) {
         val request = ImageRequest.Builder(PlatformContext.INSTANCE).data(url).size(64).build()
         val bitmap = (loader.execute(request) as? SuccessResult)?.image?.toBitmap() ?: return@withContext null
         val pixels = IntArray(bitmap.width * bitmap.height)
         for (y in 0 until bitmap.height) for (x in 0 until bitmap.width) pixels[y * bitmap.width + x] = bitmap.getColor(x, y)
-        val counts = QuantizerCelebi.quantize(pixels, 128)
-        Color(Score.score(counts, 1, DefaultThemeColor.toArgb(), true).first())
+        seedFromPixels(pixels)
     }
+
+/** Most suitable theme colour in the pixels (Material's scoring), or Vegas red for colourless artwork. */
+internal fun seedFromPixels(pixels: IntArray): Color =
+    Color(Score.score(QuantizerCelebi.quantize(pixels, 128), 1, DefaultThemeColor.toArgb(), true).first())
