@@ -81,7 +81,9 @@ fun SearchScreen() {
             return@LaunchedEffect
         }
         delay(300)
-        suggestions = YouTube.searchSuggestions(text).getOrNull()?.queries.orEmpty().take(8)
+        val found = YouTube.searchSuggestions(text).getOrNull()?.queries.orEmpty().take(8)
+        // The search may have been submitted while suggestions were loading.
+        if (text != submitted) suggestions = found
     }
 
     fun submit(query: String) {

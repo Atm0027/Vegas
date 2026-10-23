@@ -36,6 +36,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -45,6 +46,9 @@ import dev.alextorres.vegas.desktop.playback.PlayerUiState
 import dev.alextorres.vegas.desktop.ui.player.FullPlayer
 import dev.alextorres.vegas.desktop.ui.player.PlayerActions
 import dev.alextorres.vegas.desktop.ui.player.PlayerBar
+import kotlinx.coroutines.delay
+
+private const val MESSAGE_DURATION_MS = 4_000L
 
 enum class Destination(val label: String, val icon: ImageVector, val selectedIcon: ImageVector) {
     HOME(Strings.HOME, Icons.Outlined.Home, Icons.Rounded.Home),
@@ -111,6 +115,10 @@ fun AppShell(
                 FullPlayer(player, actions, onClose = { onFullPlayer(false) })
             }
             player.message?.let { message ->
+                LaunchedEffect(message) {
+                    delay(MESSAGE_DURATION_MS)
+                    onDismissMessage()
+                }
                 Snackbar(
                     action = { TextButton(onClick = onDismissMessage) { Text("OK") } },
                     modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 100.dp),

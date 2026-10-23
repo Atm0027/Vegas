@@ -5,7 +5,6 @@
 
 package dev.alextorres.vegas.desktop.ui.screens
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import dev.alextorres.vegas.desktop.ui.Screen
 
@@ -17,6 +16,8 @@ fun ScreenContent(screen: Screen) {
         is Screen.Album -> AlbumScreen(screen.browseId)
         is Screen.Artist -> ArtistScreen(screen.browseId)
         is Screen.OnlinePlaylist -> OnlinePlaylistScreen(screen.id)
-        Screen.Library, Screen.Settings, is Screen.LocalPlaylist -> Text(screen.toString())
+        Screen.Library -> LibraryScreen()
+        Screen.Settings -> SettingsScreen()
+        is Screen.LocalPlaylist -> LocalPlaylistScreen(screen.id)
     }
 }

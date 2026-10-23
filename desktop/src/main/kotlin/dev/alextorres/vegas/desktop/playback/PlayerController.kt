@@ -196,6 +196,11 @@ class PlayerController(
         save()
     }
 
+    /** Shows a short message in the window (the same place playback problems appear). */
+    fun notify(message: String) {
+        _state.update { it.copy(message = message) }
+    }
+
     fun dismissMessage() {
         _state.update { it.copy(message = null) }
     }

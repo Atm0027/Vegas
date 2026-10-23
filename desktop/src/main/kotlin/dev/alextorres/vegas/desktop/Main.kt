@@ -51,6 +51,7 @@ import dev.alextorres.vegas.desktop.settings.WindowBounds
 import dev.alextorres.vegas.desktop.ui.AppShell
 import dev.alextorres.vegas.desktop.playback.Track
 import dev.alextorres.vegas.desktop.ui.Navigator
+import dev.alextorres.vegas.desktop.ui.dialogs.AddToPlaylistDialog
 import dev.alextorres.vegas.desktop.ui.screens.LocalVegas
 import dev.alextorres.vegas.desktop.ui.screens.ScreenContent
 import dev.alextorres.vegas.desktop.ui.screens.VegasDeps
@@ -187,6 +188,12 @@ fun main() {
                         },
                 ) {
                     ScreenContent(screen)
+                }
+                addTarget?.let { tracks ->
+                    AddToPlaylistDialog(tracks, library) { message ->
+                        addTarget = null
+                        message?.let(controller::notify)
+                    }
                 }
               }
             }
