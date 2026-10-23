@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.ksp)
 }
 
 kotlin {
@@ -35,7 +36,15 @@ dependencies {
     implementation(variantOf(libs.ffmpeg) { classifier("windows-x86_64") })
     implementation(variantOf(libs.javacpp) { classifier("windows-x86_64") })
 
+    implementation(libs.room.runtime)
+    implementation(libs.sqlite.bundled)
+    ksp(libs.room.compiler)
+
     testImplementation(libs.junit)
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
 }
 
 compose.desktop {
