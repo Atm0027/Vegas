@@ -213,4 +213,13 @@ class PlayerControllerTest {
         engine.durationMs.value = 226_000
         assertEquals(226_000L, c.state.value.durationMs)
     }
+
+    @Test
+    fun persistOnCloseKeepsThePlayingPosition() {
+        val c = controller()
+        c.playQueue(listOf(track("a"), track("b")), startIndex = 0)
+        engine.positionMs.value = 95_000
+        c.persist()
+        assertEquals(95_000L, QueueStore(queueFile).load()?.positionMs)
+    }
 }

@@ -82,6 +82,7 @@ class AudioEngine(
             lock.notifyAll()
             generation
         }
+        closeOldSink()
         _state.value = EngineState.LOADING
         _position.value = startMs
         _duration.value = 0
@@ -120,6 +121,7 @@ class AudioEngine(
             generation++
             lock.notifyAll()
         }
+        closeOldSink()
         worker?.takeIf { it !== Thread.currentThread() }?.join(RELEASE_WAIT_MS)
         worker = null
         _state.value = EngineState.IDLE
@@ -169,6 +171,8 @@ class AudioEngine(
                 try {
                     output.write(buf, count * 2)
                 } catch (e: Exception) {
+                    // Closed because another song was loaded: this decoder is done.
+                    if (!isCurrent(gen)) break
                     // The output device went away (headphones unplugged): reopen once on the default device.
                     if (reopened) throw e
                     reopened = true
@@ -192,6 +196,11 @@ class AudioEngine(
             if (sink === out) sink = null
             runCatching { grabber?.release() }
         }
+    }
+
+    /** A paused line blocks its decoder inside write(); closing it lets that decoder finish. */
+    private fun closeOldSink() {
+        sink?.let { runCatching { it.close() } }
     }
 
     private fun openSink(): PcmSink =

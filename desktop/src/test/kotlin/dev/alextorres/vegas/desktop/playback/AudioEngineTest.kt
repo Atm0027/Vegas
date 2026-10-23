@@ -122,6 +122,41 @@ class AudioEngineTest {
         assertEquals(2, sinks.size)
     }
 
+    /** Like a real line: write() blocks while the line is stopped (paused) and returns once closed. */
+    private class BlockingSink : PcmSink {
+        @Volatile var closed = false
+        @Volatile private var stopped = false
+        private val lock = Object()
+        override var volume = 1f
+        override fun open(sampleRate: Int, channels: Int) = Unit
+        override fun write(buf: ByteArray, len: Int) {
+            // A real line is nearly always full, so the decoder sits inside write() when paused.
+            Thread.sleep(len * 1000L / BYTES_PER_SECOND / 10)
+            synchronized(lock) { while (stopped && !closed) lock.wait(50) }
+            if (closed) throw IllegalStateException("line closed")
+        }
+        override fun flush() = Unit
+        override fun pause() { stopped = true }
+        override fun resume() { synchronized(lock) { stopped = false; lock.notifyAll() } }
+        override fun close() { synchronized(lock) { closed = true; lock.notifyAll() } }
+    }
+
+    @Test
+    fun loadingWhilePausedReleasesThePreviousDecoder() {
+        val created = mutableListOf<BlockingSink>()
+        val e = AudioEngine(sinkFactory = { BlockingSink().also { created += it } }).also { engine = it }
+        e.load(AudioSource.LocalFile(wav))
+        assertTrue(waitFor(5_000) { e.state.value == EngineState.PLAYING })
+        Thread.sleep(200)
+        e.pause()
+        Thread.sleep(300)
+        e.load(AudioSource.LocalFile(wav))
+        assertTrue(waitFor(3_000) { created.size >= 2 })
+        assertTrue("old line still open", waitFor(2_000) { created.first().closed })
+        assertTrue("old decoder still alive", waitFor(2_000) { Thread.getAllStackTraces().keys.count { it.name.startsWith("vegas-decoder-") && it.isAlive } == 1 })
+        assertEquals(1, created.count { !it.closed })
+    }
+
     private companion object {
         const val BYTES_PER_SECOND = 48_000L * 2 * 2
     }

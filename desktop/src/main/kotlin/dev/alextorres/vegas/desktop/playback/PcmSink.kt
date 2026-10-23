@@ -57,7 +57,11 @@ class JavaSoundSink : PcmSink {
         }
         val l = checkNotNull(line) { "Sink not open" }
         var offset = 0
-        while (offset < len) offset += l.write(buf, offset, len - offset)
+        while (offset < len) {
+            val written = l.write(buf, offset, len - offset)
+            if (written == 0 && !l.isOpen) throw IllegalStateException("Line closed")
+            offset += written
+        }
     }
 
     override fun flush() {

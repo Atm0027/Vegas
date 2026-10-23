@@ -144,6 +144,7 @@ fun main() {
                         ),
                     )
                 }
+                controller.persist()
                 mediaKeys.close()
                 engine.release()
                 exitApplication()

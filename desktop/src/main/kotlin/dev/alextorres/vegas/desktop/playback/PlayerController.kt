@@ -201,6 +201,9 @@ class PlayerController(
         _state.update { it.copy(message = message) }
     }
 
+    /** Saves the queue and the current position; called when the window closes. */
+    fun persist() = save()
+
     fun dismissMessage() {
         _state.update { it.copy(message = null) }
     }
