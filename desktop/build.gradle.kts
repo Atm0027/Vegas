@@ -28,6 +28,13 @@ dependencies {
     implementation(libs.ktor.serialization.json)
     implementation(libs.ktor.client.encoding)
 
+    // FFmpeg decoding; Windows natives only.
+    implementation(libs.javacv) { isTransitive = false }
+    implementation(libs.ffmpeg)
+    implementation(libs.javacpp)
+    implementation(variantOf(libs.ffmpeg) { classifier("windows-x86_64") })
+    implementation(variantOf(libs.javacpp) { classifier("windows-x86_64") })
+
     testImplementation(libs.junit)
 }
 
