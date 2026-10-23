@@ -81,7 +81,7 @@ class PlayerController(
         scope.launch {
             engine.positionMs.collect { p -> if (currentStream != null) _state.update { it.copy(positionMs = p) } }
         }
-        scope.launch { engine.durationMs.collect { d -> _state.update { it.copy(durationMs = d) } } }
+        scope.launch { engine.durationMs.collect { d -> _state.update { it.copy(durationMs = knownDuration(d)) } } }
         scope.launch { engine.errors.collect { onError() } }
     }
 
@@ -220,6 +220,7 @@ class PlayerController(
                 .onSuccess { stream ->
                     currentStream = stream
                     engine.load(AudioSource.Remote(stream), startMs, play)
+                    _state.update { it.copy(durationMs = knownDuration(engine.durationMs.value)) }
                     save()
                 }.onFailure {
                     val s = _state.value
@@ -244,6 +245,7 @@ class PlayerController(
                     if (idle || stream !== currentStream) {
                         currentStream = stream
                         engine.load(AudioSource.Remote(stream), position, true)
+                        _state.update { it.copy(durationMs = knownDuration(engine.durationMs.value)) }
                     } else {
                         engine.play()
                     }
@@ -293,6 +295,8 @@ class PlayerController(
                 }
         }
     }
+
+    private fun knownDuration(decoded: Long): Long = decoded.takeIf { it > 0 } ?: currentStream?.durationMs ?: 0
 
     private fun save() {
         val s = _state.value

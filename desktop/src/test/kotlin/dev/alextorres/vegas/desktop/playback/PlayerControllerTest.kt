@@ -44,7 +44,7 @@ class PlayerControllerTest {
         extract = { id, _ ->
             extracted += id
             if (id in unplayable) error("unavailable")
-            ResolvedStream(id, "https://x/$id", emptyMap(), "audio/webm", now + 600_000, "VISIONOS", null)
+            ResolvedStream(id, "https://x/$id", emptyMap(), "audio/webm", now + 600_000, "VISIONOS", null, durationMs = 225_000)
         },
         now = { now },
     )
@@ -202,5 +202,15 @@ class PlayerControllerTest {
         c.playAt(2)
         assertEquals(2, c.state.value.index)
         assertEquals("c", engine.loads.last().first)
+    }
+
+    @Test
+    fun durationFallsBackToStreamMetadataWhenTheDecoderHasNone() {
+        val c = controller()
+        c.playQueue(listOf(Track("a", "Song a", "Artist", null, null, null)), startIndex = 0)
+        engine.durationMs.value = 0
+        assertEquals(225_000L, c.state.value.durationMs)
+        engine.durationMs.value = 226_000
+        assertEquals(226_000L, c.state.value.durationMs)
     }
 }

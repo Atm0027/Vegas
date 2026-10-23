@@ -27,6 +27,8 @@ data class ResolvedStream(
     val expiresAtMs: Long,
     val client: String,
     val loudnessDb: Double?,
+    /** From YouTube's metadata; used when the decoder cannot tell the length. */
+    val durationMs: Long? = null,
 )
 
 class StreamResolver(
@@ -95,6 +97,7 @@ class StreamResolver(
                     expiresAtMs = stream.expiresAt?.toEpochMilliseconds() ?: (System.currentTimeMillis() + DEFAULT_STREAM_TTL_MS),
                     client = stream.clientName,
                     loudnessDb = stream.loudnessDb,
+                    durationMs = stream.mediaMetadata?.durationSeconds?.let { it * 1000L },
                 )
             })
         }

@@ -58,8 +58,15 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Msi)
             packageName = "Vegas"
+            // Desktop's own version; the Android version is never touched from here.
+            packageVersion = "1.0.0"
             vendor = "Alex"
+            description = "Vegas para Windows"
+            // suggestRuntimeModules, plus TLS elliptic curves and JNDI that OkHttp may need at runtime.
+            modules("java.instrument", "java.management", "jdk.unsupported", "jdk.crypto.ec", "java.naming", "java.sql")
             windows {
+                iconFile.set(project.file("src/main/resources/vegas.ico"))
+                menuGroup = "Vegas"
                 perUserInstall = true
                 menu = true
                 shortcut = true
