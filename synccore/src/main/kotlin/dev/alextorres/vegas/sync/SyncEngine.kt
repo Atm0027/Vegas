@@ -92,7 +92,10 @@ class SyncEngine(
         val alive = entries.values.filter { it.playlistId == local.id && !it.deleted }
         val aliveIds = alive.mapTo(HashSet()) { it.entryId }
         val ids = arrayOfNulls<String>(local.entries.size)
-        local.entries.forEachIndexed { i, e -> ids[i] = store.entryIdFor(e.localKey)?.takeIf { it in aliveIds } }
+        // A binding only counts while the row still holds that song: databases hand row ids out again.
+        local.entries.forEachIndexed { i, e ->
+            ids[i] = store.entryIdFor(e.localKey)?.takeIf { it in aliveIds && entries[it]?.song?.id == e.song.id }
+        }
 
         // Rows the device re-created (the phone's editor deletes and re-inserts) keep their entry
         // when an unclaimed entry of the same song is waiting, instead of churning remove + add.

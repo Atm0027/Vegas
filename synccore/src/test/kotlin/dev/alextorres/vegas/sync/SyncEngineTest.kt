@@ -206,4 +206,15 @@ class SyncEngineTest {
         sync(phone, pc)
         assertEquals(phone.adapter.songs("rock"), pc.adapter.songs("rock"))
     }
+
+    @Test
+    fun reusedRowKeysWithOtherSongsAreNotMistakenForTheOldRows() {
+        startSynced("A", "B", "C")
+        phone.now = 5_000
+        // SQLite hands the same row ids out again after the editor deletes every row.
+        val keys = phone.adapter.rows["rock"]!!.map { it.first }
+        phone.adapter.rows["rock"] = mutableListOf(keys[0] to song("C"), keys[1] to song("A"), keys[2] to song("B"))
+        sync(phone, pc)
+        assertEquals(listOf("C", "A", "B"), pc.adapter.songs("rock"))
+    }
 }

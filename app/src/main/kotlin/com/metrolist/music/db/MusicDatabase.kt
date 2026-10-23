@@ -20,6 +20,12 @@ import androidx.room.TypeConverters
 import androidx.room.migration.AutoMigrationSpec
 import androidx.room.migration.Migration
 import androidx.room.withTransaction
+import com.metrolist.music.sync.SyncBindingEntity
+import com.metrolist.music.sync.SyncDao
+import com.metrolist.music.sync.SyncEntryEntity
+import com.metrolist.music.sync.SyncMetaEntity
+import com.metrolist.music.sync.SyncPlaylistEntity
+import com.metrolist.music.sync.SyncSettingEntity
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.sqlite.db.SupportSQLiteOpenHelper
 import com.metrolist.music.db.daos.SpeedDialDao
@@ -60,6 +66,12 @@ class MusicDatabase(
 ) : DatabaseDao by delegate.dao {
     val speedDialDao: SpeedDialDao
         get() = delegate.speedDialDao
+
+    val syncDao: SyncDao
+        get() = delegate.syncDao
+
+    /** Runs [block] in one database transaction (used by the sync with the PC). */
+    suspend fun <T> inTransaction(block: suspend () -> T): T = delegate.withTransaction { block() }
 
     val openHelper: SupportSQLiteOpenHelper
         get() = delegate.openHelper
@@ -109,13 +121,18 @@ class MusicDatabase(
         SpeedDialItem::class,
         PodcastEntity::class,
         DownloadEntity::class,
+        SyncPlaylistEntity::class,
+        SyncEntryEntity::class,
+        SyncSettingEntity::class,
+        SyncBindingEntity::class,
+        SyncMetaEntity::class,
     ],
     views = [
         SortedSongArtistMap::class,
         SortedSongAlbumMap::class,
         PlaylistSongMapPreview::class,
     ],
-    version = 40,
+    version = 41,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 2, to = 3),
@@ -156,12 +173,14 @@ class MusicDatabase(
         AutoMigration(from = 37, to = 38),
         AutoMigration(from = 38, to = 39),
         AutoMigration(from = 39, to = 40),
+        AutoMigration(from = 40, to = 41),
     ],
 )
 @TypeConverters(Converters::class)
 abstract class InternalDatabase : RoomDatabase() {
     abstract val dao: DatabaseDao
     abstract val speedDialDao: SpeedDialDao
+    abstract val syncDao: SyncDao
 
     companion object {
         const val DB_NAME = "song.db"
