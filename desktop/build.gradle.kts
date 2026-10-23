@@ -26,6 +26,7 @@ dependencies {
     implementation(libs.materialKolor)
     implementation(libs.compose.reorderable)
     implementation(libs.jna.platform)
+    implementation(project(":synccore"))
 
     implementation(libs.innertubex)
     implementation(libs.ktor.client.core)

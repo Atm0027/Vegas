@@ -28,6 +28,7 @@ class DesktopSettings(private val file: Path) {
         val volume: Float = 1f,
         val windowBounds: WindowBounds? = null,
         val hideExplicit: Boolean = false,
+        val hideVideoSongs: Boolean = false,
         // Stored for sync with the phone; playback support comes in a later phase.
         val skipSilence: Boolean = false,
     )

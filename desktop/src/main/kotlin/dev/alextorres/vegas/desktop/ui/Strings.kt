@@ -60,6 +60,7 @@ object Strings {
     const val QUALITY_LOW = "Baja"
     const val QUALITY_AUTO = "Automática"
     const val HIDE_EXPLICIT = "Ocultar contenido explícito"
+    const val HIDE_VIDEO_SONGS = "Ocultar canciones de vídeo"
 
     /** YouTube sends search section titles in English; show them like the phone does. */
     fun searchSection(title: String) =

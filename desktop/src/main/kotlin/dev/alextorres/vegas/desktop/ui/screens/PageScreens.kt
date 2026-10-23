@@ -20,6 +20,7 @@ import com.metrolist.innertube.YouTube
 import com.metrolist.innertube.models.SongItem
 import com.metrolist.innertube.models.filterExplicit
 import com.metrolist.innertube.models.filterPodcasts
+import com.metrolist.innertube.models.filterVideoSongs
 import dev.alextorres.vegas.desktop.playback.toTrack
 import dev.alextorres.vegas.desktop.ui.Strings
 
@@ -50,7 +51,7 @@ fun ArtistScreen(browseId: String) {
     val prefs by deps.settings.flow.collectAsState()
     val (load, retry) = rememberLoad(browseId) { YouTube.artist(browseId) }
     LoadContent(load, retry) { page ->
-        val sections = page.sections.map { it.title to it.items.filterPodcasts().filterExplicit(prefs.hideExplicit) }.filter { it.second.isNotEmpty() }
+        val sections = page.sections.map { it.title to it.items.filterPodcasts().filterExplicit(prefs.hideExplicit).filterVideoSongs(prefs.hideVideoSongs) }.filter { it.second.isNotEmpty() }
         val topSongs = sections.firstOrNull { (_, items) -> items.all { it is SongItem } }
         val tracks = topSongs?.second?.filterIsInstance<SongItem>().orEmpty().map { it.toTrack() }
         LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp)) {
@@ -74,7 +75,7 @@ fun OnlinePlaylistScreen(id: String) {
     val prefs by deps.settings.flow.collectAsState()
     val (load, retry) = rememberLoad(id) { YouTube.playlist(id) }
     LoadContent(load, retry) { page ->
-        val tracks = page.songs.filterExplicit(prefs.hideExplicit).map { it.toTrack() }
+        val tracks = page.songs.filterExplicit(prefs.hideExplicit).filterVideoSongs(prefs.hideVideoSongs).map { it.toTrack() }
         LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp)) {
             item {
                 PageHeader(

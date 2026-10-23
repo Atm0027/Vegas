@@ -42,6 +42,23 @@ interface LibraryDao {
     @Query("SELECT * FROM playlist_entry WHERE playlistId = :playlistId ORDER BY sortKey")
     suspend fun entryRows(playlistId: String): List<PlaylistEntryEntity>
 
+    @Query("SELECT * FROM playlist")
+    suspend fun playlistRows(): List<PlaylistEntity>
+
+    @Query(
+        """
+        SELECT e.entryId, e.playlistId, e.sortKey,
+            s.id AS song_id, s.title AS song_title, s.artists AS song_artists, s.album AS song_album,
+            s.thumbnailUrl AS song_thumbnailUrl, s.durationMs AS song_durationMs
+        FROM playlist_entry e JOIN song s ON s.id = e.songId
+        ORDER BY e.playlistId, e.sortKey
+        """,
+    )
+    suspend fun allEntries(): List<EntryWithSong>
+
+    @Upsert
+    suspend fun upsertPlaylist(playlist: PlaylistEntity)
+
     @Query("SELECT COALESCE(MAX(customOrder), -1) FROM playlist")
     suspend fun maxCustomOrder(): Int
 
