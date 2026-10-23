@@ -25,6 +25,7 @@ dependencies {
     implementation(libs.coil.network.okhttp)
     implementation(libs.materialKolor)
     implementation(libs.compose.reorderable)
+    implementation(libs.jna.platform)
 
     implementation(libs.innertubex)
     implementation(libs.ktor.client.core)

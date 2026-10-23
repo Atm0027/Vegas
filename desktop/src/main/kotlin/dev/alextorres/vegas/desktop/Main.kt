@@ -48,6 +48,8 @@ import dev.alextorres.vegas.desktop.playback.toTrack
 import dev.alextorres.vegas.desktop.settings.AudioQualitySetting
 import dev.alextorres.vegas.desktop.settings.DesktopSettings
 import dev.alextorres.vegas.desktop.settings.WindowBounds
+import dev.alextorres.vegas.desktop.system.MediaKey
+import dev.alextorres.vegas.desktop.system.MediaKeys
 import dev.alextorres.vegas.desktop.ui.AppShell
 import dev.alextorres.vegas.desktop.playback.Track
 import dev.alextorres.vegas.desktop.ui.Navigator
@@ -110,6 +112,14 @@ fun main() {
         store = QueueStore(dataDir.resolve("queue.json")),
     )
     val library = Library(openDatabase(dataDir.resolve("vegas.db")))
+    val mediaKeys = MediaKeys { key ->
+        when (key) {
+            MediaKey.PLAY_PAUSE -> controller.togglePlay()
+            MediaKey.NEXT -> controller.next()
+            MediaKey.PREVIOUS -> controller.previous()
+            MediaKey.STOP -> if (controller.state.value.isPlaying) controller.togglePlay()
+        }
+    }
 
     application {
         setSingletonImageLoaderFactory { context ->
@@ -134,6 +144,7 @@ fun main() {
                         ),
                     )
                 }
+                mediaKeys.close()
                 engine.release()
                 exitApplication()
             },

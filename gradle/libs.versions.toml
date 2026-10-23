@@ -3,7 +3,7 @@
 composeMultiplatform = "1.12.2"
 javacv = "1.5.11"
 ffmpeg = "7.1-1.5.11"
-jnativehook = "2.2.2"
+jna = "5.17.0"
 sqliteBundled = "2.6.2"
 androidGradlePlugin = "9.4.1"
 browser = "1.10.0"
@@ -107,7 +107,7 @@ junit = { module = "junit:junit", version.ref = "junit" }
 javacv = { module = "org.bytedeco:javacv", version.ref = "javacv" }
 ffmpeg = { module = "org.bytedeco:ffmpeg", version.ref = "ffmpeg" }
 javacpp = { module = "org.bytedeco:javacpp", version.ref = "javacv" }
-jnativehook = { module = "com.github.kwhat:jnativehook", version.ref = "jnativehook" }
+jna-platform = { module = "net.java.dev.jna:jna-platform", version.ref = "jna" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqliteBundled" }
 coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutinesGuava" }
 work-runtime = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
