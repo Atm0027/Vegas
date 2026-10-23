@@ -112,6 +112,20 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        Material3SettingsGroup(
+            title = stringResource(R.string.pc_sync),
+            items = listOf(
+                Material3SettingsItem(
+                    icon = painterResource(R.drawable.sync),
+                    title = { Text(stringResource(R.string.pc_sync)) },
+                    description = { Text(stringResource(R.string.pc_sync_summary)) },
+                    onClick = { navController.navigate("settings/pc_sync") }
+                )
+            )
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         // Android Auto Section — only shown if Android Auto is installed
         if (hasAndroidAuto) {
             Material3SettingsGroup(

@@ -70,6 +70,9 @@ class MusicDatabase(
     val syncDao: SyncDao
         get() = delegate.syncDao
 
+    val invalidationTracker: androidx.room.InvalidationTracker
+        get() = delegate.invalidationTracker
+
     /** Runs [block] in one database transaction (used by the sync with the PC). */
     suspend fun <T> inTransaction(block: suspend () -> T): T = delegate.withTransaction { block() }
 
