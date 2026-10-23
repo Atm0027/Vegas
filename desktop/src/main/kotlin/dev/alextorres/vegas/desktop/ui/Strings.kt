@@ -61,6 +61,20 @@ object Strings {
     const val QUALITY_AUTO = "Automática"
     const val HIDE_EXPLICIT = "Ocultar contenido explícito"
 
+    /** YouTube sends search section titles in English; show them like the phone does. */
+    fun searchSection(title: String) =
+        when (title) {
+            com.metrolist.innertube.YouTubeConstants.DEFAULT_TOP_RESULT -> "Mejor resultado"
+            com.metrolist.innertube.YouTubeConstants.DEFAULT_OTHER_RESULTS -> "Otros"
+            "Songs" -> SONGS
+            "Videos" -> "Vídeos"
+            "Albums" -> ALBUMS
+            "Artists" -> ARTISTS
+            "Playlists" -> PLAYLISTS
+            "Profiles" -> "Perfiles"
+            else -> title
+        }
+
     fun songCount(n: Int) = if (n == 1) "1 canción" else "$n canciones"
 
     fun deleteConfirm(name: String) = "¿Eliminar la lista «$name»?"

@@ -64,9 +64,10 @@ fun AppShell(
     fullPlayerOpen: Boolean,
     onFullPlayer: (Boolean) -> Unit,
     onDismissMessage: () -> Unit,
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    Surface(color = MaterialTheme.colorScheme.surface, modifier = Modifier.fillMaxSize()) {
+    Surface(color = MaterialTheme.colorScheme.surface, modifier = modifier.fillMaxSize()) {
         Box(Modifier.fillMaxSize()) {
             Row(Modifier.fillMaxSize()) {
                 NavigationRail(

@@ -97,7 +97,7 @@ fun PlayerBar(
                 )
             }
             Text(
-                "${formatTime(state.positionMs)} / ${formatTime(state.durationMs)}",
+                "${formatTime(state.positionMs)} / ${formatTime(state.durationMs.takeIf { it > 0 } ?: track.durationMs ?: 0)}",
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

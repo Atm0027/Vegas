@@ -5,7 +5,18 @@
 
 package dev.alextorres.vegas.desktop
 
-import androidx.compose.material3.Text
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.isAltPressed
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
+import androidx.compose.ui.input.pointer.PointerButton
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,7 +49,11 @@ import dev.alextorres.vegas.desktop.settings.AudioQualitySetting
 import dev.alextorres.vegas.desktop.settings.DesktopSettings
 import dev.alextorres.vegas.desktop.settings.WindowBounds
 import dev.alextorres.vegas.desktop.ui.AppShell
-import dev.alextorres.vegas.desktop.ui.Destination
+import dev.alextorres.vegas.desktop.playback.Track
+import dev.alextorres.vegas.desktop.ui.Navigator
+import dev.alextorres.vegas.desktop.ui.screens.LocalVegas
+import dev.alextorres.vegas.desktop.ui.screens.ScreenContent
+import dev.alextorres.vegas.desktop.ui.screens.VegasDeps
 import dev.alextorres.vegas.desktop.ui.player.PlayerActions
 import dev.alextorres.vegas.desktop.ui.theme.VegasTheme
 import dev.alextorres.vegas.desktop.ui.theme.rememberArtworkSeed
@@ -69,6 +84,7 @@ private fun installCrashLog() {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     installCrashLog()
     YouTube.locale = YouTubeLocale(gl = "ES", hl = "es")
@@ -127,7 +143,11 @@ fun main() {
             window.minimumSize = java.awt.Dimension(900, 600)
             val prefs by settings.flow.collectAsState()
             val player by controller.state.collectAsState()
-            var destination by remember { mutableStateOf(Destination.HOME) }
+            val navigator = remember { Navigator() }
+            val destination by navigator.destination.collectAsState()
+            val screen by navigator.current.collectAsState()
+            var addTarget by remember { mutableStateOf<List<Track>?>(null) }
+            val deps = remember { VegasDeps(controller, library, navigator, settings, addToPlaylist = { addTarget = it }) }
             var fullPlayer by remember { mutableStateOf(false) }
             val seed = rememberArtworkSeed(player.current?.thumbnailUrl, prefs.dynamicColor, coil3.SingletonImageLoader.get(PlatformContext.INSTANCE))
             val actions = remember {
@@ -144,9 +164,10 @@ fun main() {
                 )
             }
             VegasTheme(seed = seed, pureBlack = prefs.pureBlack) {
+              CompositionLocalProvider(LocalVegas provides deps) {
                 AppShell(
                     destination = destination,
-                    onDestination = { destination = it; fullPlayer = false },
+                    onDestination = { navigator.select(it); fullPlayer = false },
                     player = player,
                     actions = actions,
                     volume = prefs.volume,
@@ -157,9 +178,17 @@ fun main() {
                     fullPlayerOpen = fullPlayer,
                     onFullPlayer = { fullPlayer = it },
                     onDismissMessage = controller::dismissMessage,
+                    modifier = Modifier
+                        .onPreviewKeyEvent { e ->
+                            (e.type == KeyEventType.KeyDown && e.isAltPressed && e.key == Key.DirectionLeft) &&
+                                (if (fullPlayer) { fullPlayer = false; true } else navigator.back())
+                        }.onPointerEvent(PointerEventType.Press) { e ->
+                            if (e.button == PointerButton.Back) { if (fullPlayer) fullPlayer = false else navigator.back() }
+                        },
                 ) {
-                    Text(destination.label)
+                    ScreenContent(screen)
                 }
+              }
             }
         }
     }
