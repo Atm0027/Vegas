@@ -114,6 +114,10 @@ class PlayerController(
         save()
     }
 
+    fun playAt(index: Int) {
+        if (index in _state.value.queue.indices) moveTo(index)
+    }
+
     fun next() {
         val s = _state.value
         when {

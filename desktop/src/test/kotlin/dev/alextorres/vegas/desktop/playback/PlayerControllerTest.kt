@@ -194,4 +194,13 @@ class PlayerControllerTest {
         assertEquals(tracks.map { it.id }, c.state.value.queue.map { it.id })
         assertEquals("t6", c.state.value.queue[c.state.value.index].id)
     }
+
+    @Test
+    fun playAtJumpsToThatQueueEntry() {
+        val c = controller()
+        c.playQueue(listOf(track("a"), track("b"), track("c")), startIndex = 0)
+        c.playAt(2)
+        assertEquals(2, c.state.value.index)
+        assertEquals("c", engine.loads.last().first)
+    }
 }

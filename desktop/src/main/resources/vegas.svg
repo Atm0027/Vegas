@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="18 18 72 72">
+  <!-- Same drawing as the Android adaptive icon (ic_vegas_foreground on #14101F). -->
+  <defs>
+    <linearGradient id="v" gradientUnits="userSpaceOnUse" x1="36" y1="40" x2="70" y2="73">
+      <stop offset="0" stop-color="#B39DFF"/>
+      <stop offset="1" stop-color="#7C4DFF"/>
+    </linearGradient>
+  </defs>
+  <rect x="18" y="18" width="72" height="72" rx="16" fill="#14101F"/>
+  <path d="M36,40 L53,73 L70,40" fill="none" stroke="url(#v)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M71,26.5 Q72,32 77.5,33 Q72,34 71,39.5 Q70,34 64.5,33 Q70,32 71,26.5 Z" fill="#E9E1FF"/>
+</svg>

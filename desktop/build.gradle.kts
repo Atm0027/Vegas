@@ -21,6 +21,10 @@ dependencies {
     implementation(compose.material3)
     implementation(compose.materialIconsExtended)
     implementation(libs.coroutines.swing)
+    implementation(libs.coil)
+    implementation(libs.coil.network.okhttp)
+    implementation(libs.materialKolor)
+    implementation(libs.compose.reorderable)
 
     implementation(libs.innertubex)
     implementation(libs.ktor.client.core)
