@@ -77,6 +77,8 @@ class VegasDeps(
     val settings: DesktopSettings,
     /** Opens «Añadir a una lista…» for these tracks. */
     val addToPlaylist: (List<Track>) -> Unit,
+    /** Home-network sync with the phone; null if the server could not start. */
+    val sync: dev.alextorres.vegas.desktop.sync.SyncService? = null,
 )
 
 val LocalVegas = compositionLocalOf<VegasDeps> { error("VegasDeps not provided") }

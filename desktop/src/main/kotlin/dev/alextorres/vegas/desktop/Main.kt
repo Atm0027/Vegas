@@ -48,6 +48,7 @@ import dev.alextorres.vegas.desktop.playback.toTrack
 import dev.alextorres.vegas.desktop.settings.AudioQualitySetting
 import dev.alextorres.vegas.desktop.settings.DesktopSettings
 import dev.alextorres.vegas.desktop.settings.WindowBounds
+import dev.alextorres.vegas.desktop.sync.SyncService
 import dev.alextorres.vegas.desktop.system.MediaKey
 import dev.alextorres.vegas.desktop.system.MediaKeys
 import dev.alextorres.vegas.desktop.ui.AppShell
@@ -111,7 +112,9 @@ fun main() {
         },
         store = QueueStore(dataDir.resolve("queue.json")),
     )
-    val library = Library(openDatabase(dataDir.resolve("vegas.db")))
+    val database = openDatabase(dataDir.resolve("vegas.db"))
+    val library = Library(database)
+    val sync = runCatching { SyncService(dataDir, database, library, settings) }.getOrNull()
     val mediaKeys = MediaKeys { key ->
         when (key) {
             MediaKey.PLAY_PAUSE -> controller.togglePlay()
@@ -145,6 +148,7 @@ fun main() {
                     )
                 }
                 controller.persist()
+                sync?.close()
                 mediaKeys.close()
                 engine.release()
                 exitApplication()
@@ -160,7 +164,7 @@ fun main() {
             val destination by navigator.destination.collectAsState()
             val screen by navigator.current.collectAsState()
             var addTarget by remember { mutableStateOf<List<Track>?>(null) }
-            val deps = remember { VegasDeps(controller, library, navigator, settings, addToPlaylist = { addTarget = it }) }
+            val deps = remember { VegasDeps(controller, library, navigator, settings, addToPlaylist = { addTarget = it }, sync = sync) }
             var fullPlayer by remember { mutableStateOf(false) }
             val seed = rememberArtworkSeed(player.current?.thumbnailUrl, prefs.dynamicColor, coil3.SingletonImageLoader.get(PlatformContext.INSTANCE))
             val actions = remember {

@@ -27,6 +27,10 @@ dependencies {
     implementation(libs.compose.reorderable)
     implementation(libs.jna.platform)
     implementation(project(":synccore"))
+    implementation(libs.ktor.server.netty)
+    implementation(libs.ktor.server.content.negotiation)
+    implementation(libs.ktor.network.tls.certificates)
+    implementation(libs.jmdns)
 
     implementation(libs.innertubex)
     implementation(libs.ktor.client.core)
@@ -47,6 +51,8 @@ dependencies {
     ksp(libs.room.compiler)
 
     testImplementation(libs.junit)
+    testImplementation(libs.ktor.server.test.host)
+    testImplementation(libs.ktor.client.content.negotiation)
 }
 
 ksp {
