@@ -773,6 +773,8 @@
     <string name="android_auto_target_playlist">Quick-add destination</string>
     <string name="android_auto_target_playlist_auto">Not set</string>
     <string name="android_auto_target_playlist_not_set">No playlist selected. Choose one in Android Auto settings</string>
+    <string name="quick_add_add_to">Add to %1$s</string>
+    <string name="quick_add_remove_from">Remove from %1$s</string>
     <string name="android_auto_search_options">Search options</string>
     <string name="android_auto_search_local_songs_limit">Songs search limit</string>
     <string name="android_auto_search_local_songs_limit_desc">Limit the number of local songs shown in the search results. It is recommended to not set unlimited to prevent memory crashes</string>

@@ -225,6 +225,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.isActive
@@ -328,6 +329,19 @@ class MusicService :
             .flatMapLatest { mediaMetadata ->
                 database.song(mediaMetadata?.id)
             }.stateIn(scope, SharingStarted.Lazily, null)
+    /** Vegas: quick-add target and whether the playing song is already in it (drives the Android Auto button). */
+    private val quickAddTarget =
+        dataStore.data
+            .map { it[AndroidAutoTargetPlaylistKey] ?: MediaSessionConstants.TARGET_PLAYLIST_AUTO }
+            .distinctUntilChanged()
+            .flatMapLatest { id -> database.playlist(id) }
+            .stateIn(scope, SharingStarted.Lazily, null)
+    private val inQuickAddTarget =
+        combine(currentMediaMetadata, quickAddTarget) { song, target -> song?.id to target?.id }
+            .distinctUntilChanged()
+            .flatMapLatest { (songId, targetId) ->
+                if (songId == null || targetId == null) flowOf(false) else database.isSongInPlaylist(targetId, songId)
+            }.stateIn(scope, SharingStarted.Lazily, false)
     private val currentFormat =
         currentMediaMetadata.flatMapLatest { mediaMetadata ->
             database.format(mediaMetadata?.id)
@@ -832,6 +846,10 @@ class MusicService :
             updateNotification()
             updateWidgetUI(player.isPlaying)
         }
+
+        combine(inQuickAddTarget, quickAddTarget) { inTarget, target -> inTarget to target?.playlist?.name }
+            .distinctUntilChanged()
+            .collect(scope) { updateNotification() }
 
         combine(
             currentMediaMetadata.distinctUntilChangedBy { it?.id },
@@ -1491,8 +1509,11 @@ class MusicService :
                     .build(),
                 CommandButton
                     .Builder()
-                    .setDisplayName(getString(R.string.android_auto_target_playlist))
-                    .setIconResId(R.drawable.playlist_add)
+                    .setDisplayName(
+                        quickAddTarget.value?.playlist?.name?.let { name ->
+                            getString(if (inQuickAddTarget.value) R.string.quick_add_remove_from else R.string.quick_add_add_to, name)
+                        } ?: getString(R.string.android_auto_target_playlist),
+                    ).setIconResId(if (inQuickAddTarget.value) R.drawable.library_add_check else R.drawable.playlist_add)
                     .setSessionCommand(CommandAddToTargetPlaylist)
                     .setEnabled(currentSong.value != null)
                     .build(),
@@ -2067,11 +2088,10 @@ class MusicService :
                     dataStore
                         .get(AddToPlaylistPositionKey, AddToPlaylistPosition.BEGINNING.name)
                         .toEnum(AddToPlaylistPosition.BEGINNING)
-                database.addSongsToPlaylist(
-                    targetPlaylist,
-                    listOf(currentSong.id to null),
-                    prepend = addToPlaylistPosition.prepend,
-                )
+                // Vegas: a second press removes it again, so repeated presses in the car never pile up copies.
+                withContext(Dispatchers.IO) {
+                    database.toggleSongInPlaylist(targetPlaylist, currentSong.id, prepend = addToPlaylistPosition.prepend)
+                }
             }
         }
     }

@@ -1252,6 +1252,28 @@ interface DatabaseDao {
         now: LocalDateTime = LocalDateTime.now(),
     )
 
+    // Vegas: Android Auto's quick-add button shows whether the song is already in the target playlist.
+    @Query("SELECT EXISTS(SELECT 1 FROM playlist_song_map WHERE playlistId = :playlistId AND songId = :songId)")
+    fun isSongInPlaylist(playlistId: String, songId: String): Flow<Boolean>
+
+    @Query("DELETE FROM playlist_song_map WHERE playlistId = :playlistId AND songId = :songId")
+    fun removeSongFromPlaylist(playlistId: String, songId: String)
+
+    @Query("SELECT EXISTS(SELECT 1 FROM playlist_song_map WHERE playlistId = :playlistId AND songId = :songId)")
+    fun isSongInPlaylistNow(playlistId: String, songId: String): Boolean
+
+    /** Adds the song if it is not in the playlist, otherwise removes every copy. Returns true when it ends up in it. */
+    @Transaction
+    suspend fun toggleSongInPlaylist(playlist: Playlist, songId: String, prepend: Boolean = false): Boolean {
+        if (isSongInPlaylistNow(playlist.id, songId)) {
+            removeSongFromPlaylist(playlist.id, songId)
+            updatePlaylistLastUpdated(playlist.id)
+            return false
+        }
+        addSongsToPlaylist(playlist, listOf(songId to null), prepend)
+        return true
+    }
+
     @Query("UPDATE playlist_song_map SET position = position + :delta WHERE playlistId = :playlistId")
     fun shiftPlaylistSongPositions(playlistId: String, delta: Int)
 

@@ -641,6 +641,8 @@
     <string name="android_auto_target_playlist">Destinación de agregado rapido</string>
     <string name="android_auto_target_playlist_auto">No establecido</string>
     <string name="android_auto_target_playlist_not_set">Ninguna lista de reproducción seleccionada. Elige una en los ajustes de Android Auto</string>
+    <string name="quick_add_add_to">Añadir a «%1$s»</string>
+    <string name="quick_add_remove_from">Quitar de «%1$s»</string>
     <string name="autoplay">Reproducción automatica</string>
     <string name="autoplay_desc">Reproduce la siguiente canción automáticamente cuando la actual termine</string>
     <string name="back">Atrás</string>
