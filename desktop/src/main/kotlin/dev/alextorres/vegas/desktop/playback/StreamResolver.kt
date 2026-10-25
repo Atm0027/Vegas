@@ -16,6 +16,7 @@ import com.metrolist.innertubex.extraction.InnerTubeExtractor
 import com.metrolist.innertubex.extraction.YtConfigParser
 import com.metrolist.innertubex.extraction.YtConfigParserImpl
 import com.metrolist.innertubex.extraction.generateClientPlaybackNonce
+import dev.alextorres.vegas.desktop.offline.DownloadStream
 import kotlinx.coroutines.CancellationException
 import java.util.concurrent.ConcurrentHashMap
 
@@ -69,15 +70,7 @@ class StreamResolver(
         private const val DEFAULT_STREAM_TTL_MS = 5 * 60_000L
 
         fun live(quality: () -> AudioQuality = { AudioQuality.HIGH }): StreamResolver {
-            var extractor: Pair<Long, InnerTubeExtractor>? = null
-            fun extractor(): InnerTubeExtractor {
-                val transport = YouTube.extractionTransport()
-                extractor?.takeIf { it.first == transport.generation }?.let { return it.second }
-                val store = RemotePlayerConfigStore(transport.httpClient, PlayerConfigRepository.disabled())
-                val cipher = YouTubeCipherService(transport.httpClient, store)
-                val parser = YtConfigParserImpl(transport.httpClient, transport.innerTube, store).withEmbeddedConfigFallback()
-                return InnerTubeExtractor(parser, cipher, transport.innerTube).also { extractor = transport.generation to it }
-            }
+            val extractor = extractorFactory()
             return StreamResolver(extract = { id, excluded ->
                 val stream = requireNotNull(
                     extractor().extract(
@@ -100,6 +93,38 @@ class StreamResolver(
                     durationMs = stream.mediaMetadata?.durationSeconds?.let { it * 1000L },
                 )
             })
+        }
+
+        /** Streams for downloads: always m4a, whatever the playback quality (as on the phone). */
+        fun downloadSource(): suspend (String) -> DownloadStream {
+            val extractor = extractorFactory()
+            return { id ->
+                val stream = requireNotNull(
+                    extractor().extract(
+                        videoId = id,
+                        hints = ContentHints().withStreamCapabilities(allowHls = false, allowSabr = false, allowBoundedRange = false),
+                        excludedClients = emptySet(),
+                        audioQuality = AudioQuality.MP4,
+                        clientPlaybackNonce = generateClientPlaybackNonce(),
+                    ),
+                ) { "No downloadable stream" }
+                check(stream.sabrBootstrap == null) { "SABR is not supported" }
+                DownloadStream(stream.audioUrl, stream.headers, stream.mimeType.orEmpty(), stream.contentLengthBytes)
+            }
+        }
+
+        /** One extractor, rebuilt when YouTube's transport changes. */
+        private fun extractorFactory(): () -> InnerTubeExtractor {
+            var extractor: Pair<Long, InnerTubeExtractor>? = null
+            return {
+                val transport = YouTube.extractionTransport()
+                extractor?.takeIf { it.first == transport.generation }?.second ?: run {
+                    val store = RemotePlayerConfigStore(transport.httpClient, PlayerConfigRepository.disabled())
+                    val cipher = YouTubeCipherService(transport.httpClient, store)
+                    val parser = YtConfigParserImpl(transport.httpClient, transport.innerTube, store).withEmbeddedConfigFallback()
+                    InnerTubeExtractor(parser, cipher, transport.innerTube).also { extractor = transport.generation to it }
+                }
+            }
         }
 
         private fun YtConfigParser.withEmbeddedConfigFallback(): YtConfigParser =

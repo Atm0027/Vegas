@@ -76,6 +76,38 @@ object Strings {
             else -> title
         }
 
+    const val DOWNLOAD = "Descargar"
+    const val DOWNLOADED = "Descargada"
+    const val DELETE_DOWNLOAD = "Borrar descarga"
+    const val REMOVE_DOWNLOAD = "Quitar descarga"
+    const val DELETE_FILES_TOO = "Borrar también los archivos"
+    const val DELETE_FILES_EXPLAIN = "Solo se borran las canciones que no estén en otra lista descargada. Van a la Papelera."
+    const val DOWNLOADS = "Descargas"
+    const val DOWNLOAD_FOLDER = "Carpeta"
+    const val CHANGE_FOLDER = "Cambiar carpeta"
+    const val CHANGE_FOLDER_NOTE = "Lo ya descargado se queda donde está; lo nuevo va a la carpeta nueva."
+    const val SCAN_FOLDER = "Buscar descargas en la carpeta"
+    const val RETRY_DOWNLOADS = "Reintentar"
+    const val QUEUED = "En cola para descargar"
+
+    fun removeDownloadTitle(name: String) = "¿Quitar la descarga de «$name»?"
+
+    fun downloading(done: Int, total: Int) = "Descargando $done de $total"
+
+    fun willRedownload(playlist: String) = "Se volverá a descargar porque está en «$playlist»"
+
+    fun downloadQueued(n: Int) = if (n == 1) "Se descargará 1 canción" else "Se descargarán $n canciones"
+
+    fun scanResult(n: Int) = if (n == 0) "No hay descargas nuevas en la carpeta" else if (n == 1) "1 descarga encontrada" else "$n descargas encontradas"
+
+    fun downloadStats(count: Int, bytes: Long) = "${songCount(count)} · ${"%.1f".format(bytes / 1_048_576.0)} MB"
+
+    fun downloadActivity(active: Int, failed: Int) =
+        listOfNotNull(
+            active.takeIf { it > 0 }?.let { "Descargando: $it" },
+            failed.takeIf { it > 0 }?.let { if (it == 1) "1 no se ha podido descargar" else "$it no se han podido descargar" },
+        ).joinToString(" · ")
+
     const val PHONE_SYNC = "Vegas en el móvil"
     const val PAIR_PHONE = "Vincular un móvil"
     const val UNPAIR = "Desvincular"

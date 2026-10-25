@@ -26,6 +26,8 @@ import androidx.compose.foundation.onClick
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Download
+import androidx.compose.material.icons.rounded.DownloadDone
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Shuffle
@@ -40,6 +42,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -59,6 +63,8 @@ import com.metrolist.innertube.models.PlaylistItem
 import com.metrolist.innertube.models.SongItem
 import com.metrolist.innertube.models.YTItem
 import dev.alextorres.vegas.desktop.db.Library
+import dev.alextorres.vegas.desktop.offline.DownloadManager
+import dev.alextorres.vegas.desktop.offline.OfflineLibrary
 import dev.alextorres.vegas.desktop.playback.PlayerController
 import dev.alextorres.vegas.desktop.playback.Track
 import dev.alextorres.vegas.desktop.playback.toTrack
@@ -68,6 +74,7 @@ import dev.alextorres.vegas.desktop.ui.Navigator
 import dev.alextorres.vegas.desktop.ui.Screen
 import dev.alextorres.vegas.desktop.ui.Strings
 import dev.alextorres.vegas.desktop.ui.formatTime
+import kotlinx.coroutines.launch
 
 /** Everything a screen needs, provided once from Main. */
 class VegasDeps(
@@ -79,6 +86,8 @@ class VegasDeps(
     val addToPlaylist: (List<Track>) -> Unit,
     /** Home-network sync with the phone; null if the server could not start. */
     val sync: dev.alextorres.vegas.desktop.sync.SyncService? = null,
+    val offline: OfflineLibrary,
+    val downloads: DownloadManager,
 )
 
 val LocalVegas = compositionLocalOf<VegasDeps> { error("VegasDeps not provided") }
@@ -134,7 +143,10 @@ fun SongRow(
     trailing: (@Composable () -> Unit)? = null,
 ) {
     val deps = LocalVegas.current
+    val scope = rememberCoroutineScope()
     var menu by remember { mutableStateOf(false) }
+    val downloaded = track.id in deps.offline.downloadedIds.collectAsState().value
+    val downloads by deps.downloads.state.collectAsState()
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
@@ -158,6 +170,7 @@ fun SongRow(
         track.durationMs?.let {
             Text(formatTime(it), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
+        DownloadMark(downloaded, downloads.progress[track.id], track.id in downloads.queued)
         trailing?.invoke()
         Box {
             IconButton(onClick = { menu = true }) { Icon(Icons.Rounded.MoreVert, null) }
@@ -165,9 +178,31 @@ fun SongRow(
                 DropdownMenuItem(text = { Text(Strings.PLAY_NEXT) }, onClick = { deps.controller.playNext(track); menu = false })
                 DropdownMenuItem(text = { Text(Strings.ADD_TO_QUEUE) }, onClick = { deps.controller.addToQueue(track); menu = false })
                 DropdownMenuItem(text = { Text(Strings.ADD_TO_PLAYLIST) }, onClick = { deps.addToPlaylist(listOf(track)); menu = false })
+                if (downloaded) {
+                    DropdownMenuItem(text = { Text(Strings.DELETE_DOWNLOAD) }, onClick = {
+                        menu = false
+                        scope.launch { deps.offline.deleteDownload(track.id)?.let { deps.controller.notify(Strings.willRedownload(it)) } }
+                    })
+                } else if (track.id !in downloads.queued) {
+                    DropdownMenuItem(text = { Text(Strings.DOWNLOAD) }, onClick = {
+                        menu = false
+                        scope.launch { deps.offline.request(listOf(track)) }
+                    })
+                }
                 extraMenu?.invoke { menu = false }
             }
         }
+    }
+}
+
+/** Downloaded, downloading (with progress) or waiting; nothing for songs that are not offline. */
+@Composable
+private fun DownloadMark(downloaded: Boolean, progress: Float?, queued: Boolean) {
+    val m = Modifier.padding(start = 12.dp).size(16.dp)
+    when {
+        downloaded -> Icon(Icons.Rounded.DownloadDone, Strings.DOWNLOADED, m, tint = MaterialTheme.colorScheme.primary)
+        progress != null -> CircularProgressIndicator(progress = { progress }, modifier = m, strokeWidth = 2.dp)
+        queued -> Icon(Icons.Rounded.Download, Strings.QUEUED, m, tint = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 

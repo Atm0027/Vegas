@@ -1,6 +1,7 @@
 /**
  * Vegas desktop: the library (own playlists, pinned first, drag to reorder, grid or list) and a
- * playlist's page (play, shuffle, drag to reorder with Ctrl+Z, «Quitar de la lista», rename, pin, delete).
+ * playlist's page (play, shuffle, drag to reorder with Ctrl+Z, «Quitar de la lista», download, rename,
+ * pin, delete).
  * Licensed under GPL-3.0
  */
 
@@ -29,11 +30,14 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Download
+import androidx.compose.material.icons.rounded.DownloadDone
 import androidx.compose.material.icons.rounded.DragHandle
 import androidx.compose.material.icons.rounded.GridView
 import androidx.compose.material.icons.rounded.PushPin
 import androidx.compose.material.icons.rounded.ViewList
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -186,6 +190,9 @@ fun LocalPlaylistScreen(id: String) {
     val entries by deps.library.entries(id).collectAsState(null)
     var renaming by remember { mutableStateOf(false) }
     var deleting by remember { mutableStateOf(false) }
+    var unmarking by remember { mutableStateOf(false) }
+    val offline by deps.offline.offlinePlaylists.collectAsState()
+    val downloadedIds by deps.offline.downloadedIds.collectAsState()
     /** Last drag: (entry, index it came from) — Ctrl+Z puts it back. */
     var lastMove by remember { mutableStateOf<Pair<String, Int>?>(null) }
     val focus = remember { FocusRequester() }
@@ -245,6 +252,20 @@ fun LocalPlaylistScreen(id: String) {
     ) {
         item {
             PageHeader(rows.firstOrNull()?.song?.thumbnailUrl, name, Strings.songCount(rows.size), tracks) {
+                val marked = id in offline
+                val songIds = rows.mapTo(HashSet()) { it.song.id }
+                val done = songIds.count { it in downloadedIds }
+                OutlinedButton(onClick = { if (marked) unmarking = true else scope.launch { deps.offline.markPlaylist(id) } }) {
+                    Icon(if (marked && done == songIds.size) Icons.Rounded.DownloadDone else Icons.Rounded.Download, null, Modifier.size(18.dp))
+                    Spacer(Modifier.width(8.dp))
+                    Text(
+                        when {
+                            !marked -> Strings.DOWNLOAD
+                            done < songIds.size -> Strings.downloading(done, songIds.size)
+                            else -> Strings.DOWNLOADED
+                        },
+                    )
+                }
                 OutlinedButton(onClick = { scope.launch { deps.library.setPinned(id, !summary.pinned) } }) {
                     Text(if (summary.pinned) Strings.UNPIN else Strings.PIN)
                 }
@@ -270,6 +291,34 @@ fun LocalPlaylistScreen(id: String) {
             scope.launch { deps.library.rename(id, newName) }
             renaming = false
         }
+    }
+    if (unmarking) {
+        var deleteFiles by remember { mutableStateOf(false) }
+        AlertDialog(
+            onDismissRequest = { unmarking = false },
+            title = { Text(Strings.removeDownloadTitle(name)) },
+            text = {
+                Column {
+                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { deleteFiles = !deleteFiles }) {
+                        Checkbox(deleteFiles, onCheckedChange = null)
+                        Text(Strings.DELETE_FILES_TOO, Modifier.padding(start = 8.dp))
+                    }
+                    Text(
+                        Strings.DELETE_FILES_EXPLAIN,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 8.dp),
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    unmarking = false
+                    scope.launch { deps.offline.unmarkPlaylist(id, deleteFiles) }
+                }) { Text(Strings.REMOVE_DOWNLOAD) }
+            },
+            dismissButton = { TextButton(onClick = { unmarking = false }) { Text(Strings.CANCEL) } },
+        )
     }
     if (deleting) {
         AlertDialog(

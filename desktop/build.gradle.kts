@@ -31,6 +31,7 @@ dependencies {
     implementation(libs.ktor.server.content.negotiation)
     implementation(libs.ktor.network.tls.certificates)
     implementation(libs.jmdns)
+    implementation(libs.jaudiotagger)
 
     implementation(libs.innertubex)
     implementation(libs.ktor.client.core)

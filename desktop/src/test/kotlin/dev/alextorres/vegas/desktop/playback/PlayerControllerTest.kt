@@ -13,7 +13,9 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.net.UnknownHostException
 import java.nio.file.Files
+import java.nio.file.Path
 
 class PlayerControllerTest {
     private class FakeEngine : PlaybackEngine {
@@ -26,7 +28,10 @@ class PlayerControllerTest {
         var plays = 0
 
         override fun load(source: AudioSource, startMs: Long, playWhenReady: Boolean) {
-            loads += (source as AudioSource.Remote).stream.videoId to startMs
+            loads += when (source) {
+                is AudioSource.Remote -> source.stream.videoId
+                is AudioSource.LocalFile -> "file:${source.path.fileName}"
+            } to startMs
             positionMs.value = startMs
             state.value = if (playWhenReady) EngineState.PLAYING else EngineState.PAUSED
         }
@@ -39,11 +44,19 @@ class PlayerControllerTest {
 
     private var now = 0L
     private val unplayable = mutableSetOf<String>()
+    private val unreachable = mutableSetOf<String>()
+    private val files = mutableMapOf<String, Path>()
+    private val offline = object : OfflineSource {
+        override fun isDownloaded(songId: String) = songId in files
+
+        override suspend fun localFile(songId: String) = files[songId]
+    }
     private val extracted = mutableListOf<String>()
     private val resolver = StreamResolver(
         extract = { id, _ ->
             extracted += id
             if (id in unplayable) error("unavailable")
+            if (id in unreachable) throw UnknownHostException("music.youtube.com")
             ResolvedStream(id, "https://x/$id", emptyMap(), "audio/webm", now + 600_000, "VISIONOS", null, durationMs = 225_000)
         },
         now = { now },
@@ -56,7 +69,7 @@ class PlayerControllerTest {
     private fun track(id: String) = Track(id, "Song $id", "Artist", null, null, 180_000)
 
     private fun controller(store: QueueStore = QueueStore(queueFile)) =
-        PlayerController(scope, resolver, engine, related = { related }, store = store)
+        PlayerController(scope, resolver, engine, related = { related }, store = store, offline = offline)
 
     @After
     fun tearDown() {
@@ -221,5 +234,70 @@ class PlayerControllerTest {
         engine.positionMs.value = 95_000
         c.persist()
         assertEquals(95_000L, QueueStore(queueFile).load()?.positionMs)
+    }
+
+    @Test
+    fun downloadedSongPlaysFromItsFileWithoutResolving() {
+        files["a"] = Path.of("a.m4a")
+        val c = controller()
+        c.playQueue(listOf(track("a"), track("b")), startIndex = 0)
+        assertEquals(listOf("file:a.m4a"), engine.loads.map { it.first })
+        assertTrue(c.state.value.local)
+        assertTrue("a" !in extracted)
+        c.next()
+        assertEquals("b", engine.loads.last().first)
+        assertFalse(c.state.value.local)
+    }
+
+    @Test
+    fun withoutConnectionTheQueueJumpsToTheNextDownloadedSong() {
+        unreachable += setOf("a", "b")
+        files["c"] = Path.of("c.m4a")
+        val c = controller()
+        c.playQueue(listOf(track("a"), track("b"), track("c")), startIndex = 0)
+        assertEquals(2, c.state.value.index)
+        assertEquals(listOf("file:c.m4a"), engine.loads.map { it.first })
+        assertTrue("b" !in extracted)
+    }
+
+    @Test
+    fun withRepeatAllTheJumpWrapsAround() {
+        unreachable += setOf("b", "c")
+        files["a"] = Path.of("a.m4a")
+        val c = controller()
+        c.cycleRepeat()
+        c.playQueue(listOf(track("a"), track("b"), track("c")), startIndex = 1)
+        assertEquals(0, c.state.value.index)
+        assertEquals("file:a.m4a", engine.loads.last().first)
+    }
+
+    @Test
+    fun withoutConnectionAndNothingDownloadedItPauses() {
+        unreachable += setOf("a", "b")
+        val c = controller()
+        c.playQueue(listOf(track("a"), track("b")), startIndex = 0)
+        assertEquals(0, c.state.value.index)
+        assertFalse(c.state.value.isPlaying)
+        assertEquals("Sin conexión", c.state.value.message)
+    }
+
+    @Test
+    fun withoutConnectionPastTheLastDownloadedSongItSaysSo() {
+        unreachable += setOf("b")
+        files["a"] = Path.of("a.m4a")
+        val c = controller()
+        c.playQueue(listOf(track("a"), track("b")), startIndex = 1)
+        assertEquals(1, c.state.value.index)
+        assertEquals("Sin conexión: no hay más canciones descargadas en la cola", c.state.value.message)
+    }
+
+    @Test
+    fun unavailableSongStillMovesToTheNextOneWhenOnline() {
+        unplayable += "a"
+        files["c"] = Path.of("c.m4a")
+        val c = controller()
+        c.playQueue(listOf(track("a"), track("b"), track("c")), startIndex = 0)
+        assertEquals(1, c.state.value.index)
+        assertEquals("b", engine.loads.last().first)
     }
 }

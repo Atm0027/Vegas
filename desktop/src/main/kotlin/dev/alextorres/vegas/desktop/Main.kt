@@ -1,5 +1,5 @@
 /**
- * Vegas for Windows: wires playback, library and settings, then opens the window.
+ * Vegas for Windows: wires playback, library, downloads and settings, then opens the window.
  * Licensed under GPL-3.0
  */
 
@@ -40,6 +40,10 @@ import com.metrolist.innertube.models.YouTubeLocale
 import com.metrolist.innertube.models.filterPodcasts
 import dev.alextorres.vegas.desktop.db.Library
 import dev.alextorres.vegas.desktop.db.openDatabase
+import dev.alextorres.vegas.desktop.offline.DownloadManager
+import dev.alextorres.vegas.desktop.offline.OfflineFolder
+import dev.alextorres.vegas.desktop.offline.OfflineLibrary
+import dev.alextorres.vegas.desktop.offline.SongDownloader
 import dev.alextorres.vegas.desktop.playback.AudioEngine
 import dev.alextorres.vegas.desktop.playback.PlayerController
 import dev.alextorres.vegas.desktop.playback.QueueStore
@@ -64,13 +68,14 @@ import dev.alextorres.vegas.desktop.ui.theme.rememberArtworkSeed
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import java.nio.file.Files
 import java.nio.file.Path
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import com.metrolist.innertubex.extraction.AudioQuality as InnerTubeXAudioQuality
 
-/** %APPDATA%\Vegas: database, settings, saved queue and crash reports. */
+/** %APPDATA%\Vegas: database, settings, saved queue, unfinished downloads and crash reports. */
 val dataDir: Path = Path.of(System.getenv("APPDATA") ?: System.getProperty("user.home"), "Vegas")
 
 private fun installCrashLog() {
@@ -102,6 +107,11 @@ fun main() {
             AudioQualitySetting.AUTO -> InnerTubeXAudioQuality.AUTO
         }
     }
+    val database = openDatabase(dataDir.resolve("vegas.db"))
+    val library = Library(database)
+    val offline = OfflineLibrary(database, scope, folder = {
+        settings.flow.value.downloadDir?.let { Path.of(it) } ?: OfflineFolder.defaultDir()
+    })
     val controller = PlayerController(
         scope = scope,
         resolver = resolver,
@@ -111,9 +121,15 @@ fun main() {
                 .getOrNull()?.items.orEmpty().filterPodcasts().map { it.toTrack() }
         },
         store = QueueStore(dataDir.resolve("queue.json")),
+        offline = offline,
     )
-    val database = openDatabase(dataDir.resolve("vegas.db"))
-    val library = Library(database)
+    val downloader = SongDownloader(StreamResolver.downloadSource(), offline, dataDir.resolve("downloads-tmp"))
+    val downloads = DownloadManager(scope, offline, downloader::download)
+    scope.launch {
+        runCatching { offline.scan() }
+        downloads.start()
+    }
+    scope.launch { controller.state.collect { downloads.setStreaming(it.isPlaying && !it.local) } }
     val sync = runCatching { SyncService(dataDir, database, library, settings) }.getOrNull()
     val mediaKeys = MediaKeys { key ->
         when (key) {
@@ -164,7 +180,9 @@ fun main() {
             val destination by navigator.destination.collectAsState()
             val screen by navigator.current.collectAsState()
             var addTarget by remember { mutableStateOf<List<Track>?>(null) }
-            val deps = remember { VegasDeps(controller, library, navigator, settings, addToPlaylist = { addTarget = it }, sync = sync) }
+            val deps = remember {
+                VegasDeps(controller, library, navigator, settings, addToPlaylist = { addTarget = it }, sync = sync, offline = offline, downloads = downloads)
+            }
             var fullPlayer by remember { mutableStateOf(false) }
             val seed = rememberArtworkSeed(player.current?.thumbnailUrl, prefs.dynamicColor, coil3.SingletonImageLoader.get(PlatformContext.INSTANCE))
             val actions = remember {

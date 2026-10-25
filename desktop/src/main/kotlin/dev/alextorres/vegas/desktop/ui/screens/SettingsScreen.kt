@@ -46,6 +46,7 @@ fun SettingsScreen() {
         Toggle(Strings.PURE_BLACK, prefs.pureBlack) { v -> settings.update { it.copy(pureBlack = v) } }
         Toggle(Strings.HIDE_EXPLICIT, prefs.hideExplicit) { v -> settings.update { it.copy(hideExplicit = v) } }
         Toggle(Strings.HIDE_VIDEO_SONGS, prefs.hideVideoSongs) { v -> settings.update { it.copy(hideVideoSongs = v) } }
+        DownloadSettings()
         LocalVegas.current.sync?.let { SyncSettings(it) }
     }
 }

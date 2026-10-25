@@ -31,6 +31,8 @@ class DesktopSettings(private val file: Path) {
         val hideVideoSongs: Boolean = false,
         // Stored for sync with the phone; playback support comes in a later phase.
         val skipSilence: Boolean = false,
+        /** Where downloads go; null means Música\Vegas. Not synced: each device decides. */
+        val downloadDir: String? = null,
     )
 
     private val json = Json {

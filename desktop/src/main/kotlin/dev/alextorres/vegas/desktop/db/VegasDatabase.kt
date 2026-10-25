@@ -18,14 +18,17 @@ import java.nio.file.Path
     entities = [
         SongEntity::class, PlaylistEntity::class, PlaylistEntryEntity::class,
         SyncPlaylistEntity::class, SyncEntryEntity::class, SyncSettingEntity::class, SyncBindingEntity::class, SyncMetaEntity::class,
+        DownloadEntity::class, OfflinePlaylistEntity::class, DownloadRequestEntity::class,
     ],
-    version = 2,
-    autoMigrations = [AutoMigration(from = 1, to = 2)],
+    version = 3,
+    autoMigrations = [AutoMigration(from = 1, to = 2), AutoMigration(from = 2, to = 3)],
 )
 abstract class VegasDatabase : RoomDatabase() {
     abstract fun library(): LibraryDao
 
     abstract fun sync(): SyncDao
+
+    abstract fun offline(): OfflineDao
 }
 
 fun openDatabase(file: Path): VegasDatabase {
