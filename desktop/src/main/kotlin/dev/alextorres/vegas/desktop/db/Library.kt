@@ -18,7 +18,7 @@ class Library(
     private val db: VegasDatabase,
     private val now: () -> Long = System::currentTimeMillis,
 ) {
-    private val dao = db.library()
+    internal val dao = db.library()
 
     fun playlists(): Flow<List<PlaylistSummary>> = dao.playlists()
 

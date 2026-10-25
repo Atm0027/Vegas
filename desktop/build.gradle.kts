@@ -26,6 +26,11 @@ dependencies {
     implementation(libs.materialKolor)
     implementation(libs.compose.reorderable)
     implementation(libs.jna.platform)
+    implementation(project(":synccore"))
+    implementation(libs.ktor.server.netty)
+    implementation(libs.ktor.server.content.negotiation)
+    implementation(libs.ktor.network.tls.certificates)
+    implementation(libs.jmdns)
 
     implementation(libs.innertubex)
     implementation(libs.ktor.client.core)
@@ -46,6 +51,8 @@ dependencies {
     ksp(libs.room.compiler)
 
     testImplementation(libs.junit)
+    testImplementation(libs.ktor.server.test.host)
+    testImplementation(libs.ktor.client.content.negotiation)
 }
 
 ksp {
@@ -59,7 +66,7 @@ compose.desktop {
             targetFormats(TargetFormat.Msi)
             packageName = "Vegas"
             // Desktop's own version; the Android version is never touched from here.
-            packageVersion = "1.0.0"
+            packageVersion = "1.1.0"
             vendor = "Alex"
             description = "Vegas para Windows"
             // suggestRuntimeModules, plus TLS elliptic curves and JNDI that OkHttp may need at runtime.

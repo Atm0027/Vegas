@@ -41,3 +41,4 @@ rootProject.name = "Metrolist"
 include(":app")
 include(":innertube")
 include(":desktop")
+include(":synccore")

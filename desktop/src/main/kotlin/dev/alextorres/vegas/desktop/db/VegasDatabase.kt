@@ -5,6 +5,7 @@
 
 package dev.alextorres.vegas.desktop.db
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -13,9 +14,18 @@ import kotlinx.coroutines.Dispatchers
 import java.nio.file.Files
 import java.nio.file.Path
 
-@Database(entities = [SongEntity::class, PlaylistEntity::class, PlaylistEntryEntity::class], version = 1)
+@Database(
+    entities = [
+        SongEntity::class, PlaylistEntity::class, PlaylistEntryEntity::class,
+        SyncPlaylistEntity::class, SyncEntryEntity::class, SyncSettingEntity::class, SyncBindingEntity::class, SyncMetaEntity::class,
+    ],
+    version = 2,
+    autoMigrations = [AutoMigration(from = 1, to = 2)],
+)
 abstract class VegasDatabase : RoomDatabase() {
     abstract fun library(): LibraryDao
+
+    abstract fun sync(): SyncDao
 }
 
 fun openDatabase(file: Path): VegasDatabase {

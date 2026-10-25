@@ -60,6 +60,7 @@ object Strings {
     const val QUALITY_LOW = "Baja"
     const val QUALITY_AUTO = "Automática"
     const val HIDE_EXPLICIT = "Ocultar contenido explícito"
+    const val HIDE_VIDEO_SONGS = "Ocultar canciones de vídeo"
 
     /** YouTube sends search section titles in English; show them like the phone does. */
     fun searchSection(title: String) =
@@ -73,6 +74,22 @@ object Strings {
             "Playlists" -> PLAYLISTS
             "Profiles" -> "Perfiles"
             else -> title
+        }
+
+    const val PHONE_SYNC = "Vegas en el móvil"
+    const val PAIR_PHONE = "Vincular un móvil"
+    const val UNPAIR = "Desvincular"
+    const val PAIR_EXPLAIN = "Vincula el móvil para que tus listas y ajustes se pongan al día solos cuando estéis en el mismo wifi de casa."
+    const val PAIR_INSTRUCTIONS = "En el móvil: Ajustes → Vegas para PC → elige este PC y escribe el código."
+
+    fun expiresIn(seconds: Long) = "Caduca en ${seconds / 60}:${"%02d".format(seconds % 60)}"
+
+    fun lastSync(secondsAgo: Long?) =
+        when {
+            secondsAgo == null -> "Aún sin sincronizar"
+            secondsAgo < 60 -> "Sincronizado hace un momento"
+            secondsAgo < 3600 -> "Sincronizado hace ${secondsAgo / 60} min"
+            else -> "Sincronizado hace ${secondsAgo / 3600} h"
         }
 
     fun songCount(n: Int) = if (n == 1) "1 canción" else "$n canciones"

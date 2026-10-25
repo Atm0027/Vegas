@@ -873,4 +873,21 @@
     <string name="offline_downloads">Offline downloads</string>
     <string name="scan_permission_needed">Vegas needs access to your music to find earlier downloads</string>
     <string name="remove_from_list">Remove from list</string>
+    <!-- Vegas: sync with Vegas for PC -->
+    <string name="pc_sync">Vegas for PC</string>
+    <string name="pc_sync_summary">Keep your playlists in sync with the PC at home</string>
+    <string name="pc_sync_explain">Open Vegas on your PC, go to Settings → Pair a phone, then choose the PC below and type the code it shows. Both must be on the same home wifi.</string>
+    <string name="pc_sync_explain_paired">Playlists and settings sync on their own when you are on your home wifi.</string>
+    <string name="pc_sync_searching">Looking for Vegas on your wifi…</string>
+    <string name="pc_sync_enter_code">Code shown on %1$s</string>
+    <string name="pc_sync_pair">Pair</string>
+    <string name="pc_sync_paired_with">Paired with %1$s</string>
+    <string name="pc_sync_last">Last sync: %1$s</string>
+    <string name="pc_sync_now">Sync now</string>
+    <string name="pc_sync_unpair">Unpair</string>
+    <string name="pc_sync_done">Synced</string>
+    <string name="pc_sync_failed">Could not reach the PC. Check it is on and on the same wifi.</string>
+    <string name="pc_sync_wrong_code">Wrong or expired code</string>
+    <string name="keep_playing_on_focus_loss">Keep playing over other apps</string>
+    <string name="keep_playing_on_focus_loss_desc">Do not pause when a game or video takes the sound; both play together</string>
 </resources>

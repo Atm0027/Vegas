@@ -754,4 +754,21 @@
     <string name="offline_downloads">Descargas sin conexión</string>
     <string name="scan_permission_needed">Vegas necesita acceso a tu música para encontrar descargas anteriores</string>
     <string name="remove_from_list">Quitar de la lista</string>
+    <!-- Vegas: sync with Vegas for PC -->
+    <string name="pc_sync">Vegas para PC</string>
+    <string name="pc_sync_summary">Tus listas iguales en el móvil y en el PC de casa</string>
+    <string name="pc_sync_explain">Abre Vegas en el PC, ve a Ajustes → Vincular un móvil, elige aquí ese PC y escribe el código que muestra. Los dos tienen que estar en el mismo wifi de casa.</string>
+    <string name="pc_sync_explain_paired">Las listas y los ajustes se ponen al día solos cuando estás en el wifi de casa.</string>
+    <string name="pc_sync_searching">Buscando Vegas en tu wifi…</string>
+    <string name="pc_sync_enter_code">Código que muestra %1$s</string>
+    <string name="pc_sync_pair">Vincular</string>
+    <string name="pc_sync_paired_with">Vinculado con %1$s</string>
+    <string name="pc_sync_last">Última sincronización: %1$s</string>
+    <string name="pc_sync_now">Sincronizar ahora</string>
+    <string name="pc_sync_unpair">Desvincular</string>
+    <string name="pc_sync_done">Sincronizado</string>
+    <string name="pc_sync_failed">No se ha podido conectar con el PC. Comprueba que está encendido y en el mismo wifi.</string>
+    <string name="pc_sync_wrong_code">Código incorrecto o caducado</string>
+    <string name="keep_playing_on_focus_loss">Seguir sonando con otras apps</string>
+    <string name="keep_playing_on_focus_loss_desc">No pausar cuando un juego o un vídeo usa el sonido; suenan a la vez</string>
 </resources>

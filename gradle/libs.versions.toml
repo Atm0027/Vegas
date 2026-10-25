@@ -4,6 +4,7 @@ composeMultiplatform = "1.12.2"
 javacv = "1.5.11"
 ffmpeg = "7.1-1.5.11"
 jna = "5.17.0"
+jmdns = "3.6.3"
 sqliteBundled = "2.6.2"
 androidGradlePlugin = "9.4.1"
 browser = "1.10.0"
@@ -108,8 +109,14 @@ javacv = { module = "org.bytedeco:javacv", version.ref = "javacv" }
 ffmpeg = { module = "org.bytedeco:ffmpeg", version.ref = "ffmpeg" }
 javacpp = { module = "org.bytedeco:javacpp", version.ref = "javacv" }
 jna-platform = { module = "net.java.dev.jna:jna-platform", version.ref = "jna" }
+jmdns = { module = "org.jmdns:jmdns", version.ref = "jmdns" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
+ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
+ktor-network-tls-certificates = { module = "io.ktor:ktor-network-tls-certificates", version.ref = "ktor" }
+ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqliteBundled" }
 coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutinesGuava" }
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutinesGuava" }
 work-runtime = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
 work-testing = { module = "androidx.work:work-testing", version.ref = "work" }
 jaudiotagger = { module = "net.jthink:jaudiotagger", version.ref = "jaudiotagger" }

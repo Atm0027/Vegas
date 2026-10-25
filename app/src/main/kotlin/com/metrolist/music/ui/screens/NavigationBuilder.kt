@@ -405,4 +405,7 @@ fun NavGraphBuilder.navigationBuilder(
     composable("settings/android_auto") {
         AndroidAutoSettings(navController)
     }
+    composable("settings/pc_sync") {
+        com.metrolist.music.ui.screens.settings.PcSyncSettings(navController)
+    }
 }

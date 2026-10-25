@@ -47,6 +47,7 @@ import com.metrolist.innertube.models.SongItem
 import com.metrolist.innertube.models.YTItem
 import com.metrolist.innertube.models.filterExplicit
 import com.metrolist.innertube.models.filterPodcasts
+import com.metrolist.innertube.models.filterVideoSongs
 import dev.alextorres.vegas.desktop.playback.toTrack
 import dev.alextorres.vegas.desktop.ui.Strings
 import kotlinx.coroutines.delay
@@ -134,14 +135,14 @@ fun SearchScreen() {
 private fun Results(query: String, chip: SearchFilterChip) {
     val deps = LocalVegas.current
     val prefs by deps.settings.flow.collectAsState()
-    val (load, retry) = rememberLoad(Triple(query, chip, prefs.hideExplicit)) {
+    val (load, retry) = rememberLoad(listOf(query, chip, prefs.hideExplicit, prefs.hideVideoSongs)) {
         val filter = chip.filter
         if (filter == null) {
             YouTube.searchSummary(query).map { page ->
-                page.summaries.map { Strings.searchSection(it.title) to it.items.filterPodcasts().filterExplicit(prefs.hideExplicit) }.filter { it.second.isNotEmpty() }
+                page.summaries.map { Strings.searchSection(it.title) to it.items.filterPodcasts().filterExplicit(prefs.hideExplicit).filterVideoSongs(prefs.hideVideoSongs) }.filter { it.second.isNotEmpty() }
             }
         } else {
-            YouTube.search(query, filter).map { listOf(chip.label to it.items.filterPodcasts().filterExplicit(prefs.hideExplicit)) }
+            YouTube.search(query, filter).map { listOf(chip.label to it.items.filterPodcasts().filterExplicit(prefs.hideExplicit).filterVideoSongs(prefs.hideVideoSongs)) }
         }
     }
     LoadContent(load, retry) { groups ->

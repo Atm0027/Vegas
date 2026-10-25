@@ -17,14 +17,15 @@ import androidx.compose.ui.unit.dp
 import com.metrolist.innertube.YouTube
 import com.metrolist.innertube.models.filterExplicit
 import com.metrolist.innertube.models.filterPodcasts
+import com.metrolist.innertube.models.filterVideoSongs
 
 @Composable
 fun HomeScreen() {
     val deps = LocalVegas.current
     val prefs by deps.settings.flow.collectAsState()
-    val (load, retry) = rememberLoad(prefs.hideExplicit) {
+    val (load, retry) = rememberLoad(prefs.hideExplicit to prefs.hideVideoSongs) {
         YouTube.home().map { page ->
-            page.sections.map { it.title to it.items.filterPodcasts().filterExplicit(prefs.hideExplicit) }.filter { it.second.isNotEmpty() }
+            page.sections.map { it.title to it.items.filterPodcasts().filterExplicit(prefs.hideExplicit).filterVideoSongs(prefs.hideVideoSongs) }.filter { it.second.isNotEmpty() }
         }
     }
     LoadContent(load, retry) { sections ->

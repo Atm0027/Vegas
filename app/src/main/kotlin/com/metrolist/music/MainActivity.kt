@@ -116,6 +116,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.navigation.NavController
@@ -248,6 +249,9 @@ class MainActivity : FragmentActivity() {
 
     @Inject
     lateinit var database: MusicDatabase
+
+    @Inject
+    lateinit var pcSync: com.metrolist.music.sync.PcSync
 
     @Inject
     lateinit var downloadUtil: DownloadUtil
@@ -388,6 +392,16 @@ class MainActivity : FragmentActivity() {
                     ?.let { Locale.forLanguageTag(it) }
                     ?: Locale.getDefault()
             setAppLocale(this, locale)
+        }
+
+        // Vegas: sync with the paired PC while the app is in front.
+        lifecycleScope.launch {
+            repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.STARTED) {
+                while (true) {
+                    if (pcSync.core.pairedPc.value != null) pcSync.core.syncNow()
+                    kotlinx.coroutines.delay(60_000)
+                }
+            }
         }
 
         lifecycleScope.launch {
