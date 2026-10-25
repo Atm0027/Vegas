@@ -19,6 +19,7 @@ data class SavedQueue(
     val positionMs: Long,
     val shuffle: Boolean,
     val repeat: RepeatMode,
+    val origin: QueueOrigin? = null,
 )
 
 class QueueStore(private val file: Path) {

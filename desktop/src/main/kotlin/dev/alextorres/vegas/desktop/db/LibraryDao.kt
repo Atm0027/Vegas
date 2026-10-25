@@ -45,6 +45,9 @@ interface LibraryDao {
     @Query("SELECT * FROM playlist")
     suspend fun playlistRows(): List<PlaylistEntity>
 
+    @Query("SELECT * FROM song WHERE id = :id")
+    suspend fun song(id: String): SongEntity?
+
     @Query(
         """
         SELECT e.entryId, e.playlistId, e.sortKey,

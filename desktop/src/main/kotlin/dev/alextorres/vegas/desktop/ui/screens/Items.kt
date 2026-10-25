@@ -66,6 +66,7 @@ import dev.alextorres.vegas.desktop.db.Library
 import dev.alextorres.vegas.desktop.offline.DownloadManager
 import dev.alextorres.vegas.desktop.offline.OfflineLibrary
 import dev.alextorres.vegas.desktop.playback.PlayerController
+import dev.alextorres.vegas.desktop.playback.QueueOrigin
 import dev.alextorres.vegas.desktop.playback.Track
 import dev.alextorres.vegas.desktop.playback.toTrack
 import dev.alextorres.vegas.desktop.settings.DesktopSettings
@@ -261,6 +262,7 @@ fun PageHeader(
     subtitle: String?,
     tracks: List<Track>,
     round: Boolean = false,
+    origin: QueueOrigin? = null,
     actions: @Composable () -> Unit = {},
 ) {
     val deps = LocalVegas.current
@@ -272,12 +274,12 @@ fun PageHeader(
             subtitle?.let { Text(it, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurfaceVariant) }
             Spacer(Modifier.height(16.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                Button(onClick = { deps.controller.playQueue(tracks, 0) }, enabled = tracks.isNotEmpty()) {
+                Button(onClick = { deps.controller.playQueue(tracks, 0, origin = origin) }, enabled = tracks.isNotEmpty()) {
                     Icon(Icons.Rounded.PlayArrow, null)
                     Spacer(Modifier.width(8.dp))
                     Text(Strings.PLAY)
                 }
-                FilledTonalButton(onClick = { deps.controller.playQueue(tracks, tracks.indices.random(), shuffle = true) }, enabled = tracks.isNotEmpty()) {
+                FilledTonalButton(onClick = { deps.controller.playQueue(tracks, tracks.indices.random(), shuffle = true, origin = origin) }, enabled = tracks.isNotEmpty()) {
                     Icon(Icons.Rounded.Shuffle, null)
                     Spacer(Modifier.width(8.dp))
                     Text(Strings.SHUFFLE)
