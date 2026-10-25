@@ -24,6 +24,8 @@ class Library(
 
     fun entries(playlistId: String): Flow<List<EntryWithSong>> = dao.entries(playlistId)
 
+    suspend fun song(id: String): Track? = dao.song(id)?.toTrack()
+
     suspend fun createPlaylist(name: String): String =
         write {
             val id = UUID.randomUUID().toString()

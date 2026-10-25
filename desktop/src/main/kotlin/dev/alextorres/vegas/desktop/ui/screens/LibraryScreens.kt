@@ -71,6 +71,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.alextorres.vegas.desktop.db.EntryWithSong
 import dev.alextorres.vegas.desktop.db.PlaylistSummary
+import dev.alextorres.vegas.desktop.playback.QueueOrigin
 import dev.alextorres.vegas.desktop.ui.Artwork
 import dev.alextorres.vegas.desktop.ui.Screen
 import dev.alextorres.vegas.desktop.ui.Strings
@@ -251,7 +252,7 @@ fun LocalPlaylistScreen(id: String) {
             },
     ) {
         item {
-            PageHeader(rows.firstOrNull()?.song?.thumbnailUrl, name, Strings.songCount(rows.size), tracks) {
+            PageHeader(rows.firstOrNull()?.song?.thumbnailUrl, name, Strings.songCount(rows.size), tracks, origin = QueueOrigin(id, name)) {
                 val marked = id in offline
                 val songIds = rows.mapTo(HashSet()) { it.song.id }
                 val done = songIds.count { it in downloadedIds }
@@ -278,7 +279,7 @@ fun LocalPlaylistScreen(id: String) {
             ReorderableItem(reorder, key = entry.entryId) {
                 PlaylistEntryRow(
                     entry = entry,
-                    onPlay = { deps.controller.playQueue(local.map { it.song.toTrack() }, index) },
+                    onPlay = { deps.controller.playQueue(local.map { it.song.toTrack() }, index, origin = QueueOrigin(id, name)) },
                     onRemove = { scope.launch { deps.library.removeEntries(listOf(entry.entryId)) } },
                     handle = Modifier.draggableHandle(),
                 )

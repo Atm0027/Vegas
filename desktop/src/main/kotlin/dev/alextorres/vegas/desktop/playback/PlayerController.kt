@@ -44,6 +44,10 @@ fun SongItem.toTrack(): Track =
 
 enum class RepeatMode { OFF, ALL, ONE }
 
+/** The own playlist the queue was started from, shown to JARVIS as the source of what plays. */
+@Serializable
+data class QueueOrigin(val playlistId: String, val name: String)
+
 /** What the player needs to know about downloads. */
 interface OfflineSource {
     fun isDownloaded(songId: String): Boolean
@@ -71,6 +75,7 @@ data class PlayerUiState(
     val message: String? = null,
     /** The current song plays from its downloaded file. */
     val local: Boolean = false,
+    val origin: QueueOrigin? = null,
 ) {
     val current: Track? get() = queue.getOrNull(index)
 }
@@ -98,7 +103,7 @@ class PlayerController(
     init {
         store.load()?.let { saved ->
             original = saved.original
-            _state.value = PlayerUiState(saved.queue, saved.index, false, saved.positionMs, 0, saved.shuffle, saved.repeat)
+            _state.value = PlayerUiState(saved.queue, saved.index, false, saved.positionMs, 0, saved.shuffle, saved.repeat, origin = saved.origin)
         }
         scope.launch {
             engine.state.collect { s ->
@@ -114,16 +119,16 @@ class PlayerController(
         scope.launch { engine.errors.collect { onError() } }
     }
 
-    fun playQueue(tracks: List<Track>, startIndex: Int, shuffle: Boolean = false) {
+    fun playQueue(tracks: List<Track>, startIndex: Int, shuffle: Boolean = false, origin: QueueOrigin? = null) {
         if (tracks.isEmpty()) return
         val start = startIndex.coerceIn(tracks.indices)
         if (shuffle) {
             original = tracks
             val rest = tracks.filterIndexed { i, _ -> i != start }.shuffled()
-            _state.update { it.copy(queue = listOf(tracks[start]) + rest, index = 0, shuffle = true, message = null) }
+            _state.update { it.copy(queue = listOf(tracks[start]) + rest, index = 0, shuffle = true, message = null, origin = origin) }
         } else {
             original = null
-            _state.update { it.copy(queue = tracks, index = start, shuffle = false, message = null) }
+            _state.update { it.copy(queue = tracks, index = start, shuffle = false, message = null, origin = origin) }
         }
         loadCurrent(0)
     }
@@ -166,13 +171,20 @@ class PlayerController(
     }
 
     fun togglePlay() {
-        if (engine.state.value == EngineState.PLAYING || engine.state.value == EngineState.LOADING) {
-            engine.pause()
-            save()
-        } else {
-            resume()
-        }
+        if (isEngineActive()) pause() else resume()
     }
+
+    fun pause() {
+        if (!isEngineActive()) return
+        engine.pause()
+        save()
+    }
+
+    fun play() {
+        if (!isEngineActive()) resume()
+    }
+
+    private fun isEngineActive() = engine.state.value == EngineState.PLAYING || engine.state.value == EngineState.LOADING
 
     fun seekTo(ms: Long) {
         if (currentSource == null) {
@@ -198,8 +210,18 @@ class PlayerController(
         save()
     }
 
-    fun cycleRepeat() {
-        _state.update { it.copy(repeat = RepeatMode.entries[(it.repeat.ordinal + 1) % RepeatMode.entries.size]) }
+    fun cycleRepeat() = setRepeat(RepeatMode.entries[(_state.value.repeat.ordinal + 1) % RepeatMode.entries.size])
+
+    fun setRepeat(mode: RepeatMode) {
+        _state.update { it.copy(repeat = mode) }
+        save()
+    }
+
+    /** Leaves only the current song in the queue. */
+    fun clearQueue() {
+        val current = _state.value.current ?: return
+        original = null
+        _state.update { it.copy(queue = listOf(current), index = 0, shuffle = false) }
         save()
     }
 
@@ -400,7 +422,7 @@ class PlayerController(
         val s = _state.value
         if (s.queue.isEmpty()) return
         val position = if (currentSource == null) s.positionMs else engine.positionMs.value
-        store.save(SavedQueue(s.queue, original, s.index, position, s.shuffle, s.repeat))
+        store.save(SavedQueue(s.queue, original, s.index, position, s.shuffle, s.repeat, s.origin))
     }
 
     private companion object {

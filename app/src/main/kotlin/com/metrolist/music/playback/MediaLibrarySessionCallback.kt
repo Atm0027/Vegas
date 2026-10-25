@@ -14,6 +14,7 @@ import androidx.core.net.toUri
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import androidx.media3.common.Player
 import androidx.media3.exoplayer.offline.Download
 import androidx.media3.session.LibraryResult
 import androidx.media3.session.MediaConstants.EXTRAS_KEY_IS_EXPLICIT
@@ -95,17 +96,15 @@ constructor(
         controller: MediaSession.ControllerInfo,
     ): MediaSession.ConnectionResult {
         val connectionResult = super.onConnect(session, controller)
-        return MediaSession.ConnectionResult.accept(
-            connectionResult.availableSessionCommands
-                .buildUpon()
-                .add(MediaSessionConstants.CommandToggleLike)
-                .add(MediaSessionConstants.CommandToggleStartRadio)
-                .add(MediaSessionConstants.CommandToggleShuffle)
-                .add(MediaSessionConstants.CommandToggleRepeatMode)
-                .add(MediaSessionConstants.CommandAddToTargetPlaylist)
-                .build(),
-            connectionResult.availablePlayerCommands,
-        )
+        val commands = connectionResult.availableSessionCommands
+            .buildUpon()
+            .add(MediaSessionConstants.CommandToggleLike)
+            .add(MediaSessionConstants.CommandToggleStartRadio)
+            .add(MediaSessionConstants.CommandToggleShuffle)
+            .add(MediaSessionConstants.CommandToggleRepeatMode)
+            .add(MediaSessionConstants.CommandAddToTargetPlaylist)
+        if (TrustedCallers.isAllowed(context, controller)) VegasCommands.all.forEach(commands::add)
+        return MediaSession.ConnectionResult.accept(commands.build(), connectionResult.availablePlayerCommands)
     }
 
     override fun onCustomCommand(
@@ -114,6 +113,12 @@ constructor(
         customCommand: SessionCommand,
         args: Bundle,
     ): ListenableFuture<SessionResult> {
+        if (VegasCommands.isVegasCommand(customCommand.customAction)) {
+            if (!TrustedCallers.isAllowed(context, controller)) {
+                return Futures.immediateFuture(SessionResult(SessionError.ERROR_PERMISSION_DENIED))
+            }
+            return onVegasCommand(session.player, customCommand.customAction, args)
+        }
         when (customCommand.customAction) {
             MediaSessionConstants.ACTION_TOGGLE_LIKE -> toggleLike()
             MediaSessionConstants.ACTION_TOGGLE_START_RADIO -> toggleStartRadio()
@@ -124,6 +129,61 @@ constructor(
             MediaSessionConstants.ACTION_ADD_TO_TARGET_PLAYLIST -> addToTargetPlaylist()
         }
         return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
+    }
+
+    private fun onVegasCommand(player: Player, action: String, args: Bundle): ListenableFuture<SessionResult> {
+        val ok = when (action) {
+            VegasCommands.SET_SHUFFLE -> args.containsKey(VegasCommands.EXTRA_ACTIVE).also {
+                if (it) player.shuffleModeEnabled = args.getBoolean(VegasCommands.EXTRA_ACTIVE)
+            }
+            VegasCommands.SET_REPEAT -> VegasCommands.repeatMode(args.getString(VegasCommands.EXTRA_MODE))?.let { player.repeatMode = it } != null
+            VegasCommands.SET_VOLUME -> VegasCommands.volume(args)?.let { player.volume = it } != null
+            VegasCommands.QUEUE_REMOVE -> {
+                val index = args.getInt(VegasCommands.EXTRA_INDEX, -1)
+                (index in 0 until player.mediaItemCount && index != player.currentMediaItemIndex).also {
+                    if (it) player.removeMediaItem(index)
+                }
+            }
+            VegasCommands.QUEUE_CLEAR -> {
+                val current = player.currentMediaItemIndex
+                if (player.mediaItemCount > 0 && current >= 0) {
+                    player.removeMediaItems(current + 1, player.mediaItemCount)
+                    player.removeMediaItems(0, current)
+                }
+                true
+            }
+            VegasCommands.QUEUE_ADD -> return enqueue(args)
+            else -> false
+        }
+        return Futures.immediateFuture(SessionResult(if (ok) SessionResult.RESULT_SUCCESS else SessionError.ERROR_BAD_VALUE))
+    }
+
+    /** Adds a song by YouTube id, or the first song found for a query, next or at the end of the queue. */
+    private fun enqueue(args: Bundle): ListenableFuture<SessionResult> =
+        scope.future {
+            val next = VegasCommands.playNext(args.getString(VegasCommands.EXTRA_WHERE))
+                ?: return@future SessionResult(SessionError.ERROR_BAD_VALUE)
+            val id = args.getString(VegasCommands.EXTRA_ID)?.trim().orEmpty()
+            val query = args.getString(VegasCommands.EXTRA_QUERY)?.trim().orEmpty()
+            val item = withContext(Dispatchers.IO) {
+                when {
+                    id.isNotEmpty() -> database.song(id).first()?.toMediaItem()
+                        ?: YouTube.queue(listOf(id)).getOrNull()?.firstOrNull()?.let(::storeSong)
+                    query.isNotEmpty() -> YouTube.search(query, YouTube.SearchFilter.FILTER_SONG).getOrNull()?.items
+                        ?.filterIsInstance<SongItem>()
+                        ?.filterExplicit(context.dataStore.get(HideExplicitKey, false))
+                        ?.filterVideoSongs(context.dataStore.get(HideVideoSongsKey, false))
+                        ?.firstOrNull()?.let(::storeSong)
+                    else -> null
+                }
+            } ?: return@future SessionResult(SessionError.ERROR_BAD_VALUE)
+            if (next) service.playNext(listOf(item)) else service.addToQueue(listOf(item))
+            SessionResult(SessionResult.RESULT_SUCCESS)
+        }
+
+    private fun storeSong(song: SongItem): MediaItem {
+        database.query { insert(song.toMediaMetadata()) }
+        return song.toMediaItem()
     }
 
     // Play from the car (Android Auto or a Bluetooth button) on an empty player: hand back the saved queue.

@@ -26,6 +26,9 @@ App de escritorio de Vegas (módulo `:desktop`): Kotlin/JVM + Compose Multiplatf
 | `queue.json` | La cola, para seguir donde lo dejaste |
 | `downloads-tmp\` | Descargas a medias (se reanudan solas) |
 | `crashes\` | Los 5 últimos informes de error, si los hay |
+| `control.token` | La clave con la que JARVIS controla Vegas (solo la lee tu usuario) |
+| `control.log` | Intentos rechazados contra la API de control |
+| `vegas.lock` | Evita que se abran dos Vegas a la vez |
 
 Desinstalar la app no borra estos datos.
 
@@ -38,6 +41,7 @@ Desinstalar la app no borra estos datos.
   - Java Sound lo reproduce.
 - **Teclas multimedia:** usa `RegisterHotKey` solo para esas cuatro teclas (`system/MediaKeys.kt`). Si otra app ya tiene una tecla, esa tecla sigue yendo a esa app.
 - **Panel de medios de Windows (SMTC):** pendiente.
+- **Control desde JARVIS:** API local en `127.0.0.1:47322` con token, arranque con `--silencioso` (ventana oculta, icono en la bandeja) e instancia única. El contrato está en `docs/vegas/control-jarvis.md`.
 - **Sincronización con el móvil:** fases 2 y 3, hechas (ver abajo).
 - **Descargas en el PC:** fase 4, hecha (ver abajo).
 
