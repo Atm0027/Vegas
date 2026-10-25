@@ -886,4 +886,6 @@
     <string name="pc_sync_done">Synced</string>
     <string name="pc_sync_failed">Could not reach the PC. Check it is on and on the same wifi.</string>
     <string name="pc_sync_wrong_code">Wrong or expired code</string>
+    <string name="keep_playing_on_focus_loss">Keep playing over other apps</string>
+    <string name="keep_playing_on_focus_loss_desc">Do not pause when a game or video takes the sound; both play together</string>
 </resources>

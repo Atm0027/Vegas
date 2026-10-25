@@ -146,6 +146,7 @@ import com.metrolist.music.constants.ShufflePlaylistFirstKey
 import com.metrolist.music.constants.SimilarContent
 import com.metrolist.music.constants.SkipSilenceInstantKey
 import com.metrolist.music.constants.SkipSilenceKey
+import com.metrolist.music.constants.KeepPlayingOnFocusLossKey
 import com.metrolist.music.constants.StopMusicOnTaskClearKey
 import com.metrolist.music.db.MusicDatabase
 import com.metrolist.music.db.entities.Event
@@ -278,6 +279,10 @@ class MusicService :
     private var audioFocusRequest: AudioFocusRequest? = null
     private var lastAudioFocusState = AudioManager.AUDIOFOCUS_NONE
     private var wasPlayingBeforeAudioFocusLoss = false
+
+    /** When another app's audio paused playback; keeps the service in the foreground for a while. See [FocusLoss]. */
+    @Volatile
+    private var pausedByFocusLossAt: Long? = null
     private var hasAudioFocus = false
     private var reentrantFocusGain = false
     private var wasPlayingBeforeVolumeMute = false
@@ -1278,8 +1283,9 @@ class MusicService :
                 hasAudioFocus = false
                 audioFocusVolumeMultiplier.value = 1f
                 wasPlayingBeforeAudioFocusLoss = player.isPlaying
-                if (player.isPlaying) {
+                if (player.isPlaying && FocusLoss.onLoss(dataStore.get(KeepPlayingOnFocusLossKey, false)) == FocusLoss.Action.PAUSE) {
                     player.pause()
+                    holdForegroundAfterFocusPause()
                 }
                 abandonAudioFocus()
                 lastAudioFocusState = focusChange
@@ -1289,8 +1295,9 @@ class MusicService :
                 hasAudioFocus = false
                 audioFocusVolumeMultiplier.value = 1f
                 wasPlayingBeforeAudioFocusLoss = player.isPlaying
-                if (player.isPlaying) {
+                if (player.isPlaying && FocusLoss.onLoss(dataStore.get(KeepPlayingOnFocusLossKey, false)) == FocusLoss.Action.PAUSE) {
                     player.pause()
+                    holdForegroundAfterFocusPause()
                 }
                 lastAudioFocusState = focusChange
             }
@@ -4117,13 +4124,27 @@ class MusicService :
         return mediaSession
     }
 
+    /** Stays a foreground service for a while after another app paused us, so Android does not kill the app meanwhile. */
+    private fun holdForegroundAfterFocusPause() {
+        pausedByFocusLossAt = System.currentTimeMillis()
+        scope.launch {
+            delay(FocusLoss.HOLD_MS + 1_000)
+            if (!FocusLoss.holdForeground(pausedByFocusLossAt, System.currentTimeMillis())) {
+                pausedByFocusLossAt = null
+                mediaSession?.let { onUpdateNotification(it, player.isPlaying) }
+            }
+        }
+    }
+
     override fun onUpdateNotification(
         session: MediaSession,
         startInForegroundRequired: Boolean,
     ) {
         if (taskCleared) return
+        if (player.isPlaying) pausedByFocusLossAt = null
+        val keepForeground = startInForegroundRequired || FocusLoss.holdForeground(pausedByFocusLossAt, System.currentTimeMillis())
         try {
-            super.onUpdateNotification(session, startInForegroundRequired)
+            super.onUpdateNotification(session, keepForeground)
         } catch (e: ForegroundServiceStartNotAllowedException) {
             handleForegroundServiceStartNotAllowed(e)
         } catch (e: IllegalStateException) {

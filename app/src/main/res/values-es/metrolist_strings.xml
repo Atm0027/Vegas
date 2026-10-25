@@ -767,4 +767,6 @@
     <string name="pc_sync_done">Sincronizado</string>
     <string name="pc_sync_failed">No se ha podido conectar con el PC. Comprueba que está encendido y en el mismo wifi.</string>
     <string name="pc_sync_wrong_code">Código incorrecto o caducado</string>
+    <string name="keep_playing_on_focus_loss">Seguir sonando con otras apps</string>
+    <string name="keep_playing_on_focus_loss_desc">No pausar cuando un juego o un vídeo usa el sonido; suenan a la vez</string>
 </resources>

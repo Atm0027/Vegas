@@ -122,6 +122,8 @@ val PersistentShuffleAcrossQueuesKey = booleanPreferencesKey("persistentShuffleA
 val RememberShuffleAndRepeatKey = booleanPreferencesKey("rememberShuffleAndRepeat")
 val ShuffleModeKey = booleanPreferencesKey("shuffleMode")
 val SkipSilenceKey = booleanPreferencesKey("skipSilence")
+// Vegas: keep playing when another app (a game, a video) takes the audio.
+val KeepPlayingOnFocusLossKey = booleanPreferencesKey("keepPlayingOnFocusLoss")
 val SkipSilenceInstantKey = booleanPreferencesKey("skipSilenceInstant")
 val AudioNormalizationKey = booleanPreferencesKey("audioNormalization")
 

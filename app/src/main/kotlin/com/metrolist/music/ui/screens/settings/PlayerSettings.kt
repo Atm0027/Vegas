@@ -65,6 +65,7 @@ import com.metrolist.music.constants.ShufflePlaylistFirstKey
 import com.metrolist.music.constants.SimilarContent
 import com.metrolist.music.constants.SkipSilenceInstantKey
 import com.metrolist.music.constants.SkipSilenceKey
+import com.metrolist.music.constants.KeepPlayingOnFocusLossKey
 import com.metrolist.music.constants.StopMusicOnTaskClearKey
 import com.metrolist.music.constants.VarispeedKey
 import com.metrolist.music.ui.component.DefaultDialog
@@ -116,6 +117,10 @@ fun PlayerSettings(
     )
     val (skipSilence, onSkipSilenceChange) = rememberPreference(
         SkipSilenceKey,
+        defaultValue = false
+    )
+    val (keepPlaying, onKeepPlayingChange) = rememberPreference(
+        KeepPlayingOnFocusLossKey,
         defaultValue = false
     )
     val (skipSilenceInstant, onSkipSilenceInstantChange) = rememberPreference(
@@ -367,6 +372,25 @@ fun PlayerSettings(
                             )
                         }
                     }
+                ))
+                add(Material3SettingsItem(
+                    icon = painterResource(R.drawable.volume_up),
+                    title = { Text(stringResource(R.string.keep_playing_on_focus_loss)) },
+                    description = { Text(stringResource(R.string.keep_playing_on_focus_loss_desc)) },
+                    trailingContent = {
+                        Switch(
+                            checked = keepPlaying,
+                            onCheckedChange = onKeepPlayingChange,
+                            thumbContent = {
+                                Icon(
+                                    painter = painterResource(id = if (keepPlaying) R.drawable.check else R.drawable.close),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(SwitchDefaults.IconSize)
+                                )
+                            }
+                        )
+                    },
+                    onClick = { onKeepPlayingChange(!keepPlaying) }
                 ))
                 add(Material3SettingsItem(
                     icon = painterResource(R.drawable.fast_forward),

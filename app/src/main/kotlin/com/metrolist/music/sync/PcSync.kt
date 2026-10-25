@@ -64,6 +64,8 @@ class PcSync @Inject constructor(
     database: MusicDatabase,
 ) {
     private val prefs = context.getSharedPreferences("pc_sync", Context.MODE_PRIVATE)
+    @Volatile private var lastSoonAt = 0L
+
     private val deviceId = prefs.getString("deviceId", null) ?: UUID.randomUUID().toString().also { prefs.edit().putString("deviceId", it).apply() }
 
     val core = PcSyncCore(
@@ -81,7 +83,12 @@ class PcSync @Inject constructor(
         database.invalidationTracker.addObserver(
             object : InvalidationTracker.Observer(arrayOf("playlist", "playlist_song_map")) {
                 override fun onInvalidated(tables: Set<String>) {
-                    if (core.pairedPc.value != null) SyncWorker.soon(context)
+                    if (core.pairedPc.value == null) return
+                    // Bursts of writes (marking downloads, the editor) must not flood WorkManager with binder calls.
+                    val now = android.os.SystemClock.elapsedRealtime()
+                    if (now - lastSoonAt < SOON_MIN_INTERVAL_MS) return
+                    lastSoonAt = now
+                    SyncWorker.soon(context)
                 }
             },
         )
@@ -146,6 +153,7 @@ class PcSync @Inject constructor(
 
     private companion object {
         const val SERVICE_TYPE = "_vegas-sync._tcp."
+        const val SOON_MIN_INTERVAL_MS = 5_000L
     }
 }
 
