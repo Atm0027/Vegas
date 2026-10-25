@@ -24,6 +24,7 @@ App de escritorio de Vegas (módulo `:desktop`): Kotlin/JVM + Compose Multiplatf
 | `vegas.db` | Tus listas (base SQLite) |
 | `settings.json` | Ajustes y tamaño de la ventana |
 | `queue.json` | La cola, para seguir donde lo dejaste |
+| `downloads-tmp\` | Descargas a medias (se reanudan solas) |
 | `crashes\` | Los 5 últimos informes de error, si los hay |
 
 Desinstalar la app no borra estos datos.
@@ -38,7 +39,7 @@ Desinstalar la app no borra estos datos.
 - **Teclas multimedia:** usa `RegisterHotKey` solo para esas cuatro teclas (`system/MediaKeys.kt`). Si otra app ya tiene una tecla, esa tecla sigue yendo a esa app.
 - **Panel de medios de Windows (SMTC):** pendiente.
 - **Sincronización con el móvil:** fases 2 y 3, hechas (ver abajo).
-- **Descargas en el PC:** fase 4, pendiente.
+- **Descargas en el PC:** fase 4, hecha (ver abajo).
 
 ## Sincronización con el móvil
 
@@ -67,3 +68,33 @@ Desinstalar la app no borra estos datos.
 - El servidor solo acepta direcciones de red privada.
 - El móvil guarda su token cifrado con Android Keystore; el PC solo guarda su hash (`paired.json`).
 - El certificado del PC está en `sync.p12` y `sync.key`, dentro de `%APPDATA%\Vegas`.
+
+## Descargas y modo sin conexión
+
+El diseño está en `docs/superpowers/specs/2026-10-25-vegas-escritorio-descargas-design.md`. Funciona igual que en el móvil.
+
+**Qué se descarga:**
+- **Listas:** en la página de una lista, «Descargar». Las canciones que se añadan después, también las que lleguen del móvil por sincronización, se descargan solas.
+- **Canciones sueltas:** menú de la canción → «Descargar».
+- Lo que descargas en el PC no se descarga en el móvil, ni al revés: cada aparato decide.
+
+**Dónde se guarda:**
+- En `Música\Vegas`, con el mismo nombre que en el móvil (`Artista - Título [videoId].m4a`) y con título, artista, álbum y carátula dentro del archivo.
+- Se puede cambiar en Ajustes → «Descargas». Lo ya descargado se queda donde está.
+- Al arrancar, Vegas reconoce los archivos de la carpeta que tengan `[videoId]` en el nombre. Si copias ahí la carpeta `Música/Vegas` del móvil, esas canciones ya cuentan como descargadas. También se puede buscar a mano desde Ajustes.
+
+**Quitar descargas:**
+- «Quitar descarga» de una lista pregunta si quieres borrar los archivos (por defecto no). Si dices que sí, solo se borran los que no estén en otra lista descargada.
+- «Borrar descarga» de una canción la borra. Si sigue en una lista descargada, se vuelve a descargar.
+- Quitar una canción de una lista no borra su archivo.
+- Los archivos borrados van a la Papelera.
+
+**Sin conexión:**
+- Una canción descargada siempre suena desde su archivo, sin red.
+- Si no hay red, o una canción no descargada tarda más de 4 s en empezar, se salta a la siguiente descargada de la cola.
+- Si no queda ninguna descargada en la cola, se pausa con un aviso.
+
+**Descargas en marcha:**
+- Se descargan 3 a la vez, o 1 mientras suena algo en streaming.
+- Si una falla, se reintenta a los 1, 5 y 15 min. Después aparece en Ajustes con «Reintentar».
+- Si se va la red, se reintenta sola cada minuto.

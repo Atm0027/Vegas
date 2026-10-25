@@ -1,20 +1,26 @@
 /**
  * Vegas desktop: the play queue and everything around it — shuffle, repeat, radio continuation when
  * the queue runs out, skipping songs that cannot play and recovering from a dropped connection.
+ * Downloaded songs play from their file; without a usable connection (a network error, or more than
+ * [OfflineSkip.STALL_MS] without starting) the queue jumps to the next downloaded song.
  * Licensed under GPL-3.0
  */
 
 package dev.alextorres.vegas.desktop.playback
 
 import com.metrolist.innertube.models.SongItem
+import dev.alextorres.vegas.desktop.offline.NetworkFailure
+import dev.alextorres.vegas.desktop.offline.OfflineSkip
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import java.nio.file.Path
 
 @Serializable
 data class Track(
@@ -38,6 +44,22 @@ fun SongItem.toTrack(): Track =
 
 enum class RepeatMode { OFF, ALL, ONE }
 
+/** What the player needs to know about downloads. */
+interface OfflineSource {
+    fun isDownloaded(songId: String): Boolean
+
+    /** The song's file if it is downloaded and still on disk. */
+    suspend fun localFile(songId: String): Path?
+
+    companion object {
+        val NONE = object : OfflineSource {
+            override fun isDownloaded(songId: String) = false
+
+            override suspend fun localFile(songId: String): Path? = null
+        }
+    }
+}
+
 data class PlayerUiState(
     val queue: List<Track> = emptyList(),
     val index: Int = -1,
@@ -47,6 +69,8 @@ data class PlayerUiState(
     val shuffle: Boolean = false,
     val repeat: RepeatMode = RepeatMode.OFF,
     val message: String? = null,
+    /** The current song plays from its downloaded file. */
+    val local: Boolean = false,
 ) {
     val current: Track? get() = queue.getOrNull(index)
 }
@@ -57,15 +81,19 @@ class PlayerController(
     private val engine: PlaybackEngine,
     private val related: suspend (Track) -> List<Track>,
     private val store: QueueStore,
+    private val offline: OfflineSource = OfflineSource.NONE,
 ) {
     private val _state = MutableStateFlow(PlayerUiState())
     val state: StateFlow<PlayerUiState> = _state.asStateFlow()
 
     /** The queue in its unshuffled order, kept while shuffle is on. */
     private var original: List<Track>? = null
-    private var currentStream: ResolvedStream? = null
+    /** What the engine has loaded for the current song; null until it is loaded. */
+    private var currentSource: AudioSource? = null
+    private val currentStream: ResolvedStream? get() = (currentSource as? AudioSource.Remote)?.stream
     private var retried = false
     private var loadJob: Job? = null
+    private var stallJob: Job? = null
 
     init {
         store.load()?.let { saved ->
@@ -75,11 +103,12 @@ class PlayerController(
         scope.launch {
             engine.state.collect { s ->
                 _state.update { it.copy(isPlaying = s == EngineState.PLAYING || s == EngineState.LOADING) }
+                if (s == EngineState.PLAYING || s == EngineState.PAUSED) stallJob?.cancel()
                 if (s == EngineState.ENDED) onEnded()
             }
         }
         scope.launch {
-            engine.positionMs.collect { p -> if (currentStream != null) _state.update { it.copy(positionMs = p) } }
+            engine.positionMs.collect { p -> if (currentSource != null) _state.update { it.copy(positionMs = p) } }
         }
         scope.launch { engine.durationMs.collect { d -> _state.update { it.copy(durationMs = knownDuration(d)) } } }
         scope.launch { engine.errors.collect { onError() } }
@@ -146,7 +175,7 @@ class PlayerController(
     }
 
     fun seekTo(ms: Long) {
-        if (currentStream == null) {
+        if (currentSource == null) {
             _state.update { it.copy(positionMs = ms) }
         } else {
             engine.seekTo(ms)
@@ -216,16 +245,24 @@ class PlayerController(
     private fun loadCurrent(startMs: Long, play: Boolean = true, skipped: Int = 0) {
         val track = _state.value.current ?: return
         retried = false
-        currentStream = null
+        currentSource = null
         loadJob?.cancel()
+        stallJob?.cancel()
+        _state.update { it.copy(local = false) }
         loadJob = scope.launch {
+            offline.localFile(track.id)?.let { file ->
+                playSource(AudioSource.LocalFile(file), startMs, play)
+                save()
+                return@launch
+            }
+            if (play) watchForStall(track)
             resolver.resolve(track.id)
                 .onSuccess { stream ->
-                    currentStream = stream
-                    engine.load(AudioSource.Remote(stream), startMs, play)
-                    _state.update { it.copy(durationMs = knownDuration(engine.durationMs.value)) }
+                    playSource(AudioSource.Remote(stream), startMs, play)
                     save()
-                }.onFailure {
+                }.onFailure { e ->
+                    stallJob?.cancel()
+                    if (NetworkFailure.isNetworkFailure(e)) return@onFailure skipToDownloaded()
                     val s = _state.value
                     _state.update { it.copy(message = "No se puede reproducir «${track.title}»") }
                     if (s.index + 1 < s.queue.size && skipped < s.queue.size) {
@@ -236,23 +273,83 @@ class PlayerController(
         }
     }
 
+    private fun playSource(source: AudioSource, startMs: Long, play: Boolean) {
+        currentSource = source
+        _state.update { it.copy(local = source is AudioSource.LocalFile) }
+        engine.load(source, startMs, play)
+        _state.update { it.copy(durationMs = knownDuration(engine.durationMs.value)) }
+    }
+
+    /** Weak signal: a song that does not start soon gives way to the next downloaded one, if there is one. */
+    private fun watchForStall(track: Track) {
+        stallJob?.cancel()
+        stallJob = scope.launch {
+            delay(OfflineSkip.STALL_MS)
+            val s = _state.value
+            if (s.current?.id == track.id && engine.state.value != EngineState.PLAYING && nextDownloadedIndex() != null) {
+                skipToDownloaded()
+            }
+        }
+    }
+
+    private fun nextDownloadedIndex(): Int? {
+        val s = _state.value
+        return OfflineSkip.nextPlayableIndex(
+            current = s.index,
+            itemCount = s.queue.size,
+            next = { i ->
+                when {
+                    i + 1 < s.queue.size -> i + 1
+                    s.repeat == RepeatMode.ALL -> 0
+                    else -> -1
+                }
+            },
+            isPlayable = { offline.isDownloaded(s.queue[it].id) },
+        )
+    }
+
+    /** No usable connection: on to the next downloaded song, or pause when none is left. */
+    private fun skipToDownloaded() {
+        stallJob?.cancel()
+        val target = nextDownloadedIndex()
+        if (target != null) {
+            _state.update { it.copy(index = target, message = "Sin conexión: pasando a las canciones descargadas") }
+            loadCurrent(0)
+            return
+        }
+        val anyDownloaded = _state.value.queue.any { offline.isDownloaded(it.id) }
+        engine.pause()
+        _state.update {
+            it.copy(isPlaying = false, message = if (anyDownloaded) "Sin conexión: no hay más canciones descargadas en la cola" else "Sin conexión")
+        }
+        save()
+    }
+
     private fun resume() {
         val track = _state.value.current ?: return
         val idle = engine.state.value.let { it == EngineState.IDLE || it == EngineState.ENDED || it == EngineState.ERROR }
-        val position = if (currentStream == null) _state.value.positionMs else engine.positionMs.value
+        val position = if (currentSource == null) _state.value.positionMs else engine.positionMs.value
         retried = false
         scope.launch {
+            offline.localFile(track.id)?.let { file ->
+                if (idle || currentSource !is AudioSource.LocalFile) playSource(AudioSource.LocalFile(file), position, true) else engine.play()
+                return@launch
+            }
             resolver.resolve(track.id)
                 .onSuccess { stream ->
                     // A paused URL may have expired; a new one means reloading at the same spot.
                     if (idle || stream !== currentStream) {
-                        currentStream = stream
-                        engine.load(AudioSource.Remote(stream), position, true)
-                        _state.update { it.copy(durationMs = knownDuration(engine.durationMs.value)) }
+                        playSource(AudioSource.Remote(stream), position, true)
                     } else {
                         engine.play()
                     }
-                }.onFailure { _state.update { it.copy(message = "Sin conexión") } }
+                }.onFailure { e ->
+                    if (NetworkFailure.isNetworkFailure(e) && nextDownloadedIndex() != null) {
+                        skipToDownloaded()
+                    } else {
+                        _state.update { it.copy(message = "Sin conexión") }
+                    }
+                }
         }
     }
 
@@ -277,34 +374,32 @@ class PlayerController(
     }
 
     private fun onError() {
-        val track = _state.value.current ?: return
-        if (retried) {
-            engine.pause()
-            _state.update { it.copy(isPlaying = false, message = "Sin conexión") }
-            save()
+        val s = _state.value
+        val track = s.current ?: return
+        if (currentSource is AudioSource.LocalFile) {
+            // A damaged file: skip it like a song that cannot play.
+            _state.update { it.copy(message = "No se puede reproducir «${track.title}»") }
+            if (s.index + 1 < s.queue.size) moveTo(s.index + 1)
             return
         }
+        if (retried) return skipToDownloaded()
         retried = true
         val position = engine.positionMs.value
         resolver.invalidate(track.id)
         scope.launch {
             resolver.resolve(track.id)
-                .onSuccess { stream ->
-                    currentStream = stream
-                    engine.load(AudioSource.Remote(stream), position, true)
-                }.onFailure {
-                    engine.pause()
-                    _state.update { it.copy(isPlaying = false, message = "Sin conexión") }
-                }
+                .onSuccess { stream -> playSource(AudioSource.Remote(stream), position, true) }
+                .onFailure { skipToDownloaded() }
         }
     }
 
-    private fun knownDuration(decoded: Long): Long = decoded.takeIf { it > 0 } ?: currentStream?.durationMs ?: 0
+    private fun knownDuration(decoded: Long): Long =
+        decoded.takeIf { it > 0 } ?: currentStream?.durationMs ?: _state.value.current?.durationMs?.takeIf { currentSource is AudioSource.LocalFile } ?: 0
 
     private fun save() {
         val s = _state.value
         if (s.queue.isEmpty()) return
-        val position = if (currentStream == null) s.positionMs else engine.positionMs.value
+        val position = if (currentSource == null) s.positionMs else engine.positionMs.value
         store.save(SavedQueue(s.queue, original, s.index, position, s.shuffle, s.repeat))
     }
 
