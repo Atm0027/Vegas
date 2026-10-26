@@ -24,6 +24,7 @@ import dev.alextorres.vegas.desktop.playback.toTrack
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import java.text.Normalizer
 
 /** A song, artist or album found in YouTube Music. */
@@ -56,7 +57,7 @@ class DesktopControl(
             cancion = current?.toDto(),
             posicion = if (current == null) 0.0 else s.positionMs / 1000.0,
             duracion = (s.durationMs.takeIf { it > 0 } ?: current?.durationMs ?: 0) / 1000.0,
-            volumen = volume().toDouble(),
+            volumen = Math.round(volume() * 1000) / 1000.0,
             aleatorio = s.shuffle,
             repeticion = RepeatWire.of(s.repeat),
             cola = QueueSummary(s.queue.size, s.index),
@@ -94,11 +95,26 @@ class DesktopControl(
         return (own + found).take(MAX_RESULTS)
     }
 
-    override suspend fun pause() = onCurrent { controller.pause() }
+    override suspend fun pause() {
+        onCurrent { controller.pause() }
+        awaitPlaying(false)
+    }
 
-    override suspend fun resume() = onCurrent { controller.play() }
+    override suspend fun resume() {
+        onCurrent { controller.play() }
+        awaitPlaying(true)
+    }
 
-    override suspend fun toggle() = onCurrent { controller.togglePlay() }
+    override suspend fun toggle() {
+        val wasPlaying = controller.state.value.isPlaying
+        onCurrent { controller.togglePlay() }
+        awaitPlaying(!wasPlaying)
+    }
+
+    /** The engine reports play and pause a moment later; the answer should already show the change. */
+    private suspend fun awaitPlaying(playing: Boolean) {
+        withTimeoutOrNull(STATE_WAIT_MS) { controller.state.first { it.isPlaying == playing } }
+    }
 
     override suspend fun next() = onCurrent { controller.next() }
 
@@ -190,6 +206,7 @@ class DesktopControl(
 
     private companion object {
         const val MAX_RESULTS = 10
+        const val STATE_WAIT_MS = 1_500L
     }
 }
 

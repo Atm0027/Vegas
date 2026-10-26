@@ -112,7 +112,10 @@ fun main(args: Array<String>) {
     val tokenFile = dataDir.resolve("control.token")
     if (!SingleInstance.acquire(dataDir.resolve("vegas.lock"))) {
         // Already running: a silent launch (JARVIS) has nothing to do; a normal one shows the window.
-        if (!options.silent) SingleInstance.showRunning(CONTROL_PORT, runCatching { Files.readString(tokenFile).trim() }.getOrNull())
+        if (!options.silent) {
+            SingleInstance.showRunning(CONTROL_PORT, runCatching { Files.readString(tokenFile).trim() }.getOrNull())
+                ?.let { ControlLog(dataDir.resolve("control.log")).write("No se pudo mostrar la ventana de Vegas: $it") }
+        }
         return
     }
     installCrashLog()

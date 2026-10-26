@@ -370,6 +370,19 @@ class ControlServerTest {
     }
 
     @Test
+    fun secondLaunchShowsTheRunningWindowOverRealHttp() {
+        val port = java.net.ServerSocket(0).use { it.localPort }
+        val server = startControlServer(ControlServerDeps(fake, token, port = port))!!
+        try {
+            assertNull(dev.alextorres.vegas.desktop.system.SingleInstance.showRunning(port, token))
+            assertEquals("show", fake.calls.last())
+            assertTrue(dev.alextorres.vegas.desktop.system.SingleInstance.showRunning(port, "b".repeat(64)) != null)
+        } finally {
+            server.stop(0, 0)
+        }
+    }
+
+    @Test
     fun tokenIsCreatedOnceWith256Bits() {
         val dir = Files.createTempDirectory("vegas")
         val file = dir.resolve("control.token")

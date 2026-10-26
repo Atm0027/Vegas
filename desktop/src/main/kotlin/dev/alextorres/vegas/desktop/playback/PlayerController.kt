@@ -270,7 +270,8 @@ class PlayerController(
         currentSource = null
         loadJob?.cancel()
         stallJob?.cancel()
-        _state.update { it.copy(local = false) }
+        // The old song's position and length must not linger while the new one loads.
+        _state.update { it.copy(local = false, positionMs = startMs, durationMs = 0) }
         loadJob = scope.launch {
             offline.localFile(track.id)?.let { file ->
                 playSource(AudioSource.LocalFile(file), startMs, play)

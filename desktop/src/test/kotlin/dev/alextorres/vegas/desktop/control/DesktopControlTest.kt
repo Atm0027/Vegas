@@ -38,6 +38,7 @@ class DesktopControlTest {
 
         override fun load(source: AudioSource, startMs: Long, playWhenReady: Boolean) {
             positionMs.value = startMs
+            durationMs.value = 0
             state.value = if (playWhenReady) EngineState.PLAYING else EngineState.PAUSED
         }
         override fun play() { state.value = EngineState.PLAYING }
@@ -154,6 +155,18 @@ class DesktopControlTest {
         assertEquals(180.0, control.state().posicion, 0.0)
         control.show()
         assertEquals(1, shown)
+    }
+
+    @Test
+    fun nextAnswersWithTheNewSongsPositionAndLength() = runBlocking {
+        control.play("queen", PlayType.ARTIST)
+        engine.positionMs.value = 90_000
+        engine.durationMs.value = 354_000
+        control.next()
+        val s = control.state()
+        assertEquals("q2", s.cancion?.id)
+        assertEquals(180.0, s.duracion, 0.0)
+        assertEquals(0.0, s.posicion, 0.0)
     }
 
     @Test

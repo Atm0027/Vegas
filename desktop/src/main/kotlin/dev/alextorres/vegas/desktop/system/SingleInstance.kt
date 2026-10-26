@@ -6,16 +6,14 @@
 
 package dev.alextorres.vegas.desktop.system
 
+import java.net.HttpURLConnection
+import java.net.Proxy
 import java.net.URI
-import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse
 import java.nio.channels.FileChannel
 import java.nio.channels.FileLock
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardOpenOption
-import java.time.Duration
 
 object SingleInstance {
     /** Kept for the whole run: the lock lasts as long as the channel is open. */
@@ -34,18 +32,27 @@ object SingleInstance {
         return true
     }
 
-    /** Asks the running Vegas to bring its window to the front. */
-    fun showRunning(port: Int, token: String?) {
-        if (token == null) return
-        runCatching {
-            val client = HttpClient.newBuilder().proxy(HttpClient.Builder.NO_PROXY).connectTimeout(Duration.ofSeconds(2)).build()
-            val request = HttpRequest.newBuilder(URI("http://127.0.0.1:$port/v1/mostrar"))
-                .header("Authorization", "Bearer $token")
-                .timeout(Duration.ofSeconds(3))
-                .POST(HttpRequest.BodyPublishers.noBody())
-                .build()
-            client.send(request, HttpResponse.BodyHandlers.discarding())
-        }
+    /**
+     * Asks the running Vegas to bring its window to the front. Uses HttpURLConnection (java.base): the
+     * bundled runtime has no java.net.http. Returns the failure, if any, for the log.
+     */
+    fun showRunning(port: Int, token: String?): Throwable? {
+        if (token == null) return IllegalStateException("Sin control.token")
+        return runCatching {
+            val connection = URI("http://127.0.0.1:$port/v1/mostrar").toURL().openConnection(Proxy.NO_PROXY) as HttpURLConnection
+            try {
+                connection.requestMethod = "POST"
+                connection.connectTimeout = 2_000
+                connection.readTimeout = 3_000
+                connection.setRequestProperty("Authorization", "Bearer $token")
+                connection.doOutput = true
+                connection.outputStream.close()
+                val code = connection.responseCode
+                check(code == 200) { "Respuesta $code" }
+            } finally {
+                connection.disconnect()
+            }
+        }.exceptionOrNull()
     }
 }
 
