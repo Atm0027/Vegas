@@ -702,4 +702,7 @@
     <string name="update_available_message">Vegas %s đã sẵn sàng để tải xuống.</string>
     <string name="update_action">Cập nhật</string>
     <string name="force_bottom_navbar">Buộc thanh điều hướng phía dưới</string>
+    <string name="other">Khác</string>
+    <string name="player_pause">Tạm dừng</string>
+    <string name="top_result">Kết quả hàng đầu</string>
 </resources>

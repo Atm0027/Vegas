@@ -714,4 +714,7 @@
     <string name="update_available_message">Vegas %s est prêt à être téléchargé.</string>
     <string name="update_action">Mettre à jour</string>
     <string name="force_bottom_navbar">Forcer l\'affichage de la barre de navigation inférieure</string>
+    <string name="other">Autres</string>
+    <string name="player_pause">Pause</string>
+    <string name="top_result">Meilleur résultat</string>
 </resources>

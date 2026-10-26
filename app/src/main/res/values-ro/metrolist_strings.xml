@@ -713,4 +713,8 @@
     <string name="enable_zemer_desc">Versuri pentru muzica evreiască</string>
     <string name="update_available_message">Vegas %s este gata de descărcare.</string>
     <string name="update_action">Actualizează</string>
+    <string name="force_bottom_navbar">Forțează bara de navigare jos</string>
+    <string name="other">Altele</string>
+    <string name="player_pause">Pauză</string>
+    <string name="top_result">Rezultat de top</string>
 </resources>
