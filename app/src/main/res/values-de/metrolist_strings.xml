@@ -708,4 +708,7 @@
     <string name="ai_provider_inception_help">Für API-Schlüssel, besuche: https://platform.inceptionlabs.ai</string>
     <string name="enable_zemer">Zemer aktivieren</string>
     <string name="force_bottom_navbar">Navigationsleiste unten erzwingen</string>
+    <string name="other">Sonstiges</string>
+    <string name="player_pause">Pause</string>
+    <string name="top_result">Top-Ergebnis</string>
 </resources>

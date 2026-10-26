@@ -719,4 +719,8 @@
     <string name="enable_zemer_desc">Texty pro židovskou hudbu</string>
     <string name="update_available_message">Vegas %s je připraven ke stažení.</string>
     <string name="update_action">Aktualizovat</string>
+    <string name="force_bottom_navbar">Vynutit spodní navigační lištu</string>
+    <string name="other">Ostatní</string>
+    <string name="player_pause">Pozastavit</string>
+    <string name="top_result">Nejlepší výsledek</string>
 </resources>

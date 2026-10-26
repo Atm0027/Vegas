@@ -707,4 +707,8 @@
     <string name="enable_zemer_desc">Yahudi müzikleri için şarkı sözleri</string>
     <string name="update_available_message">Vegas %s indirmeye hazır.</string>
     <string name="update_action">Güncelle</string>
+    <string name="force_bottom_navbar">Alt gezinme çubuğuna zorla</string>
+    <string name="other">Diğer</string>
+    <string name="player_pause">Duraklat</string>
+    <string name="top_result">En iyi sonuç</string>
 </resources>
