@@ -67,7 +67,7 @@ compose.desktop {
             targetFormats(TargetFormat.Msi)
             packageName = "Vegas"
             // Desktop's own version; the Android version is never touched from here.
-            packageVersion = "1.1.0"
+            packageVersion = "1.2.0"
             vendor = "Alex"
             description = "Vegas para Windows"
             // suggestRuntimeModules, plus TLS elliptic curves and JNDI that OkHttp may need at runtime.
