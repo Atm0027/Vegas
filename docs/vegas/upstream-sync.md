@@ -81,3 +81,4 @@ Nunca: reescribir historia, `push --force`, borrar ramas ajenas, tocar el remoto
 | Fecha | Upstream revisado hasta | Adoptados | Descartados | Notas |
 |---|---|---|---|---|
 | 2026-10-16 | 76fa5a78 | — | — | Punto de partida del fork |
+| 2026-10-26 | c4c61fb3 | InnerTubeX 0.10.0 → 0.11.0 (QuackJS, quita el solver EJS empaquetado) (d4f4a346, 6d085042); «Quitar de la cola» en el menú de la cola (fae57e7f, adaptado); tocar la miniatura en letras a pantalla completa para reproducir/pausar (2872811c, sin Listen Together ni Cast); traducciones de Weblate solo de cadenas que Vegas usa | SECURITY.md (b1dd1d06, docs de Metrolist); historial de YouTube Music con cuenta (40d9c70d, Vegas no tiene cuenta); nueva traducción parcial al birmano (values-my); cadenas de KMP/actualizador | 4 traducciones que Vegas tiene distintas se conservan (ca `tap_to_open`, pl `last_fm_send_likes_description`, es-rUS/zh-rCN `kmp_upgrade_warning`) |
