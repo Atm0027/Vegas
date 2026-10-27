@@ -61,12 +61,12 @@ fun PlaybackError(
         remember(causes) {
             causes.mapNotNull { it.message?.takeIf(String::isNotBlank) }.distinct()
         }
-    val isExplicitRestricted =
+    // Vegas has no YouTube account, so a login hint would be useless: name the age restriction instead.
+    val isAgeRestricted =
         rawErrorMessages.any {
             it.contains("confirm your age", ignoreCase = true) ||
                 it.contains("age-restricted", ignoreCase = true) ||
-                it.contains("LOGIN_REQUIRED", ignoreCase = true) ||
-                it.contains("403", ignoreCase = true)
+                it.contains("LOGIN_REQUIRED", ignoreCase = true)
         }
     val isJobCancelled =
         rawErrorMessages.any {
@@ -77,7 +77,7 @@ fun PlaybackError(
         }
     val guidance =
         when {
-            isExplicitRestricted -> stringResource(R.string.error_explicit_login_recommended)
+            isAgeRestricted -> stringResource(R.string.error_age_restricted)
             isJobCancelled -> stringResource(R.string.error_job_cancelled)
             else -> null
         }
@@ -86,7 +86,7 @@ fun PlaybackError(
             isOnline = isOnline,
             offlineMessage = stringResource(R.string.error_offline_playback),
             guidance = guidance,
-            rawErrorMessages = rawErrorMessages,
+            rawErrorMessages = if (isAgeRestricted) emptyList() else rawErrorMessages,
         ).joinToString("\n").ifBlank { stringResource(R.string.error_unknown) }
     val causeSummary =
         remember(causes) {

@@ -99,6 +99,7 @@ import com.metrolist.innertube.YouTube
 import com.metrolist.innertube.models.SongItem
 import com.metrolist.innertube.models.WatchEndpoint
 import com.metrolist.innertubex.extraction.ContentHints
+import com.metrolist.innertubex.extraction.StreamResolveException
 import com.metrolist.lastfm.LastFM
 import com.metrolist.music.MainActivity
 import com.metrolist.music.R
@@ -3662,9 +3663,13 @@ class MusicService :
                             )
                         }
 
+                        // Vegas has no YouTube account, and YouTube only streams age-restricted tracks to one.
                         else -> {
+                            val ageRestricted =
+                                throwable is StreamResolveException &&
+                                    throwable.reason == StreamResolveException.Reason.AGE_RESTRICTED
                             throw PlaybackException(
-                                getString(R.string.error_unknown),
+                                getString(if (ageRestricted) R.string.error_age_restricted else R.string.error_unknown),
                                 throwable,
                                 PlaybackException.ERROR_CODE_REMOTE_ERROR,
                             )

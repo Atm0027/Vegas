@@ -212,6 +212,7 @@
     <string name="error_no_internet">No network connection</string>
     <string name="error_timeout">Timeout</string>
     <string name="error_unknown">Unknown error</string>
+    <string name="error_age_restricted">Age-restricted song: YouTube won't play it without an account</string>
 
     <!-- Player action -->
     <string name="action_like">Like</string>
