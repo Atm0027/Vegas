@@ -184,6 +184,10 @@ object InnerTubeXPlayer {
      * Title, artists and length of a song saved in Vegas, for uploads YouTube no longer describes
      * (deleted or private). Set by the music service.
      */
+    /** Called when [candidate] plays in place of an upload that cannot; set by the music service. */
+    @Volatile
+    var onAlternativeUpload: ((originalId: String, candidate: String) -> Unit)? = null
+
     @Volatile
     var savedSongMetadata: (suspend (String) -> AgeRestrictedFallback.Original?)? = null
 
@@ -217,6 +221,7 @@ object InnerTubeXPlayer {
                 } ?: continue
             Timber.tag(TAG).i("unplayable $videoId: playing alternative upload $candidate")
             alternativeUploads[videoId] = candidate
+            onAlternativeUpload?.invoke(videoId, candidate)
             return Result.success(playback)
         }
         return null

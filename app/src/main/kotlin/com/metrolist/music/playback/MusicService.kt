@@ -587,6 +587,15 @@ class MusicService :
     override fun onCreate() {
         super.onCreate()
         isRunning = true
+        InnerTubeXPlayer.onAlternativeUpload = { originalId, candidate ->
+            scope.launch(Dispatchers.IO) {
+                val replacement =
+                    YouTube.queue(videoIds = listOf(candidate)).getOrNull()?.firstOrNull()?.toMediaMetadata()
+                        ?: return@launch
+                database.transaction { replaceUnplayableSong(originalId, replacement) }
+                Timber.tag(TAG).i("Replaced unplayable $originalId with $candidate in the library")
+            }
+        }
         InnerTubeXPlayer.savedSongMetadata = { id ->
             database.getSongById(id)?.let { song ->
                 AgeRestrictedFallback.Original(

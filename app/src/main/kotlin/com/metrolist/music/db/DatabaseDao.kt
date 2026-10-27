@@ -88,6 +88,38 @@ interface DatabaseDao {
     @Query("SELECT id FROM song WHERE liked")
     suspend fun likedSongIds(): List<String>
 
+    @Query("SELECT * FROM song WHERE id = :songId LIMIT 1")
+    fun songEntityBlocking(songId: String): SongEntity?
+
+    @Query("SELECT * FROM playlist_song_map WHERE songId = :songId")
+    fun playlistSongMapsOf(songId: String): List<PlaylistSongMap>
+
+    /**
+     * Vegas: [originalId] no longer plays and [replacement] is another upload of the same song that
+     * does. Puts it in every playlist at the same position (a new row, so the PC sync sees a swap)
+     * and carries over the like and the library mark. The original stays for history and stats.
+     */
+    @Transaction
+    fun replaceUnplayableSong(
+        originalId: String,
+        replacement: MediaMetadata,
+    ) {
+        val original = songEntityBlocking(originalId) ?: return
+        insert(replacement)
+        val current = songEntityBlocking(replacement.id) ?: return
+        update(
+            current.copy(
+                liked = current.liked || original.liked,
+                likedDate = current.likedDate ?: original.likedDate,
+                inLibrary = current.inLibrary ?: original.inLibrary,
+            ),
+        )
+        playlistSongMapsOf(originalId).forEach { map ->
+            deletePlaylistSongMap(map.id)
+            insert(PlaylistSongMap(playlistId = map.playlistId, songId = replacement.id, position = map.position))
+        }
+    }
+
     @Query("SELECT * FROM song WHERE inLibrary IS NOT NULL ORDER BY title")
     suspend fun librarySongEntitiesByNameAsc(): List<SongEntity>
 
