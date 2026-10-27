@@ -3,6 +3,7 @@ package com.metrolist.music.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import com.metrolist.innertube.YouTube
+import com.metrolist.innertube.models.SongItem
 import com.metrolist.innertube.models.Thumbnail
 import com.metrolist.innertube.models.Thumbnails
 import com.metrolist.innertube.models.response.PlayerResponse
@@ -45,6 +46,7 @@ object InnerTubeXPlayer {
 
     private val bundleMutex = Mutex()
     private val streamClientFailures = java.util.concurrent.ConcurrentHashMap<String, FailedStreamClients>()
+    private val ageRestrictedAlternatives = java.util.concurrent.ConcurrentHashMap<String, String>()
 
     @Synchronized
     fun initialize(context: Context) {
@@ -61,6 +63,57 @@ object InnerTubeXPlayer {
         contentHints: ContentHints = ContentHints(),
         allowBoundedRange: Boolean = true,
         qualityOverride: InnerTubeXAudioQuality? = null,
+    ): Result<PlaybackData> {
+        suspend fun resolve(id: String) =
+            resolvePlayback(id, playlistId, audioQuality, connectivityManager, contentHints, allowBoundedRange, qualityOverride)
+
+        ageRestrictedAlternatives[videoId]?.let { alternativeId ->
+            resolve(alternativeId).onSuccess { return Result.success(it) }
+            ageRestrictedAlternatives.remove(videoId, alternativeId)
+        }
+        val result = resolve(videoId)
+        val error = result.exceptionOrNull()
+        if (error !is StreamResolveException || error.reason != StreamResolveException.Reason.AGE_RESTRICTED) return result
+        return resolveAgeRestrictedAlternative(videoId) { resolve(it) } ?: result
+    }
+
+    /** Vegas has no account, so an age-restricted upload is replaced by another upload of the same song. */
+    private suspend fun resolveAgeRestrictedAlternative(
+        videoId: String,
+        resolve: suspend (String) -> Result<PlaybackData>,
+    ): Result<PlaybackData>? {
+        val song = YouTube.queue(videoIds = listOf(videoId)).getOrNull()?.firstOrNull() ?: return null
+        val original =
+            AgeRestrictedFallback.Original(
+                videoId = videoId,
+                title = song.title,
+                artists = song.artists.map { it.name },
+                durationSeconds = song.duration,
+            )
+        val query = AgeRestrictedFallback.query(original)
+        val results =
+            listOf(YouTube.SearchFilter.FILTER_SONG, YouTube.SearchFilter.FILTER_VIDEO).flatMap { filter ->
+                YouTube.search(query, filter).getOrNull()?.items.orEmpty().filterIsInstance<SongItem>()
+            }
+        val candidates = AgeRestrictedFallback.candidates(original, results)
+        Timber.tag(TAG).i("age-restricted $videoId: trying ${candidates.size} alternative uploads")
+        for (candidate in candidates) {
+            val playback = resolve(candidate).getOrNull() ?: continue
+            Timber.tag(TAG).i("age-restricted $videoId: playing alternative upload $candidate")
+            ageRestrictedAlternatives[videoId] = candidate
+            return Result.success(playback)
+        }
+        return null
+    }
+
+    private suspend fun resolvePlayback(
+        videoId: String,
+        playlistId: String?,
+        audioQuality: AudioQuality,
+        connectivityManager: ConnectivityManager,
+        contentHints: ContentHints,
+        allowBoundedRange: Boolean,
+        qualityOverride: InnerTubeXAudioQuality?,
     ): Result<PlaybackData> =
         try {
             val hints =

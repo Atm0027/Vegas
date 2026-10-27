@@ -4835,7 +4835,8 @@ class MusicService :
         const val MAX_CONSECUTIVE_ERR = 5
         const val MAX_RETRY_COUNT = 10
 
-        private const val STREAM_RESOLVE_TIMEOUT_MS = 20_000L
+        // Age-restricted tracks also search for and try another upload of the same song.
+        private const val STREAM_RESOLVE_TIMEOUT_MS = 40_000L
         private const val TAG = "MusicService"
 
         @Volatile
