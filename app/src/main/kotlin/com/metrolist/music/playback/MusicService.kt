@@ -3507,6 +3507,9 @@ class MusicService :
     }
 
     /** Weak coverage: a song that is not downloaded and makes no progress for a few seconds is skipped. */
+    @Volatile
+    private var resolvingStreamId: String? = null
+
     private fun updateOfflineStallWatch(@Player.State playbackState: Int) {
         val mediaId = player.currentMediaItem?.mediaId
         DownloadSlots.shared.setStreaming(player.playWhenReady && mediaId != null && mediaId !in downloadedIds.value)
@@ -3521,6 +3524,9 @@ class MusicService :
         offlineStallJob = scope.launch {
             val stallPosition = player.currentPosition
             delay(OfflineSkip.STALL_MS)
+            // Resolving the stream (which can take longer with the playback account) is not a stall:
+            // count from when it ends; it is bounded by STREAM_RESOLVE_TIMEOUT_MS.
+            while (resolvingStreamId == mediaId) delay(OfflineSkip.STALL_MS)
             if (player.playbackState == Player.STATE_BUFFERING && player.playWhenReady &&
                 player.currentPosition == stallPosition && player.currentMediaItem?.mediaId == mediaId
             ) {
@@ -3638,19 +3644,24 @@ class MusicService :
 
             val cacheGeneration = songUrlCache.generation(mediaId)
             Timber.tag(TAG).i("FETCHING STREAM: $mediaId | quality=$audioQuality")
+            resolvingStreamId = mediaId
             val playbackData =
                 runBlocking(Dispatchers.IO) {
-                    resolveWithTimeout(STREAM_RESOLVE_TIMEOUT_MS, mediaId) {
-                        val song = database.songEntity(mediaId)
-                        InnerTubeXPlayer.playerResponseForPlayback(
-                            mediaId,
-                            audioQuality = audioQuality,
-                            connectivityManager = connectivityManager,
-                            contentHints = ContentHints(
-                                isExplicit = song?.explicit,
-                                isUploaded = song?.isUploaded,
-                            ),
-                        )
+                    try {
+                        resolveWithTimeout(STREAM_RESOLVE_TIMEOUT_MS, mediaId) {
+                            val song = database.songEntity(mediaId)
+                            InnerTubeXPlayer.playerResponseForPlayback(
+                                mediaId,
+                                audioQuality = audioQuality,
+                                connectivityManager = connectivityManager,
+                                contentHints = ContentHints(
+                                    isExplicit = song?.explicit,
+                                    isUploaded = song?.isUploaded,
+                                ),
+                            )
+                        }
+                    } finally {
+                        if (resolvingStreamId == mediaId) resolvingStreamId = null
                     }
                 }.getOrElse { throwable ->
                     when (throwable) {
