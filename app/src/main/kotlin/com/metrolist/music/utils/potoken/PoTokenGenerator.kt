@@ -91,7 +91,8 @@ class PoTokenGenerator(context: Context) {
             runCatching {
                 val info = ActivityManager.MemoryInfo()
                 applicationContext.getSystemService(ActivityManager::class.java)?.getMemoryInfo(info)
-                info.lowMemory
+                // lowMemory only flips once lmkd is already killing; twice the threshold gives warning.
+                info.lowMemory || info.availMem < info.threshold * 2
             }.getOrDefault(false)
         return PoTokenMemory.skipNewWebView(lowMemory, memoryPressureAt, SystemClock.elapsedRealtime())
     }

@@ -125,7 +125,11 @@ class App :
                     delay(500)
                     waitedMs += 500
                 }
-                runCatching { InnerTubeXPlayer.prewarm() }
+                // Vegas: only when the player is up. A background job (WorkManager) also starts this
+                // process, and the prewarm would spin up a ~100 MB PoToken WebView for nothing.
+                if (com.metrolist.music.playback.MusicService.isRunning) {
+                    runCatching { InnerTubeXPlayer.prewarm() }
+                }
             }
 
             observeSettingsChanges()
