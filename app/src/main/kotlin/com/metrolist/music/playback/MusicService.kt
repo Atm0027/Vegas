@@ -2614,6 +2614,7 @@ class MusicService :
             scope.launch {
                 val stallPosition = player.currentPosition
                 delay(StallRecovery.delayMs(stallPosition))
+                waitWhileResolvingStream(mediaId)
                 if (player.playbackState != Player.STATE_BUFFERING ||
                     !player.playWhenReady ||
                     player.currentPosition != stallPosition ||
@@ -3510,6 +3511,26 @@ class MusicService :
     @Volatile
     private var resolvingStreamId: String? = null
 
+    /**
+     * Resolving the stream can take longer (age-restricted songs with the playback account), and that
+     * is not a stall: the stall watchdogs wait while it runs, plus [OfflineSkip.STALL_MS] for the first
+     * bytes once it ends, up to [OfflineSkip.RESOLVE_GRACE_MS] so a really bad connection still skips.
+     */
+    private suspend fun waitWhileResolvingStream(mediaId: String) {
+        var waitedMs = 0L
+        while (waitedMs < OfflineSkip.RESOLVE_GRACE_MS) {
+            if (resolvingStreamId == mediaId) {
+                delay(500)
+                waitedMs += 500
+                continue
+            }
+            if (waitedMs == 0L) return
+            delay(OfflineSkip.STALL_MS)
+            waitedMs += OfflineSkip.STALL_MS
+            if (resolvingStreamId != mediaId) return
+        }
+    }
+
     private fun updateOfflineStallWatch(@Player.State playbackState: Int) {
         val mediaId = player.currentMediaItem?.mediaId
         DownloadSlots.shared.setStreaming(player.playWhenReady && mediaId != null && mediaId !in downloadedIds.value)
@@ -3524,13 +3545,7 @@ class MusicService :
         offlineStallJob = scope.launch {
             val stallPosition = player.currentPosition
             delay(OfflineSkip.STALL_MS)
-            // Resolving the stream can take longer (age-restricted songs with the playback account):
-            // give it extra time, but keep skipping quickly on a really bad connection.
-            var resolvingWaitMs = 0L
-            while (resolvingStreamId == mediaId && resolvingWaitMs < OfflineSkip.RESOLVE_GRACE_MS) {
-                delay(500)
-                resolvingWaitMs += 500
-            }
+            waitWhileResolvingStream(mediaId)
             if (player.playbackState == Player.STATE_BUFFERING && player.playWhenReady &&
                 player.currentPosition == stallPosition && player.currentMediaItem?.mediaId == mediaId
             ) {
