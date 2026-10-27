@@ -61,7 +61,7 @@ fun PlaybackError(
         remember(causes) {
             causes.mapNotNull { it.message?.takeIf(String::isNotBlank) }.distinct()
         }
-    // Vegas has no YouTube account, so a login hint would be useless: name the age restriction instead.
+    // Name the age restriction and point to the playback account instead of a generic login hint.
     val isAgeRestricted =
         rawErrorMessages.any {
             it.contains("confirm your age", ignoreCase = true) ||

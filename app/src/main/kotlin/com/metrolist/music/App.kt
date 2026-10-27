@@ -233,6 +233,22 @@ class App :
                 }
         }
 
+        applicationScope.launch(Dispatchers.IO) {
+            dataStore.data
+                .map { prefs ->
+                    val session =
+                        prefs[PlaybackAccountCookieKey]?.takeIf(String::isNotBlank)?.let { cookie ->
+                            InnerTubeXPlayer.AgeVerificationSession(cookie, prefs[PlaybackAccountVisitorDataKey])
+                        }
+                    session to
+                        InnerTubeXPlayer.PlaybackAccountOptions(
+                            premium = prefs[PlaybackAccountPremiumKey] ?: false,
+                            always = prefs[PlaybackAccountAlwaysKey] ?: false,
+                        )
+                }.distinctUntilChanged()
+                .collect { (session, options) -> InnerTubeXPlayer.setAgeVerificationSession(session, options) }
+        }
+
         // Vegas has no YouTube account or Discord: drop data left by older installs or restored backups.
         applicationScope.launch(Dispatchers.IO) {
             deleteSharedPreferences(LegacyAccountCleanup.DISCORD_TOKEN_PREFS)

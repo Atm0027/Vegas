@@ -3663,7 +3663,7 @@ class MusicService :
                             )
                         }
 
-                        // Vegas has no YouTube account, and YouTube only streams age-restricted tracks to one.
+                        // YouTube only streams age-restricted tracks to a signed-in account (Settings → playback account).
                         else -> {
                             val ageRestricted =
                                 throwable is StreamResolveException &&

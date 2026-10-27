@@ -212,7 +212,19 @@
     <string name="error_no_internet">No network connection</string>
     <string name="error_timeout">Timeout</string>
     <string name="error_unknown">Unknown error</string>
-    <string name="error_age_restricted">Age-restricted song: YouTube won\'t play it without an account</string>
+    <string name="error_age_restricted">Age-restricted song: YouTube only plays it to a signed-in account (Settings → Account for playback)</string>
+    <string name="playback_account">Account for playback</string>
+    <string name="playback_account_summary">Google sign-in only to play age-restricted songs</string>
+    <string name="playback_account_explain">YouTube only plays age-restricted songs to signed-in accounts. Sign in with a Google account whose age is verified and Vegas will use it only when playing.</string>
+    <string name="playback_account_signed_in">Signed in. Age-restricted songs will play with this account.</string>
+    <string name="playback_account_no_sync">Your playlists, likes, history and library stay in Vegas: nothing is synced with YouTube. Search and Home keep working without the account.</string>
+    <string name="playback_account_sign_in">Sign in with Google</string>
+    <string name="playback_account_sign_out">Sign out</string>
+    <string name="playback_account_sign_in_failed">Could not read the YouTube Music session. Try again.</string>
+    <string name="playback_account_always">Use for every song</string>
+    <string name="playback_account_always_desc">Fewer playback blocks from YouTube. Only used to get the audio.</string>
+    <string name="playback_account_premium">Premium quality</string>
+    <string name="playback_account_premium_desc">256 kbps audio when quality is High. Requires YouTube Music Premium.</string>
 
     <!-- Player action -->
     <string name="action_like">Like</string>

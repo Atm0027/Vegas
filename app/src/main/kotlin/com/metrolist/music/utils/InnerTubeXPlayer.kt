@@ -8,6 +8,7 @@ import com.metrolist.innertube.models.Thumbnail
 import com.metrolist.innertube.models.Thumbnails
 import com.metrolist.innertube.models.response.PlayerResponse
 import com.metrolist.innertubex.InnerTubeLogLevel
+import com.metrolist.innertubex.InnerTube as InnerTubeX
 import com.metrolist.innertubex.InnerTubeLogger
 import com.metrolist.innertubex.cipher.PlayerConfigRepository
 import com.metrolist.innertubex.cipher.RemotePlayerConfigStore
@@ -48,6 +49,16 @@ object InnerTubeXPlayer {
     private val streamClientFailures = java.util.concurrent.ConcurrentHashMap<String, FailedStreamClients>()
     private val ageRestrictedAlternatives = java.util.concurrent.ConcurrentHashMap<String, String>()
     private val ageRestrictedWithoutAlternative = java.util.concurrent.ConcurrentHashMap.newKeySet<String>()
+    private val knownAgeRestricted = java.util.concurrent.ConcurrentHashMap.newKeySet<String>()
+
+    @Volatile
+    private var ageVerificationSession: AgeVerificationSession? = null
+
+    @Volatile
+    private var ageVerificationBundle: AgeVerificationBundle? = null
+
+    @Volatile
+    private var playbackAccountOptions = PlaybackAccountOptions()
 
     @Synchronized
     fun initialize(context: Context) {
@@ -65,9 +76,37 @@ object InnerTubeXPlayer {
         allowBoundedRange: Boolean = true,
         qualityOverride: InnerTubeXAudioQuality? = null,
     ): Result<PlaybackData> {
-        suspend fun resolve(id: String) =
-            resolvePlayback(id, playlistId, audioQuality, connectivityManager, contentHints, allowBoundedRange, qualityOverride)
+        suspend fun resolve(
+            id: String,
+            extractor: InnerTubeExtractor? = null,
+            hints: ContentHints = contentHints,
+        ) = resolvePlayback(
+            id,
+            playlistId,
+            audioQuality,
+            connectivityManager,
+            hints,
+            allowBoundedRange,
+            qualityOverride,
+            extractor ?: bundle().extractor,
+        )
 
+        suspend fun resolveWithAgeVerification(): Result<PlaybackData>? {
+            val extractor = ageVerificationExtractor() ?: return null
+            Timber.tag(TAG).i("age-restricted $videoId: retrying with the age verification account")
+            return resolve(videoId, extractor, contentHints.copy(isAgeRestricted = true))
+                .onFailure { Timber.tag(TAG).w("age-restricted $videoId: age verification failed: ${it.message}") }
+        }
+
+        val accountOptions = playbackAccountOptions
+        if (accountOptions.always || accountOptions.premium) {
+            ageVerificationExtractor()?.let { extractor ->
+                resolve(videoId, extractor, contentHints.withPremium(accountOptions.premium))
+                    .onSuccess { return Result.success(it) }
+                    .onFailure { Timber.tag(TAG).w("$videoId: account playback failed, trying without: ${it.message}") }
+            }
+        }
+        if (videoId in knownAgeRestricted) resolveWithAgeVerification()?.onSuccess { return Result.success(it) }
         ageRestrictedAlternatives[videoId]?.let { alternativeId ->
             resolve(alternativeId).onSuccess { return Result.success(it) }
             ageRestrictedAlternatives.remove(videoId, alternativeId)
@@ -75,12 +114,65 @@ object InnerTubeXPlayer {
         val result = resolve(videoId)
         val error = result.exceptionOrNull()
         if (error !is StreamResolveException || error.reason != StreamResolveException.Reason.AGE_RESTRICTED) return result
+        if (knownAgeRestricted.add(videoId)) resolveWithAgeVerification()?.onSuccess { return Result.success(it) }
         if (videoId in ageRestrictedWithoutAlternative) return result
         return resolveAgeRestrictedAlternative(videoId) { resolve(it) }
             ?: result.also { ageRestrictedWithoutAlternative += videoId }
     }
 
-    /** Vegas has no account, so an age-restricted upload is replaced by another upload of the same song. */
+    /**
+     * The Google session the user signed in with only to pass YouTube's age check. It lives in its
+     * own InnerTubeX session, so the rest of Vegas (search, browse, home, library) never sends it.
+     */
+    fun setAgeVerificationSession(
+        session: AgeVerificationSession?,
+        options: PlaybackAccountOptions = PlaybackAccountOptions(),
+    ) {
+        playbackAccountOptions = if (session == null) PlaybackAccountOptions() else options
+        if (ageVerificationSession == session) return
+        ageVerificationSession = session
+        ageVerificationBundle = null
+        ageRestrictedWithoutAlternative.clear()
+    }
+
+    private suspend fun ageVerificationExtractor(): InnerTubeExtractor? {
+        val session = ageVerificationSession ?: return null
+        val transport = YouTube.extractionTransport()
+        ageVerificationBundle
+            ?.takeIf { it.session == session && it.transportGeneration == transport.generation }
+            ?.let { return it.extractor }
+        val main = bundle()
+        return bundleMutex.withLock {
+            ageVerificationBundle
+                ?.takeIf { it.session == session && it.transportGeneration == transport.generation }
+                ?.let { return@withLock it.extractor }
+            val innerTube =
+                InnerTubeX(transport.httpClient).apply {
+                    locale = transport.innerTube.locale
+                    replaceSession(
+                        cookie = session.cookie,
+                        visitorData = session.visitorData,
+                        dataSyncId = null,
+                        authUser = "0",
+                        useLoginForBrowse = false,
+                    )
+                }
+            val remoteStore = RemotePlayerConfigStore(transport.httpClient, configRepository, logger)
+            val extractor =
+                InnerTubeExtractor(
+                    configParser =
+                        YtConfigParserImpl(transport.httpClient, innerTube, remoteStore, logger)
+                            .withEmbeddedConfigFallback(),
+                    cipherService = main.cipherService,
+                    innerTube = innerTube,
+                    tokenProvider = tokenProvider,
+                    logger = logger,
+                )
+            AgeVerificationBundle(session, transport.generation, extractor).also { ageVerificationBundle = it }.extractor
+        }
+    }
+
+    /** Without a usable playback account, an age-restricted upload is replaced by another upload of the same song. */
     private suspend fun resolveAgeRestrictedAlternative(
         videoId: String,
         resolve: suspend (String) -> Result<PlaybackData>,
@@ -121,6 +213,7 @@ object InnerTubeXPlayer {
         contentHints: ContentHints,
         allowBoundedRange: Boolean,
         qualityOverride: InnerTubeXAudioQuality?,
+        extractor: InnerTubeExtractor,
     ): Result<PlaybackData> =
         try {
             val hints =
@@ -137,7 +230,7 @@ object InnerTubeXPlayer {
             val excludedClients = failedStreamClients(videoId)
             val stream =
                 requireNotNull(
-                    bundle().extractor.extract(
+                    extractor.extract(
                         videoId = videoId,
                         hints = hints,
                         excludedClients = excludedClients,
@@ -299,6 +392,25 @@ object InnerTubeXPlayer {
     private data class ExtractionBundle(
         val transportGeneration: Long,
         val cipherService: YouTubeCipherService,
+        val extractor: InnerTubeExtractor,
+    )
+
+    data class AgeVerificationSession(
+        val cookie: String,
+        val visitorData: String?,
+    ) {
+        override fun toString() = "AgeVerificationSession(<redacted>)"
+    }
+
+    /** Extra, opt-in uses of the playback account; age-restricted tracks always use it. */
+    data class PlaybackAccountOptions(
+        val premium: Boolean = false,
+        val always: Boolean = false,
+    )
+
+    private class AgeVerificationBundle(
+        val session: AgeVerificationSession,
+        val transportGeneration: Long,
         val extractor: InnerTubeExtractor,
     )
 

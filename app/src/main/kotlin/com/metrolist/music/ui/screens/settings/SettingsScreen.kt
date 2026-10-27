@@ -120,6 +120,12 @@ fun SettingsScreen(
                     title = { Text(stringResource(R.string.pc_sync)) },
                     description = { Text(stringResource(R.string.pc_sync_summary)) },
                     onClick = { navController.navigate("settings/pc_sync") }
+                ),
+                Material3SettingsItem(
+                    icon = painterResource(R.drawable.account),
+                    title = { Text(stringResource(R.string.playback_account)) },
+                    description = { Text(stringResource(R.string.playback_account_summary)) },
+                    onClick = { navController.navigate("settings/playback_account") }
                 )
             )
         )
