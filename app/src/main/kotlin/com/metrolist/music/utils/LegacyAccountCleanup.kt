@@ -29,6 +29,9 @@ object LegacyAccountCleanup {
             "ytmSync",
             "useLoginForBrowse",
             "last_full_sync",
+            // A test build stored the playback account here; it now lives in PlaybackAccountStore.
+            "playbackAccountCookie",
+            "playbackAccountVisitorData",
         )
 
     fun keysToRemove(prefs: Preferences): List<Preferences.Key<*>> {

@@ -127,7 +127,7 @@ fun PlaybackAccountLoginScreen(navController: NavController) {
     var failed by remember { mutableStateOf(false) }
 
     suspend fun capture(view: WebView): Boolean {
-        repeat(20) {
+        repeat(60) {
             val cookie = CookieManager.getInstance().getCookie("https://music.youtube.com").orEmpty()
             val hasAuth = runCatching { "SAPISID" in parseCookieString(cookie) }.getOrDefault(false)
             if (hasAuth) {
