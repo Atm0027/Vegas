@@ -47,6 +47,7 @@ object InnerTubeXPlayer {
     private val bundleMutex = Mutex()
     private val streamClientFailures = java.util.concurrent.ConcurrentHashMap<String, FailedStreamClients>()
     private val ageRestrictedAlternatives = java.util.concurrent.ConcurrentHashMap<String, String>()
+    private val ageRestrictedWithoutAlternative = java.util.concurrent.ConcurrentHashMap.newKeySet<String>()
 
     @Synchronized
     fun initialize(context: Context) {
@@ -74,7 +75,9 @@ object InnerTubeXPlayer {
         val result = resolve(videoId)
         val error = result.exceptionOrNull()
         if (error !is StreamResolveException || error.reason != StreamResolveException.Reason.AGE_RESTRICTED) return result
-        return resolveAgeRestrictedAlternative(videoId) { resolve(it) } ?: result
+        if (videoId in ageRestrictedWithoutAlternative) return result
+        return resolveAgeRestrictedAlternative(videoId) { resolve(it) }
+            ?: result.also { ageRestrictedWithoutAlternative += videoId }
     }
 
     /** Vegas has no account, so an age-restricted upload is replaced by another upload of the same song. */
@@ -96,9 +99,13 @@ object InnerTubeXPlayer {
                 YouTube.search(query, filter).getOrNull()?.items.orEmpty().filterIsInstance<SongItem>()
             }
         val candidates = AgeRestrictedFallback.candidates(original, results)
-        Timber.tag(TAG).i("age-restricted $videoId: trying ${candidates.size} alternative uploads")
+        Timber.tag(TAG).i("age-restricted $videoId: trying alternative uploads $candidates")
         for (candidate in candidates) {
-            val playback = resolve(candidate).getOrNull() ?: continue
+            val playback =
+                resolve(candidate).getOrElse { error ->
+                    Timber.tag(TAG).i("age-restricted $videoId: alternative $candidate failed: ${error.message}")
+                    null
+                } ?: continue
             Timber.tag(TAG).i("age-restricted $videoId: playing alternative upload $candidate")
             ageRestrictedAlternatives[videoId] = candidate
             return Result.success(playback)
