@@ -198,6 +198,7 @@ import com.metrolist.music.utils.NetworkConnectivityObserver
 import com.metrolist.music.utils.ScrobbleManager
 import com.metrolist.music.utils.getArtistSeparator
 import com.metrolist.music.utils.joinToArtistString
+import com.metrolist.music.utils.AgeRestrictedFallback
 import com.metrolist.music.utils.InnerTubeXPlayer
 import com.metrolist.music.utils.dataStore
 import com.metrolist.music.utils.get
@@ -586,6 +587,16 @@ class MusicService :
     override fun onCreate() {
         super.onCreate()
         isRunning = true
+        InnerTubeXPlayer.savedSongMetadata = { id ->
+            database.getSongById(id)?.let { song ->
+                AgeRestrictedFallback.Original(
+                    videoId = id,
+                    title = song.song.title,
+                    artists = song.artists.map { it.name },
+                    durationSeconds = song.song.duration.takeIf { it > 0 },
+                )
+            }
+        }
         shutdownDeferred = kotlinx.coroutines.CompletableDeferred<Unit>()
 
         setListener(
@@ -3665,11 +3676,14 @@ class MusicService :
 
                         // YouTube only streams age-restricted tracks to a signed-in account (Settings → playback account).
                         else -> {
-                            val ageRestricted =
-                                throwable is StreamResolveException &&
-                                    throwable.reason == StreamResolveException.Reason.AGE_RESTRICTED
+                            val message =
+                                when ((throwable as? StreamResolveException)?.reason) {
+                                    StreamResolveException.Reason.AGE_RESTRICTED -> R.string.error_age_restricted
+                                    StreamResolveException.Reason.UNAVAILABLE -> R.string.error_song_unavailable
+                                    else -> R.string.error_unknown
+                                }
                             throw PlaybackException(
-                                getString(if (ageRestricted) R.string.error_age_restricted else R.string.error_unknown),
+                                getString(message),
                                 throwable,
                                 PlaybackException.ERROR_CODE_REMOTE_ERROR,
                             )

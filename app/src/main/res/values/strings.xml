@@ -212,6 +212,7 @@
     <string name="error_no_internet">No network connection</string>
     <string name="error_timeout">Timeout</string>
     <string name="error_unknown">Unknown error</string>
+    <string name="error_song_unavailable">Song unavailable on YouTube (deleted, private or blocked in your country) and no other upload was found</string>
     <string name="error_age_restricted">Age-restricted song: YouTube only plays it to a signed-in account (Settings → Account for playback)</string>
     <string name="playback_account">Account for playback</string>
     <string name="playback_account_summary">Google sign-in only to play age-restricted songs</string>

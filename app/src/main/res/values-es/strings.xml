@@ -172,6 +172,7 @@
     <string name="error_no_internet">No hay conexión a internet</string>
     <string name="error_timeout">Tiempo de espera agotado</string>
     <string name="error_unknown">Error desconocido</string>
+    <string name="error_song_unavailable">Canción no disponible en YouTube (borrada, privada o bloqueada en tu país) y no hay otra subida</string>
     <string name="error_age_restricted">Canción restringida por edad: inicia sesión en Ajustes → Cuenta para reproducir</string>
     <string name="playback_account">Cuenta para reproducir</string>
     <string name="playback_account_summary">Sesión de Google solo para canciones restringidas por edad</string>

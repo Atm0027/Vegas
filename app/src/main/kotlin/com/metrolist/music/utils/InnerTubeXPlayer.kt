@@ -47,8 +47,8 @@ object InnerTubeXPlayer {
 
     private val bundleMutex = Mutex()
     private val streamClientFailures = java.util.concurrent.ConcurrentHashMap<String, FailedStreamClients>()
-    private val ageRestrictedAlternatives = java.util.concurrent.ConcurrentHashMap<String, String>()
-    private val ageRestrictedWithoutAlternative = java.util.concurrent.ConcurrentHashMap.newKeySet<String>()
+    private val alternativeUploads = java.util.concurrent.ConcurrentHashMap<String, String>()
+    private val withoutAlternativeUpload = java.util.concurrent.ConcurrentHashMap.newKeySet<String>()
     private val knownAgeRestricted = java.util.concurrent.ConcurrentHashMap.newKeySet<String>()
 
     @Volatile
@@ -107,17 +107,22 @@ object InnerTubeXPlayer {
             }
         }
         if (videoId in knownAgeRestricted) resolveWithAgeVerification()?.onSuccess { return Result.success(it) }
-        ageRestrictedAlternatives[videoId]?.let { alternativeId ->
+        alternativeUploads[videoId]?.let { alternativeId ->
             resolve(alternativeId).onSuccess { return Result.success(it) }
-            ageRestrictedAlternatives.remove(videoId, alternativeId)
+            alternativeUploads.remove(videoId, alternativeId)
         }
         val result = resolve(videoId)
-        val error = result.exceptionOrNull()
-        if (error !is StreamResolveException || error.reason != StreamResolveException.Reason.AGE_RESTRICTED) return result
-        if (knownAgeRestricted.add(videoId)) resolveWithAgeVerification()?.onSuccess { return Result.success(it) }
-        if (videoId in ageRestrictedWithoutAlternative) return result
-        return resolveAgeRestrictedAlternative(videoId) { resolve(it) }
-            ?: result.also { ageRestrictedWithoutAlternative += videoId }
+        val error = result.exceptionOrNull() as? StreamResolveException ?: return result
+        when (error.reason) {
+            StreamResolveException.Reason.AGE_RESTRICTED ->
+                if (knownAgeRestricted.add(videoId)) resolveWithAgeVerification()?.onSuccess { return Result.success(it) }
+            // Deleted, private, or blocked in this country: another upload of the song may still play.
+            StreamResolveException.Reason.UNAVAILABLE -> Unit
+            else -> return result
+        }
+        if (videoId in withoutAlternativeUpload) return result
+        return resolveAlternativeUpload(videoId) { resolve(it) }
+            ?: result.also { withoutAlternativeUpload += videoId }
     }
 
     /**
@@ -132,7 +137,7 @@ object InnerTubeXPlayer {
         if (ageVerificationSession == session) return
         ageVerificationSession = session
         ageVerificationBundle = null
-        ageRestrictedWithoutAlternative.clear()
+        withoutAlternativeUpload.clear()
     }
 
     private suspend fun ageVerificationExtractor(): InnerTubeExtractor? {
@@ -172,34 +177,43 @@ object InnerTubeXPlayer {
         }
     }
 
-    /** Without a usable playback account, an age-restricted upload is replaced by another upload of the same song. */
-    private suspend fun resolveAgeRestrictedAlternative(
+    /**
+     * Title, artists and length of a song saved in Vegas, for uploads YouTube no longer describes
+     * (deleted or private). Set by the music service.
+     */
+    @Volatile
+    var savedSongMetadata: (suspend (String) -> AgeRestrictedFallback.Original?)? = null
+
+    /** Replaces an upload that cannot play (age-restricted, deleted, private, blocked here) by another upload of the same song. */
+    private suspend fun resolveAlternativeUpload(
         videoId: String,
         resolve: suspend (String) -> Result<PlaybackData>,
     ): Result<PlaybackData>? {
-        val song = YouTube.queue(videoIds = listOf(videoId)).getOrNull()?.firstOrNull() ?: return null
         val original =
-            AgeRestrictedFallback.Original(
-                videoId = videoId,
-                title = song.title,
-                artists = song.artists.map { it.name },
-                durationSeconds = song.duration,
-            )
+            YouTube.queue(videoIds = listOf(videoId)).getOrNull()?.firstOrNull()?.let { song ->
+                AgeRestrictedFallback.Original(
+                    videoId = videoId,
+                    title = song.title,
+                    artists = song.artists.map { it.name },
+                    durationSeconds = song.duration,
+                )
+            } ?: savedSongMetadata?.invoke(videoId)
+            ?: return null
         val query = AgeRestrictedFallback.query(original)
         val results =
             listOf(YouTube.SearchFilter.FILTER_SONG, YouTube.SearchFilter.FILTER_VIDEO).flatMap { filter ->
                 YouTube.search(query, filter).getOrNull()?.items.orEmpty().filterIsInstance<SongItem>()
             }
         val candidates = AgeRestrictedFallback.candidates(original, results)
-        Timber.tag(TAG).i("age-restricted $videoId: trying alternative uploads $candidates")
+        Timber.tag(TAG).i("unplayable $videoId: trying alternative uploads $candidates")
         for (candidate in candidates) {
             val playback =
                 resolve(candidate).getOrElse { error ->
-                    Timber.tag(TAG).i("age-restricted $videoId: alternative $candidate failed: ${error.message}")
+                    Timber.tag(TAG).i("unplayable $videoId: alternative $candidate failed: ${error.message}")
                     null
                 } ?: continue
-            Timber.tag(TAG).i("age-restricted $videoId: playing alternative upload $candidate")
-            ageRestrictedAlternatives[videoId] = candidate
+            Timber.tag(TAG).i("unplayable $videoId: playing alternative upload $candidate")
+            alternativeUploads[videoId] = candidate
             return Result.success(playback)
         }
         return null
