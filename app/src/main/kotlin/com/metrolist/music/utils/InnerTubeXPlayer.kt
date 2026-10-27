@@ -169,7 +169,8 @@ object InnerTubeXPlayer {
                 InnerTubeExtractor(
                     configParser =
                         YtConfigParserImpl(transport.httpClient, innerTube, remoteStore, logger)
-                            .withEmbeddedConfigFallback(),
+                            .withEmbeddedConfigFallback()
+                            .withSignedOutPlayer(),
                     cipherService = main.cipherService,
                     innerTube = innerTube,
                     tokenProvider = tokenProvider,
@@ -466,6 +467,33 @@ object InnerTubeXPlayer {
                 "https://raw.githubusercontent.com/ZemerTeam/zemer-cipher/master/library/src/main/assets/player_configs.json"
         }
     }
+
+    /**
+     * The signed-in watch page can name a player script the cipher configs do not cover yet, which
+     * leaves every signed audio URL unsolved. Keep the session's config but take the player script
+     * (and its signature timestamp) from the signed-out page, which the cipher service supports.
+     */
+    private fun YtConfigParser.withSignedOutPlayer(): YtConfigParser =
+        object : YtConfigParser by this {
+            override suspend fun fetchConfig(
+                videoId: String,
+                useLoginCookies: Boolean,
+            ): com.metrolist.innertubex.extraction.PlayerConfig {
+                val config = this@withSignedOutPlayer.fetchConfig(videoId, useLoginCookies)
+                if (!useLoginCookies) return config
+                val signedOut =
+                    try {
+                        this@withSignedOutPlayer.fetchConfig(videoId, useLoginCookies = false)
+                    } catch (error: CancellationException) {
+                        throw error
+                    } catch (_: Exception) {
+                        return config
+                    }
+                if (signedOut.playerUrl.isBlank() || signedOut.playerUrl == config.playerUrl) return config
+                Timber.tag(TAG).i("account config: using the signed-out player script")
+                return config.copy(playerUrl = signedOut.playerUrl, signatureTimestamp = signedOut.signatureTimestamp)
+            }
+        }
 
     internal fun YtConfigParser.withEmbeddedConfigFallback(): YtConfigParser =
         object : YtConfigParser by this {
