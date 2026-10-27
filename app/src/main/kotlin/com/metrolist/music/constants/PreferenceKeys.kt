@@ -476,10 +476,7 @@ enum class SearchSource {
 
 val VisitorDataKey = stringPreferencesKey("visitorData")
 
-// Vegas: Google session used only for playback (age check, and optionally Premium quality and fewer
-// blocks). Separate keys from Metrolist's account so LegacyAccountCleanup keeps them and nothing else reads them.
-val PlaybackAccountCookieKey = stringPreferencesKey("playbackAccountCookie")
-val PlaybackAccountVisitorDataKey = stringPreferencesKey("playbackAccountVisitorData")
+// Vegas: opt-in extra uses of the playback account (the session itself lives in PlaybackAccountStore).
 val PlaybackAccountPremiumKey = booleanPreferencesKey("playbackAccountPremium")
 val PlaybackAccountAlwaysKey = booleanPreferencesKey("playbackAccountAlways")
 val AndroidAutoYouTubePlaylistsKey = booleanPreferencesKey("androidAutoYoutubePlaylists")

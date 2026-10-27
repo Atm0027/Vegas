@@ -39,6 +39,7 @@ import com.metrolist.music.utils.CrashHandler
 import com.metrolist.music.utils.ArtistNameAliases
 import com.metrolist.music.utils.InnerTubeXPlayer
 import com.metrolist.music.utils.LegacyAccountCleanup
+import com.metrolist.music.utils.PlaybackAccountStore
 import com.metrolist.music.utils.dataStore
 import com.metrolist.music.utils.safeDataStoreEdit
 import com.metrolist.music.utils.reportException
@@ -46,6 +47,7 @@ import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -234,18 +236,16 @@ class App :
         }
 
         applicationScope.launch(Dispatchers.IO) {
-            dataStore.data
-                .map { prefs ->
-                    val session =
-                        prefs[PlaybackAccountCookieKey]?.takeIf(String::isNotBlank)?.let { cookie ->
-                            InnerTubeXPlayer.AgeVerificationSession(cookie, prefs[PlaybackAccountVisitorDataKey])
-                        }
-                    session to
-                        InnerTubeXPlayer.PlaybackAccountOptions(
-                            premium = prefs[PlaybackAccountPremiumKey] ?: false,
-                            always = prefs[PlaybackAccountAlwaysKey] ?: false,
-                        )
-                }.distinctUntilChanged()
+            PlaybackAccountStore.load(this@App)
+            val options =
+                dataStore.data.map { prefs ->
+                    InnerTubeXPlayer.PlaybackAccountOptions(
+                        premium = prefs[PlaybackAccountPremiumKey] ?: false,
+                        always = prefs[PlaybackAccountAlwaysKey] ?: false,
+                    )
+                }
+            combine(PlaybackAccountStore.session, options, ::Pair)
+                .distinctUntilChanged()
                 .collect { (session, options) -> InnerTubeXPlayer.setAgeVerificationSession(session, options) }
         }
 

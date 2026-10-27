@@ -31,6 +31,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,9 +48,8 @@ import androidx.navigation.NavController
 import com.metrolist.innertube.utils.parseCookieString
 import com.metrolist.music.R
 import com.metrolist.music.constants.PlaybackAccountAlwaysKey
-import com.metrolist.music.constants.PlaybackAccountCookieKey
 import com.metrolist.music.constants.PlaybackAccountPremiumKey
-import com.metrolist.music.constants.PlaybackAccountVisitorDataKey
+import com.metrolist.music.utils.PlaybackAccountStore
 import com.metrolist.music.utils.rememberPreference
 import com.metrolist.music.utils.safeDataStoreEdit
 import kotlinx.coroutines.CompletableDeferred
@@ -64,10 +64,10 @@ private const val LOGIN_URL = "https://accounts.google.com/ServiceLogin?continue
 fun PlaybackAccountSettings(navController: NavController) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val (cookie, _) = rememberPreference(PlaybackAccountCookieKey, "")
+    val session by PlaybackAccountStore.session.collectAsState()
     val (premium, onPremiumChange) = rememberPreference(PlaybackAccountPremiumKey, false)
     val (always, onAlwaysChange) = rememberPreference(PlaybackAccountAlwaysKey, false)
-    val signedIn = cookie.isNotBlank()
+    val signedIn = session != null
 
     Column(Modifier.fillMaxSize()) {
         TopAppBar(
@@ -100,9 +100,8 @@ fun PlaybackAccountSettings(navController: NavController) {
                 Spacer(Modifier.height(16.dp))
                 OutlinedButton(onClick = {
                     scope.launch {
+                        PlaybackAccountStore.clear(context)
                         context.safeDataStoreEdit { prefs ->
-                            prefs.remove(PlaybackAccountCookieKey)
-                            prefs.remove(PlaybackAccountVisitorDataKey)
                             prefs.remove(PlaybackAccountPremiumKey)
                             prefs.remove(PlaybackAccountAlwaysKey)
                         }
@@ -137,16 +136,8 @@ fun PlaybackAccountLoginScreen(navController: NavController) {
                     visitorData.complete(value?.trim('"')?.takeIf { it.isNotBlank() && it != "null" })
                 }
                 val pageVisitorData = withTimeoutOrNull(2_000) { visitorData.await() }
-                val saved =
-                    context.safeDataStoreEdit { prefs ->
-                        prefs[PlaybackAccountCookieKey] = cookie
-                        if (pageVisitorData != null) {
-                            prefs[PlaybackAccountVisitorDataKey] = pageVisitorData
-                        } else {
-                            prefs.remove(PlaybackAccountVisitorDataKey)
-                        }
-                    }
-                if (saved) return true
+                PlaybackAccountStore.save(context, cookie, pageVisitorData)
+                return true
             }
             delay(500)
         }

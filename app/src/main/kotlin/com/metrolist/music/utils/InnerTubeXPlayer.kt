@@ -95,6 +95,7 @@ object InnerTubeXPlayer {
             val extractor = ageVerificationExtractor() ?: return null
             Timber.tag(TAG).i("age-restricted $videoId: retrying with the age verification account")
             return resolve(videoId, extractor, contentHints.copy(isAgeRestricted = true))
+                .map(PlaybackData::withoutTracking)
                 .onFailure { Timber.tag(TAG).w("age-restricted $videoId: age verification failed: ${it.message}") }
         }
 
@@ -102,6 +103,7 @@ object InnerTubeXPlayer {
         if (accountOptions.always || accountOptions.premium) {
             ageVerificationExtractor()?.let { extractor ->
                 resolve(videoId, extractor, contentHints.withPremium(accountOptions.premium))
+                    .map(PlaybackData::withoutTracking)
                     .onSuccess { return Result.success(it) }
                     .onFailure { Timber.tag(TAG).w("$videoId: account playback failed, trying without: ${it.message}") }
             }
@@ -401,7 +403,14 @@ object InnerTubeXPlayer {
         val requireBoundedRange: Boolean,
         val rangeChunkSizeBytes: Long,
         val useRangeChunks: Boolean,
-    )
+    ) {
+        /** Streams fetched with the playback account are never reported to YouTube's watch history. */
+        fun withoutTracking() =
+            PlaybackData(
+                audioConfig, videoDetails, null, format, streamUrl, streamExpiresInSeconds, streamClient,
+                streamHeaders, requireBoundedRange, rangeChunkSizeBytes, useRangeChunks,
+            )
+    }
 
     private data class ExtractionBundle(
         val transportGeneration: Long,
