@@ -10,6 +10,9 @@ object OfflineSkip {
     /** A song that is not downloaded and stays this long without loading counts as unreachable. */
     const val STALL_MS = 4_000L
 
+    /** Extra wait while the stream URL is still being resolved, before it counts as a stall. */
+    const val RESOLVE_GRACE_MS = 16_000L
+
     /**
      * [next] returns the following index in play order, or -1 at the end. Walks at most [itemCount]
      * steps so repeat-all cannot loop forever, and never returns [current].

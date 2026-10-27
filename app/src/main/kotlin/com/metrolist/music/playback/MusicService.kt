@@ -3524,9 +3524,13 @@ class MusicService :
         offlineStallJob = scope.launch {
             val stallPosition = player.currentPosition
             delay(OfflineSkip.STALL_MS)
-            // Resolving the stream (which can take longer with the playback account) is not a stall:
-            // count from when it ends; it is bounded by STREAM_RESOLVE_TIMEOUT_MS.
-            while (resolvingStreamId == mediaId) delay(OfflineSkip.STALL_MS)
+            // Resolving the stream can take longer (age-restricted songs with the playback account):
+            // give it extra time, but keep skipping quickly on a really bad connection.
+            var resolvingWaitMs = 0L
+            while (resolvingStreamId == mediaId && resolvingWaitMs < OfflineSkip.RESOLVE_GRACE_MS) {
+                delay(500)
+                resolvingWaitMs += 500
+            }
             if (player.playbackState == Player.STATE_BUFFERING && player.playWhenReady &&
                 player.currentPosition == stallPosition && player.currentMediaItem?.mediaId == mediaId
             ) {
