@@ -287,6 +287,14 @@ class App :
     @Volatile
     private var cachedCoilCacheSize: Int? = null
 
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        // Vegas: Android is about to kill apps for memory; drop the PoToken WebView renderer first.
+        if (level >= android.content.ComponentCallbacks2.TRIM_MEMORY_BACKGROUND) {
+            applicationScope.launch { runCatching { InnerTubeXPlayer.onMemoryPressure() } }
+        }
+    }
+
     override fun newImageLoader(context: PlatformContext): ImageLoader {
         val cacheSize = cachedCoilCacheSize ?: runBlocking {
             dataStore.data.map { it[MaxImageCacheSizeKey] ?: 512 }.first()

@@ -59,6 +59,11 @@ class PoTokenWebView private constructor(
     @Volatile
     var isDead: Boolean = false
         private set
+
+    /** Vegas: the system killed the renderer (not a crash), i.e. the phone is short of memory. */
+    @Volatile
+    var killedForMemory: Boolean = false
+        private set
     private val poTokenContinuations =
         Collections.synchronizedMap(ArrayMap<String, Continuation<String>>())
     // Makes each generatePoToken call's continuation key unique (see generatePoToken).
@@ -125,6 +130,7 @@ class PoTokenWebView private constructor(
                 val didCrash = runCatching { detail.didCrash() }.getOrNull()
                 Timber.tag(TAG).e("PoToken WebView render process gone (didCrash=$didCrash)")
                 isDead = true
+                if (didCrash == false) killedForMemory = true
                 // Transient (OOM kill under memory pressure), NOT a BadWebViewException — that
                 // would permanently disable poTokens for the session in PoTokenGenerator.
                 val exception = PoTokenException("WebView render process gone (didCrash=$didCrash)")

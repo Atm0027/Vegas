@@ -1,6 +1,8 @@
 package com.metrolist.music.utils.potoken
 
+import android.app.ActivityManager
 import android.content.Context
+import android.os.SystemClock
 import android.webkit.CookieManager
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -23,10 +25,20 @@ class PoTokenGenerator(context: Context) {
     private var webPoTokenStreamingPot: String? = null
     private var webPoTokenGenerator: PoTokenWebView? = null
 
+    /** Last sign of memory pressure (elapsedRealtime). See [PoTokenMemory]. */
+    @Volatile
+    private var memoryPressureAt: Long? = null
+
     suspend fun getWebClientPoToken(videoId: String, sessionId: String): PoTokenResult? {
         Timber.tag(TAG).d("WebView state: supported=$webViewSupported, badImpl=$webViewBadImpl")
         if (!webViewSupported || webViewBadImpl) {
             Timber.tag(TAG).d("WebView not available: supported=$webViewSupported, badImpl=$webViewBadImpl")
+            return null
+        }
+
+        if (needsNewWebView() && skipNewWebViewForMemory()) {
+            Timber.tag(TAG).w("Low memory: not starting a PoToken WebView; proceeding without PoToken")
+            clearGenerator()
             return null
         }
 
@@ -40,6 +52,10 @@ class PoTokenGenerator(context: Context) {
             // playerResponseForPlayback can fall through to non-PoToken fallback clients (e.g.
             // ANDROID_VR) instead of blocking the entire playback path.
             Timber.tag(TAG).w("poToken generation timed out after ${POTOKEN_TIMEOUT_MS}ms; proceeding without PoToken")
+            clearGenerator()
+            null
+        } catch (e: SkippedForMemoryException) {
+            Timber.tag(TAG).w("PoToken WebView lost under low memory; proceeding without PoToken")
             clearGenerator()
             null
         } catch (e: CancellationException) {
@@ -58,6 +74,28 @@ class PoTokenGenerator(context: Context) {
         clearGenerator()
     }
 
+    /** The system is short of memory: drop the WebView and avoid new ones for a while. */
+    suspend fun onMemoryPressure() {
+        memoryPressureAt = SystemClock.elapsedRealtime()
+        clearGenerator()
+    }
+
+    private fun needsNewWebView(): Boolean {
+        val generator = webPoTokenGenerator ?: return true
+        if (generator.killedForMemory) memoryPressureAt = SystemClock.elapsedRealtime()
+        return generator.isDead || generator.isExpired
+    }
+
+    private fun skipNewWebViewForMemory(): Boolean {
+        val lowMemory =
+            runCatching {
+                val info = ActivityManager.MemoryInfo()
+                applicationContext.getSystemService(ActivityManager::class.java)?.getMemoryInfo(info)
+                info.lowMemory
+            }.getOrDefault(false)
+        return PoTokenMemory.skipNewWebView(lowMemory, memoryPressureAt, SystemClock.elapsedRealtime())
+    }
+
     private suspend fun clearGenerator() {
         webPoTokenGenLock.withLock {
             try {
@@ -72,6 +110,8 @@ class PoTokenGenerator(context: Context) {
             webPoTokenSessionId = null
         }
     }
+
+    private class SkippedForMemoryException : Exception()
 
     private companion object {
         // Healthy cold-start (WebView spin-up + botguard JS + token gen) is ~2–5s in practice;
@@ -134,6 +174,10 @@ class PoTokenGenerator(context: Context) {
         val playerPot = try {
             poTokenGenerator.generatePoToken(videoId)
         } catch (throwable: Throwable) {
+            if (!hasBeenRecreated && needsNewWebView() && skipNewWebViewForMemory()) {
+                // The renderer was just killed for memory: recreating it now could get Vegas killed too.
+                throw SkippedForMemoryException()
+            }
             if (hasBeenRecreated) {
                 // the poTokenGenerator has just been recreated (and possibly this is already the
                 // second time we try), so there is likely nothing we can do
