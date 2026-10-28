@@ -2013,7 +2013,7 @@ interface DatabaseDao {
         mediaMetadata: MediaMetadata,
     ) {
         update(SongMetadataRefresh.merge(song.song, mediaMetadata))
-        if (mediaMetadata.artists.isNotEmpty()) replaceArtists(song.id, mediaMetadata.artists)
+        SongMetadataRefresh.artistsToSave(song, mediaMetadata)?.let { replaceArtists(song.id, it) }
     }
 
     fun replaceArtists(

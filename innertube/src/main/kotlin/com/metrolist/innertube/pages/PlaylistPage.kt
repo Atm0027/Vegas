@@ -25,8 +25,8 @@ data class PlaylistPage(
                     ?.splitBySeparator()
                     ?.firstOrNull()
                     ?.firstOrNull()
-                    ?.takeIf { it.navigationEndpoint == null && it.text.isNotBlank() }
-                    ?.let { Artist(it.text.trim(), null) }
+                    ?.takeIf { it.navigationEndpoint == null }
+                    ?.let(PageHelper::textArtist)
 
         fun fromMusicResponsiveListItemRenderer(renderer: MusicResponsiveListItemRenderer): SongItem? {
             val libraryTokens = PageHelper.extractLibraryTokensFromMenuItems(renderer.menu?.menuRenderer?.items)

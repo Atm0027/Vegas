@@ -176,4 +176,43 @@ class PageHelperTest {
             ),
         )
     }
+
+    @Test
+    fun `counts in any language are not artists`() {
+        listOf(
+            "2,4\u00a0M reproducciones",
+            "3,2\u00a0M de visualizaciones",
+            "346 visualizaciones",
+            "37\u00a0K Me gusta",
+            "10,3\u00a0M usuarios mensuales",
+            "1.2M views",
+            "6m\u00a0plays",
+            "2,4\u00a0Mio. Aufrufe",
+            "1,5\u00a0M de vues",
+            "2,4\u00a0mi visualizações",
+            "240万回視聴",
+            "조회수 2.4만회",
+            "3:22",
+        ).forEach { assertTrue(it, PageHelper.isStatsText(it)) }
+    }
+
+    @Test
+    fun `artists with numbers are kept`() {
+        listOf("50 Cent", "21 Savage", "2 Chainz", "5 Seconds of Summer", "100 gecs", "Quevedo", "The 1975", "6ix9ine")
+            .forEach { assertTrue(it, !PageHelper.isStatsText(it)) }
+    }
+
+    @Test
+    fun `plays count after a linked artist is dropped`() {
+        val runs =
+            listOf(
+                Run("Clarent", NavigationEndpoint(browseEndpoint = BrowseEndpoint(browseId = "UC1"))),
+                Run(" • ", null),
+                Run("2,4\u00a0M reproducciones", NavigationEndpoint(browseEndpoint = BrowseEndpoint(browseId = "UC1"))),
+            )
+
+        assertEquals(listOf(Artist("Clarent", "UC1")), PageHelper.extractArtists(runs))
+        assertEquals(null, PageHelper.textArtist(Run("2,4\u00a0M reproducciones", null)))
+        assertEquals(Artist("De La Rose", null), PageHelper.textArtist(Run(" De La Rose ", null)))
+    }
 }

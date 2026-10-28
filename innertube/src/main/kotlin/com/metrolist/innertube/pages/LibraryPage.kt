@@ -204,12 +204,7 @@ data class LibraryPage(
                                 ?.oddElements()
                                 ?.flatMap { run ->
                                     if (run.navigationEndpoint == null) {
-                                        listOfNotNull(
-                                            run.text
-                                                .trim()
-                                                .takeIf(String::isNotEmpty)
-                                                ?.let { Artist(it, null) },
-                                        )
+                                        listOfNotNull(PageHelper.textArtist(run))
                                     } else {
                                         PageHelper.extractArtists(listOf(run))
                                     }

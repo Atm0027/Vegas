@@ -1,5 +1,8 @@
 package com.metrolist.music.utils
 
+import com.metrolist.music.db.entities.ArtistEntity
+import com.metrolist.music.db.entities.Song
+import com.metrolist.music.db.entities.SongArtistMap
 import com.metrolist.music.db.entities.SongEntity
 import com.metrolist.music.models.MediaMetadata
 import kotlinx.coroutines.runBlocking
@@ -83,5 +86,25 @@ class SongMetadataRefreshTest {
         assertEquals(3, calls)
         assertTrue(outcome.stoppedEarly)
         assertEquals(500, outcome.notFound)
+    }
+
+    private fun saved(vararg artists: ArtistEntity) =
+        Song(
+            song = old,
+            artists = artists.toList(),
+            artistMaps = artists.mapIndexed { i, a -> SongArtistMap(songId = "a", artistId = a.id, position = i) },
+        )
+
+    @Test
+    fun `drops counts from fresh artists`() {
+        val fresh = meta().copy(artists = listOf(MediaMetadata.Artist("UC1", "Clarent"), MediaMetadata.Artist(null, "2,4\u00a0M reproducciones")))
+        assertEquals(listOf(MediaMetadata.Artist("UC1", "Clarent")), SongMetadataRefresh.artistsToSave(saved(), fresh))
+    }
+
+    @Test
+    fun `cleans saved counts when YouTube sends no artists`() {
+        val song = saved(ArtistEntity("UC1", "Clarent"), ArtistEntity("LA1", "2,4\u00a0M reproducciones"))
+        assertEquals(listOf(MediaMetadata.Artist("UC1", "Clarent")), SongMetadataRefresh.artistsToSave(song, meta()))
+        assertEquals(null, SongMetadataRefresh.artistsToSave(saved(ArtistEntity("UC1", "Clarent")), meta()))
     }
 }

@@ -29,8 +29,9 @@ data class PodcastPage(
 
             val channel = runs?.splitBySeparator()?.firstOrNull()?.firstOrNull()
             return channel
-                ?.takeIf { it.text.isNotBlank() && it.navigationEndpoint == null }
-                ?.let { listOf(Artist(it.text.trim(), null)) }
+                ?.takeIf { it.navigationEndpoint == null }
+                ?.let(PageHelper::textArtist)
+                ?.let(::listOf)
                 .orEmpty()
         }
 
@@ -62,8 +63,8 @@ data class PodcastPage(
                             subtitle
                                 ?.runs
                                 ?.singleOrNull()
-                                ?.takeIf { it.navigationEndpoint == null && it.text.isNotBlank() }
-                                ?.let { Artist(it.text.trim(), null) }
+                                ?.takeIf { it.navigationEndpoint == null }
+                                ?.let(PageHelper::textArtist)
                         }?.let(::listOf)
                         .orEmpty()
                 }

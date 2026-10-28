@@ -7,7 +7,9 @@
 package com.metrolist.music.utils
 
 import com.metrolist.innertube.YouTube
+import com.metrolist.innertube.pages.PageHelper
 import com.metrolist.music.db.MusicDatabase
+import com.metrolist.music.db.entities.Song
 import com.metrolist.music.db.entities.SongEntity
 import com.metrolist.music.di.ApplicationScope
 import com.metrolist.music.models.MediaMetadata
@@ -47,6 +49,22 @@ object SongMetadataRefresh {
             libraryAddToken = meta.libraryAddToken ?: old.libraryAddToken,
             libraryRemoveToken = meta.libraryRemoveToken ?: old.libraryRemoveToken,
         )
+
+    /**
+     * The artists to write for [song], or null to keep the saved ones: YouTube's when it sent any, otherwise
+     * the saved ones without the counts ("2,4 M reproducciones") older versions took for an artist.
+     */
+    fun artistsToSave(
+        song: Song,
+        meta: MediaMetadata,
+    ): List<MediaMetadata.Artist>? {
+        val fresh = meta.artists.filterNot { PageHelper.isStatsText(it.name) }
+        if (fresh.isNotEmpty()) return fresh
+        val saved = song.orderedArtists
+        val kept = saved.filterNot { PageHelper.isStatsText(it.name) }
+        if (kept.size == saved.size) return null
+        return kept.map { MediaMetadata.Artist(id = it.id, name = it.name) }
+    }
 
     data class Outcome(
         val updated: Int,

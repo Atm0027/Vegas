@@ -2,7 +2,6 @@ package com.metrolist.innertube.pages
 
 import com.metrolist.innertube.models.Album
 import com.metrolist.innertube.models.AlbumItem
-import com.metrolist.innertube.models.Artist
 import com.metrolist.innertube.models.MusicResponsiveListItemRenderer
 import com.metrolist.innertube.models.SongItem
 import com.metrolist.innertube.models.oddElements
@@ -28,8 +27,7 @@ data class AlbumPage(
                 ) {
                     subtitle?.splitBySeparator()?.firstOrNull()?.oddElements()
                         ?.mapNotNull { run ->
-                            run.text.trim().takeIf { it.isNotEmpty() && run.navigationEndpoint == null }
-                                ?.let { Artist(it, null) }
+                            run.takeIf { it.navigationEndpoint == null }?.let(PageHelper::textArtist)
                         }.orEmpty()
                 } else emptyList()
             }.ifEmpty { album?.artists.orEmpty() }
