@@ -890,4 +890,10 @@
     <string name="pc_sync_wrong_code">Wrong or expired code</string>
     <string name="keep_playing_on_focus_loss">Keep playing over other apps</string>
     <string name="keep_playing_on_focus_loss_desc">Do not pause when a game or video takes the sound; both play together</string>
+    <string name="refresh_all_metadata">Update metadata of all songs</string>
+    <string name="refresh_all_metadata_desc">Get title, artists, album and artwork again from YouTube Music</string>
+    <string name="refresh_all_metadata_confirm">Every saved song will be checked against YouTube Music. Likes, downloads and lists stay as they are, but titles you edited by hand will be replaced. It runs in the background; tap again to stop it.</string>
+    <string name="refresh_all_metadata_progress">Updating %1$d of %2$d… Tap to stop</string>
+    <string name="refresh_all_metadata_done">Done: %1$d updated, %2$d not found</string>
+    <string name="refresh_all_metadata_stopped">Stopped without connection: %1$d updated, %2$d left</string>
 </resources>

@@ -775,4 +775,10 @@
     <string name="other">Otros</string>
     <string name="player_pause">Pausar</string>
     <string name="top_result">Mejor resultado</string>
+    <string name="refresh_all_metadata">Actualizar metadatos de todas las canciones</string>
+    <string name="refresh_all_metadata_desc">Volver a obtener título, artistas, álbum y portada desde YouTube Music</string>
+    <string name="refresh_all_metadata_confirm">Se revisarán todas las canciones guardadas en YouTube Music. Los Me gusta, las descargas y las listas no cambian, pero los títulos que hayas editado a mano se sustituirán. Se hace en segundo plano; tócalo otra vez para pararlo.</string>
+    <string name="refresh_all_metadata_progress">Actualizando %1$d de %2$d… Toca para parar</string>
+    <string name="refresh_all_metadata_done">Hecho: %1$d actualizadas, %2$d no encontradas</string>
+    <string name="refresh_all_metadata_stopped">Parado por falta de conexión: %1$d actualizadas, %2$d pendientes</string>
 </resources>

@@ -60,6 +60,7 @@ import com.metrolist.music.models.MediaMetadata
 import com.metrolist.music.models.toMediaMetadata
 import com.metrolist.music.ui.utils.resize
 import com.metrolist.music.utils.ArtistNameAliases
+import com.metrolist.music.utils.SongMetadataRefresh
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -1998,9 +1999,29 @@ interface DatabaseDao {
             ),
         )
         if (!overwriteArtists || mediaMetadata.artists.isEmpty()) return
+        replaceArtists(song.id, mediaMetadata.artists)
+    }
 
-        songArtistMap(song.id).forEach(::delete)
-        mediaMetadata.artists.forEachIndexed { index, artist ->
+    // Vegas: "update metadata of all songs" in Settings; only these rows come from YouTube's queue endpoint.
+    @Query("SELECT id FROM song WHERE isLocal = 0 AND isEpisode = 0 AND isUploaded = 0 AND uploadEntityId IS NULL ORDER BY rowid")
+    fun refreshableSongIds(): List<String>
+
+    // Vegas: rewrites only the metadata of an existing row, keeping old values where YouTube sent none.
+    @Transaction
+    fun refreshMetadata(
+        song: Song,
+        mediaMetadata: MediaMetadata,
+    ) {
+        update(SongMetadataRefresh.merge(song.song, mediaMetadata))
+        if (mediaMetadata.artists.isNotEmpty()) replaceArtists(song.id, mediaMetadata.artists)
+    }
+
+    fun replaceArtists(
+        songId: String,
+        artists: List<MediaMetadata.Artist>,
+    ) {
+        songArtistMap(songId).forEach(::delete)
+        artists.forEachIndexed { index, artist ->
             val artistId = artist.id ?: artistByName(artist.name)?.id ?: ArtistEntity.generateArtistId()
 
             insert(
@@ -2012,7 +2033,7 @@ interface DatabaseDao {
             )
             insert(
                 SongArtistMap(
-                    songId = song.id,
+                    songId = songId,
                     artistId = artistId,
                     position = index,
                 ),

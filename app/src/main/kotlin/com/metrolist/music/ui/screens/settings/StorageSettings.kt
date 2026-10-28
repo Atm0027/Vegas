@@ -68,7 +68,10 @@ import com.metrolist.music.ui.component.Material3SettingsGroup
 import com.metrolist.music.ui.component.Material3SettingsItem
 import android.text.format.Formatter
 import com.metrolist.music.ui.utils.backToMain
+import com.metrolist.music.utils.MetadataRefresher
+import com.metrolist.music.utils.MetadataRefresherEntryPoint
 import com.metrolist.music.utils.rememberPreference
+import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
@@ -119,6 +122,12 @@ fun StorageSettings(
         key = EnableSongCacheKey,
         defaultValue = true
     )
+
+    val metadataRefresher = remember {
+        EntryPointAccessors.fromApplication(context.applicationContext, MetadataRefresherEntryPoint::class.java).metadataRefresher()
+    }
+    val metadataState by metadataRefresher.state.collectAsStateWithLifecycle()
+    var confirmMetadataRefresh by remember { mutableStateOf(false) }
 
     var clearDownloads by remember { mutableStateOf(false) }
     var clearCacheDialog by remember { mutableStateOf(false) }
@@ -182,6 +191,23 @@ fun StorageSettings(
             delay(500)
             playerCacheSize = tryOrNull { playerCache.cacheSpace } ?: 0
         }
+    }
+
+    if (confirmMetadataRefresh) {
+        AlertDialog(
+            onDismissRequest = { confirmMetadataRefresh = false },
+            title = { Text(stringResource(R.string.refresh_all_metadata)) },
+            text = { Text(stringResource(R.string.refresh_all_metadata_confirm)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    confirmMetadataRefresh = false
+                    metadataRefresher.toggle()
+                }) { Text(stringResource(android.R.string.ok)) }
+            },
+            dismissButton = {
+                TextButton(onClick = { confirmMetadataRefresh = false }) { Text(stringResource(android.R.string.cancel)) }
+            },
+        )
     }
 
     if (clearDownloads) {
@@ -306,6 +332,41 @@ fun StorageSettings(
                 ),
             ),
         )
+        Material3SettingsGroup(
+            title = stringResource(R.string.filter_library),
+            items =
+                listOf(
+                    Material3SettingsItem(
+                        icon = painterResource(R.drawable.sync),
+                        title = { Text(stringResource(R.string.refresh_all_metadata)) },
+                        description = {
+                            when (val state = metadataState) {
+                                is MetadataRefresher.State.Running ->
+                                    Column {
+                                        Text(stringResource(R.string.refresh_all_metadata_progress, state.done, state.total))
+                                        LinearProgressIndicator(
+                                            progress = { if (state.total == 0) 0f else state.done.toFloat() / state.total },
+                                            modifier = Modifier.fillMaxWidth().padding(top = 6.dp),
+                                        )
+                                    }
+                                is MetadataRefresher.State.Finished ->
+                                    Text(
+                                        stringResource(
+                                            if (state.outcome.stoppedEarly) R.string.refresh_all_metadata_stopped else R.string.refresh_all_metadata_done,
+                                            state.outcome.updated,
+                                            state.outcome.notFound,
+                                        ),
+                                    )
+                                MetadataRefresher.State.Idle -> Text(stringResource(R.string.refresh_all_metadata_desc))
+                            }
+                        },
+                        onClick = {
+                            if (metadataState is MetadataRefresher.State.Running) metadataRefresher.toggle() else confirmMetadataRefresh = true
+                        },
+                    ),
+                ),
+        )
+
         Material3SettingsGroup(
             title = stringResource(R.string.offline_downloads),
             items =
