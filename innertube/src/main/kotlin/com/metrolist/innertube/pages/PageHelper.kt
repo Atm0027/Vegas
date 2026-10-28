@@ -181,7 +181,7 @@ object PageHelper {
 
     private val STATS_WORDS_PATTERN =
         Regex(
-            """^[\d\s.,\u00A0\u202F]+[\p{L}.]{0,6}\.?\s*(?:de\s+|d['’]\s*)?(?:${STATS_WORDS.joinToString("|") { Regex.escape(it) }})""",
+            """^[\d\s.,\u00A0\u202F]+[\p{L}.]{0,6}\.?[\s\u00A0\u202F]*(?:de[\s\u00A0\u202F]+|d['’][\s\u00A0\u202F]*)?(?:${STATS_WORDS.joinToString("|") { Regex.escape(it) }})""",
             RegexOption.IGNORE_CASE,
         )
 
