@@ -26,6 +26,7 @@ import com.metrolist.innertubex.extraction.YtConfigParserImpl
 import com.metrolist.innertubex.extraction.generateClientPlaybackNonce
 import com.metrolist.innertubex.extraction.strategy.PoTokenProviderKind
 import com.metrolist.music.constants.AudioQuality
+import com.metrolist.music.playback.StreamProbe
 import com.metrolist.music.utils.potoken.PoTokenGenerator
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.sync.Mutex
@@ -80,15 +81,24 @@ object InnerTubeXPlayer {
             id: String,
             extractor: InnerTubeExtractor? = null,
             hints: ContentHints = contentHints,
-        ) = resolvePlayback(
-            id,
-            playlistId,
-            audioQuality,
-            connectivityManager,
-            hints,
-            allowBoundedRange,
-            qualityOverride,
-            extractor ?: bundle().extractor,
+        ) = StreamProbe.resolveVerified(
+            resolve = {
+                resolvePlayback(
+                    id,
+                    playlistId,
+                    audioQuality,
+                    connectivityManager,
+                    hints,
+                    allowBoundedRange,
+                    qualityOverride,
+                    extractor ?: bundle().extractor,
+                )
+            },
+            probe = { StreamProbe.check(it.streamUrl, it.streamHeaders) },
+            onRejected = {
+                Timber.tag(TAG).i("$id: ${it.streamClient} stream refused (403), trying another client")
+                markStreamClientFailed(id, it.streamClient)
+            },
         )
 
         suspend fun resolveWithAgeVerification(): Result<PlaybackData>? {

@@ -534,6 +534,7 @@ class MusicService :
     private var currentMediaIdRetryCount = mutableMapOf<String, Int>()
     private val MAX_RETRY_PER_SONG = 3
     private val RETRY_DELAY_MS = 1000L
+    private val STREAM_REFRESH_DELAY_MS = 150L
 
     // Track failed songs to prevent infinite retry loops
     private val recentlyFailedSongs = mutableSetOf<String>()
@@ -3223,7 +3224,8 @@ class MusicService :
         retryJob?.cancel()
         retryJob =
             scope.launch {
-                delay(RETRY_DELAY_MS)
+                // A refused or broken stream gets a new address right away; waiting only delays the song.
+                delay(STREAM_REFRESH_DELAY_MS)
 
                 if (player.currentMediaItem?.mediaId != mediaId ||
                     player.currentMediaItemIndex != retryIndex ||

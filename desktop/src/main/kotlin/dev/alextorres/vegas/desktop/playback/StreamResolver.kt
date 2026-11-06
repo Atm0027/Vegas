@@ -35,6 +35,8 @@ data class ResolvedStream(
 class StreamResolver(
     private val extract: suspend (videoId: String, excluded: Set<String>) -> ResolvedStream,
     private val now: () -> Long = System::currentTimeMillis,
+    /** True when YouTube refuses the address (403/410); the next client is tried before playing. */
+    private val isRefused: suspend (ResolvedStream) -> Boolean = { false },
 ) {
     private class Failed(val clients: Set<String>, val atMs: Long)
 
@@ -44,7 +46,20 @@ class StreamResolver(
     suspend fun resolve(videoId: String): Result<ResolvedStream> {
         cache[videoId]?.takeIf { it.expiresAtMs - now() > REUSE_MARGIN_MS }?.let { return Result.success(it) }
         return try {
-            Result.success(extract(videoId, excluded(videoId)).also { cache[videoId] = it })
+            var stream = extract(videoId, excluded(videoId))
+            var refusals = 0
+            while (refusals < MAX_REFUSALS && isRefused(stream)) {
+                refusals++
+                markFailed(videoId, stream.client)
+                stream = try {
+                    extract(videoId, excluded(videoId))
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (_: Exception) {
+                    break
+                }
+            }
+            Result.success(stream.also { cache[videoId] = it })
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
@@ -66,6 +81,8 @@ class StreamResolver(
 
     companion object {
         const val REUSE_MARGIN_MS = 60_000L
+        const val MAX_REFUSALS = 2
+        private const val PROBE_TIMEOUT_MS = 3_000
         const val STREAM_CLIENT_FAILURE_TTL_MS = 300_000L
         private const val DEFAULT_STREAM_TTL_MS = 5 * 60_000L
 
@@ -92,8 +109,30 @@ class StreamResolver(
                     loudnessDb = stream.loudnessDb,
                     durationMs = stream.mediaMetadata?.durationSeconds?.let { it * 1000L },
                 )
-            })
+            }, isRefused = ::refusedByYouTube)
         }
+
+        /** Asks for the first byte; only a clear 403/410 counts as refused (the runtime has no java.net.http). */
+        private suspend fun refusedByYouTube(stream: ResolvedStream): Boolean =
+            kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+                try {
+                    val connection = java.net.URI(stream.url).toURL().openConnection(YouTube.proxy ?: java.net.Proxy.NO_PROXY)
+                        as java.net.HttpURLConnection
+                    try {
+                        connection.connectTimeout = PROBE_TIMEOUT_MS
+                        connection.readTimeout = PROBE_TIMEOUT_MS
+                        stream.headers.forEach { (name, value) -> connection.setRequestProperty(name, value) }
+                        connection.setRequestProperty("Range", "bytes=0-0")
+                        connection.responseCode in setOf(403, 410)
+                    } finally {
+                        connection.disconnect()
+                    }
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (_: Exception) {
+                    false
+                }
+            }
 
         /** Streams for downloads: always m4a, whatever the playback quality (as on the phone). */
         fun downloadSource(): suspend (String) -> DownloadStream {

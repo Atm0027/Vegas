@@ -73,4 +73,35 @@ class StreamResolverTest {
         val stream = StreamResolver.live().resolve("fJ9rUzIMcZQ").getOrThrow()
         assertTrue(stream.url.startsWith("https://"))
     }
+
+    @Test
+    fun refusedStreamTriesTheNextClientBeforePlaying() = runBlocking {
+        val excludedSeen = mutableListOf<Set<String>>()
+        val probing = StreamResolver(
+            extract = { id, excluded ->
+                excludedSeen += excluded
+                val client = if ("WEB" in excluded) "TV" else "WEB"
+                ResolvedStream(id, "https://example/$id/$client", emptyMap(), "audio/webm", expiresAt, client, null)
+            },
+            now = { now },
+            isRefused = { it.client == "WEB" },
+        )
+        assertEquals("TV", probing.resolve("v").getOrThrow().client)
+        assertEquals(listOf(emptySet(), setOf("WEB")), excludedSeen)
+    }
+
+    @Test
+    fun alwaysRefusedStopsAfterTheLimit() = runBlocking {
+        var extracts = 0
+        val probing = StreamResolver(
+            extract = { id, _ ->
+                extracts++
+                ResolvedStream(id, "https://example/$id", emptyMap(), "audio/webm", expiresAt, "C$extracts", null)
+            },
+            now = { now },
+            isRefused = { true },
+        )
+        assertTrue(probing.resolve("v").isSuccess)
+        assertEquals(StreamResolver.MAX_REFUSALS + 1, extracts)
+    }
 }
