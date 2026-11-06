@@ -74,4 +74,11 @@ class StreamProbeTest {
         )
         assertEquals(boom, result.exceptionOrNull())
     }
+
+    @Test
+    fun rangeHeader_matchesThePlayerRequest() {
+        assertEquals("bytes=0-999", StreamProbe.rangeHeader(1_000L))
+        assertEquals("bytes=0-", StreamProbe.rangeHeader(null))
+        assertEquals("bytes=0-", StreamProbe.rangeHeader(0L))
+    }
 }

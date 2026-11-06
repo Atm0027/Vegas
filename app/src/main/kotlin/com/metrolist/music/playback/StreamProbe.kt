@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 object StreamProbe {
@@ -21,6 +22,7 @@ object StreamProbe {
     /** Rejected streams retried with another client before handing the last one to the player. */
     const val MAX_REJECTIONS = 2
 
+    private const val TAG = "StreamProbe"
     private const val TIMEOUT_MS = 3_000L
 
     fun verdict(httpCode: Int): Verdict =
@@ -67,10 +69,18 @@ object StreamProbe {
             .build()
     }
 
-    /** Asks YouTube for the first byte of [url]; never throws. */
+    /**
+     * The Range the player sends. YouTube can accept a one-byte request and still refuse the whole
+     * song (seen with web clients), so ask exactly like the player and stop once the status arrives.
+     */
+    fun rangeHeader(contentLength: Long?): String =
+        if (contentLength != null && contentLength > 0L) "bytes=0-${contentLength - 1}" else "bytes=0-"
+
+    /** Asks YouTube for [url] the way the player will and reads only the status; never throws. */
     suspend fun check(
         url: String,
         headers: Map<String, String>,
+        contentLength: Long? = null,
     ): Verdict =
         withContext(Dispatchers.IO) {
             try {
@@ -79,12 +89,15 @@ object StreamProbe {
                         .Builder()
                         .url(url)
                         .apply { headers.forEach { (name, value) -> header(name, value) } }
-                        .header("Range", "bytes=0-0")
+                        .header("Range", rangeHeader(contentLength))
                         .build()
-                client.newCall(request).execute().use { verdict(it.code) }
+                client.newCall(request).execute().use { response ->
+                    verdict(response.code).also { Timber.tag(TAG).d("probe: HTTP ${response.code} -> $it") }
+                }
             } catch (error: CancellationException) {
                 throw error
-            } catch (_: Exception) {
+            } catch (error: Exception) {
+                Timber.tag(TAG).d("probe: no answer (${error::class.simpleName})")
                 Verdict.UNKNOWN
             }
         }

@@ -112,7 +112,7 @@ class StreamResolver(
             }, isRefused = ::refusedByYouTube)
         }
 
-        /** Asks for the first byte; only a clear 403/410 counts as refused (the runtime has no java.net.http). */
+        /** Asks like the player (whole range, status only); only a clear 403/410 counts as refused (the runtime has no java.net.http). */
         private suspend fun refusedByYouTube(stream: ResolvedStream): Boolean =
             kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
                 try {
@@ -122,7 +122,7 @@ class StreamResolver(
                         connection.connectTimeout = PROBE_TIMEOUT_MS
                         connection.readTimeout = PROBE_TIMEOUT_MS
                         stream.headers.forEach { (name, value) -> connection.setRequestProperty(name, value) }
-                        connection.setRequestProperty("Range", "bytes=0-0")
+                        connection.setRequestProperty("Range", "bytes=0-")
                         connection.responseCode in setOf(403, 410)
                     } finally {
                         connection.disconnect()

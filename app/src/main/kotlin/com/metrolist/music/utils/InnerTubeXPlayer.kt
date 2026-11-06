@@ -27,6 +27,7 @@ import com.metrolist.innertubex.extraction.generateClientPlaybackNonce
 import com.metrolist.innertubex.extraction.strategy.PoTokenProviderKind
 import com.metrolist.music.constants.AudioQuality
 import com.metrolist.music.playback.StreamProbe
+import com.metrolist.music.playback.WidelyRefusedClients
 import com.metrolist.music.utils.potoken.PoTokenGenerator
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.sync.Mutex
@@ -48,6 +49,7 @@ object InnerTubeXPlayer {
 
     private val bundleMutex = Mutex()
     private val streamClientFailures = java.util.concurrent.ConcurrentHashMap<String, FailedStreamClients>()
+    private val widelyRefused = WidelyRefusedClients()
     private val alternativeUploads = java.util.concurrent.ConcurrentHashMap<String, String>()
     private val withoutAlternativeUpload = java.util.concurrent.ConcurrentHashMap.newKeySet<String>()
     private val knownAgeRestricted = java.util.concurrent.ConcurrentHashMap.newKeySet<String>()
@@ -94,7 +96,7 @@ object InnerTubeXPlayer {
                     extractor ?: bundle().extractor,
                 )
             },
-            probe = { StreamProbe.check(it.streamUrl, it.streamHeaders) },
+            probe = { StreamProbe.check(it.streamUrl, it.streamHeaders, it.format.contentLength) },
             onRejected = {
                 Timber.tag(TAG).i("$id: ${it.streamClient} stream refused (403), trying another client")
                 markStreamClientFailed(id, it.streamClient)
@@ -260,16 +262,32 @@ object InnerTubeXPlayer {
                     allowBoundedRange = allowBoundedRange,
                 )
             val excludedClients = failedStreamClients(videoId)
-            val stream =
+            val refusedEverywhere = widelyRefused.clients(System.currentTimeMillis()) - excludedClients
+
+            suspend fun extract(excluded: Set<String>) =
                 requireNotNull(
                     extractor.extract(
                         videoId = videoId,
                         hints = hints,
-                        excludedClients = excludedClients,
+                        excludedClients = excluded,
                         audioQuality = qualityOverride ?: audioQuality.toInnerTubeX(connectivityManager),
                         clientPlaybackNonce = generateClientPlaybackNonce(),
                     ),
                 ) { "InnerTubeX returned no playable stream" }
+            val stream =
+                if (refusedEverywhere.isEmpty()) {
+                    extract(excludedClients)
+                } else {
+                    // Skip clients YouTube is refusing on other songs; if nothing else plays, try them anyway.
+                    try {
+                        extract(excludedClients + refusedEverywhere)
+                    } catch (error: CancellationException) {
+                        throw error
+                    } catch (error: Exception) {
+                        Timber.tag(TAG).i("$videoId: no stream without $refusedEverywhere, trying them again")
+                        extract(excludedClients)
+                    }
+                }
             check(stream.sabrBootstrap == null) { "SABR is not supported by this playback engine" }
             Result.success(stream.toPlaybackData())
         } catch (error: CancellationException) {
@@ -295,11 +313,15 @@ object InnerTubeXPlayer {
         streamClientFailures.compute(videoId) { _, failures ->
             FailedStreamClients(failures?.clientNames.orEmpty() + clientName, nowMs)
         }
+        widelyRefused.record(clientName, videoId, nowMs)
     }
 
     fun clearStreamClientFailures() {
         streamClientFailures.clear()
+        widelyRefused.clear()
     }
+
+    internal fun widelyRefusedClients(nowMs: Long = System.currentTimeMillis()): Set<String> = widelyRefused.clients(nowMs)
 
     suspend fun refreshAfterStreamRejection(): Boolean = bundle().cipherService.refreshAfterStreamRejection()
 
