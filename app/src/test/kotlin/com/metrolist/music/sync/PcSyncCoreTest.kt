@@ -98,6 +98,17 @@ class PcSyncCoreTest {
     }
 
     @Test
+    fun pairingWithAnotherPcSendsTheWholeLibrary() = runBlocking {
+        core.pair(pc, "123456").getOrThrow()
+        assertTrue(core.syncNow().isSuccess)
+        core.pair(pc.copy(serverId = "other-pc-id"), "654321").getOrThrow()
+        assertTrue(core.syncNow().isSuccess)
+        // The new PC knows nothing yet: what the first one already had must reach it too.
+        assertEquals(setOf("LP1"), transport.received.last().playlists.map { it.id }.toSet())
+        assertEquals(setOf("a"), transport.received.last().entries.map { it.song.id }.toSet())
+    }
+
+    @Test
     fun notOnHomeWifiDoesNotSync() = runBlocking {
         core.pair(pc, "123456").getOrThrow()
         wifi = false

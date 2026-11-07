@@ -169,7 +169,9 @@ class PcSyncCore(
                 var pc = checkNotNull(paired.load()) { "Not paired" }
                 val token = checkNotNull(paired.token()) { "No token" }
                 check(onHomeWifi()) { "Not on home wifi" }
-                val request = SyncRequest(deviceId, engine.prepareOutgoing(PEER), engine.receivedWatermark(PEER))
+                // Watermarks belong to one PC: a PC paired later (or the same one reset) starts from zero.
+                val peer = pc.serverId
+                val request = SyncRequest(deviceId, engine.prepareOutgoing(peer), engine.receivedWatermark(peer))
                 val response = try {
                     transport.sync(pc, token, request)
                 } catch (e: java.io.IOException) {
@@ -178,8 +180,8 @@ class PcSyncCore(
                     pc = checkNotNull(paired.load())
                     transport.sync(pc, token, request)
                 }
-                engine.markSent(PEER, request.changes.upToSeq)
-                engine.receive(PEER, response.changes)
+                engine.markSent(peer, request.changes.upToSeq)
+                engine.receive(peer, response.changes)
                 _lastSync.value = System.currentTimeMillis()
             }
         }
@@ -192,8 +194,4 @@ class PcSyncCore(
         } catch (e: Exception) {
             Result.failure(e)
         }
-
-    private companion object {
-        const val PEER = "pc"
-    }
 }
