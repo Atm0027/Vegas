@@ -29,6 +29,7 @@ import androidx.media3.session.SessionResult
 import com.google.common.collect.ImmutableList
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
+import com.google.common.util.concurrent.MoreExecutors
 import com.metrolist.innertube.YouTube
 import com.metrolist.innertube.models.PlaylistItem
 import com.metrolist.innertube.models.SongItem
@@ -711,6 +712,20 @@ constructor(
     override fun onSetMediaItems(
         mediaSession: MediaSession,
         controller: MediaSession.ControllerInfo,
+        mediaItems: MutableList<MediaItem>,
+        startIndex: Int,
+        startPositionMs: Long,
+    ): ListenableFuture<MediaItemsWithStartPosition> =
+        Futures.transform(
+            resolveMediaItems(mediaItems, startIndex, startPositionMs),
+            { result ->
+                EmptyMediaRequest.orKeepQueue(result.mediaItems, mediaItems.firstOrNull()?.mediaId)
+                result
+            },
+            MoreExecutors.directExecutor(),
+        )
+
+    private fun resolveMediaItems(
         mediaItems: MutableList<MediaItem>,
         startIndex: Int,
         startPositionMs: Long,
