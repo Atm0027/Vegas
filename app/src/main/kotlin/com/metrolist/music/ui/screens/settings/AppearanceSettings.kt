@@ -488,6 +488,7 @@ fun AppearanceSettings(
                     PlayerButtonsStyle.DEFAULT -> stringResource(R.string.default_style)
                     PlayerButtonsStyle.PRIMARY -> stringResource(R.string.primary_color_style)
                     PlayerButtonsStyle.TERTIARY -> stringResource(R.string.tertiary_color_style)
+                    PlayerButtonsStyle.COVER -> stringResource(R.string.cover_color_style)
                 }
             },
         )
@@ -1058,6 +1059,7 @@ fun AppearanceSettings(
                                     PlayerButtonsStyle.DEFAULT -> stringResource(R.string.default_style)
                                     PlayerButtonsStyle.PRIMARY -> stringResource(R.string.primary_color_style)
                                     PlayerButtonsStyle.TERTIARY -> stringResource(R.string.tertiary_color_style)
+                                    PlayerButtonsStyle.COVER -> stringResource(R.string.cover_color_style)
                                 },
                             )
                         },
