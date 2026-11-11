@@ -94,6 +94,14 @@
     <string name="player_background_blur">Blur</string>
     <string name="mini_player_cover_art">Cover art</string>
     <string name="cover_color_style">Cover colors</string>
+    <string name="settings_section_playback">Playback</string>
+    <string name="settings_section_content_lyrics">Content &amp; lyrics</string>
+    <string name="settings_group_shuffle">Shuffle &amp; repeat</string>
+    <string name="settings_group_behavior">Behavior</string>
+    <string name="settings_group_home">Home</string>
+    <string name="settings_group_display">Display</string>
+    <string name="settings_group_navigation">Navigation &amp; library</string>
+    <string name="settings_group_gestures">Gestures</string>
     <string name="player_buttons_style">Player button colors</string>
     <string name="default_style">Default</string>
     <string name="primary_color_style">Primary color</string>
