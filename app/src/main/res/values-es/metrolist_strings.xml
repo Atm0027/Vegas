@@ -568,6 +568,9 @@
     <string name="enable_paxsenix">Habilitar Paxsenix</string>
     <string name="enable_paxsenix_desc">Letras sincronizadas de alta calidad por la API Paxsenix</string>
     <string name="experimental_lyrics">Letras experimentales</string>
+    <string name="smooth_lyrics">Máxima fluidez en las letras</string>
+    <string name="smooth_lyrics_desc">Actualiza las letras sincronizadas en cada fotograma. Desactívalo para actualizarlas 30 veces por segundo y ahorrar batería</string>
+    <string name="mini_player_cover_art">Carátula</string>
     <string name="experimental_lyrics_desc">Activar Nuevas letras experimentales con mejor animación y rendimiento</string>
     <string name="experimental_lyrics_beta_title">Característica experimental</string>
     <string name="experimental_lyrics_beta_message">El nuevo componente de letras está en desarrollo aún y puede contener errores ¿estás seguro de activar?</string>
