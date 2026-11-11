@@ -185,28 +185,16 @@ fun LibraryPlaylistsScreen(
         )
 
 
-    val uploadedPlaylist =
-        Playlist(
-            playlist = PlaylistEntity(
-                id = UUID.randomUUID().toString(),
-                name = stringResource(R.string.uploaded_playlist)
-            ),
-            songCount = 0,
-            songThumbnails = emptyList(),
-        )
-
     val (showLiked) = rememberPreference(ShowLikedPlaylistKey, true)
     val (showDownloaded) = rememberPreference(ShowDownloadedPlaylistKey, true)
     val showLikedPlaylist = showLiked && matchesNormalizedQuery(normalizedQuery, likedPlaylist.playlist.name)
     val showDownloadedPlaylist =
         showDownloaded && matchesNormalizedQuery(normalizedQuery, downloadPlaylist.playlist.name)
-    val showUploadedPlaylists = matchesNormalizedQuery(normalizedQuery, uploadedPlaylist.playlist.name)
 
     val visibleResults = remember(
         filteredPlaylists,
         showLikedPlaylist,
         showDownloadedPlaylist,
-        showUploadedPlaylists,
         topSize,
     ) {
         buildList {
@@ -230,17 +218,6 @@ fun LibraryPlaylistsScreen(
                     ),
                 )
             }
-            if (showUploadedPlaylists) {
-                add(
-                    VisiblePlaylistItem(
-                        key = "uploadedPlaylist",
-                        playlist = uploadedPlaylist,
-                        autoPlaylist = true,
-                        route = "auto_playlist/uploaded",
-                    ),
-                )
-            }
-
             filteredPlaylists
                 .distinctBy { it.id }
                 .forEach { playlist ->

@@ -177,24 +177,12 @@ fun LibraryMixScreen(
             songThumbnails = emptyList(),
         )
 
-    val uploadedPlaylist =
-        Playlist(
-            playlist =
-                PlaylistEntity(
-                    id = UUID.randomUUID().toString(),
-                    name = stringResource(R.string.uploaded_playlist),
-                ),
-            songCount = 0,
-            songThumbnails = emptyList(),
-        )
-
     val (showLiked) = rememberPreference(ShowLikedPlaylistKey, true)
     val (showDownloaded) = rememberPreference(ShowDownloadedPlaylistKey, true)
     
     val showLikedPlaylist = showLiked && matchesNormalizedQuery(normalizedQuery, likedPlaylist.playlist.name)
     val showDownloadedPlaylist =
         showDownloaded && matchesNormalizedQuery(normalizedQuery, downloadPlaylist.playlist.name)
-    val showUploadedPlaylists = matchesNormalizedQuery(normalizedQuery, uploadedPlaylist.playlist.name)
 
 
     val albums = viewModel.albums.collectAsStateWithLifecycle()
@@ -456,24 +444,6 @@ fun LibraryMixScreen(
                         }
                     }
 
-                    if (showUploadedPlaylists) {
-                        item(
-                            key = "uploadedPlaylist",
-                            contentType = { CONTENT_TYPE_PLAYLIST },
-                        ) {
-                            PlaylistListItem(
-                                playlist = uploadedPlaylist,
-                                autoPlaylist = true,
-                                modifier =
-                                    Modifier
-                                        .fillMaxWidth()
-                                        .clickable {
-                                            navController.navigate("auto_playlist/uploaded")
-                                        }.animateItem(),
-                            )
-                        }
-                    }
-
                     items(
                         items = filteredItems,
                         key = { it.id },
@@ -673,7 +643,6 @@ fun LibraryMixScreen(
                         filteredItems.isEmpty() &&
                         !showLikedPlaylist &&
                         !showDownloadedPlaylist &&
-                        !showUploadedPlaylists &&
                         searchQuery.isNotBlank()
                     ) {
                         item(key = "empty_search_result") {
@@ -747,25 +716,6 @@ fun LibraryMixScreen(
                                             },
                                         )
                                         .animateItem(),
-                            )
-                        }
-                    }
-
-                    if (showUploadedPlaylists) {
-                        item(
-                            key = "uploadedPlaylist",
-                            contentType = { CONTENT_TYPE_PLAYLIST },
-                        ) {
-                            PlaylistGridItem(
-                                playlist = uploadedPlaylist,
-                                fillMaxWidth = true,
-                                autoPlaylist = true,
-                                modifier =
-                                    Modifier
-                                        .fillMaxWidth()
-                                        .clickable {
-                                            navController.navigate("auto_playlist/uploaded")
-                                        }.animateItem(),
                             )
                         }
                     }
@@ -904,7 +854,6 @@ fun LibraryMixScreen(
                         filteredItems.isEmpty() &&
                         !showLikedPlaylist &&
                         !showDownloadedPlaylist &&
-                        !showUploadedPlaylists &&
                         searchQuery.isNotBlank()
                     ) {
                         item(
