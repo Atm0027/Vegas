@@ -445,6 +445,7 @@ val LyricsLineSpacingKey = floatPreferencesKey("lyricsLineSpacing")
 val RespectAgentPositioningKey = booleanPreferencesKey("respectAgentPositioning")
 val ShowIntervalIndicatorKey = booleanPreferencesKey("showIntervalIndicator")
 val ExperimentalLyricsKey = booleanPreferencesKey("experimentalLyrics")
+val SmoothLyricsKey = booleanPreferencesKey("smoothLyrics")
 
 val PlayerVolumeKey = floatPreferencesKey("playerVolume")
 val SleepTimerDefaultKey = floatPreferencesKey("sleepTimerDefault")
@@ -677,3 +678,4 @@ val CountryCodeToName =
         "YE" to "Yemen",
         "ZW" to "Zimbabwe",
     )
+const val LOW_POWER_LYRICS_TICK_MS = 33L

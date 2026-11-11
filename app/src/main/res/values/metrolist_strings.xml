@@ -187,6 +187,8 @@
     <string name="lyrics_provider_priority_desc">Drag to reorder providers by preference. Higher position means higher priority</string>
     <string name="experimental_lyrics">Experimental lyrics</string>
     <string name="experimental_lyrics_desc">Enable the new experimental lyrics component with enhanced animations and performance</string>
+    <string name="smooth_lyrics">Maximum lyrics smoothness</string>
+    <string name="smooth_lyrics_desc">Update synced lyrics on every frame. Turn off to update 30 times per second and save battery</string>
     <string name="experimental_lyrics_beta_title">Experimental feature</string>
     <string name="experimental_lyrics_beta_message">The new lyrics component is currently in development and may contain bugs. Are you sure you want to enable it?</string>
     <string name="config_proxy">Configure proxy</string>

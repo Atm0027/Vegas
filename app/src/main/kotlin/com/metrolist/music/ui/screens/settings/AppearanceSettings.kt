@@ -63,6 +63,7 @@ import com.metrolist.music.constants.EnableDynamicIconKey
 import com.metrolist.music.constants.EnableHighRefreshRateKey
 import com.metrolist.music.constants.EnableLandscapeScalingKey
 import com.metrolist.music.constants.ExperimentalLyricsKey
+import com.metrolist.music.constants.SmoothLyricsKey
 import com.metrolist.music.constants.ForceBottomNavBarKey
 import com.metrolist.music.constants.GridItemSize
 import com.metrolist.music.constants.GridItemsSizeKey
@@ -211,6 +212,7 @@ fun AppearanceSettings(
         )
     val (respectAgentPositioning, onRespectAgentPositioningChange) = rememberPreference(RespectAgentPositioningKey, defaultValue = true)
     val (experimentalLyrics, onExperimentalLyricsChange) = rememberPreference(ExperimentalLyricsKey, defaultValue = true)
+    val (smoothLyrics, onSmoothLyricsChange) = rememberPreference(SmoothLyricsKey, defaultValue = true)
 
     val (lyricsGlowEffect, onLyricsGlowEffectChange) = rememberPreference(LyricsGlowEffectKey, defaultValue = false)
     val (lyricsAnimationStyle, onLyricsAnimationStyleChange) =
@@ -1287,6 +1289,31 @@ fun AppearanceSettings(
                                     onExperimentalLyricsChange(false)
                                 }
                             },
+                        ),
+                    )
+
+                    add(
+                        Material3SettingsItem(
+                            icon = painterResource(R.drawable.lyrics),
+                            title = { Text(stringResource(R.string.smooth_lyrics)) },
+                            description = { Text(stringResource(R.string.smooth_lyrics_desc)) },
+                            trailingContent = {
+                                Switch(
+                                    checked = smoothLyrics,
+                                    onCheckedChange = onSmoothLyricsChange,
+                                    thumbContent = {
+                                        Icon(
+                                            painter =
+                                                painterResource(
+                                                    id = if (smoothLyrics) R.drawable.check else R.drawable.close,
+                                                ),
+                                            contentDescription = null,
+                                            modifier = Modifier.size(SwitchDefaults.IconSize),
+                                        )
+                                    },
+                                )
+                            },
+                            onClick = { onSmoothLyricsChange(!smoothLyrics) },
                         ),
                     )
 

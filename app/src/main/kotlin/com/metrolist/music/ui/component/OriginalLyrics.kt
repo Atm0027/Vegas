@@ -132,7 +132,9 @@ import com.metrolist.music.constants.LyricsRomanizeCyrillicByLineKey
 import com.metrolist.music.constants.LyricsRomanizeList
 import com.metrolist.music.constants.LyricsScrollKey
 import com.metrolist.music.constants.LyricsTextPositionKey
+import com.metrolist.music.constants.LOW_POWER_LYRICS_TICK_MS
 import com.metrolist.music.constants.LyricsTextSizeKey
+import com.metrolist.music.constants.SmoothLyricsKey
 import com.metrolist.music.constants.OpenRouterApiKey
 import com.metrolist.music.constants.OpenRouterBaseUrlKey
 import com.metrolist.music.constants.OpenRouterModelKey
@@ -551,13 +553,15 @@ fun OriginalLyrics(
         selectedIndices.clear()
     }
 
-    LaunchedEffect(lyrics) {
+    val (smoothLyrics, _) = rememberPreference(SmoothLyricsKey, defaultValue = true)
+
+    LaunchedEffect(lyrics, smoothLyrics) {
         if (lyrics.isNullOrEmpty() || !lyrics.startsWith("[")) {
             currentLineIndex = -1
             return@LaunchedEffect
         }
         while (isActive) {
-            delay(8) // Faster update for word-by-word animation
+            delay(if (smoothLyrics) 8 else LOW_POWER_LYRICS_TICK_MS) // Faster update for word-by-word animation
             val sliderPosition = sliderPositionProvider()
             isSeeking = sliderPosition != null
             val position = sliderPosition ?: playerConnection.player.currentPosition
