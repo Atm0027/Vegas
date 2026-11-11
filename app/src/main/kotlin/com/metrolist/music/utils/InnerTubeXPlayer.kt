@@ -386,6 +386,11 @@ object InnerTubeXPlayer {
         lazy { PoTokenGenerator(requireNotNull(applicationContext) { "InnerTubeXPlayer is not initialized" }) }
     private val poTokenGenerator: PoTokenGenerator by poTokenGeneratorLazy
 
+    /** Frees the PoToken WebView after a long pause; the next stream request recreates it. */
+    suspend fun releasePoToken() {
+        if (poTokenGeneratorLazy.isInitialized()) poTokenGenerator.close()
+    }
+
     /** Frees the PoToken WebView when Android asks for memory. */
     suspend fun onMemoryPressure() {
         if (poTokenGeneratorLazy.isInitialized()) poTokenGenerator.onMemoryPressure()
