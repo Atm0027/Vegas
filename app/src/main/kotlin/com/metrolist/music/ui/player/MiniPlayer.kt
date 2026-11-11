@@ -277,9 +277,11 @@ private fun NewMiniPlayer(
         MiniPlayerBackgroundStyle.BLUR       -> MaterialTheme.colorScheme.surfaceContainer
         MiniPlayerBackgroundStyle.GRADIENT   -> MaterialTheme.colorScheme.surfaceContainer
         MiniPlayerBackgroundStyle.PURE_BLACK -> Color.Black
+        MiniPlayerBackgroundStyle.COVER      -> MaterialTheme.colorScheme.surfaceContainer
     }
     val forceLightColors = !useDarkTheme && (miniPlayerBackground == MiniPlayerBackgroundStyle.PURE_BLACK ||
             miniPlayerBackground == MiniPlayerBackgroundStyle.BLUR ||
+            miniPlayerBackground == MiniPlayerBackgroundStyle.COVER ||
             miniPlayerBackground == MiniPlayerBackgroundStyle.GRADIENT)
 
     val primaryColor = if (forceLightColors) Color.White else MaterialTheme.colorScheme.primary
@@ -391,6 +393,21 @@ private fun NewMiniPlayer(
                                     .background(Color.Black.copy(alpha = 0.45f)),
                             )
                         }
+                    }
+                }
+                MiniPlayerBackgroundStyle.COVER -> {
+                    mediaMetadata?.thumbnailUrl?.let { url ->
+                        AsyncImage(
+                            model = url,
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                        Box(
+                            Modifier
+                                .fillMaxSize()
+                                .background(Color.Black.copy(alpha = 0.45f)),
+                        )
                     }
                 }
                 MiniPlayerBackgroundStyle.GRADIENT -> {

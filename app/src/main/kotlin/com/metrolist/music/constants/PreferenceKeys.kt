@@ -28,6 +28,7 @@ enum class MiniPlayerBackgroundStyle {
     BLUR,
     GRADIENT,
     PURE_BLACK,
+    COVER,
 }
 
 val DensityScaleKey = floatPreferencesKey("density_scale_factor")
