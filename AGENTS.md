@@ -6,11 +6,10 @@ Vegas es un reproductor de música personal (Android + Windows) en Kotlin y Mate
 
 1. Responder en español. Commits con el formato `type(scope): descripción`.
 2. No renombrar la app, no reintroducir el icono ni la marca de Metrolist y no subir la versión salvo que se pida. El namespace `com.metrolist` del código se mantiene.
-3. Funcionalidades nuevas: brainstorming → diseño en `docs/superpowers/specs/` → plan en `docs/superpowers/plans/` (solo local, está en `.gitignore`) → implementación.
-4. Antes de traer cambios de Metrolist, leer `docs/vegas/upstream-sync.md`.
-5. No editar el esquema de la base de datos salvo que sea imprescindible; si cambia, añadir migración.
-6. No imprimir ni subir secretos, cookies ni datos personales (correo, rutas locales, números de serie).
-7. No reescribir el historial ni forzar push sin permiso explícito.
+3. Funcionalidades nuevas: brainstorming → diseño → plan → implementación. Los diseños, los planes y las reglas para traer cambios de Metrolist son internos y se guardan fuera del repo (`docs/superpowers/` está en `.gitignore`).
+4. No editar el esquema de la base de datos salvo que sea imprescindible; si cambia, añadir migración.
+5. No imprimir ni subir secretos, cookies ni datos personales (correo, rutas locales, números de serie).
+6. No reescribir el historial ni forzar push sin permiso explícito.
 
 ## Compilar y probar
 

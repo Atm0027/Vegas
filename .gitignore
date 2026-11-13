@@ -124,5 +124,5 @@ google-services.json
 cookies*.txt
 *.cookies
 
-# Planes de implementación: se quedan en local, no se publican
-docs/superpowers/plans/
+# Diseños y planes internos: se guardan fuera del repo
+docs/superpowers/

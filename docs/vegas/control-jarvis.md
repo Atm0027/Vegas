@@ -2,7 +2,6 @@
 
 Contrato que JARVIS implementa tal cual. Cualquier cambio aquí hay que avisarlo a JARVIS.
 
-- Diseño: `docs/superpowers/specs/2026-10-25-vegas-control-jarvis-design.md`.
 - Código PC: `desktop/src/main/kotlin/dev/alextorres/vegas/desktop/control/`.
 - Código móvil: `app/src/main/kotlin/com/metrolist/music/playback/JarvisControl.kt`.
 

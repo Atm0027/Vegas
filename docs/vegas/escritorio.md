@@ -1,6 +1,6 @@
 # Vegas para Windows
 
-App de escritorio de Vegas (módulo `:desktop`): Kotlin/JVM + Compose Multiplatform. El diseño completo está en `docs/superpowers/specs/2026-10-23-vegas-escritorio-design.md`.
+App de escritorio de Vegas (módulo `:desktop`): Kotlin/JVM + Compose Multiplatform.
 
 ## Compilar y probar
 
@@ -75,7 +75,7 @@ Desinstalar la app no borra estos datos.
 
 ## Descargas y modo sin conexión
 
-El diseño está en `docs/superpowers/specs/2026-10-25-vegas-escritorio-descargas-design.md`. Funciona igual que en el móvil.
+Funciona igual que en el móvil.
 
 **Qué se descarga:**
 - **Listas:** en la página de una lista, «Descargar». Las canciones que se añadan después, también las que lleguen del móvil por sincronización, se descargan solas.
