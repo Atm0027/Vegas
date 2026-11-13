@@ -1,349 +1,70 @@
 <div align="center">
 
-<img src="fastlane/metadata/android/en-US/images/icon.png" alt="Metrolist app icon" width="200" />
+<img src="assets/ic_launcher-playstore.png" alt="Icono de Vegas" width="160" />
 
-# Metrolist
+# Vegas
 
-### YouTube Music client for Android
+### Reproductor de música personal para Android y Windows
 
-<br/>
-
-<a href="https://www.blacksmith.sh">
-  <img src="assets/blacksmith-powered.png" alt="CI powered by Blacksmith" width="280" />
-</a>
-
-<br/>
-<br/>
-
-[![Latest release](https://img.shields.io/github/v/release/MetrolistGroup/Metrolist?style=for-the-badge&labelColor=0d1117)](https://github.com/MetrolistGroup/Metrolist/releases)
-[![License](https://img.shields.io/github/license/MetrolistGroup/metrolist?style=for-the-badge&labelColor=0d1117)](https://github.com/MetrolistGroup/Metrolist/blob/main/LICENSE)
-[![Downloads](https://img.shields.io/github/downloads/MetrolistGroup/Metrolist/total?style=for-the-badge&labelColor=0d1117)](https://github.com/MetrolistGroup/Metrolist/releases)
-
-<br/>
-
-[![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white&labelColor=0d1117)](https://dsc.gg/metrolist)
-[![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white&labelColor=0d1117)](https://t.me/metrolistapp)
-
-<br/>
-
-[**Download**](#download-now) · [**Features**](#features) · [**Translate**](#translations) · [**FAQ**](#faq) · [**Support**](#support-the-project)
+[![Licencia: GPL-3.0](https://img.shields.io/badge/licencia-GPL--3.0-blue?style=for-the-badge&labelColor=0d1117)](LICENSE)
 
 </div>
 
-> [!WARNING]
-> # MAINTENANCE MODE
-> Metrolist is currently in maintenance mode. This means we will only be fixing bugs and making minor improvements. Please do not submit PRs for new features or major changes, as they will not be accepted.  
-> The app is **NOT** dead, please stay tuned for updates on our discord (found above).
+> [!IMPORTANT]
+> Vegas es un **proyecto personal**, hecho para uso propio y compartido tal cual. No hay versiones publicadas, ni soporte, ni compromiso de mantenimiento. Es una **versión modificada de [Metrolist](https://github.com/MetrolistGroup/Metrolist)** y no está afiliada a Metrolist, YouTube ni Google.
 
-> [!WARNING]
-> **Regional Restriction** - If YouTube Music is unavailable in your region, this app will not work without a **VPN or proxy** connecting to a supported region.
+## Qué es
 
----
+Vegas es un cliente de YouTube Music escrito en Kotlin con Material 3. Parte de Metrolist y cambia el enfoque hacia un uso personal y sencillo:
 
-<div align="center">
+- **Sin cuenta por defecto.** Biblioteca, listas y «Me gusta» se guardan en el dispositivo. La cuenta de Google es opcional y solo sirve para reproducir canciones con restricción de edad; no se sincroniza nada con ella.
+- **App de escritorio para Windows** (módulo `desktop`, Compose Multiplatform) con su propio reproductor (FFmpeg), descargas y modo sin conexión.
+- **Sincronización móvil ↔ PC en la red de casa** (módulo `synccore`): emparejamiento, HTTPS en la LAN y descubrimiento por mDNS, sin servidores externos.
+- **Descargas y modo sin conexión**, listas propias y mejoras de reproducción (recuperación de cortes, elección de cliente de streaming).
+- **API local de control** en el PC (puerto 47322, con token) para manejar la reproducción desde otras apps de casa.
+- Nombre, icono y textos propios: la marca Metrolist solo aparece en los créditos.
 
-<h1><a id="screenshots"></a>Screenshots</h1>
+## Estructura
 
-<img src="fastlane/metadata/android/en-US/images/screenshots/screenshot_1.png" alt="Home screen" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/screenshots/screenshot_2.png" alt="Artist screen" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/screenshots/screenshot_3.png" alt="Recognize music screen" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/screenshots/screenshot_4.png" alt="Listen together screen" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/screenshots/screenshot_5.png" alt="Player screen" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/screenshots/screenshot_6.png" alt="Player lyrics screen" width="30%" />
+| Módulo | Qué contiene |
+|---|---|
+| `app` | App de Android. El flavor por defecto es `personal` (sin servicios de Google ni actualizador). |
+| `desktop` | App de Windows (Kotlin/JVM + Compose Multiplatform), instalador MSI. |
+| `synccore` | Protocolo de sincronización compartido entre móvil y PC. |
+| `innertube` | Acceso a YouTube Music (heredado de Metrolist). |
+| `docs/vegas` | Documentación de Vegas: escritorio, control, licencias, sincronización con Metrolist. |
+| `docs/superpowers` | Diseños y planes de cada funcionalidad. |
 
-</div>
+## Compilar
 
----
+Requisitos: JDK 21 y Android SDK (para la app de Android).
 
-<div align="center">
+```bash
+# Android (flavor personal, depuración)
+./gradlew :app:assemblePersonalDebug
 
-<h1><a id="features"></a>Features</h1>
+# Windows
+./gradlew :desktop:run          # abrir sin instalar
+./gradlew :desktop:packageMsi   # instalador en desktop/build/compose/binaries/main/msi/
 
-<table>
-  <tr>
-    <td width="50%" valign="top">
-
-#### Playback
-- Stream any song or video from YouTube Music
-- Background playback
-- Download & cache for offline use
-- Skip silence
-- Sleep timer
-
-</td>
-    <td width="50%" valign="top">
-
-#### Audio
-- Audio normalization
-- Tempo & pitch control
-- Equalizer
-- Crossfade
-
-</td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-
-#### Lyrics & Discovery
-- Live synced lyrics
-- AI-powered lyrics translation
-- Personalized quick picks
-- Search songs, albums, artists, videos, and playlists
-
-</td>
-    <td width="50%" valign="top">
-
-#### Library & Account
-- Full library management
-- Local playlists
-- Import playlists
-- Reorder songs in playlist or queue
-- YouTube Music account login
-- Sync songs, artists, albums, and playlists
-
-</td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-
-#### Social
-- Listen together with friends in real-time
-- Last.fm integration for scrobbling
-- Safe Discord Rich Presence
-
-</td>
-    <td width="50%" valign="top">
-
-#### Interface
-- Home screen widget
-- Light / Dark / Black / Dynamic theme modes
-- Dynamic color + 19 preset color palettes
-- Built with Material 3
-
-</td>
-  </tr>
-</table>
-
-</div>
-
----
-
-<div align="center">
-
-<h1><a id="download-now"></a>Download Now</h1>
-
-<h2>Stable Release</h2>
-
-<table>
-  <tr>
-    <th align="center">Obtainium</th>
-    <th align="center">IzzyOnDroid</th>
-  </tr>
-  <tr>
-    <td align="center">
-      <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/MetrolistGroup/Metrolist/">
-        <img src="assets/badges/obtainium.svg" alt="Add Metrolist to Obtainium" height="100">
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://apt.izzysoft.de/fdroid/index/apk/com.metrolist.music">
-        <img src="assets/badges/izzyondroid.svg" alt="Get Metrolist on IzzyOnDroid" height="100">
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <th align="center">OpenAPK</th>
-    <th align="center">GitHub</th>
-  </tr>
-  <tr>
-    <td align="center">
-      <a href="https://www.openapk.net/metrolist/com.metrolist.music/">
-        <img src="assets/badges/openapk.svg" alt="Get Metrolist on OpenAPK" height="100">
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/MetrolistGroup/Metrolist/releases/latest/download/Metrolist.apk">
-        <img src="assets/badges/github-stable.svg" alt="Get the stable Metrolist release on GitHub" height="100">
-      </a>
-    </td>
-  </tr>
-</table>
-
-<h2>Nightly Build</h2>
-
-<table>
-  <tr>
-    <th align="center">GitHub</th>
-  </tr>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/MetrolistGroup/Metrolist/releases/download/nightly/Metrolist-with-Google-Cast.apk">
-        <img src="assets/badges/github-nightly.svg" alt="Get the Metrolist nightly build on GitHub" height="120">
-      </a>
-    </td>
-  </tr>
-</table>
-
-</div>
-
----
-
-<div align="center">
-
-<h1><a id="faq"></a>FAQ</h1>
-
-<h3>Got questions? Check out our <a href="https://metrolist.cc/#faq">FAQ page</a> for answers to the most common ones.</h3>
-
-</div>
-
----
-
-<div align="center">
-
-<h1><a id="translations"></a>Translations</h1>
-
-[![Translation status](https://img.shields.io/weblate/progress/metrolist?style=for-the-badge&labelColor=0d1117)](https://hosted.weblate.org/engage/metrolist/)
-
-<h3>We use Weblate to translate Metrolist. <a href="https://hosted.weblate.org/projects/Metrolist/">Help us bring Metrolist to more people!</a></h3>
-
-<a href="https://hosted.weblate.org/projects/Metrolist/">
-  <img src="https://hosted.weblate.org/widget/Metrolist/horizontal-auto.svg" alt="Translation status" />
-</a>
-
-<h3>Thank you! Every translation makes Metrolist a little more accessible to someone, somewhere in the world.</h3>
-
-</div>
-
----
-
-<div align="center">
-
-<h1><a id="support-the-project"></a>Support the Project</h1>
-
-<h3>Metrolist is free and open-source. If it brings you joy, consider supporting its development!</h3>
-
-#### Monero (XMR)
-
-<img src="assets/XMR.png" alt="Monero QR code" width="150" />
-
-```text
-44XjSELSWcgJTZiCKzjpCQWyXhokrH9RqH3rpp35FkSKi57T25hniHWHQNhLeXyFn3DDYqufmfRB1iEtENerZpJc7xJCcqt
+# Tests
+./gradlew :synccore:test :desktop:test :app:testPersonalDebugUnitTest
 ```
 
-#### Buy Me a Coffee
+Claves opcionales (Last.fm) se leen de `local.properties` o de variables de entorno (`LASTFM_API_KEY`, `LASTFM_SECRET`); sin ellas la app funciona igual. Más detalles del escritorio en [docs/vegas/escritorio.md](docs/vegas/escritorio.md).
 
-<a href="https://www.buymeacoffee.com/mostafaalagamy">
-  <img src="assets/buymeacoffee.png" alt="Buy Me a Coffee" width="150" />
-</a>
+## Aviso legal
 
-</div>
+- Vegas **no está afiliada, patrocinada ni respaldada** por YouTube, Google LLC, Metrolist Group LLC ni ninguna de sus filiales. Todas las marcas pertenecen a sus dueños.
+- Vegas accede a YouTube Music sin la API oficial, lo que va contra las Condiciones de servicio de YouTube. Úsala bajo tu responsabilidad y respeta los derechos de autor del contenido que escuches o descargues.
+- El software se ofrece **sin ninguna garantía**, según la licencia GPL-3.0.
 
----
+## Licencia y créditos
 
-<div align="center">
+Vegas se distribuye bajo la **GNU General Public License v3.0**; el texto completo está en [LICENSE](LICENSE).
 
-<h1>Special Thanks</h1>
+Es una obra derivada de **[Metrolist](https://github.com/MetrolistGroup/Metrolist)** (GPL-3.0), de [Mo Agamy](https://github.com/mostafaalagamy) y sus colaboradores, modificada desde octubre de 2026. El historial de git conserva todos los cambios de Metrolist y los de Vegas, con sus autores y fechas. Se mantienen los avisos de copyright de los archivos originales.
 
-<h3>Metrolist stands on the shoulders of incredible open-source work.</h3>
+Gracias también a los proyectos y personas que Metrolist ya reconocía: [z-huang](https://github.com/z-huang), [Malopieds](https://github.com/Malopieds), [DD3Boh](https://github.com/DD3Boh), [mikooomich](https://github.com/mikooomich), [Better Lyrics](https://better-lyrics.boidu.dev), [MusicRecognizer](https://github.com/aleksey-saenko/MusicRecognizer), [zemer-cipher](https://github.com/ZemerTeam/zemer-cipher) y a quienes traducen la app.
 
-<h3>Main Inspirations</h3>
-
-<table>
-  <thead>
-    <tr>
-      <th align="center">Project</th>
-      <th align="center">Authors</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center"><strong>InnerTune</strong></td>
-      <td align="center"><a href="https://github.com/z-huang">Zion Huang</a> · <a href="https://github.com/Malopieds">Malopieds</a></td>
-    </tr>
-    <tr>
-      <td align="center"><strong>OuterTune</strong></td>
-      <td align="center"><a href="https://github.com/DD3Boh">Davide Garberi</a> · <a href="https://github.com/mikooomich">Michael Zh</a></td>
-    </tr>
-  </tbody>
-</table>
-
-<h3>Libraries & Integrations</h3>
-
-<table>
-  <thead>
-    <tr>
-      <th align="center">Project</th>
-      <th align="center">Contribution</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center"><a href="https://better-lyrics.boidu.dev"><strong>Better Lyrics</strong></a></td>
-      <td>Time-synced lyrics with word-by-word highlighting & YouTube Music integration</td>
-    </tr>
-    <tr>
-      <td align="center"><a href="https://github.com/MetrolistGroup/metroserver"><strong>metroserver</strong></a></td>
-      <td>Listen-together real-time backend</td>
-    </tr>
-    <tr>
-      <td align="center"><a href="https://github.com/aleksey-saenko/MusicRecognizer"><strong>MusicRecognizer</strong></a></td>
-      <td>Music recognition feature & Shazam API integration</td>
-    </tr>
-    <tr>
-      <td align="center"><a href="https://github.com/ZemerTeam/zemer-cipher"><strong>zemer-cipher</strong></a></td>
-      <td>YouTube cipher deobfuscation and PoToken generation</td>
-    </tr>
-    <tr>
-      <td align="center"><a href="https://www.blacksmith.sh"><strong>Blacksmith</strong></a></td>
-      <td>High-performance GitHub Actions runners powering our CI</td>
-    </tr>
-  </tbody>
-</table>
-
-<br/>
-
-<a href="https://www.blacksmith.sh">
-  <img src="assets/blacksmith-powered.png" alt="CI powered by Blacksmith" width="280" />
-</a>
-
-<h3>We also thank the entire open-source community! For every library, tool, and API that powers this project.</h3>
-
-</div>
-
----
-
-<div align="center">
-
-<h1>Contributors</h1>
-
-<h3>This project wouldn't exist without these amazing people!</h3>
-
-<a href="https://github.com/MetrolistGroup/Metrolist/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=MetrolistGroup/Metrolist" alt="Contributors" />
-</a>
-
-</div>
-
----
-
-<div align="center">
-
-<h1>Disclaimer</h1>
-
-This project is **not affiliated with, funded, authorized, endorsed by, or in any way associated** with YouTube, Google LLC, Metrolist Group LLC, or any of their affiliates and subsidiaries.
-
-All trademarks, service marks, and intellectual property rights referenced in this project belong to their respective owners.
-
-</div>
-
----
-
-<div align="center">
-
-<br/>
-
-**Made with ❤️ by [Mo Agamy](https://github.com/mostafaalagamy)**
-
-**This project stands with Palestine 🇵🇸**
-
-</div>
+Las dependencias de terceros (AndroidX, Media3, Ktor, Coil, JavaCV/FFmpeg, etc.) conservan sus propias licencias, compatibles con GPL-3.0. Google Cast solo se incluye en el flavor `gms`, que no es el de Vegas.

@@ -117,3 +117,16 @@ app/src/main/cpp/coverart/
 .cortexkit
 .mcp.json
 *.har
+
+# Vegas: claves, credenciales y datos locales que nunca deben subirse
+*.jks
+*.keystore
+keystore/
+*.p12
+*.pfx
+*.pem
+*.key
+google-services.json
+*.token
+cookies*.txt
+*.cookies
