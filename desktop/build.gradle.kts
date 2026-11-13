@@ -60,6 +60,18 @@ ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
 }
 
+// The MSI only replaces an installed Vegas when its version is higher, so a fixed
+// packageVersion made every rebuild a silent no-op for msiexec. The build field
+// is the commit count: it only grows, stays put between builds of the same commit
+// and fits MSI's limit (MAJOR.MINOR <= 255, BUILD <= 65535). Without git it falls
+// back to the last hand-written version.
+val desktopVersion: String = runCatching {
+    providers.exec {
+        commandLine("git", "rev-list", "--count", "HEAD")
+        workingDir = rootDir
+    }.standardOutput.asText.get().trim().toInt()
+}.getOrNull()?.let { "1.2.${it.coerceIn(3, 65535)}" } ?: "1.2.2"
+
 compose.desktop {
     application {
         mainClass = "dev.alextorres.vegas.desktop.MainKt"
@@ -67,7 +79,7 @@ compose.desktop {
             targetFormats(TargetFormat.Msi)
             packageName = "Vegas"
             // Desktop's own version; the Android version is never touched from here.
-            packageVersion = "1.2.2"
+            packageVersion = desktopVersion
             vendor = "Alex"
             description = "Vegas para Windows"
             // suggestRuntimeModules, plus TLS elliptic curves and JNDI that OkHttp may need at runtime.
