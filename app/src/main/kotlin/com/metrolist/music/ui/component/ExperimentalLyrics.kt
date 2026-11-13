@@ -95,7 +95,9 @@ import com.metrolist.music.constants.LyricsClickKey
 import com.metrolist.music.constants.LyricsRomanizeAsMainKey
 import com.metrolist.music.constants.LyricsRomanizeCyrillicByLineKey
 import com.metrolist.music.constants.LyricsRomanizeList
+import com.metrolist.music.constants.LOW_POWER_LYRICS_TICK_MS
 import com.metrolist.music.constants.LyricsTextPositionKey
+import com.metrolist.music.constants.SmoothLyricsKey
 import com.metrolist.music.constants.OpenRouterApiKey
 import com.metrolist.music.constants.OpenRouterBaseUrlKey
 import com.metrolist.music.constants.OpenRouterDefaultBaseUrl
@@ -331,7 +333,9 @@ fun ExperimentalLyrics(
     var lastMainMaxSeen by remember(lyrics, lines) { mutableIntStateOf(-1) }
     var smoothPositionForSync by remember { mutableLongStateOf(0L) }
 
-    LaunchedEffect(lyrics, lines) {
+    val (smoothLyrics, _) = rememberPreference(SmoothLyricsKey, defaultValue = true)
+
+    LaunchedEffect(lyrics, lines, smoothLyrics) {
         if (lyrics.isNullOrEmpty() || lines.isEmpty()) {
             activeLineIndices = emptySet()
             return@LaunchedEffect
@@ -341,7 +345,7 @@ fun ExperimentalLyrics(
         var lastUpdateTime = System.currentTimeMillis()
         
         while (isActive) {
-            withFrameNanos { _ -> }
+            if (smoothLyrics) withFrameNanos { _ -> } else delay(LOW_POWER_LYRICS_TICK_MS)
             val now = System.currentTimeMillis()
             val sliderPosition = sliderPositionProvider()
             isSeeking = sliderPosition != null

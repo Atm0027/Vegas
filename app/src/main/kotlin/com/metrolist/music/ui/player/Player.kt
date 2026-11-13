@@ -178,6 +178,10 @@ import com.metrolist.music.ui.component.rememberBottomSheetState
 import com.metrolist.music.ui.menu.PlayerMenu
 import com.metrolist.music.ui.screens.settings.DarkMode
 import com.metrolist.music.ui.theme.PlayerColorExtractor
+import com.metrolist.music.ui.theme.extractThemeColor
+import com.materialkolor.PaletteStyle
+import com.materialkolor.dynamiccolor.ColorSpec
+import com.materialkolor.rememberDynamicColorScheme
 import com.metrolist.music.ui.theme.PlayerSliderColors
 import com.metrolist.music.ui.utils.ShowMediaInfo
 import com.metrolist.music.ui.utils.ShowOffsetDialog
@@ -202,6 +206,9 @@ import com.metrolist.music.constants.SleepTimerStopAfterCurrentSongKey
 
 
 @OptIn(ExperimentalMaterial3Api::class)
+// Never a real cover color: tells "no usable color in this cover" apart from any extracted one.
+private val NoCoverButtonColor = Color(0x00000001)
+
 @Composable
 fun BottomSheetPlayer(
     state: BottomSheetState,
@@ -469,6 +476,49 @@ fun BottomSheetPlayer(
         label = "icBackgroundColor",
     )
 
+    // Colors of the cover of the song playing, used by the "cover colors" buttons style even when the
+    // app theme itself is not dynamic.
+    var coverColor by remember { mutableStateOf<Color?>(null) }
+    val coverColorCache = remember { mutableMapOf<String, Color>() }
+    LaunchedEffect(mediaMetadata?.id, playerButtonsStyle) {
+        if (playerButtonsStyle != PlayerButtonsStyle.COVER) return@LaunchedEffect
+        val metadata = mediaMetadata
+        val url = metadata?.thumbnailUrl ?: return@LaunchedEffect
+        coverColorCache[metadata.id]?.let {
+            coverColor = it
+            return@LaunchedEffect
+        }
+        val extracted =
+            withContext(Dispatchers.IO) {
+                runCatching {
+                    context.imageLoader
+                        .execute(
+                            ImageRequest
+                                .Builder(context)
+                                .data(url)
+                                .size(200, 200)
+                                .allowHardware(false)
+                                .build(),
+                        ).image
+                        ?.toBitmap()
+                        ?.extractThemeColor(fallback = NoCoverButtonColor)
+                        ?.takeIf { it != NoCoverButtonColor }
+                }.getOrNull()
+            }
+        // Keep the previous color when this cover has none, so the buttons do not jump.
+        if (extracted != null) {
+            coverColorCache[metadata.id] = extracted
+            coverColor = extracted
+        }
+    }
+    val coverScheme =
+        rememberDynamicColorScheme(
+            seedColor = coverColor ?: MaterialTheme.colorScheme.primary,
+            isDark = useDarkTheme,
+            specVersion = ColorSpec.SpecVersion.SPEC_2025,
+            style = PaletteStyle.TonalSpot,
+        )
+
     val (textButtonColor, iconButtonColor) =
         when {
             playerBackground == PlayerBackgroundStyle.BLUR ||
@@ -490,6 +540,10 @@ fun BottomSheetPlayer(
                             MaterialTheme.colorScheme.tertiary,
                             MaterialTheme.colorScheme.onTertiary,
                         )
+                    }
+
+                    PlayerButtonsStyle.COVER -> {
+                        Pair(coverScheme.primary, coverScheme.onPrimary)
                     }
                 }
             }
@@ -516,6 +570,10 @@ fun BottomSheetPlayer(
                             MaterialTheme.colorScheme.tertiary,
                             MaterialTheme.colorScheme.onTertiary,
                         )
+                    }
+
+                    PlayerButtonsStyle.COVER -> {
+                        Pair(coverScheme.primary, coverScheme.onPrimary)
                     }
                 }
             }
@@ -547,6 +605,10 @@ fun BottomSheetPlayer(
                             MaterialTheme.colorScheme.onTertiaryContainer,
                         )
                     }
+
+                    PlayerButtonsStyle.COVER -> {
+                        Pair(coverScheme.primaryContainer, coverScheme.onPrimaryContainer)
+                    }
                 }
             }
 
@@ -571,6 +633,10 @@ fun BottomSheetPlayer(
                             MaterialTheme.colorScheme.tertiaryContainer,
                             MaterialTheme.colorScheme.onTertiaryContainer,
                         )
+                    }
+
+                    PlayerButtonsStyle.COVER -> {
+                        Pair(coverScheme.primaryContainer, coverScheme.onPrimaryContainer)
                     }
                 }
             }

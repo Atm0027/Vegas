@@ -49,6 +49,7 @@ import com.metrolist.music.utils.get
 import com.metrolist.music.utils.reportException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -697,6 +698,9 @@ class HomeViewModel @Inject constructor(
             try {
                 isHomeDataLoaded = true
                 load()
+            } catch (e: CancellationException) {
+                isHomeDataLoaded = false
+                throw e
             } catch (e: Exception) {
                 isHomeDataLoaded = false
                 Timber.e(e, "Failed to load home data")

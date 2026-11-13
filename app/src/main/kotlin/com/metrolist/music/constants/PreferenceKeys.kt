@@ -16,10 +16,10 @@ import java.time.ZoneOffset
 val EnableHighRefreshRateKey = booleanPreferencesKey("enableHighRefreshRate")
 val EnableLandscapeScalingKey = booleanPreferencesKey("enableLandscapeScaling")
 val DynamicThemeKey = booleanPreferencesKey("dynamicTheme")
+val LastDynamicThemeColorKey = intPreferencesKey("lastDynamicThemeColor")
 val SelectedThemeColorKey = intPreferencesKey("selectedThemeColor")
 val DarkModeKey = stringPreferencesKey("darkMode")
 val PureBlackKey = booleanPreferencesKey("pureBlack")
-val PureBlackMiniPlayerKey = booleanPreferencesKey("pureBlackMiniPlayer")
 val MiniPlayerBackgroundStyleKey = stringPreferencesKey("miniPlayerBackgroundStyle")
 
 enum class MiniPlayerBackgroundStyle {
@@ -28,6 +28,7 @@ enum class MiniPlayerBackgroundStyle {
     BLUR,
     GRADIENT,
     PURE_BLACK,
+    COVER,
 }
 
 val DensityScaleKey = floatPreferencesKey("density_scale_factor")
@@ -165,7 +166,6 @@ val PauseListenHistoryKey = booleanPreferencesKey("pauseListenHistory")
 val PauseSearchHistoryKey = booleanPreferencesKey("pauseSearchHistory")
 val DisableScreenshotKey = booleanPreferencesKey("disableScreenshot")
 
-val EnableDynamicIconKey = booleanPreferencesKey("enableDynamicIcon")
 
 
 
@@ -230,7 +230,6 @@ val RandomizeHomeOrderKey = booleanPreferencesKey("randomizeHomeOrder")
 
 val ShowLikedPlaylistKey = booleanPreferencesKey("show_liked_playlist")
 val ShowDownloadedPlaylistKey = booleanPreferencesKey("show_downloaded_playlist")
-val ShowUploadedPlaylistKey = booleanPreferencesKey("show_uploaded_playlist")
 
 enum class LibraryViewType {
     LIST,
@@ -383,6 +382,7 @@ enum class PlayerButtonsStyle {
     DEFAULT,
     PRIMARY,
     TERTIARY,
+    COVER,
 }
 
 enum class PlayerBackgroundStyle {
@@ -445,6 +445,7 @@ val LyricsLineSpacingKey = floatPreferencesKey("lyricsLineSpacing")
 val RespectAgentPositioningKey = booleanPreferencesKey("respectAgentPositioning")
 val ShowIntervalIndicatorKey = booleanPreferencesKey("showIntervalIndicator")
 val ExperimentalLyricsKey = booleanPreferencesKey("experimentalLyrics")
+val SmoothLyricsKey = booleanPreferencesKey("smoothLyrics")
 
 val PlayerVolumeKey = floatPreferencesKey("playerVolume")
 val SleepTimerDefaultKey = floatPreferencesKey("sleepTimerDefault")
@@ -677,3 +678,4 @@ val CountryCodeToName =
         "YE" to "Yemen",
         "ZW" to "Zimbabwe",
     )
+const val LOW_POWER_LYRICS_TICK_MS = 33L

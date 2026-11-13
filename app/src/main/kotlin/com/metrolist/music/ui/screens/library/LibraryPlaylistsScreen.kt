@@ -70,7 +70,6 @@ import com.metrolist.music.constants.PlaylistSortType
 import com.metrolist.music.constants.PlaylistSortTypeKey
 import com.metrolist.music.constants.ShowDownloadedPlaylistKey
 import com.metrolist.music.constants.ShowLikedPlaylistKey
-import com.metrolist.music.constants.ShowUploadedPlaylistKey
 import com.metrolist.music.db.entities.Playlist
 import com.metrolist.music.LocalDatabase
 import sh.calvin.reorderable.ReorderableItem
@@ -186,30 +185,16 @@ fun LibraryPlaylistsScreen(
         )
 
 
-    val uploadedPlaylist =
-        Playlist(
-            playlist = PlaylistEntity(
-                id = UUID.randomUUID().toString(),
-                name = stringResource(R.string.uploaded_playlist)
-            ),
-            songCount = 0,
-            songThumbnails = emptyList(),
-        )
-
     val (showLiked) = rememberPreference(ShowLikedPlaylistKey, true)
     val (showDownloaded) = rememberPreference(ShowDownloadedPlaylistKey, true)
-    val (showUploaded) = rememberPreference(ShowUploadedPlaylistKey, true)
     val showLikedPlaylist = showLiked && matchesNormalizedQuery(normalizedQuery, likedPlaylist.playlist.name)
     val showDownloadedPlaylist =
         showDownloaded && matchesNormalizedQuery(normalizedQuery, downloadPlaylist.playlist.name)
-    val showUploadedPlaylists =
-        showUploaded && matchesNormalizedQuery(normalizedQuery, uploadedPlaylist.playlist.name)
 
     val visibleResults = remember(
         filteredPlaylists,
         showLikedPlaylist,
         showDownloadedPlaylist,
-        showUploadedPlaylists,
         topSize,
     ) {
         buildList {
@@ -233,17 +218,6 @@ fun LibraryPlaylistsScreen(
                     ),
                 )
             }
-            if (showUploadedPlaylists) {
-                add(
-                    VisiblePlaylistItem(
-                        key = "uploadedPlaylist",
-                        playlist = uploadedPlaylist,
-                        autoPlaylist = true,
-                        route = "auto_playlist/uploaded",
-                    ),
-                )
-            }
-
             filteredPlaylists
                 .distinctBy { it.id }
                 .forEach { playlist ->

@@ -32,11 +32,12 @@ fun MetrolistTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     pureBlack: Boolean = false,
     themeColor: Color = DefaultThemeColor,
+    useSystemColors: Boolean = themeColor == DefaultThemeColor,
     content: @Composable () -> Unit,
 ) {
     val context = LocalContext.current
-    // Determine if system dynamic colors should be used (Android S+ and default theme color)
-    val useSystemDynamicColor = (themeColor == DefaultThemeColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+    // System wallpaper colors only when asked for (Android S+); a color taken from a cover always wins.
+    val useSystemDynamicColor = useSystemColors && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 
     // Select the appropriate color scheme generation method
     val baseColorScheme = if (useSystemDynamicColor) {
@@ -68,11 +69,11 @@ fun MetrolistTheme(
     )
 }
 
-fun Bitmap.extractThemeColor(): Color = Color(
+fun Bitmap.extractThemeColor(fallback: Color = DefaultThemeColor): Color = Color(
     Palette.from(this)
         .maximumColorCount(8)
         .generate()
-        .rankedColors(1, DefaultThemeColor.toArgb())
+        .rankedColors(1, fallback.toArgb())
         .first()
 )
 

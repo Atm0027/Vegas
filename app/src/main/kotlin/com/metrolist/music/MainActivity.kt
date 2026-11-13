@@ -91,6 +91,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
+import androidx.datastore.preferences.core.edit
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
@@ -160,6 +161,7 @@ import com.metrolist.music.constants.PreferredLyricsProvider
 import com.metrolist.music.constants.PreferredLyricsProviderKey
 import com.metrolist.music.constants.PureBlackKey
 import com.metrolist.music.constants.SYSTEM_DEFAULT
+import com.metrolist.music.constants.LastDynamicThemeColorKey
 import com.metrolist.music.constants.SelectedThemeColorKey
 import com.metrolist.music.constants.SimpMusicMigrationDoneKey
 import com.metrolist.music.constants.SlimNavBarHeight
@@ -235,6 +237,9 @@ private data class AvailableUpdate(
 }
 
 @Suppress("DEPRECATION", "ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+// Never a real cover color: tells "the cover had no usable color" apart from any extracted one.
+private val NoCoverColor = Color(0x00000001)
+
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
     companion object {
@@ -616,14 +621,28 @@ class MainActivity : FragmentActivity() {
         val selectedThemeColor = Color(selectedThemeColorInt)
 
 
+        // Read once and synchronously so the first frame already has the right colors, instead of
+        // flashing the default color until the cover has been loaded.
+        val initialThemeColor =
+            remember {
+                val storedSelected = dataStore[SelectedThemeColorKey]?.let { Color(it) } ?: DefaultThemeColor
+                val dynamic = dataStore[DynamicThemeKey] ?: true
+                val lastCover = dataStore[LastDynamicThemeColorKey]
+                if (dynamic && lastCover != null) Color(lastCover) else storedSelected
+            }
         var themeColor by rememberSaveable(stateSaver = ColorSaver) {
-            mutableStateOf(selectedThemeColor)
+            mutableStateOf(initialThemeColor)
+        }
+        // True while the theme color comes from the cover of the current song.
+        var themeFromCover by rememberSaveable {
+            mutableStateOf(enableDynamicTheme && dataStore[LastDynamicThemeColorKey] != null)
         }
 
         val themeColorCache = remember { mutableMapOf<String, Color>() }
 
-        LaunchedEffect(selectedThemeColor) {
+        LaunchedEffect(selectedThemeColor, enableDynamicTheme) {
             if (!enableDynamicTheme) {
+                themeFromCover = false
                 themeColor = selectedThemeColor
             }
         }
@@ -631,45 +650,56 @@ class MainActivity : FragmentActivity() {
         LaunchedEffect(playerConnection, enableDynamicTheme, selectedThemeColor) {
             val playerConnection = playerConnection
             if (!enableDynamicTheme || playerConnection == null) {
-                themeColor = selectedThemeColor
+                if (!enableDynamicTheme) {
+                    themeFromCover = false
+                    themeColor = selectedThemeColor
+                }
                 return@LaunchedEffect
             }
 
             playerConnection.service.currentMediaMetadata
                 .distinctUntilChanged { old, new -> old?.id == new?.id }
                 .collectLatest { song ->
-                    if (song?.thumbnailUrl != null) {
-                        val cached = themeColorCache[song.thumbnailUrl]
-                        if (cached != null) {
-                            withFrameNanos { }
-                            themeColor = cached
-                            return@collectLatest
-                        }
+                    val url = song?.thumbnailUrl
+                    if (url == null) {
+                        themeFromCover = false
+                        themeColor = selectedThemeColor
+                        return@collectLatest
+                    }
+                    val cached = themeColorCache[url]
+                    if (cached != null) {
+                        themeColor = cached
+                        themeFromCover = true
+                        return@collectLatest
+                    }
+                    // A cover that fails to load or has no usable color keeps the current colors instead of
+                    // jumping to the system wallpaper palette.
+                    val extracted =
                         withContext(Dispatchers.IO) {
-                            try {
-                                val result =
-                                    imageLoader.execute(
+                            runCatching {
+                                imageLoader
+                                    .execute(
                                         ImageRequest
                                             .Builder(this@MainActivity)
-                                            .data(song.thumbnailUrl)
+                                            .data(url)
+                                            .size(200, 200)
                                             .allowHardware(false)
                                             .memoryCachePolicy(CachePolicy.ENABLED)
                                             .diskCachePolicy(CachePolicy.ENABLED)
                                             .networkCachePolicy(CachePolicy.ENABLED)
                                             .crossfade(false)
                                             .build(),
-                                    )
-                                val extractedColor = result.image?.toBitmap()?.extractThemeColor() ?: selectedThemeColor
-                                themeColorCache[song.thumbnailUrl] = extractedColor
-                                withFrameNanos { }
-                                themeColor = extractedColor
-                            } catch (e: Exception) {
-                                withFrameNanos { }
-                                themeColor = selectedThemeColor
-                            }
+                                    ).image
+                                    ?.toBitmap()
+                                    ?.extractThemeColor(fallback = NoCoverColor)
+                                    ?.takeIf { it != NoCoverColor }
+                            }.getOrNull()
                         }
-                    } else {
-                        themeColor = selectedThemeColor
+                    if (extracted != null) {
+                        themeColorCache[url] = extracted
+                        themeColor = extracted
+                        themeFromCover = true
+                        runCatching { applicationContext.dataStore.edit { it[LastDynamicThemeColorKey] = extracted.toArgb() } }
                     }
                 }
         }
@@ -678,6 +708,7 @@ class MainActivity : FragmentActivity() {
             darkTheme = useDarkTheme,
             pureBlack = pureBlack,
             themeColor = themeColor,
+            useSystemColors = !themeFromCover && themeColor == DefaultThemeColor,
         ) {
             val currentDensity = LocalDensity.current
             val windowInfo = LocalWindowInfo.current

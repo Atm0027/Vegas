@@ -65,7 +65,10 @@ object InnerTubeXPlayer {
 
     @Synchronized
     fun initialize(context: Context) {
-        if (applicationContext == null) applicationContext = context.applicationContext
+        if (applicationContext == null) {
+            applicationContext = context.applicationContext
+            widelyRefusedPrefs()?.getString(REFUSED_PREF, null)?.let { runCatching { widelyRefused.restore(it) } }
+        }
     }
 
     suspend fun prewarm() = bundle().extractor.prewarm()
@@ -314,11 +317,18 @@ object InnerTubeXPlayer {
             FailedStreamClients(failures?.clientNames.orEmpty() + clientName, nowMs)
         }
         widelyRefused.record(clientName, videoId, nowMs)
+        // Android often kills the process within minutes; keep the refusals so the next start does not pay the 403 again.
+        widelyRefusedPrefs()?.edit()?.putString(REFUSED_PREF, widelyRefused.export())?.apply()
     }
+
+    private fun widelyRefusedPrefs() = applicationContext?.getSharedPreferences("stream_clients", Context.MODE_PRIVATE)
+
+    private const val REFUSED_PREF = "widely_refused"
 
     fun clearStreamClientFailures() {
         streamClientFailures.clear()
         widelyRefused.clear()
+        widelyRefusedPrefs()?.edit()?.remove(REFUSED_PREF)?.apply()
     }
 
     internal fun widelyRefusedClients(nowMs: Long = System.currentTimeMillis()): Set<String> = widelyRefused.clients(nowMs)
@@ -385,6 +395,11 @@ object InnerTubeXPlayer {
     private val poTokenGeneratorLazy =
         lazy { PoTokenGenerator(requireNotNull(applicationContext) { "InnerTubeXPlayer is not initialized" }) }
     private val poTokenGenerator: PoTokenGenerator by poTokenGeneratorLazy
+
+    /** Frees the PoToken WebView after a long pause; the next stream request recreates it. */
+    suspend fun releasePoToken() {
+        if (poTokenGeneratorLazy.isInitialized()) poTokenGenerator.close()
+    }
 
     /** Frees the PoToken WebView when Android asks for memory. */
     suspend fun onMemoryPressure() {

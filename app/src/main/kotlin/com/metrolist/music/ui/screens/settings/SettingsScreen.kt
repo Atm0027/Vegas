@@ -88,15 +88,45 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Player & Content Section (moved up and combined with content)
+        // Playback: everything that decides how music plays, including the account used for it.
         Material3SettingsGroup(
-            title = stringResource(R.string.settings_section_player_content),
+            title = stringResource(R.string.settings_section_playback),
+            items =
+                buildList {
+                    add(
+                        Material3SettingsItem(
+                            icon = painterResource(R.drawable.play),
+                            title = { Text(stringResource(R.string.player_and_audio)) },
+                            onClick = { navController.navigate("settings/player") },
+                        ),
+                    )
+                    add(
+                        Material3SettingsItem(
+                            icon = painterResource(R.drawable.account),
+                            title = { Text(stringResource(R.string.playback_account)) },
+                            description = { Text(stringResource(R.string.playback_account_summary)) },
+                            onClick = { navController.navigate("settings/playback_account") },
+                        ),
+                    )
+                    // Android Auto only shows up when it is installed.
+                    if (hasAndroidAuto) {
+                        add(
+                            Material3SettingsItem(
+                                icon = painterResource(R.drawable.ic_android_auto),
+                                title = { Text(stringResource(R.string.android_auto)) },
+                                onClick = { navController.navigate("settings/android_auto") },
+                            ),
+                        )
+                    }
+                },
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Content: what is shown and the lyrics tools.
+        Material3SettingsGroup(
+            title = stringResource(R.string.settings_section_content_lyrics),
             items = listOf(
-                Material3SettingsItem(
-                    icon = painterResource(R.drawable.play),
-                    title = { Text(stringResource(R.string.player_and_audio)) },
-                    onClick = { navController.navigate("settings/player") }
-                ),
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.language),
                     title = { Text(stringResource(R.string.content)) },
@@ -112,6 +142,7 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Sync with the PC app.
         Material3SettingsGroup(
             title = stringResource(R.string.pc_sync),
             items = listOf(
@@ -120,34 +151,12 @@ fun SettingsScreen(
                     title = { Text(stringResource(R.string.pc_sync)) },
                     description = { Text(stringResource(R.string.pc_sync_summary)) },
                     onClick = { navController.navigate("settings/pc_sync") }
-                ),
-                Material3SettingsItem(
-                    icon = painterResource(R.drawable.account),
-                    title = { Text(stringResource(R.string.playback_account)) },
-                    description = { Text(stringResource(R.string.playback_account_summary)) },
-                    onClick = { navController.navigate("settings/playback_account") }
                 )
             )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Android Auto Section — only shown if Android Auto is installed
-        if (hasAndroidAuto) {
-            Material3SettingsGroup(
-                title = "Android Auto",
-                items = listOf(
-                    Material3SettingsItem(
-                        icon = painterResource(R.drawable.ic_android_auto),
-                        title = { Text(stringResource(R.string.android_auto)) },
-                        onClick = { navController.navigate("settings/android_auto") }
-                    )
-                )
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-        
         // Privacy & Security Section
         Material3SettingsGroup(
             title = stringResource(R.string.settings_section_privacy),

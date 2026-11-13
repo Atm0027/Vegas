@@ -36,4 +36,20 @@ class WidelyRefusedClients(
 
     @Synchronized
     fun clear() = refusals.clear()
+
+    /** One `client|videoId|timestamp` line per refusal, so a killed process can pick them up again. */
+    @Synchronized
+    fun export(): String =
+        refusals.entries
+            .flatMap { (client, songs) -> songs.entries.map { (videoId, at) -> "$client|$videoId|$at" } }
+            .joinToString("\n")
+
+    @Synchronized
+    fun restore(text: String) {
+        text.lineSequence().forEach { line ->
+            val parts = line.split('|')
+            val at = parts.getOrNull(2)?.toLongOrNull() ?: return@forEach
+            refusals.getOrPut(parts[0]) { HashMap() }[parts[1]] = at
+        }
+    }
 }

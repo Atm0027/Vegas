@@ -311,6 +311,7 @@ class MusicService :
         }
 
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    private var poTokenReleaseJob: Job? = null
 
     private val binder = MusicBinder()
 
@@ -2690,6 +2691,18 @@ class MusicService :
         }
 
         if (events.containsAny(Player.EVENT_IS_PLAYING_CHANGED)) {
+            poTokenReleaseJob?.cancel()
+            poTokenReleaseJob = null
+            if (!player.isPlaying && player.playbackState != Player.STATE_BUFFERING) {
+                // The PoToken WebView keeps a renderer process alive; free it if playback stays paused.
+                poTokenReleaseJob = scope.launch {
+                    delay(POTOKEN_IDLE_RELEASE_MS)
+                    runCatching { InnerTubeXPlayer.releasePoToken() }
+                }
+            }
+        }
+
+        if (events.containsAny(Player.EVENT_IS_PLAYING_CHANGED)) {
             scrobbleManager?.onPlayerStateChanged(player.isPlaying, player.currentMetadata, duration = player.duration)
         }
     }
@@ -4866,6 +4879,7 @@ class MusicService :
     }
 
     companion object {
+        private const val POTOKEN_IDLE_RELEASE_MS = 2 * 60 * 1000L
         const val ACTION_ALARM_TRIGGER = "com.metrolist.music.action.ALARM_TRIGGER"
         const val EXTRA_ALARM_ID = "extra_alarm_id"
         const val EXTRA_ALARM_PLAYLIST_ID = "extra_alarm_playlist_id"
