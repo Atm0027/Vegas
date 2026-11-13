@@ -69,27 +69,6 @@ android {
 
     flavorDimensions += listOf("variant")
     productFlavors {
-        // FOSS - Updater, but no gcast
-        create("foss") {
-            dimension = "variant"
-            buildConfigField("Boolean", "CAST_AVAILABLE", "false")
-            buildConfigField("Boolean", "UPDATER_AVAILABLE", "true")
-        }
-
-        // GMS - Updater and gcast
-        create("gms") {
-            dimension = "variant"
-            buildConfigField("Boolean", "CAST_AVAILABLE", "true")
-            buildConfigField("Boolean", "UPDATER_AVAILABLE", "true")
-        }
-
-        // IzzyOnDroid - no gcast, no updater - the ONLY F-droid compliant build
-        create("izzy") {
-            dimension = "variant"
-            buildConfigField("Boolean", "CAST_AVAILABLE", "false")
-            buildConfigField("Boolean", "UPDATER_AVAILABLE", "false")
-        }
-
         // Vegas personal build - no gcast, no updater
         create("personal") {
             dimension = "variant"
@@ -281,10 +260,6 @@ dependencies {
     implementation(libs.media3.session)
     implementation(libs.media3.okhttp)
 
-    // Google Cast - only included in GMS flavor (not available in F-Droid/FOSS builds)
-    "gmsImplementation"(libs.media3.cast)
-    "gmsImplementation"(libs.mediarouter)
-    "gmsImplementation"(libs.cast.framework)
 
     implementation(libs.room.runtime)
     implementation(libs.kuromoji.ipadic)

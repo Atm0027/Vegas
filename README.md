@@ -28,12 +28,11 @@ Vegas es un cliente de YouTube Music escrito en Kotlin con Material 3. Parte de 
 
 | Módulo | Qué contiene |
 |---|---|
-| `app` | App de Android. El flavor por defecto es `personal` (sin servicios de Google ni actualizador). |
+| `app` | App de Android. Un único flavor, `personal` (sin servicios de Google ni actualizador). |
 | `desktop` | App de Windows (Kotlin/JVM + Compose Multiplatform), instalador MSI. |
 | `synccore` | Protocolo de sincronización compartido entre móvil y PC. |
 | `innertube` | Acceso a YouTube Music (heredado de Metrolist). |
-| `docs/vegas` | Documentación de Vegas: escritorio, control, licencias, sincronización con Metrolist. |
-| `docs/superpowers/specs` | Diseño de cada funcionalidad. |
+| `docs/vegas` | Documentación de la app de Windows y de la API de control. |
 
 ## Compilar
 
@@ -67,4 +66,4 @@ Es una obra derivada de **[Metrolist](https://github.com/MetrolistGroup/Metrolis
 
 Gracias también a los proyectos y personas que Metrolist ya reconocía: [z-huang](https://github.com/z-huang), [Malopieds](https://github.com/Malopieds), [DD3Boh](https://github.com/DD3Boh), [mikooomich](https://github.com/mikooomich), [Better Lyrics](https://better-lyrics.boidu.dev), [MusicRecognizer](https://github.com/aleksey-saenko/MusicRecognizer), [zemer-cipher](https://github.com/ZemerTeam/zemer-cipher) y a quienes traducen la app.
 
-Las dependencias de terceros (AndroidX, Media3, Ktor, Coil, JavaCV/FFmpeg, etc.) conservan sus propias licencias, compatibles con GPL-3.0. Google Cast solo se incluye en el flavor `gms`, que no es el de Vegas.
+Las dependencias de terceros (AndroidX, Media3, Ktor, Coil, JavaCV/FFmpeg, etc.) conservan sus propias licencias, compatibles con GPL-3.0.
