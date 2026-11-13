@@ -33,7 +33,7 @@ Vegas es un cliente de YouTube Music escrito en Kotlin con Material 3. Parte de 
 | `synccore` | Protocolo de sincronización compartido entre móvil y PC. |
 | `innertube` | Acceso a YouTube Music (heredado de Metrolist). |
 | `docs/vegas` | Documentación de Vegas: escritorio, control, licencias, sincronización con Metrolist. |
-| `docs/superpowers` | Diseños y planes de cada funcionalidad. |
+| `docs/superpowers/specs` | Diseño de cada funcionalidad. |
 
 ## Compilar
 

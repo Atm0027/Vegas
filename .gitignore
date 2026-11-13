@@ -68,13 +68,6 @@ freeline.py
 freeline/
 freeline_project_description.json
 
-# fastlane
-fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots
-fastlane/test_output
-fastlane/readme.md
-
 # Version control
 vcs.xml
 
@@ -130,3 +123,6 @@ google-services.json
 *.token
 cookies*.txt
 *.cookies
+
+# Planes de implementación: se quedan en local, no se publican
+docs/superpowers/plans/

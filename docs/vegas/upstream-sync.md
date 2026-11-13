@@ -9,10 +9,11 @@ a Vegas y se implementa solo si conviene**. Este documento son las reglas; el es
 - App personal, solo audio, sin cuenta ni sincronización con YouTube, biblioteca local.
 - `applicationId = dev.alextorres.vegas`, flavor `personal` (sin Cast, sin actualizador).
 - **Eliminado a propósito, no reintroducir:** Escuchar juntos (Listen Together) y protobuf, Discord, login/cuenta de YouTube y sincronización de biblioteca (`SyncUtils`). Al arrancar se borran datos de cuenta y Discord (`LegacyAccountCleanup`); `visitorData` anónimo se conserva. Tampoco: subir canciones a YouTube, historial remoto, podcasts de cuenta. Tampoco (quitado por decisión de Alex): podcasts en toda la app (biblioteca, inicio, búsqueda, páginas de artista; se filtran con `filterPodcasts()`), las listas automáticas «En caché» y «Top 50» de la biblioteca (el widget sigue usando `top_playlist`), y «Añadir/Quitar de la biblioteca» para canciones.
-- **Sin rastro del icono de Metrolist** (decisión de Alex). El único icono es la V de Vegas (`ic_vegas_*`, `small_icon`, `assets/` y `fastlane/`). Se rechazan los cambios de upstream que reintroduzcan `ic_launcher_foreground`, `ic_launcher_monochrome`, `ic_launcher_static*` o los `mipmap-*/ic_launcher*.webp`/`.png`.
+- **Sin rastro del icono de Metrolist** (decisión de Alex). El único icono es la V de Vegas (`ic_vegas_*`, `small_icon` y `assets/ic_launcher-playstore.png`). Se rechazan los cambios de upstream que reintroduzcan `ic_launcher_foreground`, `ic_launcher_monochrome`, `ic_launcher_static*` o los `mipmap-*/ic_launcher*.webp`/`.png`.
 - **Sincronización con Vegas para PC** (propia de Vegas):
   - El módulo `:synccore` y `app/.../sync/`, que contiene las tablas `sync_*` de la base de datos v41 (`AutoMigration` 40→41).
   - Si upstream sube la versión de la base de datos, la de Vegas va por delante: hay que crear una migración nueva encima, no sustituirla.
+- **Quitado del repo, no reintroducir desde upstream:** `.github/` (workflows de Blacksmith, plantillas, FUNDING), `fastlane/`, `changelog.md`, `development_guide.md`, `crowdin.yml`, `renovate.json` y las imágenes de donaciones y badges de `assets/`. Los planes (`docs/superpowers/plans/`) se quedan en local, no se suben.
 - **No ampliar:** vídeo (Metrolist ya no tiene reproductor de vídeo), Google Cast.
 - **Se mantiene:** Android Auto.
 - Lógica propia de Vegas que un cambio de upstream no debe pisar:
