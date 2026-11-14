@@ -50,7 +50,7 @@ Requisitos: JDK 21 y Android SDK (para la app de Android).
 ./gradlew :synccore:test :desktop:test :app:testPersonalDebugUnitTest
 ```
 
-Claves opcionales (Last.fm) se leen de `local.properties` o de variables de entorno (`LASTFM_API_KEY`, `LASTFM_SECRET`); sin ellas la app funciona igual. Más detalles del escritorio en [docs/vegas/escritorio.md](docs/vegas/escritorio.md).
+Last.fm permanece desactivado en la compilación personal: no se empaquetan `LASTFM_API_KEY` ni `LASTFM_SECRET` en el APK. Más detalles del escritorio en [docs/vegas/escritorio.md](docs/vegas/escritorio.md).
 
 ## Aviso legal
 
