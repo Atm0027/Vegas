@@ -1,6 +1,7 @@
 package com.metrolist.music.playback
 
 import com.metrolist.music.db.entities.Song
+import java.text.Normalizer
 
 object VoiceSearchMatcher {
     const val STRONG_MATCH_THRESHOLD = 0.60
@@ -13,7 +14,7 @@ object VoiceSearchMatcher {
     )
 
     fun rankAll(query: String, candidates: List<Song>): List<ScoredSong> {
-        val queryLower = query.lowercase().trim()
+        val queryLower = normalizedLowercase(query).trim()
         val queryTokens = tokenize(queryLower)
         if (queryTokens.isEmpty()) return emptyList()
 
@@ -32,27 +33,32 @@ object VoiceSearchMatcher {
     private fun scoreCandidate(
         song: Song,
         queryLower: String,
-        queryTokens: Set<String>,
+        queryTokens: List<String>,
         isTooGeneric: Boolean,
     ): Double {
-        val title = song.title.lowercase().trim()
+        val title = normalizedLowercase(song.title).trim()
         val titleTokens = tokenize(title)
 
+        // Exact title (same words, same order) always wins; same words in another order is a near tie.
         if (titleTokens == queryTokens || title == queryLower) return 1.0
+        val titleTokenSet = titleTokens.toSet()
+        val queryTokenSet = queryTokens.toSet()
+        if (titleTokenSet == queryTokenSet) return 0.99
 
-        val remaining = stripArtistTokens(queryTokens, song)
+        val remaining = stripArtistTokens(queryTokenSet, song)
 
         if (remaining.isEmpty()) return 0.5     // The query was purely artist name, so return moderate confidence
-        if (titleTokens == remaining) return 0.95
+        if (titleTokenSet == remaining) return 0.95
         if (isTooGeneric) return 0.0
 
-        return fuzzyScore(remaining, titleTokens)
+        // Capped so a fuzzy match never ties with an exact title.
+        return fuzzyScore(remaining, titleTokenSet).coerceAtMost(0.98)
     }
 
     private fun stripArtistTokens(queryTokens: Set<String>, song: Song): Set<String> {
         val remaining = queryTokens.toMutableSet()
         song.artists.forEach { artist ->
-            val artistTokens = tokenize(artist.name.lowercase())
+            val artistTokens = tokenize(normalizedLowercase(artist.name)).toSet()
             remaining.removeIf { queryToken ->
                 if (queryToken.length < 4) artistTokens.contains(queryToken)
                 else artistTokens.any { artistToken -> jaroWinkler(queryToken, artistToken) >= 0.85 }
@@ -81,11 +87,18 @@ object VoiceSearchMatcher {
     }
 
 
-    internal fun tokenize(text: String): Set<String> =
-        PUNCTUATION_REGEX.replace(text.lowercase(), " ")
+    /**
+     * NFC first: a decomposed accent (NFD combining mark) would otherwise be replaced by a space
+     * by [PUNCTUATION_REGEX] and split the word in two.
+     */
+    private fun normalizedLowercase(text: String): String =
+        Normalizer.normalize(text, Normalizer.Form.NFC).lowercase()
+
+    /** Splits already-normalized text into words, keeping their order. */
+    internal fun tokenize(text: String): List<String> =
+        PUNCTUATION_REGEX.replace(text, " ")
             .split(" ")
             .filter { it.isNotBlank() }
-            .toSet()
 
     /**
      * Token Similarity based on Jaro-Winkler Distance Algorithm
