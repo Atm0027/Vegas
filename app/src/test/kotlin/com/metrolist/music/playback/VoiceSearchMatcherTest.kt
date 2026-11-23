@@ -42,14 +42,14 @@ class VoiceSearchMatcherTest {
         )
         assertEquals(
             "tokenize: strips punctuation",
-            setOf("don", "t", "stop", "me", "now"),
-            VoiceSearchMatcher.tokenize("Don't Stop Me Now!"),
+            listOf("don", "t", "stop", "me", "now"),
+            VoiceSearchMatcher.tokenize("don't stop me now!"),
         )
     }
 
     // Ranking
     @Test
-    fun `exact match scores 1 and is order-independent`() {
+    fun `exact match scores 1 and reordered words score just below`() {
         val candidates = listOf(
             song("Bohemian Rhapsody", "Queen"),
             song("Bohemian Like You", "Dandy Warhols"),
@@ -62,7 +62,36 @@ class VoiceSearchMatcherTest {
             "Pressure Under",
             listOf(song("Under Pressure", "Queen")),
             )
-        assertEquals("exact: reversed order score", 1.0, reversed.first().score, 0.0)
+        assertEquals("exact: reversed order score", 0.99, reversed.first().score, 0.0)
+    }
+
+    @Test
+    fun `exact title beats a similar one`() {
+        val ranked = VoiceSearchMatcher.rankAll(
+            "Bohemian Rhapsody",
+            listOf(
+                song("Bohemian Rhapsody Live", "Queen"),
+                song("Bohemian Rapsody", "Cover Band"),
+                song("Bohemian Rhapsody", "Queen"),
+            ),
+        )
+        assertEquals("exact wins: title", "Bohemian Rhapsody", ranked.first().song.title)
+        assertEquals("exact wins: score", 1.0, ranked.first().score, 0.0)
+        assertTrue("exact wins: runner-up below", ranked[1].score < 1.0)
+    }
+
+    @Test
+    fun `decomposed accents match composed titles`() {
+        val nfdQuery = "Canción de amor" // "Canción" with a combining acute accent (NFD)
+        val ranked = VoiceSearchMatcher.rankAll(
+            nfdQuery,
+            listOf(
+                song("Canción de amor", "Alguien"),
+                song("Otra cosa", "Nadie"),
+            ),
+        )
+        assertEquals("nfd: best title", "Canción de amor", ranked.first().song.title)
+        assertEquals("nfd: exact score", 1.0, ranked.first().score, 0.0)
     }
     @Test
     fun `artist tokens are stripped before scoring`() {
